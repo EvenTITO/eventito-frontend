@@ -1,0 +1,6 @@
+/* Add this to your CSS file */
+.underline-custom {
+  text-decoration: underline;
+  text-underline-offset: 4px; /* Adjust the offset to separate underline from text */
+  text-decoration-thickness: 2px; /* Adjust the thickness of the underline */
+}

@@ -1,0 +1,7 @@
+export const USERS_URL = "https://gateway-pv5n.onrender.com/api/v1/users"
+export const HOME_PATH = "/"
+export const LOGIN_PATH = "/login"
+export const SIGNUP_PATH = "/sing-up"
+export const FORGOT_PASSWORD_PATH = "/forgot-password"
+export const PRIVATE_POLICY_PATH = "/private-policy"
+export const TERMS_CONDITIONS_PATH = "/terms-and-conditions"
