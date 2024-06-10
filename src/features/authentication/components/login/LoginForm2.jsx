@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { CircleX } from "lucide-react";
+import { CircleX, Loader2 } from "lucide-react";
 
 import { login } from "@/features/authentication/services/authorizationServices";
 import { loginStart, loginSuccess, loginFailure } from "@/services/state/user/userSlice";
@@ -25,7 +25,7 @@ export default function LoginForm2() {
 
 	const [loginError, setLoginError] = useState(false);
 
-	const [isSelected, setIsSelected] = useState(false);
+	const [selected, setSelected] = useState(null);
 	const { currentUser: user, loading } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
@@ -36,12 +36,13 @@ export default function LoginForm2() {
 				ev.preventDefault();
 				dispatch(loginStart());
 
-				setIsSelected(true);
+				setSelected('login');
 				const userObtained = await login({ email: email, password: password });
 
 				dispatch(loginSuccess(userObtained));
 			} catch (exception) {
 				setLoginError(true);
+				setSelected(null);
 				dispatch(loginFailure(exception));
 			}
 		}
@@ -99,9 +100,12 @@ export default function LoginForm2() {
 							required
 						/>
 					</div>
-					<Button type="submit" className="w-full" onClick={handleLoginSubmit}>
-						Login
-					</Button>
+					<CustomLoginButton
+						isLoading={loading}
+						isSelected={selected === 'login'}
+						buttonText={'Iniciar sesión'}
+						handleSubmit={handleLoginSubmit}
+					/>
 					<Button variant="outline" className="w-full">
 						Login with Google
 					</Button>
@@ -164,6 +168,27 @@ function ShowDescriptionOrError({ error, setError }) {
 			<CardDescription>
 				Ingresa con tus credenciales
 			</CardDescription>
+		);
+	}
+}
+
+function CustomLoginButton({ isLoading, isSelected, buttonText, handleSubmit }) {
+	if (isLoading && isSelected) {
+		return (
+			<Button type="submit" className="w-full bg-gray-600 font-semibold" onClick={handleSubmit} disabled>
+				<div className="flex flex-row items-center justify-around">
+					<div className="flex">
+						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+						Cargando...
+					</div>
+				</div>
+			</Button>
+		);
+	} else {
+		return (
+			<Button type="submit" className="w-full" onClick={handleSubmit}>
+				{buttonText}
+			</Button>
 		);
 	}
 }
