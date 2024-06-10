@@ -34,16 +34,15 @@ export default function LoginForm2() {
 		if (email !== '' && password !== '') {
 			try {
 				ev.preventDefault();
-				//dispatch(loginStart());
+				dispatch(loginStart());
 
 				setIsSelected(true);
 				const userObtained = await login({ email: email, password: password });
-				alert(userObtained.email + ' ' + userObtained.password);
 
-				//dispatch(loginSuccess(userObtained));
+				dispatch(loginSuccess(userObtained));
 			} catch (exception) {
 				setLoginError(true);
-				//dispatch(loginFailure(exception));
+				dispatch(loginFailure(exception));
 			}
 		}
 		if (email === '') {

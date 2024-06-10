@@ -2,15 +2,14 @@ import { apiGetUser, apiPostUser } from "@/services/api/userServices";
 import { firebaseLogOut, firebaseLogin, firebaseLoginWithGoogle, firebaseSignUp } from "@/services/firebase/firebaseServices";
 
 export const login = async (userData) => {
-	// try {
-	// 	const user = await firebaseLogin(userData);
-	// 	const userObtained = await apiGetUser(user.uid);
-	// 	return userObtained;
-	// } catch (exception) {
-	// 	console.log(exception);
-	// 	throw exception;
-	// }
-	throw 'Credenciales invalidas';
+	try {
+		const user = await firebaseLogin(userData);
+		const userObtained = await apiGetUser(user.uid);
+		return userObtained;
+	} catch (exception) {
+		console.log(exception);
+		throw exception;
+	}
 };
 
 export const loginWithGoogle = async () => {
