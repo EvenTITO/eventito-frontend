@@ -81,63 +81,65 @@ export default function LoginForm2() {
 	}
 
 	return (
-		<Card className="mx-auto max-w-sm w-full">
-			<CardHeader>
-				<CardTitle className="text-2xl">Iniciar sesion</CardTitle>
-				<ShowDescriptionOrError error={loginError} setError={setLoginError} />
-			</CardHeader>
-			<CardContent>
-				<div className="grid gap-4">
-					<div className="grid gap-2">
-						<Label htmlFor="email">Email</Label>
-						<CustomInput
-							id="email"
-							type="email"
-							placeholder="m@example.com"
-							value={email}
-							onChange={ev => changeEmail(ev.target.value)}
-							error={emailError}
-							required
-						/>
-					</div>
-					<div className="grid gap-2">
-						<div className="flex items-center">
-							<Label htmlFor="password">Contraseña</Label>
-							<Link href="#" className="ml-auto inline-block text-sm underline">
-								¿Olvidaste tu contraseña?
-							</Link>
+		<Card className="max-w-xl mx-auto w-full shadow-xl">
+			<Card className="py-4 mx-auto max-w-sm w-full border-0">
+				<CardHeader>
+					<CardTitle className="text-2xl">Iniciar sesion</CardTitle>
+					<ShowDescriptionOrError error={loginError} setError={setLoginError} />
+				</CardHeader>
+				<CardContent>
+					<div className="grid gap-4">
+						<div className="grid gap-2">
+							<Label htmlFor="email">Email</Label>
+							<CustomInput
+								id="email"
+								type="email"
+								placeholder="m@example.com"
+								value={email}
+								onChange={ev => changeEmail(ev.target.value)}
+								error={emailError}
+								required
+							/>
 						</div>
-						<CustomInput
-							id="password"
-							type="password"
-							value={password}
-							onChange={ev => changePassword(ev.target.value)}
-							error={passwordError}
-							required
+						<div className="grid gap-2">
+							<div className="flex items-center">
+								<Label htmlFor="password">Contraseña</Label>
+								<Link href="#" className="ml-auto inline-block text-sm underline">
+									¿Olvidaste tu contraseña?
+								</Link>
+							</div>
+							<CustomInput
+								id="password"
+								type="password"
+								value={password}
+								onChange={ev => changePassword(ev.target.value)}
+								error={passwordError}
+								required
+							/>
+						</div>
+						<CustomLoginButton
+							isLoading={loading}
+							isSelected={selected === 'login'}
+							buttonText={'Continuar'}
+							handleSubmit={handleLoginSubmit}
+						/>
+						<CustomLoginButton
+							isLoading={loading}
+							isSelected={selected === 'loginGoogle'}
+							buttonText={'Continuar con Google'}
+							handleSubmit={handleLoginWithGoogle}
+							variant={'outline'}
 						/>
 					</div>
-					<CustomLoginButton
-						isLoading={loading}
-						isSelected={selected === 'login'}
-						buttonText={'Continuar'}
-						handleSubmit={handleLoginSubmit}
-					/>
-					<CustomLoginButton
-						isLoading={loading}
-						isSelected={selected === 'loginGoogle'}
-						buttonText={'Continuar con Google'}
-						handleSubmit={handleLoginWithGoogle}
-						variant={'outline'}
-					/>
-				</div>
-				<div className="mt-4 text-center text-sm flex flex-row items-center gap-1 justify-center">
-					¿No tenés cuenta?
-					<Link to={'/register'} className="underline">
-						Crear cuenta
-					</Link>
-				</div>
-			</CardContent>
-		</Card >
+					<div className="mt-4 text-center text-sm flex flex-row items-center gap-1 justify-center">
+						¿No tenés cuenta?
+						<Link to={'/register'} className="underline">
+							Crear cuenta
+						</Link>
+					</div>
+				</CardContent>
+			</Card>
+		</Card>
 	)
 }
 
