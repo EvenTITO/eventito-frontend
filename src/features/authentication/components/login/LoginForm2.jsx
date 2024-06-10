@@ -54,6 +54,22 @@ export default function LoginForm2() {
 		}
 	}
 
+	async function handleLoginWithGoogle(ev) {
+		try {
+			ev.preventDefault();
+			dispatch(loginStart());
+
+			setSelected('loginGoogle');
+			const userObtained = await loginWithGoogle();
+
+			dispatch(loginSuccess(userObtained));
+		} catch (exception) {
+			setLoginError(true);
+			setSelected(null);
+			dispatch(loginFailure(exception));
+		}
+	}
+
 	function changeEmail(value) {
 		setEmail(value);
 		setEmailError(false);
@@ -86,9 +102,9 @@ export default function LoginForm2() {
 					</div>
 					<div className="grid gap-2">
 						<div className="flex items-center">
-							<Label htmlFor="password">Password</Label>
+							<Label htmlFor="password">Contraseña</Label>
 							<Link href="#" className="ml-auto inline-block text-sm underline">
-								Forgot your password?
+								¿Olvidaste tu contraseña?
 							</Link>
 						</div>
 						<CustomInput
@@ -103,17 +119,21 @@ export default function LoginForm2() {
 					<CustomLoginButton
 						isLoading={loading}
 						isSelected={selected === 'login'}
-						buttonText={'Iniciar sesión'}
+						buttonText={'Continuar'}
 						handleSubmit={handleLoginSubmit}
 					/>
-					<Button variant="outline" className="w-full">
-						Login with Google
-					</Button>
+					<CustomLoginButton
+						isLoading={loading}
+						isSelected={selected === 'loginGoogle'}
+						buttonText={'Continuar con Google'}
+						handleSubmit={handleLoginWithGoogle}
+						variant={'outline'}
+					/>
 				</div>
-				<div className="mt-4 text-center text-sm">
-					Don&apos;t have an account?{" "}
-					<Link href="#" className="underline">
-						Sign up
+				<div className="mt-4 text-center text-sm flex flex-row items-center gap-1 justify-center">
+					¿No tenés cuenta?
+					<Link to={'/register'} className="underline">
+						Crear cuenta
 					</Link>
 				</div>
 			</CardContent>
@@ -172,7 +192,7 @@ function ShowDescriptionOrError({ error, setError }) {
 	}
 }
 
-function CustomLoginButton({ isLoading, isSelected, buttonText, handleSubmit }) {
+function CustomLoginButton({ isLoading, isSelected, buttonText, handleSubmit, variant }) {
 	if (isLoading && isSelected) {
 		return (
 			<Button type="submit" className="w-full bg-gray-600 font-semibold" onClick={handleSubmit} disabled>
@@ -186,7 +206,7 @@ function CustomLoginButton({ isLoading, isSelected, buttonText, handleSubmit }) 
 		);
 	} else {
 		return (
-			<Button type="submit" className="w-full" onClick={handleSubmit}>
+			<Button type="submit" className="w-full" onClick={handleSubmit} variant={variant}>
 				{buttonText}
 			</Button>
 		);
