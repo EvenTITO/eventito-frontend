@@ -9,10 +9,12 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { CircleX } from "lucide-react";
+
+import { login } from "@/features/authentication/services/authorizationServices";
+import { loginStart, loginSuccess, loginFailure } from "@/services/state/user/userSlice";
 
 export default function LoginForm2() {
 	const [email, setEmail] = useState('');
@@ -21,6 +23,8 @@ export default function LoginForm2() {
 	const [password, setPassword] = useState('');
 	const [passwordError, setPasswordError] = useState(false);
 
+	const [loginError, setLoginError] = useState(false);
+
 	const [isSelected, setIsSelected] = useState(false);
 	const { currentUser: user, loading } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
@@ -28,7 +32,19 @@ export default function LoginForm2() {
 	async function handleLoginSubmit(ev) {
 		ev.preventDefault();
 		if (email !== '' && password !== '') {
-			alert('ok');
+			try {
+				ev.preventDefault();
+				//dispatch(loginStart());
+
+				setIsSelected(true);
+				const userObtained = await login({ email: email, password: password });
+				alert(userObtained.email + ' ' + userObtained.password);
+
+				//dispatch(loginSuccess(userObtained));
+			} catch (exception) {
+				setLoginError(true);
+				//dispatch(loginFailure(exception));
+			}
 		}
 		if (email === '') {
 			setEmailError(true);
@@ -52,9 +68,7 @@ export default function LoginForm2() {
 		<Card className="mx-auto max-w-sm w-full">
 			<CardHeader>
 				<CardTitle className="text-2xl">Iniciar sesion</CardTitle>
-				<CardDescription>
-					Ingresa con tus credenciales
-				</CardDescription>
+				<ShowDescriptionOrError error={loginError} setError={setLoginError} />
 			</CardHeader>
 			<CardContent>
 				<div className="grid gap-4">
@@ -100,7 +114,7 @@ export default function LoginForm2() {
 					</Link>
 				</div>
 			</CardContent>
-		</Card>
+		</Card >
 	)
 }
 
@@ -117,12 +131,12 @@ function CustomInput({ id, type, value, onChange, isRequired, placeholder, error
 				required={isRequired}
 				className={className}
 			/>
-			<ErrorMessage error={error} />
+			<InputErrorMessage error={error} />
 		</div>
 	);
 }
 
-function ErrorMessage({ error }) {
+function InputErrorMessage({ error }) {
 	if (error) {
 		return (
 			<div className="flex text-red-500 gap-1 items-center text-sm">
@@ -131,5 +145,26 @@ function ErrorMessage({ error }) {
 		);
 	} else {
 		return <></>;
+	}
+}
+
+function ShowDescriptionOrError({ error, setError }) {
+	if (error) {
+		return (
+			<CardDescription>
+				<div className="flex items-center justify-around p-2 py-3 text-black font-semibold bg-red-200">
+					Usuario y/o contraseña inválidos
+					<button onClick={() => setError(false)}>
+						<CircleX />
+					</button>
+				</div>
+			</CardDescription>
+		);
+	} else {
+		return (
+			<CardDescription>
+				Ingresa con tus credenciales
+			</CardDescription>
+		);
 	}
 }
