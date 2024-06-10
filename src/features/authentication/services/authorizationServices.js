@@ -30,13 +30,14 @@ export const logOut = async () => {
 export const signUp = async (userData) => {
 	try {
 		const user = await firebaseSignUp(userData);
-		const res = apiPostUser(user.uid, userData.name, null);
-
-		if (res.error) {
-			await logOut();
-			alert(res.error);
-		}
-		return res;
+		// const res = apiPostUser(user.uid, userData.name, null);
+		//
+		// if (res.error) {
+		// 	await logOut();
+		// 	alert(res.error);
+		// }
+		// return res;
+		return user;
 	} catch (exception) {
 		throw exception;
 	}
