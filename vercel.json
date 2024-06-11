@@ -2,9 +2,14 @@
   "rewrites": [
     {
       "source": "/(.*)", 
-      "destination": "/dist/index.html"
+      "destination": "/index.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/index.html"
     }
   ],
+  "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }],
   "cleanUrls": true,
   "trailingSlash": false
 }
