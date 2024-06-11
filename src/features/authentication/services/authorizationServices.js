@@ -30,6 +30,11 @@ export const logOut = async () => {
 export const signUp = async (userData) => {
 	try {
 		const user = await firebaseSignUp(userData);
+		// TODO: 
+		// 1. mail a user
+		// 2. una vez que valida, obtener user
+		// 3. depende que datos obtengo, le hago o no llenar datos
+		//
 		// const res = apiPostUser(user.uid, userData.name, null);
 		//
 		// if (res.error) {
