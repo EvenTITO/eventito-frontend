@@ -74,11 +74,10 @@ export const apiGetUsers = async () => {
 export const apiPatchUserRole = async (userId, role) => {
     try {
         const headers = generateHeaders();
-        const url = `${USERS_URL}/${userId}`;
+        const url = `${USERS_URL}/${userId}/roles`;
         const requestBody = {
             role: role
         };
-        console.log("haciendo pegada al back")
         return await axios.patch(url, {
             requestBody,
             headers: headers
