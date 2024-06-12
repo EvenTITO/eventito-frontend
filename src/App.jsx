@@ -46,8 +46,6 @@ function App() {
                         </Route>
                         <Route path="/" element={<AdminLayout/>}>
                             <Route path="administration" element={<AdministrationPage/>}/>
-                            <Route path="administration/users" element={<AdministrationPage/>}/>
-                            <Route path="administration/requests" element={<AdministrationPage/>}/>
                         </Route>
                         <Route path="/" element={<ProtectedLayout/>}>
                             <Route index element={<HomePage/>}/>
