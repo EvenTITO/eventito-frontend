@@ -49,10 +49,10 @@ export default function AvatarDropdown() {
         <DropdownMenuSeparator />
         {
           (currentUser.role === "ADMIN") &&
-            (<DropdownMenuItem onClick={handleAdministration}>Administration</DropdownMenuItem>)
+            (<DropdownMenuItem onClick={handleAdministration}>Administración</DropdownMenuItem>)
         }
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
+        <DropdownMenuItem>Configuración</DropdownMenuItem>
+        <DropdownMenuItem>Soporte</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup onValueChange={handleLogout}>
           <DropdownMenuRadioItem value="logout">
