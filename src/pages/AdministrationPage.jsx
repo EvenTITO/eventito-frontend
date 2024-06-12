@@ -15,22 +15,36 @@ import {ListFilter} from "lucide-react";
 import {useEffect, useState} from "react";
 import SearchBar from "@/components/SearchBar.jsx";
 import {apiGetUsers, apiPatchUserRole} from "@/services/api/userServices.js";
+import EventCreateRequestsList from "@/features/administration/components/EventCreateRequestsList.jsx";
+import {apiGetEventsByStatus, apiPatchEventStatus} from "@/services/api/eventServices.js";
 
 
 export const AdministrationPage = () => {
     const [allUsers, setAllUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const [allEvents, setAllEvents] = useState([]);
+    const [filteredEvents, setFilteredEvents] = useState([]);
     const [showAllUsers, setShowAllUsers] = useState(true);
     const [showAdminUsers, setShowAdminUsers] = useState(false);
     const [searchText, setSearchText] = useState("");
+    const [tab, setTab] = useState("usuarios");
 
+    const onTabChange = (value) => {
+        setTab(value);
+    }
+
+    const refreshData = async () => {
+        const apiUsers = await apiGetUsers();
+        const apiEvents = await apiGetEventsByStatus("WAITING_APPROVAL");
+        setAllUsers(apiUsers);
+        setFilteredUsers(apiUsers);
+        setAllEvents(apiEvents);
+        setFilteredEvents(apiEvents);
+    };
+
+    // Component did mount -> se ejecuta la primera vez cuando renderiza la pagina
     useEffect(() => {
-        const getUsers = async () => {
-            const apiUsers = await apiGetUsers();
-            setAllUsers(apiUsers);
-            setFilteredUsers(apiUsers);
-        };
-        getUsers().then(r => r);
+        refreshData().then(r => console.log("Users and events loaded"));
     }, []);
 
     const handleShowAllUsers = () => {
@@ -46,22 +60,35 @@ export const AdministrationPage = () => {
     }
 
     const handleEditUserRole = async (userId, newRole) => {
-        console.log(userId +" "+newRole)
-        await apiPatchUserRole(userId,newRole);
+        await apiPatchUserRole(userId, newRole);
+        refreshData().then(r => console.log("Users reloaded"));
+    }
+
+    const handleEditEventStatus = async (eventId, status) => {
+        await apiPatchEventStatus(eventId, status);
+        refreshData().then(r => console.log("Events reloaded"));
     }
 
     const handleSearchText = (event) => {
         const text = event.target.value;
         setSearchText(text);
         const lowerText = text.toLowerCase();
-        let showUsers = allUsers
-            .filter(u => u.name.toLowerCase().includes(lowerText) ||
-                u.lastname.toLowerCase().includes(lowerText) ||
-                u.email.toLowerCase().includes(lowerText));
-        if (showAdminUsers) {
-            showUsers = showUsers.filter(u => u.role === "ADMIN")
+        if(tab === "usuarios"){
+            let showUsers = allUsers
+                .filter(u => u.name.toLowerCase().includes(lowerText) ||
+                    u.lastname.toLowerCase().includes(lowerText) ||
+                    u.email.toLowerCase().includes(lowerText));
+            if (showAdminUsers) {
+                showUsers = showUsers.filter(u => u.role === "ADMIN")
+            }
+            setFilteredUsers(showUsers);
         }
-        setFilteredUsers(showUsers);
+        if(tab === "solicitudes"){
+            let showEvents = allEvents
+                .filter(e => e.title.toLowerCase().includes(lowerText) ||
+                    e.description.toLowerCase().includes(lowerText));
+            setFilteredEvents(showEvents);
+        }
     }
 
     return (
@@ -70,15 +97,15 @@ export const AdministrationPage = () => {
             <div className="w-full h-full px-10">
                 <div className="w-full h-full py-6 px-10">
                     <main className="grid flex-1 items-start gap-4 p-4  md:gap-8">
-                        <Tabs defaultValue="all">
+                        <Tabs defaultValue="usuarios" onValueChange={onTabChange}>
                             <div className="flex items-center">
                                 <TabsList>
-                                    <TabsTrigger value="all">Usuarios</TabsTrigger>
-                                    <TabsTrigger value="requests">Solicitudes</TabsTrigger>
+                                    <TabsTrigger value="usuarios">Usuarios</TabsTrigger>
+                                    <TabsTrigger value="solicitudes">Solicitudes</TabsTrigger>
                                 </TabsList>
                                 <div className="ml-auto flex items-center gap-2">
-                                    <SearchBar placeholder={"Buscar usuarios..."} handleSearchText={handleSearchText}/>
-                                    <DropdownMenu>
+                                    <SearchBar placeholder={`Buscar ${tab}...`} handleSearchText={handleSearchText}/>
+                                    {tab === "usuarios" && (<DropdownMenu>
                                         <DropdownMenuTrigger asChild>
                                             <Button variant="outline" size="sm" className="h-8 gap-1">
                                                 <ListFilter className="h-3.5 w-3.5"/>
@@ -98,10 +125,10 @@ export const AdministrationPage = () => {
                                                 Admins
                                             </DropdownMenuCheckboxItem>
                                         </DropdownMenuContent>
-                                    </DropdownMenu>
+                                    </DropdownMenu>)}
                                 </div>
                             </div>
-                            <TabsContent value="all">
+                            <TabsContent value="usuarios">
                                 <Card x-chunk="dashboard-06-chunk-0">
                                     <CardHeader>
                                         <CardTitle>Usuarios</CardTitle>
@@ -114,7 +141,7 @@ export const AdministrationPage = () => {
                                     </CardContent>
                                 </Card>
                             </TabsContent>
-                            <TabsContent value="requests">
+                            <TabsContent value="solicitudes">
                                 <Card x-chunk="dashboard-06-chunk-0">
                                     <CardHeader>
                                         <CardTitle>Solicitudes</CardTitle>
@@ -123,6 +150,8 @@ export const AdministrationPage = () => {
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent>
+                                        <EventCreateRequestsList events={filteredEvents}
+                                                                 editEventStatus={handleEditEventStatus}/>
                                     </CardContent>
                                 </Card>
                             </TabsContent>

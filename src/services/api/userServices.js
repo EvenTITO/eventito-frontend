@@ -1,27 +1,12 @@
 import axios from "axios";
 import {USERS_URL} from "@/lib/Constants";
-import {getAuthUser} from "@/services/firebase/firebaseServices";
-
-const generateAuthorizationHeader = (token) => `Bearer ${token}`;
-
-const generateHeaders = () => {
-    return {
-        'Content-Type': 'application/json',
-        'accept': 'application/json',
-        'Authorization': generateAuthorizationHeader(
-            getAuthUser().stsTokenManager.accessToken
-        )
-    };
-};
+import {generateHeaders} from "@/lib/utils.js";
 
 export const apiGetUser = async (userId) => {
     try {
         const headers = generateHeaders();
         const url = `${USERS_URL}/${userId}`;
-        const res = await axios.get(url, {
-            headers: headers,
-        });
-
+        const res = await axios.get(url, {headers: headers});
         const {name, lastname, email, role} = res.data;
         return {
             id: userId,
@@ -45,12 +30,7 @@ export const apiPostUser = async (userId, name, lastname) => {
             name: name,
             lastname: lastname === null || lastname === undefined || lastname === "" ? "Apellido" : lastname
         };
-        const res = await axios.post(url, {
-            requestBody,
-            headers: headers
-        });
-
-        return res;
+        return await axios.post(url, requestBody, {headers: headers});
     } catch (err) {
         console.log("Error en createUser: ", err);
         throw err;
@@ -61,9 +41,7 @@ export const apiGetUsers = async () => {
     try {
         const headers = generateHeaders();
         const url = `${USERS_URL}`;
-        const res = await axios.get(url, {
-            headers: headers,
-        });
+        const res = await axios.get(url, {headers: headers});
         return res.data;
     } catch (err) {
         console.log("Error en obtener todos los usuarios: ", err);
@@ -78,10 +56,7 @@ export const apiPatchUserRole = async (userId, role) => {
         const requestBody = {
             role: role
         };
-        return await axios.patch(url, {
-            requestBody,
-            headers: headers
-        });
+        return await axios.patch(url, requestBody, {headers: headers});
     } catch (err) {
         console.log("Error cambiando rol de un usuario: ", err);
         throw err;

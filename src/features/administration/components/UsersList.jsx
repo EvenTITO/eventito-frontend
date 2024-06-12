@@ -80,10 +80,10 @@ export default function UsersList({users, editUser}) {
                             <TableCell className="font-medium">
                                 {enableEditUserId === user.id ? (
                                     <Button variant="outline" size="icon" onClick={() => disableEditUser(user.id)}>
-                                        <FaUserCheck className="h-4 w-4"/>
+                                        <FaUserCheck className="h-5 w-5"/>
                                     </Button>) : (
                                     <Button variant="outline" size="icon" onClick={() => enableEditUser(user.id)}>
-                                        <FaUserEdit className="h-4 w-4"/>
+                                        <FaUserEdit className="h-5 w-5"/>
                                     </Button>)
                                 }
                             </TableCell>
