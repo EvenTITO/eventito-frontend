@@ -27,7 +27,7 @@ export default function HomePage() {
   }, []);
 
   const handleCreateEvent = () => {
-    navigate(`/events/creation`)
+    navigate(`/events/creation/general`)
   }
 
   if (eventSelected) {

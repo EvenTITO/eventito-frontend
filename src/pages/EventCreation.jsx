@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
 import HeaderDivisor from "@/components/ui/HeaderDivisor.jsx";
 import {Input} from "@/components/ui/input.jsx";
@@ -18,13 +18,13 @@ import {
 } from "@/components/ui/select.jsx";
 
 export default function EventCreation() {
-    const [event, setEvent] = useState({
-        title: "",
-        description: "",
-        type:"CONFERENCE",
-        location:"",
-        nonDecidedLocation:false
-    });
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [event, setEvent] = useState(location.state != null && location.state.event ? location.state.event : defaultEvent);
+
+    const nextCreationStep = () => {
+        navigate("/events/creation/calendar", {state: {...location.state, event:event}});
+    }
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
@@ -35,7 +35,7 @@ export default function EventCreation() {
         setEvent({...event, type: value});
     };
 
-    const handleUnknownLocationCheckBox = (value) => {
+    const handleNonDecidedLocationCheckBox = (value) => {
         setEvent({...event, location:"", nonDecidedLocation: value});
     };
 
@@ -50,12 +50,20 @@ export default function EventCreation() {
                 <div
                     className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                     <nav className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0">
-                        <Link href="#" className="font-semibold text-primary">
+                        <Link to="/events/creation/general"
+                              state={{...location.state, event:event}}
+                              className="font-semibold text-primary">
                             General
                         </Link>
-                        <Link href="#">Security</Link>
-                        <Link href="#">Integrations</Link>
-                        <Link href="#">Support</Link>
+                        <Link to="/events/creation/calendar"
+                              state={{...location.state, event:event}}>
+                            Calendario</Link>
+                        <Link to="/events/creation/work"
+                              state={{...location.state, event:event}}>
+                            Trabajos</Link>
+                        <Link to="/events/creation/pricing"
+                              state={{...location.state, event:event}}>
+                            Tarifas</Link>
                     </nav>
                     <div className="grid gap-6">
                         <Card x-chunk="dashboard-04-chunk-1">
@@ -110,7 +118,7 @@ export default function EventCreation() {
                                     />
                                 </div>
                                 <div className="flex items-center space-x-2">
-                                    <Checkbox id="include" checked={event.nonDecidedLocation} onCheckedChange={handleUnknownLocationCheckBox}/>
+                                    <Checkbox id="include" checked={event.nonDecidedLocation} onCheckedChange={handleNonDecidedLocationCheckBox}/>
                                     <label
                                         htmlFor="include"
                                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -120,7 +128,7 @@ export default function EventCreation() {
                                 </div>
                             </CardContent>
                             <CardFooter className="border-t px-6 py-4">
-                                <Button>Siguiente</Button>
+                                <Button onClick={nextCreationStep}>Siguiente</Button>
                             </CardFooter>
                         </Card>
                     </div>
@@ -128,4 +136,12 @@ export default function EventCreation() {
             </main>
         </div>
     )
+}
+
+const defaultEvent = {
+    title: "",
+    description: "",
+    type: "CONFERENCE",
+    location: "",
+    nonDecidedLocation: false
 }
