@@ -1,43 +1,34 @@
-import {
-  ListFilter,
-  PlusCircle,
-} from "lucide-react"
+import {ListFilter, PlusCircle,} from "lucide-react"
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuTrigger,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuCheckboxItem
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { useEffect, useState } from "react"
-import { Navigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
-import { addHeader } from "@/services/state/events/eventSlice"
+import {Button} from "@/components/ui/button"
+import {Tabs, TabsContent, TabsList, TabsTrigger,} from "@/components/ui/tabs"
+import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card"
+import {useEffect, useState} from "react"
+import {Navigate, useNavigate} from "react-router-dom"
+import {useDispatch} from "react-redux"
+import {addHeader} from "@/services/state/events/eventSlice"
 import HeaderDivisor from "@/components/ui/HeaderDivisor"
 import EventsList from "@/features/events/components/EventsList"
 
 export default function HomePage() {
   const [eventSelected, setEventSelected] = useState(null);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(addHeader([{ link: '/', name: 'Eventos' }]));
   }, []);
+
+  const handleCreateEvent = () => {
+    navigate(`/events/creation`)
+  }
 
   if (eventSelected) {
     return <Navigate to={`/events/${eventSelected}`} />;
@@ -76,7 +67,7 @@ export default function HomePage() {
                         </DropdownMenuCheckboxItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-                    <Button size="sm" className="h-8 gap-1">
+                    <Button size="sm" className="h-8 gap-1" onClick={handleCreateEvent}>
                       <PlusCircle className="h-3.5 w-3.5" />
                       <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                         Nuevo evento

@@ -17,6 +17,7 @@ import {onAuthStateChanged} from "@firebase/auth";
 import {auth} from "@/services/firebase/firebaseAuth.js";
 import {useDispatch} from "react-redux";
 import {logout} from "@/services/state/user/userSlice.js";
+import EventCreation from "@/pages/EventCreation.jsx";
 
 function App() {
     const dispatch = useDispatch();
@@ -55,6 +56,7 @@ function App() {
                             <Route path="events/:id/presentations" element={<EventPresentations/>}/>
                             <Route path="events/:id/organization" element={<EventOrganization/>}/>
                             <Route path="events/:id/configuration" element={<EventConfiguration/>}/>
+                            <Route path="events/creation" element={<EventCreation/>}/>
                         </Route>
                     </Routes>
                 ) :
