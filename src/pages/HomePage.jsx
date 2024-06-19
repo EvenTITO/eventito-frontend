@@ -32,8 +32,36 @@ import HeaderDivisor from "@/components/ui/HeaderDivisor"
 import EventsList from "@/features/events/components/EventsList"
 
 export default function HomePage() {
+<<<<<<< Updated upstream
   const [eventSelected, setEventSelected] = useState(null);
   const dispatch = useDispatch();
+=======
+    const [eventSelected, setEventSelected] = useState(null);
+    const [tab, setTab] = useState("all");
+    const [newEvent, setNewEvent] = useState(defaultEvent);
+    const [newEventLoading, setNewEventLoading] = useState(false);
+    const [createEventOpen, setCreateEventOpen] = useState(false);
+    const [myEvents, setMyEvents] = useState([]);
+    const [publicEvents, setPublicEvents] = useState([]);
+    const dispatch = useDispatch();
+
+    // Component did mount -> se ejecuta la primera vez cuando renderiza la pagina
+    useEffect(() => {
+        dispatch(addHeader([{link: '/', name: 'Eventos'}]));
+        refreshData().then(r => console.log("Events loaded"));
+    }, []);
+
+    const refreshData = async () => {
+        const apiPublicEvents = await apiGetEventsByStatus("STARTED");
+        const apiMyEvents = await apiGetEventsByUserOrganizer();
+        setMyEvents(myEventsDefault);
+        setPublicEvents(publicEventsDefault);
+    };
+
+    const onTabChange = (value) => {
+        setTab(value);
+    };
+>>>>>>> Stashed changes
 
   useEffect(() => {
     dispatch(addHeader([{ link: '/', name: 'Eventos' }]));
@@ -115,6 +143,7 @@ const events = [
     start_date: "2023-07-12 10:45:00",
     end_date: "",
     event_type: "CONFERENCE",
+<<<<<<< Updated upstream
     user_status: "Inscripto",
     location: "FIUBA - Paseo Colón"
   },
@@ -130,3 +159,6 @@ const events = [
     location: "EXACTAS - Ciudad Universitaria"
   },
 ];
+=======
+}
+>>>>>>> Stashed changes

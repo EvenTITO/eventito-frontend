@@ -23,7 +23,48 @@ export const apiPatchEventStatus = async (eventId, status) => {
         };
         return await axios.patch(url, requestBody, {headers: headers});
     } catch (err) {
+<<<<<<< Updated upstream
         console.log("Error cambiando estado del evento: ", err);
+=======
+        console.log("Error cambiando estado del evento", err);
+        throw err;
+    }
+}
+
+export const apiGetEventById = async (eventId) => {
+    try {
+        const headers = generateHeaders();
+        const url = `${EVENTS_URL}/${eventId}`;
+        const res = await axios.get(url, {headers: headers});
+        return res.data;
+    } catch (err) {
+        console.log("Error en obtener el evento", err);
+        throw err;
+    }
+}
+
+export const apiGetEventsByUserOrganizer = async () => {
+    try {
+        const headers = generateHeaders();
+        //TODO esta mal pedir al back eventos y que el path sea /users
+        const url = `${EVENTS_URL}/my-events`;
+        const res = await axios.get(url, {headers: headers});
+        return res.data;
+    } catch (err) {
+        console.log("Error en obtener los eventos del usuario:" + userId, err);
+        throw err;
+    }
+}
+
+export const apiPostEvent = async (event) => {
+    try {
+        const headers = generateHeaders();
+        const url = `${EVENTS_URL}`;
+        const response = await axios.post(url, event, {headers: headers});
+        console.log(JSON.stringify(response));
+    } catch (err) {
+        console.log("Error creando evento", err);
+>>>>>>> Stashed changes
         throw err;
     }
 }

@@ -12,6 +12,7 @@ export default function EventPage() {
   const [event, setEvent] = useState(null);
   const dispatch = useDispatch();
 
+<<<<<<< Updated upstream
   useEffect(() => {
     if (id) {
       setEvent({
@@ -24,6 +25,30 @@ export default function EventPage() {
         backgroundImage: "https://agcdn-1d97e.kxcdn.com/wp-content/uploads/2017/02/alphagamma-top-10-business-conferences-for-entrepreneurs-opportunities-1021x580.jpg",
       });
       dispatch(addHeader([{ link: '/', name: 'Eventos' }, { link: '/events/1234', name: 'JIAFES 2024' }]));
+=======
+    // Component did mount -> se ejecuta la primera vez cuando renderiza la pagina
+    useEffect(() => {
+        //TODO desharcodear el JIAFES del campo name
+        dispatch(addHeader([{link: '/', name: 'Eventos'}, {link: `/events/${id}`, name: 'JIAFES 2024'}]));
+        refreshData().then(r => console.log("Events loaded"));
+    }, [id]);
+
+    const refreshData = async () => {
+        //const event = await apiGetEventById(id);
+        //const organizers = await apiGetOrganizersByEventId(id);
+        //const correctores = await apiGetOrganizersByEventId(id);
+        //const presen = await apiGetOrganizersByEventId(id);
+        //todo
+        id !== "1236" ? setEvent(defaultEvent) : setEvent(defaultCopaAmericaEvent);
+    };
+
+    if (!event) {
+        return (
+            <div>
+                wait
+            </div>
+        );
+>>>>>>> Stashed changes
     }
   }, [id]);
 
