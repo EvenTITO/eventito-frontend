@@ -2,7 +2,6 @@ import {Tabs, TabsList, TabsTrigger2} from "@/components/ui/tabs"
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 export default function EventHeader({event}) {
-    console.log("event: "+JSON.stringify(event));
     return (
         <header className="bg-white">
             <AdjustableTabs tabItems={tabItems} event={event}/>

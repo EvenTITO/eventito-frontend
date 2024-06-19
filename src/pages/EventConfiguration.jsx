@@ -22,11 +22,10 @@ export default function EventConfiguration() {
     const navigate = useNavigate();
     const {id} = useParams();
     const location = useLocation();
-    const [originalEvent, setOriginalEvent] = useState(location.state.event);
-    const [editedEvent, setEditedEvent] = useState(location.state.event);
+    const [editedEvent, setEditedEvent] = useState(location.state.editedEvent !== null ? location.state.editedEvent : location.state.event);
 
     const nextCreationStep = () => {
-        navigate(`/events/${id}/configuration/calendar`, {state: {...location.state, event: editedEvent}});
+        navigate(`/events/${id}/configuration/calendar`, {state: {...location.state, editedEvent: editedEvent}});
     }
 
     const handleInputChange = (e) => {
@@ -45,7 +44,7 @@ export default function EventConfiguration() {
     return (
         <div className="flex min-h-screen w-full flex-col">
             <HeaderDivisor/>
-            <EventHeader event={originalEvent}/>
+            <EventHeader event={location.state.event}/>
             <main
                 className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
                 <div className="mx-auto grid w-full max-w-6xl gap-2">
@@ -55,18 +54,18 @@ export default function EventConfiguration() {
                     className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                     <nav className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0">
                         <Link to={`/events/${id}/configuration`}
-                              state={{...location.state, event: editedEvent}}
+                              state={{...location.state, editedEvent: editedEvent}}
                               className="font-semibold text-primary">
                             General
                         </Link>
                         <Link to={`/events/${id}/configuration/calendar`}
-                              state={{...location.state, event: editedEvent}}>
+                              state={{...location.state, editedEvent: editedEvent}}>
                             Calendario</Link>
                         <Link to={`/events/${id}/configuration/work`}
-                              state={{...location.state, event: editedEvent}}>
+                              state={{...location.state, editedEvent: editedEvent}}>
                             Trabajos</Link>
                         <Link to={`/events/${id}/configuration/pricing`}
-                              state={{...location.state, event: editedEvent}}>
+                              state={{...location.state, editedEvent: editedEvent}}>
                             Tarifas</Link>
                     </nav>
                     <div className="grid gap-6">
