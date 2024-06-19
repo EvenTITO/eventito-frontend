@@ -46,5 +46,6 @@ const tabItems = [
     {value: "", label: "General"},
     {value: "calendar", label: "Calendario"},
     {value: "presentations", label: "Mis trabajos"},
+    //TODO la tab de configuracion solo debe aparecer si podes editar el evento porque es tuyo
     {value: "configuration", label: "Configuración"},
 ];
