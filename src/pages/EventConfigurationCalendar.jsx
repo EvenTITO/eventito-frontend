@@ -1,4 +1,4 @@
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
 import HeaderDivisor from "@/components/ui/HeaderDivisor.jsx";
 import {Button} from "@/components/ui/button.jsx";
@@ -11,10 +11,12 @@ import {Calendar} from "@/components/ui/calendar"
 import {format} from "date-fns"
 import {es} from "date-fns/locale"
 import {Checkbox} from "@/components/ui/checkbox.jsx";
+import EventHeader from "@/features/events/components/EventHeader.jsx";
 
-export default function EventCreationCalendar() {
+export default function EventConfigurationCalendar() {
     const navigate = useNavigate();
     const location = useLocation();
+    const {id} = useParams();
     const [startDateOpen, setStartDateOpen] = useState(false);
     const [endDateOpen, setEndDateOpen] = useState(false);
     const [workDeadlineDateOpen, setWorkDeadlineDateOpen] = useState(false);
@@ -22,11 +24,11 @@ export default function EventCreationCalendar() {
     const [calendar, setCalendar] = useState(location.state != null && location.state.calendar ? location.state.calendar : defaultCalendar);
 
     const nextCreationStep = () => {
-        navigate("/events/creation/calendar", {state: {...location.state, calendar: calendar}});
+        navigate(`/events/${id}/configuration/work`, {state: {...location.state, calendar: calendar}});
     }
 
     const backCreationStep = () => {
-        navigate("/events/creation/general", {state: {...location.state, calendar: calendar}});
+        navigate(`/events/${id}/configuration`, {state: {...location.state, calendar: calendar}});
     }
 
     const handleStartDate = (date) => {
@@ -56,27 +58,28 @@ export default function EventCreationCalendar() {
     return (
         <div className="flex min-h-screen w-full flex-col">
             <HeaderDivisor/>
+            <EventHeader/>
             <main
                 className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
                 <div className="mx-auto grid w-full max-w-6xl gap-2">
-                    <h1 className="text-3xl font-semibold">Crear evento</h1>
+                    <h1 className="text-3xl font-semibold">Editar evento</h1>
                 </div>
                 <div
                     className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                     <nav className="grid gap-4 text-sm text-muted-foreground">
-                        <Link to="/events/creation/general"
+                        <Link to={`/events/${id}/configuration`}
                               state={{...location.state, calendar: calendar}}>
                             General
                         </Link>
-                        <Link to="/events/creation/calendar"
+                        <Link to={`/events/${id}/configuration/calendar`}
                               state={{...location.state, calendar: calendar}}
                               className="font-semibold text-primary">
                             Calendario
                         </Link>
-                        <Link to="/events/creation/work"
+                        <Link to={`/events/${id}/configuration/work`}
                               state={{...location.state, calendar: calendar}}>
                             Trabajos</Link>
-                        <Link to="/events/creation/pricing"
+                        <Link to={`/events/${id}/configuration/pricing`}
                               state={{...location.state, calendar: calendar}}>
                             Tarifas</Link>
                     </nav>
@@ -171,8 +174,10 @@ export default function EventCreationCalendar() {
                                     </Popover>
                                 </div>
                                 <div className="grid gap-2 mb-3">
-                                    <Label htmlFor="endDate">Fecha límite de inscripciones para presentar trabajo</Label>
-                                    <Popover open={inscriptionDeadlineDateOpen} onOpenChange={setInscriptionDeadlineDateOpen}>
+                                    <Label htmlFor="endDate">Fecha límite de inscripciones para presentar
+                                        trabajo</Label>
+                                    <Popover open={inscriptionDeadlineDateOpen}
+                                             onOpenChange={setInscriptionDeadlineDateOpen}>
                                         <PopoverTrigger asChild>
                                             <Button
                                                 disabled={calendar.nonDecidedDates}

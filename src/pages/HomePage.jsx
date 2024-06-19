@@ -37,7 +37,11 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select.jsx";
-import {apiGetEventsByUserOrganizer, apiGetPublicEvents, apiPostEvent} from "@/services/api/eventServices.js";
+import {
+    apiGetEventsByStatus,
+    apiGetEventsByUserOrganizer,
+    apiPostEvent
+} from "@/services/api/eventServices.js";
 
 export default function HomePage() {
     const [eventSelected, setEventSelected] = useState(null);
@@ -45,23 +49,22 @@ export default function HomePage() {
     const [newEvent, setNewEvent] = useState(defaultEvent);
     const [newEventLoading, setNewEventLoading] = useState(false);
     const [createEventOpen, setCreateEventOpen] = useState(false);
-    const [myEvents, setMyEvents] = useState(myEventsDefault);
-    const [publicEvents, setPublicEvents] = useState(publicEventsDefault);
+    const [myEvents, setMyEvents] = useState([]);
+    const [publicEvents, setPublicEvents] = useState([]);
     const dispatch = useDispatch();
     const { currentUser } = useSelector((state) => state.user);
 
     // Component did mount -> se ejecuta la primera vez cuando renderiza la pagina
     useEffect(() => {
         dispatch(addHeader([{link: '/', name: 'Eventos'}]));
-        refreshData().then(r => console.log("My events loaded"));
+        refreshData().then(r => console.log("Events loaded"));
     }, []);
 
     const refreshData = async () => {
+        const apiPublicEvents = await apiGetEventsByStatus("STARTED");
         const apiMyEvents = await apiGetEventsByUserOrganizer(currentUser.id);
-        //TODO descomentar esto y eliminar eventos harcodeados al final del archivo y en el default del useState
-        //const publicEvents = await apiGetPublicEvents();
-        setMyEvents(apiMyEvents);
-        //setPublicEvents(publicEvents);
+        setMyEvents(myEventsDefault);
+        setPublicEvents(publicEventsDefault);
     };
 
     const onTabChange = (value) => {
@@ -74,15 +77,16 @@ export default function HomePage() {
     };
 
     const handleSelectType = (value) => {
-        setNewEvent({...newEvent, type: value});
+        setNewEvent({...newEvent, event_type: value});
     };
 
     const handleCreateEvent = async () => {
         setNewEventLoading(true);
         //todo cambiar cuando funcione el post al back
-        const sleep = ms => new Promise(r => setTimeout(r, ms));
-        await sleep(5000);
-        //await apiPostEvent(newEvent);
+        //const sleep = ms => new Promise(r => setTimeout(r, ms));
+        //await sleep(5000);
+        console.log(newEvent);
+        await apiPostEvent(newEvent);
         refreshData().then(r => console.log("My events reloaded"));
         setCreateEventOpen(false);
         setTab("draft");
@@ -165,7 +169,7 @@ export default function HomePage() {
                                                     </div>
                                                     <div className="grid gap-2 mb-3">
                                                         <Label htmlFor="description">Tipos de evento</Label>
-                                                        <Select value={newEvent.type}
+                                                        <Select value={newEvent.event_type}
                                                                 disabled={newEventLoading}
                                                                 onValueChange={handleSelectType}>
                                                             <SelectTrigger className="w-[180px]">
@@ -274,10 +278,10 @@ const myEventsDefault = [
 const defaultEvent = {
     title: "",
     description: "",
-    type: "CONFERENCE",
+    event_type: "CONFERENCE",
     //TODO borrar estos campos cuando no sean obligatorios
-    startDate:"2024-08-01T00:00:00",
-    endDate:"2024-08-01T00:00:00",
+    start_date:"2024-08-01T00:00:00",
+    end_date:"2024-08-01T00:00:00",
     location:"paseo colon 850",
     tracks:"track1"
 }

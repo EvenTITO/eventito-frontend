@@ -9,7 +9,7 @@ export const apiGetEventsByStatus = async (status) => {
         const res = await axios.get(url, {headers: headers});
         return res.data;
     } catch (err) {
-        console.log("Error en obtener los eventos con estado: "+status, err);
+        console.log("Error en obtener los eventos con estado: " + status, err);
         throw err;
     }
 }
@@ -21,9 +21,10 @@ export const apiPatchEventStatus = async (eventId, status) => {
         const requestBody = {
             status: status
         };
+        console.log("requestBody: " + requestBody);
         return await axios.patch(url, requestBody, {headers: headers});
     } catch (err) {
-        console.log("Error cambiando estado del evento: ", err);
+        console.log("Error cambiando estado del evento", err);
         throw err;
     }
 }
@@ -35,7 +36,7 @@ export const apiGetEventById = async (eventId) => {
         const res = await axios.get(url, {headers: headers});
         return res.data;
     } catch (err) {
-        console.log("Error en obtener los eventos con estado: "+status, err);
+        console.log("Error en obtener el evento", err);
         throw err;
     }
 }
@@ -48,19 +49,7 @@ export const apiGetEventsByUserOrganizer = async (userId) => {
         const res = await axios.get(url, {headers: headers});
         return res.data;
     } catch (err) {
-        console.log("Error en obtener los eventos con estado: "+status, err);
-        throw err;
-    }
-}
-
-export const apiGetPublicEvents = async () => {
-    try {
-        const headers = generateHeaders();
-        const url = `${EVENTS_URL}`;
-        const res = await axios.get(url, {headers: headers});
-        return res.data;
-    } catch (err) {
-        console.log("Error en obtener los eventos con estado: "+status, err);
+        console.log("Error en obtener los eventos del usuario:" + userId, err);
         throw err;
     }
 }
@@ -69,11 +58,10 @@ export const apiPostEvent = async (event) => {
     try {
         const headers = generateHeaders();
         const url = `${EVENTS_URL}`;
-        console.log(event);
         const response = await axios.post(url, event, {headers: headers});
-        console.log(response);
+        console.log(JSON.stringify(response));
     } catch (err) {
-        console.log("Error creando evento: ", err);
+        console.log("Error creando evento", err);
         throw err;
     }
 }

@@ -7,7 +7,6 @@ import EventPage from './pages/EventPage'
 import EventCalendar from './pages/EventCalendar'
 import EventPresentations from './pages/EventPresentations'
 import EventOrganization from './pages/EventOrganization'
-import EventConfiguration from './pages/EventConfiguration'
 import ProtectedLayout from './layouts/ProtectedLayout/ProtectedLayout'
 import PublicLayout from './layouts/PublicLayout/PublicLayout'
 import AdminLayout from './layouts/AdminLayout/AdminLayout'
@@ -17,10 +16,10 @@ import {onAuthStateChanged} from "@firebase/auth";
 import {auth} from "@/services/firebase/firebaseAuth.js";
 import {useDispatch} from "react-redux";
 import {logout} from "@/services/state/user/userSlice.js";
-import EventCreation from "@/pages/EventCreation.jsx";
-import EventCreationCalendar from "@/pages/EventCreationCalendar.jsx";
-import EventCreationPricing from "@/pages/EventCreationPricing.jsx";
-import EventCreationWork from "@/pages/EventCreationWork.jsx";
+import EventConfiguration from "@/pages/EventConfiguration.jsx";
+import EventConfigurationCalendar from "@/pages/EventConfigurationCalendar.jsx";
+import EventConfigurationPricing from "@/pages/EventConfigurationPricing.jsx";
+import EventConfigurationWork from "@/pages/EventConfigurationWork.jsx";
 
 function App() {
     const dispatch = useDispatch();
@@ -59,10 +58,9 @@ function App() {
                             <Route path="events/:id/presentations" element={<EventPresentations/>}/>
                             <Route path="events/:id/organization" element={<EventOrganization/>}/>
                             <Route path="events/:id/configuration" element={<EventConfiguration/>}/>
-                            <Route path="events/creation/general" element={<EventCreation/>}/>
-                            <Route path="events/creation/calendar" element={<EventCreationCalendar/>}/>
-                            <Route path="events/creation/work" element={<EventCreationWork/>}/>
-                            <Route path="events/creation/pricing" element={<EventCreationPricing/>}/>
+                            <Route path="events/:id/configuration/calendar" element={<EventConfigurationCalendar/>}/>
+                            <Route path="events/:id/configuration/work" element={<EventConfigurationWork/>}/>
+                            <Route path="events/:id/configuration/pricing" element={<EventConfigurationPricing/>}/>
                         </Route>
                     </Routes>
                 ) :

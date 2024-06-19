@@ -65,7 +65,8 @@ export const AdministrationPage = () => {
     }
 
     const handleEditEventStatus = async (eventId, status) => {
-        await apiPatchEventStatus(eventId, status);
+        const res = await apiPatchEventStatus(eventId, status);
+        console.log(res);
         refreshData().then(r => console.log("Events reloaded"));
     }
 
@@ -162,20 +163,3 @@ export const AdministrationPage = () => {
         </>
     );
 }
-
-const users = [
-    {
-        "role": "ADMIN",
-        "name": "Pepe",
-        "lastname": "Argento",
-        "email": "pepe.argento@email.com",
-        "id": "12348"
-    },
-    {
-        "role": "DEFAULT",
-        "name": "Fernando",
-        "lastname": "Sinisi",
-        "email": "fsinisi@fi.uba.ar",
-        "id": "123456789"
-    }
-];
