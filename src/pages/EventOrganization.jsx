@@ -1,11 +1,13 @@
 import EventHeader from "@/features/events/components/EventHeader";
+import {useLocation} from "react-router-dom";
 
 export default function EventOrganization() {
-  return (
+    const location = useLocation();
+    return (
     <div>
-      <EventHeader />
+        <EventHeader event={location.state.event}/>
       <div>
-        Organizacion
+        Organización
       </div>
     </div>
   );
