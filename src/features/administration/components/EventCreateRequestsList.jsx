@@ -1,7 +1,7 @@
 import {Button} from "@/components/ui/button"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.jsx";
-import {CircleCheck, Loader2} from "lucide-react"
+import {CircleCheck, Loader2, CircleX} from "lucide-react"
 import {useState} from "react";
 
 export default function EventCreateRequestsList({events, editEventStatus}) {

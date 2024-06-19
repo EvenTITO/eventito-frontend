@@ -41,11 +41,10 @@ export const apiGetEventById = async (eventId) => {
     }
 }
 
-export const apiGetEventsByUserOrganizer = async (userId) => {
+export const apiGetMyEvents = async () => {
     try {
         const headers = generateHeaders();
-        //TODO esta mal pedir al back eventos y que el path sea /users
-        const url = `${USERS_URL}/${userId}/organized-events`;
+        const url = `${EVENTS_URL}/my-events`;
         const res = await axios.get(url, {headers: headers});
         return res.data;
     } catch (err) {
