@@ -22,7 +22,7 @@ export default function EventConfiguration() {
     const navigate = useNavigate();
     const {id} = useParams();
     const location = useLocation();
-    const [editedEvent, setEditedEvent] = useState(location.state.editedEvent !== null ? location.state.editedEvent : location.state.event);
+    const [editedEvent, setEditedEvent] = useState(location.state.editedEvent ? location.state.editedEvent : location.state.event);
 
     const nextCreationStep = () => {
         navigate(`/events/${id}/configuration/calendar`, {state: {...location.state, editedEvent: editedEvent}});
@@ -34,7 +34,7 @@ export default function EventConfiguration() {
     };
 
     const handleSelectType = (value) => {
-        setEditedEvent({...editedEvent, type: value});
+        setEditedEvent({...editedEvent, event_type: value});
     };
 
     const handleNonDecidedLocationCheckBox = (value) => {

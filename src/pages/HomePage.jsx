@@ -52,7 +52,6 @@ export default function HomePage() {
     const [myEvents, setMyEvents] = useState([]);
     const [publicEvents, setPublicEvents] = useState([]);
     const dispatch = useDispatch();
-    const { currentUser } = useSelector((state) => state.user);
 
     // Component did mount -> se ejecuta la primera vez cuando renderiza la pagina
     useEffect(() => {
@@ -62,7 +61,7 @@ export default function HomePage() {
 
     const refreshData = async () => {
         const apiPublicEvents = await apiGetEventsByStatus("STARTED");
-        const apiMyEvents = await apiGetEventsByUserOrganizer(currentUser.id);
+        const apiMyEvents = await apiGetMyEvents();
         setMyEvents(myEventsDefault);
         setPublicEvents(publicEventsDefault);
     };
@@ -82,9 +81,6 @@ export default function HomePage() {
 
     const handleCreateEvent = async () => {
         setNewEventLoading(true);
-        //todo cambiar cuando funcione el post al back
-        //const sleep = ms => new Promise(r => setTimeout(r, ms));
-        //await sleep(5000);
         console.log(newEvent);
         await apiPostEvent(newEvent);
         refreshData().then(r => console.log("My events reloaded"));
@@ -279,9 +275,4 @@ const defaultEvent = {
     title: "",
     description: "",
     event_type: "CONFERENCE",
-    //TODO borrar estos campos cuando no sean obligatorios
-    start_date:"2024-08-01T00:00:00",
-    end_date:"2024-08-01T00:00:00",
-    location:"paseo colon 850",
-    tracks:"track1"
 }
