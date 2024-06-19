@@ -1,21 +1,22 @@
 import {Button} from "@/components/ui/button"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.jsx";
-<<<<<<< Updated upstream
-import {CircleX, CircleCheck} from "lucide-react"
-=======
 import {CircleCheck, Loader2, CircleX} from "lucide-react"
 import {useState} from "react";
->>>>>>> Stashed changes
 
 export default function EventCreateRequestsList({events, editEventStatus}) {
+    const [loading, setLoading] = useState(false);
 
     const handleAcceptEvent = (eventId) => {
+        setLoading(true);
         editEventStatus(eventId, "CREATED");
+        setLoading(false);
     }
 
     const handleRejectEvent = (eventId) => {
+        setLoading(true);
         editEventStatus(eventId, "NOT_APPROVED");
+        setLoading(false);
     }
 
     return (
@@ -54,13 +55,17 @@ export default function EventCreateRequestsList({events, editEventStatus}) {
                             <TableCell className="font-medium">
                                 {event.status}
                             </TableCell>
-                            <TableCell className="">
-                                    <Button className="bg-green-600 mr-1" size="icon" onClick={() => () => handleAcceptEvent(event.id)}>
-                                        <CircleCheck/>
-                                    </Button>
-                                    <Button className="bg-red-600 ml-1" size="icon" onClick={() => () => handleRejectEvent(event.id)}>
-                                        <CircleX/>
-                                    </Button>
+                            <TableCell className="font-medium">
+                                <Button disabled={loading} className="bg-green-600 mr-1" size="icon"
+                                        onClick={() => handleAcceptEvent(event.id)}>
+                                    {(loading) && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
+                                    <CircleCheck/>
+                                </Button>
+                                <Button disabled={loading} className="bg-red-600 ml-1" size="icon"
+                                        onClick={() => handleRejectEvent(event.id)}>
+                                    {(loading) && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
+                                    <CircleX/>
+                                </Button>
                             </TableCell>
                         </TableRow>
                     )
