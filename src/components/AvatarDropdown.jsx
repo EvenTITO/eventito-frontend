@@ -14,14 +14,20 @@ import { firebaseLogOut } from "@/services/firebase/firebaseServices";
 import { Button } from "./ui/button";
 import { Avatar } from "./ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import {useNavigate} from "react-router-dom";
 
 export default function AvatarDropdown() {
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   async function handleLogout() {
     dispatch(logout());
     await firebaseLogOut();
+  }
+
+  function handleAdministration() {
+    navigate(`/administration`);
   }
 
   return (
@@ -41,8 +47,12 @@ export default function AvatarDropdown() {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{currentUser.name} {currentUser.lastname}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
+        {
+          (currentUser.role === "ADMIN") &&
+            (<DropdownMenuItem onClick={handleAdministration}>Administración</DropdownMenuItem>)
+        }
+        <DropdownMenuItem>Configuración</DropdownMenuItem>
+        <DropdownMenuItem>Soporte</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup onValueChange={handleLogout}>
           <DropdownMenuRadioItem value="logout">

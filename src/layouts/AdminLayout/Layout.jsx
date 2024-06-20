@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header";
-import LeftBar from "../components/LeftBar";
-import "../components/ui.css";
+import Header from "./Header";
+import "../../components/ui.css";
 
 export default function Layout() {
   return (
