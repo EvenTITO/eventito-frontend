@@ -1,4 +1,4 @@
-import {ListFilter, Loader2, PlusCircle,} from "lucide-react"
+import { ListFilter, Loader2, PlusCircle, } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -7,13 +7,13 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-import {Button} from "@/components/ui/button"
-import {Tabs, TabsContent, TabsList, TabsTrigger,} from "@/components/ui/tabs"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card"
-import {useEffect, useState} from "react"
-import {Navigate} from "react-router-dom"
-import {useDispatch, useSelector} from "react-redux"
-import {addHeader} from "@/services/state/events/eventSlice"
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger, } from "@/components/ui/tabs"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, } from "@/components/ui/card"
+import { useEffect, useState } from "react"
+import { Navigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { addHeader } from "@/services/state/events/eventSlice"
 import HeaderDivisor from "@/components/ui/HeaderDivisor"
 import EventsList from "@/features/events/components/EventsList"
 import {
@@ -25,9 +25,9 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog.jsx";
-import {Label} from "@/components/ui/label.jsx";
-import {Input} from "@/components/ui/input.jsx";
-import {Textarea} from "@/components/ui/textarea.jsx";
+import { Label } from "@/components/ui/label.jsx";
+import { Input } from "@/components/ui/input.jsx";
+import { Textarea } from "@/components/ui/textarea.jsx";
 import {
     Select,
     SelectContent,
@@ -39,7 +39,6 @@ import {
 } from "@/components/ui/select.jsx";
 import {
     apiGetEventsByStatus,
-    apiGetEventsByUserOrganizer,
     apiPostEvent
 } from "@/services/api/eventServices.js";
 
@@ -55,7 +54,7 @@ export default function HomePage() {
 
     // Component did mount -> se ejecuta la primera vez cuando renderiza la pagina
     useEffect(() => {
-        dispatch(addHeader([{link: '/', name: 'Eventos'}]));
+        dispatch(addHeader([{ link: '/', name: 'Eventos' }]));
         refreshData().then(r => console.log("Events loaded"));
     }, []);
 
@@ -71,12 +70,12 @@ export default function HomePage() {
     };
 
     const handleInputChange = (e) => {
-        const {name, value} = e.target;
-        setNewEvent({...newEvent, [name]: value});
+        const { name, value } = e.target;
+        setNewEvent({ ...newEvent, [name]: value });
     };
 
     const handleSelectType = (value) => {
-        setNewEvent({...newEvent, event_type: value});
+        setNewEvent({ ...newEvent, event_type: value });
     };
 
     const handleCreateEvent = async () => {
@@ -91,11 +90,11 @@ export default function HomePage() {
     }
 
     if (eventSelected) {
-        return <Navigate to={`/events/${eventSelected}`}/>;
+        return <Navigate to={`/events/${eventSelected}`} />;
     } else {
         return (
             <>
-                <HeaderDivisor/>
+                <HeaderDivisor />
                 <div className="w-full h-full px-10">
                     <div className="w-full h-full py-6 px-10">
                         <main className="grid flex-1 items-start gap-4 p-4  md:gap-8">
@@ -109,15 +108,15 @@ export default function HomePage() {
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
                                                 <Button variant="outline" size="sm" className="h-8 gap-1">
-                                                    <ListFilter className="h-3.5 w-3.5"/>
+                                                    <ListFilter className="h-3.5 w-3.5" />
                                                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                            Filtrar
-                          </span>
+                                                        Filtrar
+                                                    </span>
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                                                <DropdownMenuSeparator/>
+                                                <DropdownMenuSeparator />
                                                 <DropdownMenuCheckboxItem checked>
                                                     Todos
                                                 </DropdownMenuCheckboxItem>
@@ -130,10 +129,10 @@ export default function HomePage() {
                                         <Dialog open={createEventOpen} onOpenChange={setCreateEventOpen}>
                                             <DialogTrigger asChild>
                                                 <Button size="sm" className="h-8 gap-1">
-                                                    <PlusCircle className="h-3.5 w-3.5"/>
+                                                    <PlusCircle className="h-3.5 w-3.5" />
                                                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                        Nuevo evento
-                      </span>
+                                                        Nuevo evento
+                                                    </span>
                                                 </Button>
                                             </DialogTrigger>
                                             <DialogContent className="sm:max-w-[425px]">
@@ -148,28 +147,28 @@ export default function HomePage() {
                                                     <div className="grid gap-2 mb-3">
                                                         <Label htmlFor="title">Título</Label>
                                                         <Input name="title"
-                                                               id="title"
-                                                               placeholder="Ingrese el título del evento..."
-                                                               onChange={handleInputChange}
-                                                               value={newEvent.title}
-                                                               disabled={newEventLoading}/>
+                                                            id="title"
+                                                            placeholder="Ingrese el título del evento..."
+                                                            onChange={handleInputChange}
+                                                            value={newEvent.title}
+                                                            disabled={newEventLoading} />
                                                     </div>
                                                     <div className="grid gap-2 mb-3">
                                                         <Label htmlFor="description">Descripción</Label>
                                                         <Textarea name="description"
-                                                                  id="description"
-                                                                  placeholder="Ingrese un descripción para el evento..."
-                                                                  onChange={handleInputChange}
-                                                                  value={newEvent.description}
-                                                                  disabled={newEventLoading}/>
+                                                            id="description"
+                                                            placeholder="Ingrese un descripción para el evento..."
+                                                            onChange={handleInputChange}
+                                                            value={newEvent.description}
+                                                            disabled={newEventLoading} />
                                                     </div>
                                                     <div className="grid gap-2 mb-3">
                                                         <Label htmlFor="description">Tipos de evento</Label>
                                                         <Select value={newEvent.event_type}
-                                                                disabled={newEventLoading}
-                                                                onValueChange={handleSelectType}>
+                                                            disabled={newEventLoading}
+                                                            onValueChange={handleSelectType}>
                                                             <SelectTrigger className="w-[180px]">
-                                                                <SelectValue/>
+                                                                <SelectValue />
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 <SelectGroup>
@@ -184,13 +183,13 @@ export default function HomePage() {
                                                 </div>
                                                 <DialogFooter>
                                                     {newEventLoading ? (
-                                                            <Button disabled>
-                                                                <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
-                                                                Enviando...
-                                                            </Button>) :
+                                                        <Button disabled>
+                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                            Enviando...
+                                                        </Button>) :
                                                         (
                                                             <Button type="button"
-                                                                    onClick={handleCreateEvent}>Enviar</Button>
+                                                                onClick={handleCreateEvent}>Enviar</Button>
                                                         )
                                                     }
                                                 </DialogFooter>
@@ -207,7 +206,7 @@ export default function HomePage() {
                                             </CardDescription>
                                         </CardHeader>
                                         <CardContent>
-                                            <EventsList events={publicEvents} setEventSelected={setEventSelected}/>
+                                            <EventsList events={publicEvents} setEventSelected={setEventSelected} />
                                         </CardContent>
                                     </Card>
                                 </TabsContent>
@@ -220,7 +219,7 @@ export default function HomePage() {
                                             </CardDescription>
                                         </CardHeader>
                                         <CardContent>
-                                            <EventsList events={myEvents} setEventSelected={setEventSelected}/>
+                                            <EventsList events={myEvents} setEventSelected={setEventSelected} />
                                         </CardContent>
                                     </Card>
                                 </TabsContent>

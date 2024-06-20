@@ -2,6 +2,7 @@ import {
 	createUserWithEmailAndPassword,
 	GoogleAuthProvider,
 	sendEmailVerification,
+	sendPasswordResetEmail,
 	signInWithEmailAndPassword,
 	signInWithPopup,
 	signOut
@@ -15,11 +16,8 @@ export const getAuthUser = () => {
 export const firebaseLogin = async (userData) => {
 	try {
 		const userCredential = await signInWithEmailAndPassword(auth, userData.email, userData.password);
-
-		console.log(userCredential.user);
 		return userCredential.user;
 	} catch (exception) {
-		console.log(exception);
 		throw exception;
 	}
 };
@@ -28,19 +26,14 @@ export const firebaseLoginWithGoogle = async () => {
 	try {
 		const provider = new GoogleAuthProvider();
 		const userCredential = await signInWithPopup(auth, provider);
-
-		console.log(userCredential.user);
 		return userCredential.user;
 	} catch (exception) {
-		console.log(exception);
 		throw exception;
 	}
 };
 
 export const firebaseLogOut = async () => {
-	await signOut(auth)
-		.then(() => console.log("Sign out complete"))
-		.catch((exception) => console.log(exception));
+	await signOut(auth);
 };
 
 export const firebaseSignUp = async (userData) => {
@@ -52,4 +45,19 @@ export const firebaseSignUp = async (userData) => {
 	} catch (exception) {
 		throw exception;
 	}
+};
+
+export const firebaseSignUpWithGoogle = async () => {
+	try {
+		const provider = new GoogleAuthProvider();
+		const userCredential = await signInWithPopup(auth, provider);
+		return userCredential.user;
+	} catch (exception) {
+		console.log(exception);
+		throw exception;
+	}
+};
+
+export const firebaseSendResetPassword = async (email) => {
+	await sendPasswordResetEmail(auth, email);
 };

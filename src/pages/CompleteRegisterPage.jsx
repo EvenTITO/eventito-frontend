@@ -1,15 +1,15 @@
 import "@/features/authentication/styles/notLoggin.css";
-import RegisterForm from '@/features/authentication/components/register/RegisterForm';
+import CompleteRegisterForm from "@/features/authentication/components/register/CompleteRegisterForm";
 
-export default function RegisterPage() {
+export default function CompleteRegisterPage() {
   return (
     <div className={styles.container}>
-      <RegisterForm />
+      <CompleteRegisterForm />
     </div>
   );
 }
 
+
 const styles = {
   container: "w-full min-h-screen flex items-center justify-center bg-slate-300"
 };
-

@@ -1,78 +1,146 @@
-import { login } from "@/features/authentication/services/authorizationServices";
-import { useDispatch, useSelector } from "react-redux";
-import { loginStart, loginSuccess, loginFailure } from "@/services/state/user/userSlice";
-import { LoadingButton } from "@/components/ui/loading-button";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 
-export default function RegisterForm() {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [isSelected, setIsSelected] = useState(false);
-	const { currentUser: user, loading } = useSelector((state) => state.user);
-	const [available, setAvailable] = useState(false);
+import { signUp, signUpWithGoogle } from "@/features/authentication/services/authorizationServices";
+import { useStateAndError } from "@/lib/utils";
+import CustomCard from "@/components/CustomCard";
+import { register } from "@/services/state/auth/authSlice";
+import FormHeader from "@/components/FormHeader";
+import FormContent from "@/components/FormContent";
 
+export default function RegisterForm() {
+	const email = useStateAndError();
+	const password = useStateAndError();
+	const confirmPassword = useStateAndError();
+
+	const [registerError, setRegisterError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState(null);
+
+	const [loading, setLoading] = useState(false);
+
+	const [selected, setSelected] = useState(null);
 	const dispatch = useDispatch();
 
-	function changeEmail(value) {
-		setEmail(value);
-		if (email !== '' && password !== '') {
-			setAvailable(true);
+	async function handleRegisterSubmit(ev) {
+		ev.preventDefault();
+		setLoading(true);
+
+		const emailOk = email.checkCompletion();
+		const passwordOk = password.checkCompletion();
+		const confirmPasswordOk = confirmPassword.checkCompletion();
+
+		if (emailOk && passwordOk && confirmPasswordOk) {
+			if (password.value !== confirmPassword.value) {
+				setRegisterError(true);
+				setSelected(null);
+				setErrorMessage("Las contraseñas no coinciden");
+			} else {
+				try {
+					setSelected('register');
+
+					const userObtained = await signUp({
+						email: email.value,
+						password: password.value
+					});
+					dispatch(
+						register({
+							idUser: userObtained.uid,
+							email: email.value
+						})
+					);
+				} catch (exception) {
+					setRegisterError(true);
+					setSelected(null);
+					setErrorMessage("Usuario ya existe");
+				}
+			}
 		}
+		setLoading(false);
 	}
 
-	function changePassword(value) {
-		setPassword(value);
-		if (email !== '' && password !== '') {
-			setAvailable(true);
-		}
-	}
-
-	async function handleLoginSubmit(ev) {
+	async function handleGoogleRegister(ev) {
+		ev.preventDefault();
+		setLoading(true);
 		try {
-			ev.preventDefault();
-			dispatch(loginStart());
-
-			setIsSelected(true);
-			const userObtained = await login({ email: email, password: password });
-
-			dispatch(loginSuccess(userObtained));
+			setSelected('registerGoogle');
+			const userObtained = await signUpWithGoogle();
+			dispatch(
+				register({
+					idUser: userObtained.uid,
+					email: userObtained.email
+				})
+			);
 		} catch (exception) {
-			console.log(exception);
-			dispatch(loginFailure(exception));
+			setRegisterError(true);
+			setSelected(null);
 		}
+		setLoading(false);
 	}
+
+	const contentList = [
+		{
+			title: 'Email',
+			id: 'email',
+			type: 'email',
+			placeholder: 'm@example.com',
+			obj: email
+		},
+		{
+			title: 'Contraseña',
+			id: 'password',
+			type: 'password',
+			obj: password
+		},
+		{
+			title: 'Confirmar Contraseña',
+			id: 'confirmPassword',
+			type: 'password',
+			obj: confirmPassword
+		},
+	];
+
+	const buttons = [
+		{
+			isLoading: loading,
+			isSelected: selected === 'register',
+			text: "Continuar",
+			handleSubmit: handleRegisterSubmit
+		},
+		{
+			isLoading: loading,
+			isSelected: selected === 'registerGoogle',
+			text: "Continuar con Google",
+			handleSubmit: handleGoogleRegister,
+			variant: "outline"
+		},
+	];
+
+	const footer = (
+		<div className="mt-4 text-center text-sm flex flex-row items-center gap-1 justify-center">
+			¿Ya tenés cuenta?
+			<Link to={'/login'} className="underline">
+				Iniciar sesión
+			</Link>
+		</div>
+	);
 
 	return (
-		<form className="max-w-md mx-auto" onSubmit={handleLoginSubmit}>
-			<input type="email"
-				placeholder="Correo electrónico"
-				value={email}
-				required
-				onChange={ev => changeEmail(ev.target.value)} />
-			<input type="password"
-				placeholder="Contraseña"
-				value={password}
-				required
-				onChange={ev => changePassword(ev.target.value)} />
-			<RegisterButton loading={loading} isSelected={isSelected} available={available} handleLoginSubmit={handleLoginSubmit} />
-		</form>
-	);
-}
-
-function RegisterButton({ loading, isSelected, available, handleLoginSubmit }) {
-	if (loading && isSelected) {
-		return <LoadingButton />;
-	} else if (available) {
-		return (
-			<button className="primary" onClick={handleLoginSubmit}>
-				Continuar
-			</button>
-		);
-	} else {
-		return (
-			<button className="disabled" disabled>
-				Continuar
-			</button>
-		);
-	}
+		<CustomCard className="max-w-xl mx-auto w-full shadow-xl">
+			<CustomCard>
+				<FormHeader
+					title={"Crear cuenta"}
+					description={"Registrate con tus datos"}
+					error={registerError}
+					setError={setRegisterError}
+					errorMessage={errorMessage}
+				/>
+				<FormContent
+					contentList={contentList}
+					buttons={buttons}
+					footer={footer}
+				/>
+			</CustomCard>
+		</CustomCard>
+	)
 }

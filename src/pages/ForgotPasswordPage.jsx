@@ -1,10 +1,10 @@
 import "@/features/authentication/styles/notLoggin.css";
-import RegisterForm from '@/features/authentication/components/register/RegisterForm';
+import ForgotPasswordForm from '@/features/authentication/components/login/ForgotPasswordForm';
 
-export default function RegisterPage() {
+export default function ForgotPasswordPage() {
   return (
     <div className={styles.container}>
-      <RegisterForm />
+      <ForgotPasswordForm />
     </div>
   );
 }
@@ -12,4 +12,3 @@ export default function RegisterPage() {
 const styles = {
   container: "w-full min-h-screen flex items-center justify-center bg-slate-300"
 };
-
