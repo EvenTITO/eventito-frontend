@@ -10,6 +10,7 @@ import { useState } from "react";
 
 import { login } from "@/features/authentication/services/authorizationServices";
 import { loginStart, loginSuccess, loginFailure } from "@/services/state/user/userSlice";
+import { register } from "@/services/state/auth/authSlice";
 import CustomLoginButton from "@/components/CustomLoginButton";
 import CustomInput from "@/components/CustomInput";
 import ShowDescriptionOrError from "@/components/ShowDescriptionOrError";
@@ -33,13 +34,25 @@ export default function LoginForm() {
 				dispatch(loginStart());
 
 				setSelected('login');
-				const userObtained = await login({ email: email, password: password });
+				const userObtained = await login({
+					email: email,
+					password: password
+				});
 
 				dispatch(loginSuccess(userObtained));
 			} catch (exception) {
-				setLoginError(true);
 				setSelected(null);
 				dispatch(loginFailure(exception));
+				if (exception.source === 'Firebase') {
+					setLoginError(true);
+				} else {
+					dispatch(
+						register({
+							idUser: exception.idUser,
+							email: email
+						})
+					);
+				}
 			}
 		}
 		if (email === '') {

@@ -1,10 +1,10 @@
 import "@/features/authentication/styles/notLoggin.css";
-import RegisterForm2 from '@/features/authentication/components/register/RegisterForm2';
+import RegisterForm from '@/features/authentication/components/register/RegisterForm';
 
 export default function RegisterPage() {
   return (
     <div className={styles.container}>
-      <RegisterForm2 />
+      <RegisterForm />
     </div>
   );
 }

@@ -13,6 +13,8 @@ import ShowDescriptionOrError from "@/components/ShowDescriptionOrError";
 import { useStateAndError } from "@/lib/utils";
 import CustomCard from "@/components/CustomCard";
 import { signUpAPI } from "../../services/authorizationServices";
+import { loginFailure, loginStart, loginSuccess } from "@/services/state/user/userSlice";
+import { clearAuth } from "@/services/state/auth/authSlice";
 
 export default function CompleteDataForm() {
 	const { name, setName, nameError, setNameError } = useStateAndError('name');
@@ -20,22 +22,27 @@ export default function CompleteDataForm() {
 	const [dataError, setDataError] = useState(false);
 
 	const [selected, setSelected] = useState(null);
-	const { idUser, loading } = useSelector((state) => state.user);
+	const { idUser, email } = useSelector((state) => state.auth);
 	const dispatch = useDispatch();
 
-	function handleDataSubmit(ev) {
+	async function handleDataSubmit(ev) {
 		ev.preventDefault();
 		if (name !== '' && lastname !== '') {
-			setSelected("continue");
+			try {
+				setSelected("continue");
 
-			console.log(idUser);
-			const userObtained = signUpAPI({
-				uid: idUser,
-				name: name,
-				lastname: lastname,
-				email: "mario@gmail.com"
-			});
-			alert(userObtained.name);
+				dispatch(loginStart());
+				const userObtained = await signUpAPI({
+					uid: idUser,
+					name: name,
+					lastname: lastname,
+					email: email
+				});
+				dispatch(clearAuth());
+				dispatch(loginSuccess(userObtained));
+			} catch (exception) {
+				dispatch(loginFailure(exception));
+			}
 		}
 		if (name === '') {
 			setNameError(true);
@@ -48,7 +55,7 @@ export default function CompleteDataForm() {
 	function handleBack(ev) {
 		ev.preventDefault();
 		setSelected("back");
-		alert("back");
+		dispatch(clearAuth());
 	}
 
 
@@ -101,13 +108,13 @@ export default function CompleteDataForm() {
 							/>
 						</div>
 						<CustomLoginButton
-							isLoading={loading}
+							isLoading={false}
 							isSelected={selected === 'continue'}
 							buttonText={'Continuar'}
 							handleSubmit={handleDataSubmit}
 						/>
 						<CustomLoginButton
-							isLoading={loading}
+							isLoading={false}
 							isSelected={selected === 'back'}
 							buttonText={'Atrás'}
 							handleSubmit={handleBack}

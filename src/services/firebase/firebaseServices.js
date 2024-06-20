@@ -53,3 +53,16 @@ export const firebaseSignUp = async (userData) => {
 		throw exception;
 	}
 };
+
+export const firebaseSignUpWithGoogle = async () => {
+	try {
+		const provider = new GoogleAuthProvider();
+		const userCredential = await signInWithPopup(auth, provider);
+
+		console.log(userCredential.user);
+		return userCredential.user;
+	} catch (exception) {
+		console.log(exception);
+		throw exception;
+	}
+};

@@ -21,14 +21,15 @@ export const apiGetUser = async (userId) => {
     }
 }
 
-export const apiPostUser = async (userId, name, lastname) => {
+export const apiPostUser = async (userId, name, lastname, email) => {
     try {
         const headers = generateHeaders();
-        const url = `${USERS_URL}/${userId}`;
+        const url = `${USERS_URL}`;
 
         const requestBody = {
             name: name,
-            lastname: lastname === null || lastname === undefined || lastname === "" ? "Apellido" : lastname
+            lastname: lastname === null || lastname === undefined || lastname === "" ? "Apellido" : lastname,
+            email: email
         };
         return await axios.post(url, requestBody, { headers: headers });
     } catch (err) {

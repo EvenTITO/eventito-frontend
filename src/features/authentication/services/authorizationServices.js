@@ -1,15 +1,22 @@
 import { apiGetUser, apiPostUser } from "@/services/api/userServices";
-import { firebaseLogOut, firebaseLogin, firebaseLoginWithGoogle, firebaseSignUp } from "@/services/firebase/firebaseServices";
+import {
+	firebaseLogOut,
+	firebaseLogin,
+	firebaseLoginWithGoogle,
+	firebaseSignUp,
+	firebaseSignUpWithGoogle
+} from "@/services/firebase/firebaseServices";
 
 export const login = async (userData) => {
+	let user;
 	try {
-		const user = await firebaseLogin(userData);
-		const userObtained = await apiGetUser(user.uid);
-		return userObtained;
+		user = await firebaseLogin(userData);
 	} catch (exception) {
-		console.log(exception);
+		exception.source = 'Firebase';
 		throw exception;
 	}
+
+	return await getUser(user.uid);
 };
 
 export const loginWithGoogle = async () => {
@@ -27,24 +34,51 @@ export const logOut = async () => {
 	await firebaseLogOut();
 };
 
-export const signUp = async (userData) => {
+export const signUpWithGoogle = async () => {
 	try {
-		const user = await firebaseSignUp(userData);
-		// TODO: 
-		// 1. mail a user
-		// 2. una vez que valida, obtener user
-		// 3. depende que datos obtengo, le hago o no llenar datos
-		//
-		// const res = apiPostUser(user.uid, userData.name, null);
-		//
-		// if (res.error) {
-		// 	await logOut();
-		// 	alert(res.error);
-		// }
-		// return res;
-		return user;
+		return await firebaseSignUpWithGoogle();
 	} catch (exception) {
+		console.log(exception);
+		throw exception;
+	}
+}
+
+export const signUpFirebase = async (userData) => {
+	try {
+		return await firebaseSignUp(userData);
+	} catch (exception) {
+		exception.source = 'Firebase';
 		throw exception;
 	}
 };
 
+export const signUpAPI = async (userData) => {
+	console.log(`Pegandolo a API para crear user: ${userData.uid}`);
+	const res = apiPostUser(
+		userData.uid,
+		userData.name,
+		userData.lastname,
+		userData.email
+	)
+
+	if (res.error) {
+		await logOut();
+		console.log(res.error);
+	} else {
+		console.log(`Haciendole get a API para crear user: ${userData.uid}`);
+		return await getUser(
+			userData.uid
+		);
+	}
+};
+
+export const getUser = async (userId) => {
+	console.log(`Haciendole get a API: ${userId}`);
+	try {
+		return await apiGetUser(userId);
+	} catch (exception) {
+		exception.idUser = userId;
+		exception.source = 'API';
+		throw exception;
+	}
+};
