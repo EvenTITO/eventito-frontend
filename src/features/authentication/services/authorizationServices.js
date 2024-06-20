@@ -3,6 +3,7 @@ import {
 	firebaseLogOut,
 	firebaseLogin,
 	firebaseLoginWithGoogle,
+	firebaseSendResetPassword,
 	firebaseSignUp,
 	firebaseSignUpWithGoogle
 } from "@/services/firebase/firebaseServices";
@@ -65,4 +66,8 @@ export const getUser = async (userId) => {
 		exception.source = 'API';
 		throw exception;
 	}
+};
+
+export const sendResetPassword = async (email) => {
+	await firebaseSendResetPassword(email);
 };

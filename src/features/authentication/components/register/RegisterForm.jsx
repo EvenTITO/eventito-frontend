@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 
 import { signUp, signUpWithGoogle } from "@/features/authentication/services/authorizationServices";
 import { useStateAndError } from "@/lib/utils";
 import CustomCard from "@/components/CustomCard";
 import { register } from "@/services/state/auth/authSlice";
-import FormHeader from "./FormHeader";
-import FormContent from "./FormContent";
+import FormHeader from "@/components/FormHeader";
+import FormContent from "@/components/FormContent";
 
 export default function RegisterForm() {
 	const email = useStateAndError();

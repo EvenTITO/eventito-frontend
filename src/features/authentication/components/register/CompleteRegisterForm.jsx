@@ -5,8 +5,8 @@ import { useStateAndError } from "@/lib/utils";
 import CustomCard from "@/components/CustomCard";
 import { completeRegister, getUser } from "../../services/authorizationServices";
 import { clearAuth } from "@/services/state/auth/authSlice";
-import FormHeader from "./FormHeader";
-import FormContent from "./FormContent";
+import FormHeader from "@/components/FormHeader";
+import FormContent from "@/components/FormContent";
 import { Navigate } from "react-router-dom";
 import { loginCompleted } from "@/services/state/user/userSlice";
 
