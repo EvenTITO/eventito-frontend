@@ -22,6 +22,7 @@ import EventConfigurationPricing from "@/pages/EventConfigurationPricing.jsx";
 import EventConfigurationWork from "@/pages/EventConfigurationWork.jsx";
 import CompleteRegisterPage from './pages/CompleteRegisterPage'
 import UncompletedUserLayout from './layouts/UncompletedUserLayout/UncompletedUserLayout'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
 
 function App() {
     const dispatch = useDispatch();
@@ -47,6 +48,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<PublicLayout />}>
                         <Route path="/login" element={<LoginPage />} />
+                        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                         <Route path="/register" element={<RegisterPage />} />
                     </Route>
                     <Route path="" element={<UncompletedUserLayout />}>
