@@ -9,7 +9,7 @@ export default function UncompletedUserLayout() {
   if (isAuthenticated) {
     return <Layout />;
   } else {
-    return <Navigate to='/login' replace />;
+    return <Navigate to='/' replace />;
   }
 };
 

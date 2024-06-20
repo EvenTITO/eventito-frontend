@@ -5,88 +5,74 @@ import {
 	CardTitle,
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 
-import { login } from "@/features/authentication/services/authorizationServices";
-//import { loginStart, loginSuccess, loginFailure } from "@/services/state/user/userSlice";
-import { register } from "@/services/state/auth/authSlice";
+import { login, loginWithGoogle } from "@/features/authentication/services/authorizationServices";
 import CustomLoginButton from "@/components/CustomLoginButton";
 import CustomInput from "@/components/CustomInput";
 import ShowDescriptionOrError from "@/components/ShowDescriptionOrError";
 import { useStateAndError } from "@/lib/utils";
 import CustomCard from "@/components/CustomCard";
+import { register } from "@/services/state/auth/authSlice";
 
 export default function LoginForm() {
-	const { email, setEmail, emailError, setEmailError } = useStateAndError('email');
-	const { password, setPassword, passwordError, setPasswordError } = useStateAndError('password');
-	const [loginError, setLoginError] = useState(false);
-
-	const [selected, setSelected] = useState(null);
-	const { currentUser: user, loading } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
+
+	const [error, setError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState(null);
+	const [loading, setLoading] = useState(false);
+	const [selected, setSelected] = useState(null);
+
+	const email = useStateAndError();
+	const password = useStateAndError();
 
 	async function handleLoginSubmit(ev) {
 		ev.preventDefault();
-		// if (email !== '' && password !== '') {
-		// 	try {
-		// 		ev.preventDefault();
-		// 		dispatch(loginStart());
-		//
-		// 		setSelected('login');
-		// 		const userObtained = await login({
-		// 			email: email,
-		// 			password: password
-		// 		});
-		//
-		// 		dispatch(loginSuccess(userObtained));
-		// 	} catch (exception) {
-		// 		setSelected(null);
-		// 		dispatch(loginFailure(exception));
-		// 		if (exception.source === 'Firebase') {
-		// 			setLoginError(true);
-		// 		} else {
-		// 			dispatch(
-		// 				register({
-		// 					idUser: exception.idUser,
-		// 					email: email
-		// 				})
-		// 			);
-		// 		}
-		// 	}
-		// }
-		if (email === '') {
-			setEmailError(true);
+		setLoading(true);
+		setSelected('login');
+		const emailOk = email.checkCompletion();
+		const passwordOk = password.checkCompletion();
+
+		if (emailOk && passwordOk) {
+			try {
+				const userObtained = await login({
+					email: email.value,
+					password: password.value
+				});
+
+				dispatch(
+					register({
+						idUser: userObtained.uid,
+						email: email.value
+					})
+				);
+			} catch (exception) {
+				setError(true);
+				setErrorMessage(exception);
+			}
 		}
-		if (password === '') {
-			setPasswordError(true);
-		}
+		setSelected(null);
+		setLoading(false);
 	}
 
 	async function handleLoginWithGoogle(ev) {
-		// try {
-		// 	ev.preventDefault();
-		// 	dispatch(loginStart());
-		//
-		// 	setSelected('loginGoogle');
-		// 	const userObtained = await loginWithGoogle();
-		//
-		// 	dispatch(loginSuccess(userObtained));
-		// } catch (exception) {
-		// 	setLoginError(true);
-		// 	setSelected(null);
-		// 	dispatch(loginFailure(exception));
-		// }
-	}
+		ev.preventDefault();
+		setLoading(true);
+		try {
+			const userObtained = await loginWithGoogle();
 
-	function changeEmail(value) {
-		setEmail(value);
-		setEmailError(false);
-	}
-
-	function changePassword(value) {
-		setPassword(value);
-		setPasswordError(false);
+			dispatch(
+				register({
+					idUser: userObtained.uid,
+					email: userObtained.email
+				})
+			);
+		} catch (exception) {
+			setError(true);
+			setErrorMessage(exception);
+		}
+		setLoading(false);
 	}
 
 	return (
@@ -96,8 +82,8 @@ export default function LoginForm() {
 					<CardTitle className="text-2xl">Iniciar sesion</CardTitle>
 					<ShowDescriptionOrError
 						description={"Ingresa con tus credenciales"}
-						error={loginError}
-						setError={setLoginError}
+						error={error}
+						setError={setError}
 						errorMessage={"Usuario y/o contraseña inválidos"}
 					/>
 				</CardHeader>
@@ -109,9 +95,9 @@ export default function LoginForm() {
 								id="email"
 								type="email"
 								placeholder="m@example.com"
-								value={email}
-								onChange={ev => changeEmail(ev.target.value)}
-								error={emailError}
+								value={email.value}
+								onChange={ev => email.change(ev.target.value)}
+								error={email.error}
 								required
 							/>
 						</div>
@@ -125,9 +111,9 @@ export default function LoginForm() {
 							<CustomInput
 								id="password"
 								type="password"
-								value={password}
-								onChange={ev => changePassword(ev.target.value)}
-								error={passwordError}
+								value={password.value}
+								onChange={ev => password.change(ev.target.value)}
+								error={password.error}
 								required
 							/>
 						</div>

@@ -12,13 +12,15 @@ export default function FormContent({ contentList, buttons, footer }) {
 				/>
 				{buttons.map((button) => {
 					return (
-						<CustomLoginButton
-							isLoading={button.isLoading}
-							isSelected={button.isSelected}
-							buttonText={button.text}
-							variant={button.variant}
-							handleSubmit={button.handleSubmit}
-						/>
+						<div key={button.text}>
+							<CustomLoginButton
+								isLoading={button.isLoading}
+								isSelected={button.isSelected}
+								buttonText={button.text}
+								variant={button.variant}
+								handleSubmit={button.handleSubmit}
+							/>
+						</div>
 					)
 				})}
 			</div>

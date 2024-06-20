@@ -7,9 +7,12 @@ import { completeRegister, getUser } from "../../services/authorizationServices"
 import { clearAuth } from "@/services/state/auth/authSlice";
 import FormHeader from "./FormHeader";
 import FormContent from "./FormContent";
+import { Navigate } from "react-router-dom";
+import { loginCompleted } from "@/services/state/user/userSlice";
 
 export default function CompleteRegisterForm() {
 	const { idUser, email } = useSelector((state) => state.auth);
+	const { currentUser } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
 	const [loading, setLoading] = useState(false);
@@ -41,6 +44,9 @@ export default function CompleteRegisterForm() {
 		return (
 			<div>Cargando...</div>
 		);
+	} else if (currentUser) {
+		console.log("current user!!!!!");
+		return <Navigate to='/' replace />;
 	}
 
 	async function handleSubmit(ev) {

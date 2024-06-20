@@ -8,22 +8,17 @@ import {
 } from "@/services/firebase/firebaseServices";
 
 export const login = async (userData) => {
-	let user;
 	try {
-		user = await firebaseLogin(userData);
+		return await firebaseLogin(userData);
 	} catch (exception) {
 		exception.source = 'Firebase';
 		throw exception;
 	}
-
-	return await getUser(user.uid);
 };
 
 export const loginWithGoogle = async () => {
 	try {
-		const user = await firebaseLoginWithGoogle();
-		const userObtained = await apiGetUser(user.uid);
-		return userObtained;
+		return await firebaseLoginWithGoogle();
 	} catch (exception) {
 		console.log(exception);
 		throw exception;
