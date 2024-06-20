@@ -1,10 +1,10 @@
 import "@/features/authentication/styles/notLoggin.css";
-import CompleteDataForm from '@/features/authentication/components/register/CompleteDataForm';
+import CompleteRegisterForm from "@/features/authentication/components/register/CompleteRegisterForm";
 
-export default function CompleteUserDataPage() {
+export default function CompleteRegisterPage() {
   return (
     <div className={styles.container}>
-      <CompleteDataForm />
+      <CompleteRegisterForm />
     </div>
   );
 }

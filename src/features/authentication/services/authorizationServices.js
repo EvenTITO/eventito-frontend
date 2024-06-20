@@ -43,7 +43,7 @@ export const signUpWithGoogle = async () => {
 	}
 }
 
-export const signUpFirebase = async (userData) => {
+export const signUp = async (userData) => {
 	try {
 		return await firebaseSignUp(userData);
 	} catch (exception) {
@@ -52,24 +52,13 @@ export const signUpFirebase = async (userData) => {
 	}
 };
 
-export const signUpAPI = async (userData) => {
-	console.log(`Pegandolo a API para crear user: ${userData.uid}`);
-	const res = apiPostUser(
+export const completeRegister = async (userData) => {
+	return apiPostUser(
 		userData.uid,
 		userData.name,
 		userData.lastname,
 		userData.email
 	)
-
-	if (res.error) {
-		await logOut();
-		console.log(res.error);
-	} else {
-		console.log(`Haciendole get a API para crear user: ${userData.uid}`);
-		return await getUser(
-			userData.uid
-		);
-	}
 };
 
 export const getUser = async (userId) => {

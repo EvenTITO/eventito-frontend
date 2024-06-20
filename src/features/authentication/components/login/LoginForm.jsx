@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 
 import { login } from "@/features/authentication/services/authorizationServices";
-import { loginStart, loginSuccess, loginFailure } from "@/services/state/user/userSlice";
+//import { loginStart, loginSuccess, loginFailure } from "@/services/state/user/userSlice";
 import { register } from "@/services/state/auth/authSlice";
 import CustomLoginButton from "@/components/CustomLoginButton";
 import CustomInput from "@/components/CustomInput";
@@ -28,33 +28,33 @@ export default function LoginForm() {
 
 	async function handleLoginSubmit(ev) {
 		ev.preventDefault();
-		if (email !== '' && password !== '') {
-			try {
-				ev.preventDefault();
-				dispatch(loginStart());
-
-				setSelected('login');
-				const userObtained = await login({
-					email: email,
-					password: password
-				});
-
-				dispatch(loginSuccess(userObtained));
-			} catch (exception) {
-				setSelected(null);
-				dispatch(loginFailure(exception));
-				if (exception.source === 'Firebase') {
-					setLoginError(true);
-				} else {
-					dispatch(
-						register({
-							idUser: exception.idUser,
-							email: email
-						})
-					);
-				}
-			}
-		}
+		// if (email !== '' && password !== '') {
+		// 	try {
+		// 		ev.preventDefault();
+		// 		dispatch(loginStart());
+		//
+		// 		setSelected('login');
+		// 		const userObtained = await login({
+		// 			email: email,
+		// 			password: password
+		// 		});
+		//
+		// 		dispatch(loginSuccess(userObtained));
+		// 	} catch (exception) {
+		// 		setSelected(null);
+		// 		dispatch(loginFailure(exception));
+		// 		if (exception.source === 'Firebase') {
+		// 			setLoginError(true);
+		// 		} else {
+		// 			dispatch(
+		// 				register({
+		// 					idUser: exception.idUser,
+		// 					email: email
+		// 				})
+		// 			);
+		// 		}
+		// 	}
+		// }
 		if (email === '') {
 			setEmailError(true);
 		}
@@ -64,19 +64,19 @@ export default function LoginForm() {
 	}
 
 	async function handleLoginWithGoogle(ev) {
-		try {
-			ev.preventDefault();
-			dispatch(loginStart());
-
-			setSelected('loginGoogle');
-			const userObtained = await loginWithGoogle();
-
-			dispatch(loginSuccess(userObtained));
-		} catch (exception) {
-			setLoginError(true);
-			setSelected(null);
-			dispatch(loginFailure(exception));
-		}
+		// try {
+		// 	ev.preventDefault();
+		// 	dispatch(loginStart());
+		//
+		// 	setSelected('loginGoogle');
+		// 	const userObtained = await loginWithGoogle();
+		//
+		// 	dispatch(loginSuccess(userObtained));
+		// } catch (exception) {
+		// 	setLoginError(true);
+		// 	setSelected(null);
+		// 	dispatch(loginFailure(exception));
+		// }
 	}
 
 	function changeEmail(value) {

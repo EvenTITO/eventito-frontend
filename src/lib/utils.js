@@ -7,15 +7,27 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs))
 }
 
-export function useStateAndError(name) {
+export function useStateAndError() {
   const [state, setState] = useState('');
   const [error, setError] = useState(false);
 
   return {
-    [`${name}`]: state,
-    [`set${name.charAt(0).toUpperCase() + name.slice(1)}`]: setState,
-    [`${name}Error`]: error,
-    [`set${name.charAt(0).toUpperCase() + name.slice(1)}Error`]: setError,
+    value: state,
+    setValue: setState,
+    error: error,
+    setError: setError,
+    change: function(value) {
+      setState(value);
+      setError(null);
+    },
+    checkCompletion: function() {
+      if (state !== '') {
+        return true;
+      } else {
+        setError(true);
+        return false;
+      }
+    }
   };
 }
 

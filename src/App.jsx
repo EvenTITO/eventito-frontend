@@ -20,7 +20,7 @@ import EventConfiguration from "@/pages/EventConfiguration.jsx";
 import EventConfigurationCalendar from "@/pages/EventConfigurationCalendar.jsx";
 import EventConfigurationPricing from "@/pages/EventConfigurationPricing.jsx";
 import EventConfigurationWork from "@/pages/EventConfigurationWork.jsx";
-import CompleteUserDataPage from './pages/CompleteUserDataPage'
+import CompleteRegisterPage from './pages/CompleteRegisterPage'
 import UncompletedUserLayout from './layouts/UncompletedUserLayout/UncompletedUserLayout'
 
 function App() {
@@ -50,7 +50,7 @@ function App() {
                         <Route path="/register" element={<RegisterPage />} />
                     </Route>
                     <Route path="" element={<UncompletedUserLayout />}>
-                        <Route path="/complete-register" element={<CompleteUserDataPage />} />
+                        <Route path="/complete-register" element={<CompleteRegisterPage />} />
                     </Route>
                     <Route path="/" element={<AdminLayout />}>
                         <Route path="administration" element={<AdministrationPage />} />
