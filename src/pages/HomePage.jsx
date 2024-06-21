@@ -80,7 +80,6 @@ export default function HomePage() {
 
     const handleCreateEvent = async () => {
         setNewEventLoading(true);
-        console.log(newEvent);
         await apiPostEvent(newEvent);
         refreshData().then(r => console.log("My events reloaded"));
         setCreateEventOpen(false);
