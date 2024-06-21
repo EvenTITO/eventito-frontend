@@ -38,7 +38,7 @@ import {
     SelectValue
 } from "@/components/ui/select.jsx";
 import {
-    apiGetEventsByStatus,
+    apiGetEventsByStatus, apiGetMyEvents,
     apiPostEvent
 } from "@/services/api/eventServices.js";
 
