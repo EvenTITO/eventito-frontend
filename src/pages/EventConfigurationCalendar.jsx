@@ -21,38 +21,41 @@ export default function EventConfigurationCalendar() {
     const [endDateOpen, setEndDateOpen] = useState(false);
     const [workDeadlineDateOpen, setWorkDeadlineDateOpen] = useState(false);
     const [inscriptionDeadlineDateOpen, setInscriptionDeadlineDateOpen] = useState(false);
-    const [calendar, setCalendar] = useState(location.state != null && location.state.calendar ? location.state.calendar : defaultCalendar);
+    const [editedCalendar, setEditedCalendar] = useState(
+        (location.state && location.state.editedCalendar) ? location.state.editedCalendar :
+            (location.state && location.state.calendar) ? location.state.calendar : defaultCalendar
+    );
 
     const nextCreationStep = () => {
-        navigate(`/events/${id}/configuration/work`, {state: {...location.state, calendar: calendar}});
+        navigate(`/events/${id}/configuration/work`, {state: {...location.state, editedCalendar: editedCalendar}});
     }
 
     const backCreationStep = () => {
-        navigate(`/events/${id}/configuration`, {state: {...location.state, calendar: calendar}});
+        navigate(`/events/${id}/configuration`, {state: {...location.state, editedCalendar: editedCalendar}});
     }
 
     const handleStartDate = (date) => {
-        setCalendar({...calendar, startDate: date});
+        setEditedCalendar({...editedCalendar, startDate: date});
         setStartDateOpen(false);
     }
 
     const handleEndDate = (date) => {
-        setCalendar({...calendar, endDate: date});
+        setEditedCalendar({...editedCalendar, endDate: date});
         setEndDateOpen(false);
     }
 
     const handleWorkDeadLineDate = (date) => {
-        setCalendar({...calendar, workDeadLineDate: date});
+        setEditedCalendar({...editedCalendar, workDeadLineDate: date});
         setWorkDeadlineDateOpen(false);
     }
 
     const handleInscriptionDeadLineDate = (date) => {
-        setCalendar({...calendar, inscriptionDeadLineDate: date});
+        setEditedCalendar({...editedCalendar, inscriptionDeadLineDate: date});
         setInscriptionDeadlineDateOpen(false);
     }
 
     const handleNonDecidedDatesCheckBox = (value) => {
-        setCalendar({...defaultCalendar, nonDecidedDates: value});
+        setEditedCalendar({...defaultCalendar, nonDecidedDates: value});
     };
 
     return (
@@ -68,19 +71,19 @@ export default function EventConfigurationCalendar() {
                     className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                     <nav className="grid gap-4 text-sm text-muted-foreground">
                         <Link to={`/events/${id}/configuration`}
-                              state={{...location.state, calendar: calendar}}>
+                              state={{...location.state, editedCalendar: editedCalendar}}>
                             General
                         </Link>
                         <Link to={`/events/${id}/configuration/calendar`}
-                              state={{...location.state, calendar: calendar}}
+                              state={{...location.state, editedCalendar: editedCalendar}}
                               className="font-semibold text-primary">
                             Calendario
                         </Link>
                         <Link to={`/events/${id}/configuration/work`}
-                              state={{...location.state, calendar: calendar}}>
+                              state={{...location.state, editedCalendar: editedCalendar}}>
                             Trabajos</Link>
                         <Link to={`/events/${id}/configuration/pricing`}
-                              state={{...location.state, calendar: calendar}}>
+                              state={{...location.state, editedCalendar: editedCalendar}}>
                             Tarifas</Link>
                     </nav>
                     <div className="grid gap-6">
@@ -97,22 +100,22 @@ export default function EventConfigurationCalendar() {
                                     <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
                                         <PopoverTrigger asChild>
                                             <Button
-                                                disabled={calendar.nonDecidedDates}
+                                                disabled={editedCalendar.nonDecidedDates}
                                                 variant={"outline"}
                                                 className={cn(
                                                     "w-[280px] justify-start text-left font-normal",
-                                                    !calendar.startDate && "text-muted-foreground"
+                                                    !editedCalendar.startDate && "text-muted-foreground"
                                                 )}
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4"/>
-                                                {calendar.startDate ? format(calendar.startDate, "PPP", {locale: es}) :
+                                                {editedCalendar.startDate ? format(editedCalendar.startDate, "PPP", {locale: es}) :
                                                     <span>Escoje una fecha de inicio</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
                                             <Calendar
                                                 mode="single"
-                                                selected={calendar.startDate}
+                                                selected={editedCalendar.startDate}
                                                 onSelect={handleStartDate}
                                                 initialFocus
                                             />
@@ -120,26 +123,26 @@ export default function EventConfigurationCalendar() {
                                     </Popover>
                                 </div>
                                 <div className="grid gap-2 mb-3">
-                                    <Label htmlFor="endDate">Fecha de fin</Label>
+                                    <Label htmlFor="endDate">Fecha de finalización</Label>
                                     <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
                                         <PopoverTrigger asChild>
                                             <Button
-                                                disabled={calendar.nonDecidedDates}
+                                                disabled={editedCalendar.nonDecidedDates}
                                                 variant={"outline"}
                                                 className={cn(
                                                     "w-[280px] justify-start text-left font-normal",
-                                                    !calendar.endDate && "text-muted-foreground"
+                                                    !editedCalendar.endDate && "text-muted-foreground"
                                                 )}
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4"/>
-                                                {calendar.endDate ? format(calendar.endDate, "PPP", {locale: es}) :
-                                                    <span>Escoje una fecha de fin</span>}
+                                                {editedCalendar.endDate ? format(editedCalendar.endDate, "PPP", {locale: es}) :
+                                                    <span>Escoje una fecha de finalización</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
                                             <Calendar
                                                 mode="single"
-                                                selected={calendar.endDate}
+                                                selected={editedCalendar.endDate}
                                                 onSelect={handleEndDate}
                                                 initialFocus
                                             />
@@ -151,22 +154,22 @@ export default function EventConfigurationCalendar() {
                                     <Popover open={workDeadlineDateOpen} onOpenChange={setWorkDeadlineDateOpen}>
                                         <PopoverTrigger asChild>
                                             <Button
-                                                disabled={calendar.nonDecidedDates}
+                                                disabled={editedCalendar.nonDecidedDates}
                                                 variant={"outline"}
                                                 className={cn(
                                                     "w-[280px] justify-start text-left font-normal",
-                                                    !calendar.workDeadLineDate && "text-muted-foreground"
+                                                    !editedCalendar.workDeadLineDate && "text-muted-foreground"
                                                 )}
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4"/>
-                                                {calendar.workDeadLineDate ? format(calendar.workDeadLineDate, "PPP", {locale: es}) :
+                                                {editedCalendar.workDeadLineDate ? format(editedCalendar.workDeadLineDate, "PPP", {locale: es}) :
                                                     <span>Escoje una fecha limite</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
                                             <Calendar
                                                 mode="single"
-                                                selected={calendar.workDeadLineDate}
+                                                selected={editedCalendar.workDeadLineDate}
                                                 onSelect={handleWorkDeadLineDate}
                                                 initialFocus
                                             />
@@ -180,22 +183,22 @@ export default function EventConfigurationCalendar() {
                                              onOpenChange={setInscriptionDeadlineDateOpen}>
                                         <PopoverTrigger asChild>
                                             <Button
-                                                disabled={calendar.nonDecidedDates}
+                                                disabled={editedCalendar.nonDecidedDates}
                                                 variant={"outline"}
                                                 className={cn(
                                                     "w-[280px] justify-start text-left font-normal",
-                                                    !calendar.inscriptionDeadLineDate && "text-muted-foreground"
+                                                    !editedCalendar.inscriptionDeadLineDate && "text-muted-foreground"
                                                 )}
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4"/>
-                                                {calendar.inscriptionDeadLineDate ? format(calendar.inscriptionDeadLineDate, "PPP", {locale: es}) :
+                                                {editedCalendar.inscriptionDeadLineDate ? format(editedCalendar.inscriptionDeadLineDate, "PPP", {locale: es}) :
                                                     <span>Escoje una fecha limite</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
                                             <Calendar
                                                 mode="single"
-                                                selected={calendar.inscriptionDeadLineDate}
+                                                selected={editedCalendar.inscriptionDeadLineDate}
                                                 onSelect={handleInscriptionDeadLineDate}
                                                 initialFocus
                                             />
@@ -203,7 +206,7 @@ export default function EventConfigurationCalendar() {
                                     </Popover>
                                 </div>
                                 <div className="flex items-center space-x-2">
-                                    <Checkbox id="include" checked={calendar.nonDecidedDates}
+                                    <Checkbox id="include" checked={editedCalendar.nonDecidedDates}
                                               onCheckedChange={handleNonDecidedDatesCheckBox}/>
                                     <label
                                         htmlFor="include"
