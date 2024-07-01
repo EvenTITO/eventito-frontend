@@ -109,7 +109,7 @@ export default function EventConfigurationCalendar() {
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4"/>
                                                 {editedCalendar.startDate ? format(editedCalendar.startDate, "PPP", {locale: es}) :
-                                                    <span>Escoje una fecha de inicio</span>}
+                                                    <span>Escoge una fecha de inicio</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
@@ -136,7 +136,7 @@ export default function EventConfigurationCalendar() {
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4"/>
                                                 {editedCalendar.endDate ? format(editedCalendar.endDate, "PPP", {locale: es}) :
-                                                    <span>Escoje una fecha de finalización</span>}
+                                                    <span>Escoge una fecha de finalización</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
@@ -163,7 +163,7 @@ export default function EventConfigurationCalendar() {
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4"/>
                                                 {editedCalendar.workDeadLineDate ? format(editedCalendar.workDeadLineDate, "PPP", {locale: es}) :
-                                                    <span>Escoje una fecha limite</span>}
+                                                    <span>Escoge una fecha limite</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
@@ -192,7 +192,7 @@ export default function EventConfigurationCalendar() {
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4"/>
                                                 {editedCalendar.inscriptionDeadLineDate ? format(editedCalendar.inscriptionDeadLineDate, "PPP", {locale: es}) :
-                                                    <span>Escoje una fecha limite</span>}
+                                                    <span>Escoge una fecha limite</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">

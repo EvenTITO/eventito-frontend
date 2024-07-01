@@ -6,6 +6,8 @@ import {Button} from "@/components/ui/button.jsx";
 import {Checkbox} from "@/components/ui/checkbox.jsx";
 import {Label} from "@/components/ui/label.jsx";
 import {Textarea} from "@/components/ui/textarea"
+import {MultipleSelector} from "@/components/ui/multiple-selector.jsx"
+import {useToast} from '@/components/ui/use-toast';
 import {useState} from "react";
 import {
     Select,
@@ -17,12 +19,20 @@ import {
     SelectValue
 } from "@/components/ui/select.jsx";
 import EventHeader from "@/features/events/components/EventHeader.jsx";
+import {useSelector} from "react-redux";
 
 export default function EventConfiguration() {
     const navigate = useNavigate();
+    const {currentUser} = useSelector((state) => state.user);
+    const {toast} = useToast();
     const {id} = useParams();
     const location = useLocation();
     const [editedEvent, setEditedEvent] = useState(location.state.editedEvent ? location.state.editedEvent : location.state.event);
+    const [notificationsMails, setNotificationsMails] = useState(
+        (location.state.editedEvent && location.state.editedEvent.notificationsMails)
+            ? location.state.editedEvent.notificationsMails.map(nm => mapToMultiSelectOption(nm, currentUser.email))
+            : location.state.event.notificationsMails.map(nm => mapToMultiSelectOption(nm, currentUser.email))
+    );
 
     const nextCreationStep = () => {
         navigate(`/events/${id}/configuration/calendar`, {state: {...location.state, editedEvent: editedEvent}});
@@ -40,6 +50,34 @@ export default function EventConfiguration() {
     const handleNonDecidedLocationCheckBox = (value) => {
         setEditedEvent({...editedEvent, location: "", nonDecidedLocation: value});
     };
+
+    const handleOnlyAdminNotificationsCheckBox = (value) => {
+        setNotificationsMails([mapToMultiSelectOption(currentUser.email, currentUser.email)]);
+        setEditedEvent({...editedEvent, notificationsMails: [currentUser.email], onlyAdminNotifications: value});
+    };
+
+    const handleValidateMultiSelectMail = (option) => {
+        const validationMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const result = validationMailRegex.test(option.value);
+        if (!result) {
+            toast({
+                title: `Email inválido. Asegúrese de que tenga el siguiente formato: ejemplo@email.com`,
+            });
+        }
+        return result;
+    }
+
+    const handleMultiSelectMail = (selectedMails) => {
+        setNotificationsMails(selectedMails.map(sm => mapToMultiSelectOption(sm.value, currentUser.email)));
+        setEditedEvent({...editedEvent, notificationsMails: selectedMails.map(sm => sm.value)});
+    };
+
+    const mapToMultiSelectOption = (value, userMail) => {
+        if (value === userMail) {
+            return {key: value, label: value, value: value, fixed: true, disable: false}
+        }
+        return {key: value, label: value, value: value, fixed: false, disable: false}
+    }
 
     return (
         <div className="flex min-h-screen w-full flex-col">
@@ -77,7 +115,7 @@ export default function EventConfiguration() {
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <div className="grid gap-2 mb-3">
+                                <div className="grid gap-2 mb-5">
                                     <Label htmlFor="title">Título</Label>
                                     <Input name="title"
                                            id="title"
@@ -86,7 +124,7 @@ export default function EventConfiguration() {
                                            value={editedEvent.title}
                                            disabled/>
                                 </div>
-                                <div className="grid gap-2 mb-3">
+                                <div className="grid gap-2 mb-5">
                                     <Label htmlFor="description">Descripción</Label>
                                     <Textarea name="description"
                                               id="description"
@@ -95,7 +133,7 @@ export default function EventConfiguration() {
                                               value={editedEvent.description}
                                               disabled/>
                                 </div>
-                                <div className="grid gap-2 mb-3">
+                                <div className="grid gap-2 mb-5">
                                     <Label htmlFor="description">Tipos de evento</Label>
                                     <Select value={editedEvent.event_type} onValueChange={handleSelectType} disabled>
                                         <SelectTrigger className="w-[180px]">
@@ -110,7 +148,38 @@ export default function EventConfiguration() {
                                         </SelectContent>
                                     </Select>
                                 </div>
-                                <div className="grid gap-2 mb-3">
+                                <div className="grid gap-2 mb-2">
+                                    <Label htmlFor="notifications">Notificaciones</Label>
+                                    <MultipleSelector
+                                        id="notifications"
+                                        name="notifications"
+                                        value={notificationsMails}
+                                        onChange={handleMultiSelectMail}
+                                        onValidateCreatable={handleValidateMultiSelectMail}
+                                        creatable={true}
+                                        disabled={editedEvent.onlyAdminNotifications}
+                                        hideClearAllButton={true}
+                                        hidePlaceholderWhenSelected={false}
+                                        maxSelected={5}
+                                        onMaxSelected={(maxLimit) => {
+                                            toast({
+                                                title: `Has alcanzado la cantidad máxima de casillas de mail: ${maxLimit}`,
+                                            });
+                                        }}
+                                        placeholder="Agregue los mails a los cuales desea notificar..."
+                                    ></MultipleSelector>
+                                </div>
+                                <div className="flex items-center space-x-2 gap-2 mb-5">
+                                    <Checkbox id="onlyAdmin" checked={editedEvent.onlyAdminNotifications}
+                                              onCheckedChange={handleOnlyAdminNotificationsCheckBox}/>
+                                    <label
+                                        htmlFor="onlyAdmin"
+                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Solo notificaciones a los organizadores.
+                                    </label>
+                                </div>
+                                <div className="grid gap-2 mb-2">
                                     <Label htmlFor="location">Ubicación</Label>
                                     <Input name="location"
                                            id="location"
@@ -120,7 +189,7 @@ export default function EventConfiguration() {
                                            disabled={editedEvent.nonDecidedLocation}
                                     />
                                 </div>
-                                <div className="flex items-center space-x-2">
+                                <div className="flex items-center space-x-2 gap-2 mb-5">
                                     <Checkbox id="include" checked={editedEvent.nonDecidedLocation}
                                               onCheckedChange={handleNonDecidedLocationCheckBox}/>
                                     <label

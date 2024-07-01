@@ -58,6 +58,7 @@ const defaultEvent = {
     location: "FIUBA - Paseo Colón",
     photo_url: 'https://www.unirioeditora.com.ar/wp-content/uploads/2018/07/9-Congreso-de-qu%C3%ADmica-anal%C3%ADtica.png',
     backgroundImage: "https://agcdn-1d97e.kxcdn.com/wp-content/uploads/2017/02/alphagamma-top-10-business-conferences-for-entrepreneurs-opportunities-1021x580.jpg",
+    notificationsMails: []
 }
 
 const defaultCopaAmericaEvent = {
@@ -69,4 +70,5 @@ const defaultCopaAmericaEvent = {
     location: "FIUBA - Las Heras",
     photo_url: 'https://images.seeklogo.com/logo-png/53/1/conmebol-copa-america-usa-2024-logo-png_seeklogo-535608.png',
     backgroundImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdjbTCawDexErICdyrOFaNl-tZOKR3kDMrZA&s",
+    notificationsMails: ["hola"]
 }
