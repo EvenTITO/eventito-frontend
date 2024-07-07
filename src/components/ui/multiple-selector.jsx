@@ -352,6 +352,7 @@ export const MultipleSelector = React.forwardRef(
                         })}
                         {/* Avoid having the "Search" Icon */}
                         <CommandPrimitive.Input
+                            className="border-transparent"
                             {...inputProps}
                             ref={inputRef}
                             value={inputValue}

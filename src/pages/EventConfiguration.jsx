@@ -29,13 +29,13 @@ export default function EventConfiguration() {
     const location = useLocation();
     const [editedEvent, setEditedEvent] = useState(location.state.editedEvent ? location.state.editedEvent : location.state.event);
     const [notificationsMails, setNotificationsMails] = useState(
-        (location.state.editedEvent && location.state.editedEvent.notificationsMails)
-            ? location.state.editedEvent.notificationsMails.map(nm => mapToMultiSelectOption(nm, currentUser.email))
-            : location.state.event.notificationsMails.map(nm => mapToMultiSelectOption(nm, currentUser.email))
+        (location.state.editedEvent && location.state.editedEvent.notifications_mails)
+            ? location.state.editedEvent.notifications_mails.map(nm => mapToMultiSelectOption(nm, currentUser.email))
+            : location.state.event.notifications_mails.map(nm => mapToMultiSelectOption(nm, currentUser.email))
     );
 
     const nextCreationStep = () => {
-        navigate(`/events/${id}/configuration/calendar`, {state: {...location.state, editedEvent: editedEvent}});
+        navigate(`/events/${id}/configuration/dates`, {state: {...location.state, editedEvent: editedEvent}});
     }
 
     const handleInputChange = (e) => {
@@ -53,7 +53,7 @@ export default function EventConfiguration() {
 
     const handleOnlyAdminNotificationsCheckBox = (value) => {
         setNotificationsMails([mapToMultiSelectOption(currentUser.email, currentUser.email)]);
-        setEditedEvent({...editedEvent, notificationsMails: [currentUser.email], onlyAdminNotifications: value});
+        setEditedEvent({...editedEvent, notifications_mails: [currentUser.email], only_admin_notifications: value});
     };
 
     const handleValidateMultiSelectMail = (option) => {
@@ -69,15 +69,8 @@ export default function EventConfiguration() {
 
     const handleMultiSelectMail = (selectedMails) => {
         setNotificationsMails(selectedMails.map(sm => mapToMultiSelectOption(sm.value, currentUser.email)));
-        setEditedEvent({...editedEvent, notificationsMails: selectedMails.map(sm => sm.value)});
+        setEditedEvent({...editedEvent, notifications_mails: selectedMails.map(sm => sm.value)});
     };
-
-    const mapToMultiSelectOption = (value, userMail) => {
-        if (value === userMail) {
-            return {key: value, label: value, value: value, fixed: true, disable: false}
-        }
-        return {key: value, label: value, value: value, fixed: false, disable: false}
-    }
 
     return (
         <div className="flex min-h-screen w-full flex-col">
@@ -96,9 +89,9 @@ export default function EventConfiguration() {
                               className="font-semibold text-primary">
                             General
                         </Link>
-                        <Link to={`/events/${id}/configuration/calendar`}
+                        <Link to={`/events/${id}/configuration/dates`}
                               state={{...location.state, editedEvent: editedEvent}}>
-                            Calendario</Link>
+                            Fechas</Link>
                         <Link to={`/events/${id}/configuration/work`}
                               state={{...location.state, editedEvent: editedEvent}}>
                             Trabajos</Link>
@@ -157,7 +150,7 @@ export default function EventConfiguration() {
                                         onChange={handleMultiSelectMail}
                                         onValidateCreatable={handleValidateMultiSelectMail}
                                         creatable={true}
-                                        disabled={editedEvent.onlyAdminNotifications}
+                                        disabled={editedEvent.only_admin_notifications}
                                         hideClearAllButton={true}
                                         hidePlaceholderWhenSelected={false}
                                         maxSelected={5}
@@ -170,7 +163,7 @@ export default function EventConfiguration() {
                                     ></MultipleSelector>
                                 </div>
                                 <div className="flex items-center space-x-2 gap-2 mb-5">
-                                    <Checkbox id="onlyAdmin" checked={editedEvent.onlyAdminNotifications}
+                                    <Checkbox id="onlyAdmin" checked={editedEvent.only_admin_notifications}
                                               onCheckedChange={handleOnlyAdminNotificationsCheckBox}/>
                                     <label
                                         htmlFor="onlyAdmin"
@@ -209,4 +202,11 @@ export default function EventConfiguration() {
             </main>
         </div>
     )
+}
+
+const mapToMultiSelectOption = (value, userMail) => {
+    if (value === userMail) {
+        return {key: value, label: value, value: value, fixed: true, disable: false}
+    }
+    return {key: value, label: value, value: value, fixed: false, disable: false}
 }

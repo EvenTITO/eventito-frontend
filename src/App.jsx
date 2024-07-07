@@ -17,9 +17,9 @@ import {auth} from "@/services/firebase/firebaseAuth.js";
 import {useDispatch} from "react-redux";
 import {logout} from "@/services/state/user/userSlice.js";
 import EventConfiguration from "@/pages/EventConfiguration.jsx";
-import EventConfigurationCalendar from "@/pages/EventConfigurationCalendar.jsx";
+import EventConfigurationDates from "@/pages/EventConfigurationDates.jsx";
 import EventConfigurationPricing from "@/pages/EventConfigurationPricing.jsx";
-import EventConfigurationWork from "@/pages/EventConfigurationWork.jsx";
+import EventConfigurationSubmissions from "@/pages/EventConfigurationSubmissions.jsx";
 import CompleteRegisterPage from './pages/CompleteRegisterPage'
 import UncompletedUserLayout from './layouts/UncompletedUserLayout/UncompletedUserLayout'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
@@ -66,8 +66,8 @@ function App() {
                             <Route path="events/:id/presentations" element={<EventPresentations/>}/>
                             <Route path="events/:id/organization" element={<EventOrganization/>}/>
                             <Route path="events/:id/configuration" element={<EventConfiguration/>}/>
-                            <Route path="events/:id/configuration/calendar" element={<EventConfigurationCalendar/>}/>
-                            <Route path="events/:id/configuration/work" element={<EventConfigurationWork/>}/>
+                            <Route path="events/:id/configuration/dates" element={<EventConfigurationDates/>}/>
+                            <Route path="events/:id/configuration/work" element={<EventConfigurationSubmissions/>}/>
                             <Route path="events/:id/configuration/pricing" element={<EventConfigurationPricing/>}/>
                         </Route>
                     </Routes>

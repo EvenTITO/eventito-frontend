@@ -5,7 +5,7 @@ import {Button} from "@/components/ui/button.jsx";
 import {useState} from "react";
 import EventHeader from "@/features/events/components/EventHeader.jsx";
 
-export default function EventConfigurationWork() {
+export default function EventConfigurationSubmissions() {
     const navigate = useNavigate();
     const location = useLocation();
     const {id} = useParams();
@@ -18,7 +18,7 @@ export default function EventConfigurationWork() {
     }
 
     const backCreationStep = () => {
-        navigate(`/events/${id}/configuration/calendar`, {state: {...location.state, editedWork: editedWork}});
+        navigate(`/events/${id}/configuration/dates`, {state: {...location.state, editedWork: editedWork}});
     }
 
     return (
@@ -38,9 +38,9 @@ export default function EventConfigurationWork() {
                         >
                             General
                         </Link>
-                        <Link to={`/events/${id}/configuration/calendar`}
+                        <Link to={`/events/${id}/configuration/dates`}
                               state={{...location.state, editedWork: editedWork}}>
-                            Calendario</Link>
+                            Fechas</Link>
                         <Link to={`/events/${id}/configuration/work`}
                               state={{...location.state, editedWork: editedWork}}
                               className="font-semibold text-primary"
