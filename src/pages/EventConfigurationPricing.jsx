@@ -104,9 +104,9 @@ export default function EventConfigurationPricing() {
                               state={{...location.state, editedPricing: editedPricing}}>
                             General
                         </Link>
-                        <Link to={`/events/${id}/configuration/calendar`}
+                        <Link to={`/events/${id}/configuration/dates`}
                               state={{...location.state, editedPricing: editedPricing}}>
-                            Calendario
+                            Fechas
                         </Link>
                         <Link to={`/events/${id}/configuration/work`}
                               state={{...location.state, editedPricing: editedPricing}}>

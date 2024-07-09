@@ -39,7 +39,7 @@ export default function EventPage() {
     return (
         <>
             <EventHeader event={event}/>
-            <EventImage photoUrl={event.backgroundImage}/>
+            <EventImage photoUrl={event.background_image}/>
             <div className="w-full h-full border-t-2 border-slate-200 px-10 bg-white">
                 <div className="w-full h-full py-6 px-10" style={{backgroundColor: 'rgba(255, 255, 255, 0.7)',}}>
                     <EventContent event={event}/>
@@ -57,7 +57,9 @@ const defaultEvent = {
     event_type: 'CONFERENCE',
     location: "FIUBA - Paseo Colón",
     photo_url: 'https://www.unirioeditora.com.ar/wp-content/uploads/2018/07/9-Congreso-de-qu%C3%ADmica-anal%C3%ADtica.png',
-    backgroundImage: "https://agcdn-1d97e.kxcdn.com/wp-content/uploads/2017/02/alphagamma-top-10-business-conferences-for-entrepreneurs-opportunities-1021x580.jpg",
+    background_image: "https://agcdn-1d97e.kxcdn.com/wp-content/uploads/2017/02/alphagamma-top-10-business-conferences-for-entrepreneurs-opportunities-1021x580.jpg",
+    only_admin_notifications: false,
+    notifications_mails: []
 }
 
 const defaultCopaAmericaEvent = {
@@ -68,5 +70,7 @@ const defaultCopaAmericaEvent = {
     event_type: 'TALK',
     location: "FIUBA - Las Heras",
     photo_url: 'https://images.seeklogo.com/logo-png/53/1/conmebol-copa-america-usa-2024-logo-png_seeklogo-535608.png',
-    backgroundImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdjbTCawDexErICdyrOFaNl-tZOKR3kDMrZA&s",
+    background_image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdjbTCawDexErICdyrOFaNl-tZOKR3kDMrZA&s",
+    only_admin_notifications: true,
+    notifications_mails: []
 }

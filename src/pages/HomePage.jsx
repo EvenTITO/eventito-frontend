@@ -59,8 +59,8 @@ export default function HomePage() {
     }, []);
 
     const refreshData = async () => {
-        const apiPublicEvents = await apiGetEventsByStatus("STARTED");
-        const apiMyEvents = await apiGetMyEvents();
+        //const apiPublicEvents = await apiGetEventsByStatus("STARTED");
+        //const apiMyEvents = await apiGetMyEvents();
         setMyEvents(myEventsDefault);
         setPublicEvents(publicEventsDefault);
     };
@@ -241,7 +241,9 @@ const publicEventsDefault = [
         end_date: "",
         event_type: "CONFERENCE",
         user_status: "Inscripto",
-        location: "FIUBA - Paseo Colón"
+        location: "FIUBA - Paseo Colón",
+        only_admin_notifications: false,
+        notifications_mails:[]
     },
     {
         id: 1235,
@@ -252,7 +254,9 @@ const publicEventsDefault = [
         end_date: "",
         event_type: "CONFERENCE",
         user_status: "-",
-        location: "EXACTAS - Ciudad Universitaria"
+        location: "EXACTAS - Ciudad Universitaria",
+        only_admin_notifications: false,
+        notifications_mails:[]
     },
 ];
 
@@ -265,7 +269,8 @@ const myEventsDefault = [
         start_date: "2024-06-19 17:45:00",
         end_date: "",
         event_type: "TALK",
-        location: "Teatro Flores"
+        location: "Teatro Flores",
+        notifications_mails:[]
     }
 ];
 
