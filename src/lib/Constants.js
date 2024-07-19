@@ -1,5 +1,6 @@
-export const USERS_URL = "https://gateway-pv5n.onrender.com/api/v1/users"
-export const EVENTS_URL = "https://gateway-pv5n.onrender.com/api/v1/events"
+const APP_URL = "https://gateway-pv5n.onrender.com"
+export const USERS_URL = `${APP_URL}/api/v1/users`
+export const EVENTS_URL = `${APP_URL}/api/v1/events`
 export const HOME_PATH = "/"
 export const LOGIN_PATH = "/login"
 export const SIGNUP_PATH = "/sing-up"
