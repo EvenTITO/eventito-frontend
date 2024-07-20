@@ -15,8 +15,45 @@ import {
   CardHeader,
   CardContent,
 } from "@/components/ui/card";
+import Logo from "@/assets/logo.svg";
+import {useRef, useState} from "react";
+import {FaEdit} from "react-icons/fa";
+import {apiUploadFile, getUploadUrl} from "@/services/storage/storageService.js";
+
 
 export default function EventContent({ event }) {
+  const showImagePicker = useRef(false);
+  const enableEditMainImage = useState(event.roles.includes("ORGANIZER"))
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleUpdateMainImage = (e) => {
+    console.log("edit image");
+    const file = e.target.files[0];
+    console.log(file);
+    if (file) {
+      getUploadUrl(event.id)
+          .then(uploadInfo => {
+            apiUploadFile(uploadInfo, file)
+                .then(() => console.log("Imagen del evento actualizada"))
+                .catch(() => console.log("No se puedo actualizar la imagen del evento"))
+          })
+    }
+  }
+
+  const handleClick = () => {
+    showImagePicker.current.click();
+  };
+
+  const handleMouseOver = () => {
+    setIsHovered(true);
+    console.log("handle mouse over")
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    console.log("handle mouse leave")
+  };
+
   return (
     <main className="flex min-h-[calc(100vh_-_th me(spacing.16))] flex-1 flex-col gap-8 bg-white">
       <div className="w-full">
@@ -25,28 +62,52 @@ export default function EventContent({ event }) {
       <div>
         <EventInfo event={event} />
       </div>
-      <div className="flex gap-2 mt-6 gap-8">
+      <div className="flex gap-2 mt-6">
         <div className="w-[300px]">
-          <img
-            src={event.photo_url}
+          <button onClick={handleClick} disabled={!enableEditMainImage}>
+            <img
+                src={event.main_image_url != null ? event.main_image_url : Logo}
+                onError={event => {
+                  event.target.src = Logo
+                  event.onerror = null
+                }}
+                //onMouseOver={handleMouseOver}
+                //onMouseLeave={handleMouseLeave}
+            />
+            {isHovered && (
+                <Button variant="outline" size="icon" style={{
+                  position: "relative",
+                  top: "5px",
+                  right: "5px",
+                }}>
+                  <FaEdit></FaEdit>
+                </Button>
+            )}
+          </button>
+          <input
+              type="file"
+              accept="image/*"
+              onChange={handleUpdateMainImage}
+              ref={showImagePicker}
+              style={{display: 'none'}}
           />
         </div>
         <div className="flex flex-col gap-2 w-full">
-          <Contact />
+          <Contact/>
         </div>
       </div>
     </main>
   );
 }
 
-function EvenTitle({ event }) {
+function EvenTitle({event}) {
   return (
-    <div>
+      <div>
       <div className="flex flex-row grid-cols-3 gap-8">
-        <div className="w-full flex gap-4">
-          <h1 className="text-3xl font-semibold">{event.title}</h1>
-          <div>
-            <Badge variant="outline" className={"bg-slate-50 text-red-700"}>Últimos cupos!</Badge>
+          <div className="w-full flex gap-4">
+            <h1 className="text-3xl font-semibold">{event.title}</h1>
+            <div>
+              <Badge variant="outline" className={"bg-slate-50 text-red-700"}>Últimos cupos!</Badge>
           </div>
         </div>
         <div className="w-1/3">

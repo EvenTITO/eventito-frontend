@@ -30,8 +30,8 @@ export default function EventConfiguration() {
     const [editedEvent, setEditedEvent] = useState(location.state.editedEvent ? location.state.editedEvent : location.state.event);
     const [notificationsMails, setNotificationsMails] = useState(
         (location.state.editedEvent && location.state.editedEvent.notifications_mails)
-            ? location.state.editedEvent.notifications_mails.map(nm => mapToMultiSelectOption(nm, currentUser.email))
-            : location.state.event.notifications_mails.map(nm => mapToMultiSelectOption(nm, currentUser.email))
+            ? location.state.editedEvent.notifications_mails?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
+            : location.state.event.notifications_mails?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
     );
 
     const nextCreationStep = () => {

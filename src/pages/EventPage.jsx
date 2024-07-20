@@ -24,12 +24,11 @@ export default function EventPage() {
         }
     }, [event]);
 
+    console.log(event);
+
     const refreshData = async () => {
         const event = await apiGetEventById(id);
-        setEvent(event)
-        //const organizers = await apiGetOrganizersByEventId(id);
-        //todo
-        // id !== "1236" ? setEvent(defaultEvent) : setEvent(defaultCopaAmericaEvent);
+        setEvent(event);
     };
 
     if (!event) {
@@ -43,7 +42,7 @@ export default function EventPage() {
     return (
         <>
             <EventHeader event={event}/>
-            <EventImage photoUrl={event.background_image}/>
+            <EventImage photoUrl={event.banner_image_url}/>
             <div className="w-full h-full border-t-2 border-slate-200 px-10 bg-white">
                 <div className="w-full h-full py-6 px-10" style={{backgroundColor: 'rgba(255, 255, 255, 0.7)',}}>
                     <EventContent event={event}/>
