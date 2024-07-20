@@ -15,7 +15,7 @@ export default function EventPage() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        refreshData().then(r => console.log("Events loaded"));
+        refreshData().then(r => console.log("Event loaded"));
     }, [id]);
 
     useEffect(() => {
@@ -40,10 +40,10 @@ export default function EventPage() {
     return (
         <>
             <EventHeader event={event}/>
-            <EventImage photoUrl={event.banner_image_url}/>
+            <EventImage event={event} refreshData={refreshData}/>
             <div className="w-full h-full border-t-2 border-slate-200 px-10 bg-white">
                 <div className="w-full h-full py-6 px-10" style={{backgroundColor: 'rgba(255, 255, 255, 0.7)',}}>
-                    <EventContent event={event}/>
+                    <EventContent event={event} refreshData={refreshData}/>
                 </div>
             </div>
         </>
