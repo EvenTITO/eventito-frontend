@@ -59,10 +59,13 @@ export default function HomePage() {
     }, []);
 
     const refreshData = async () => {
-        //const apiPublicEvents = await apiGetEventsByStatus("STARTED");
-        //const apiMyEvents = await apiGetMyEvents();
-        setMyEvents(myEventsDefault);
-        setPublicEvents(publicEventsDefault);
+        const apiPublicEvents = await apiGetEventsByStatus("STARTED");
+        const apiMyEvents = await apiGetMyEvents();
+        
+        setMyEvents(apiMyEvents);
+        setPublicEvents(apiPublicEvents);
+        // setMyEvents(myEventsDefault);
+        // setPublicEvents(publicEventsDefault);
     };
 
     const onTabChange = (value) => {
