@@ -24,8 +24,6 @@ export default function EventPage() {
         }
     }, [event]);
 
-    console.log(event);
-
     const refreshData = async () => {
         const event = await apiGetEventById(id);
         setEvent(event);
