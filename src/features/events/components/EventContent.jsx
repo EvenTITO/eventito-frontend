@@ -8,7 +8,7 @@ import Logo from "@/assets/logo.svg";
 import {useRef, useState} from "react";
 import {apiUploadFile, getUploadUrl} from "@/services/storage/storageService.js";
 
-export default function EventContent({event}) {
+export default function EventContent({event, refreshData}) {
     return (
         <main className="flex min-h-[calc(100vh_-_th me(spacing.16))] flex-1 flex-col gap-8 bg-white">
             <div className="w-full">
@@ -19,7 +19,7 @@ export default function EventContent({event}) {
             </div>
             <div className="flex gap-2 mt-6">
                 <div className="w-[300px]">
-                    <EventMainImage event={event}/>
+                    <EventMainImage event={event} refreshData={refreshData}/>
                 </div>
                 <div className="flex flex-col gap-2 w-full">
                     <Contact/>
@@ -128,7 +128,7 @@ function Contact() {
     );
 }
 
-function EventMainImage({event}) {
+function EventMainImage({event, refreshData}) {
     const showImagePicker = useRef(false);
     const enableEditMainImage = useState(event.roles.includes("ORGANIZER"))
     const [isHovered, setIsHovered] = useState(false);
@@ -141,7 +141,7 @@ function EventMainImage({event}) {
                     apiUploadFile(uploadInfo.upload_url, file)
                         .then((res) => {
                             console.log("Imagen del evento actualizada");
-                            location.reload();
+                            refreshData().then(r => console.log("Event loaded"));
                         });
                 })
                 .catch(() => console.log("No se puedo actualizar la imagen del evento"))
@@ -170,7 +170,7 @@ function EventMainImage({event}) {
                         event.onerror = null
                     }}
                     style={{
-                        opacity: isHovered ? 0.3 : 1,
+                        opacity: isHovered ? 0.7 : 1,
                         transition: 'opacity 0.3s',
                     }}
                 />
