@@ -1,7 +1,6 @@
 import {
 	ChevronRight,
 } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
 	Table,
@@ -11,6 +10,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
+import Logo from '../../../assets/logo.svg';
 
 export default function EventsList({ events, setEventSelected }) {
 	return (
@@ -38,8 +38,12 @@ export default function EventsList({ events, setEventSelected }) {
 								<img
 									className="aspect-square rounded-md object-cover"
 									height="64"
-									src={event.photo_url}
 									width="64"
+									src={event.main_image_url != null ? event.main_image_url : Logo}
+									onError={event => {
+										event.target.src = Logo
+										event.onerror = null
+									}}
 								/>
 							</TableCell>
 							<TableCell className="font-medium">
