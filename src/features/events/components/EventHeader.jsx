@@ -2,6 +2,8 @@ import {Tabs, TabsList, TabsTrigger2} from "@/components/ui/tabs"
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 export default function EventHeader({event}) {
+    const tabItems = getTabItems(event);
+
     return (
         <header className="bg-white">
             <AdjustableTabs tabItems={tabItems} event={event}/>
@@ -42,10 +44,16 @@ function AdjustableTabs({tabItems, event}) {
     );
 }
 
-const tabItems = [
-    {value: "", label: "General"},
-    {value: "calendar", label: "Calendario"},
-    {value: "presentations", label: "Mis trabajos"},
-    //TODO la tab de configuracion solo debe aparecer si podes editar el evento porque es tuyo
-    {value: "configuration", label: "Configuración"},
-];
+function getTabItems(event) {
+    const tabItems = [
+        {value: "", label: "General"},
+        {value: "calendar", label: "Calendario"},
+        {value: "presentations", label: "Mis trabajos"}
+    ]
+    if (event.roles.includes("ORGANIZER")) {
+        return [...tabItems, {
+            value: "configuration", label: "Configuración"
+        }]
+    }
+    return tabItems;
+}
