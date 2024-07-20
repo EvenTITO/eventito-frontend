@@ -14,18 +14,22 @@ export default function EventPage() {
     const [event, setEvent] = useState(null);
     const dispatch = useDispatch();
 
-    // Component did mount -> se ejecuta la primera vez cuando renderiza la pagina
     useEffect(() => {
-        //TODO desharcodear el JIAFES del campo name
-        dispatch(addHeader([{link: '/', name: 'Eventos'}, {link: `/events/${id}`, name: 'JIAFES 2024'}]));
         refreshData().then(r => console.log("Events loaded"));
     }, [id]);
 
+    useEffect(() => {
+        if (event) {
+            dispatch(addHeader([{link: '/', name: 'Eventos'}, {link: `/events/${id}`, name: event?.title}]));
+        }
+    }, [event]);
+
     const refreshData = async () => {
-        //const event = await apiGetEventById(id);
+        const event = await apiGetEventById(id);
+        setEvent(event)
         //const organizers = await apiGetOrganizersByEventId(id);
         //todo
-        id !== "1236" ? setEvent(defaultEvent) : setEvent(defaultCopaAmericaEvent);
+        // id !== "1236" ? setEvent(defaultEvent) : setEvent(defaultCopaAmericaEvent);
     };
 
     if (!event) {
