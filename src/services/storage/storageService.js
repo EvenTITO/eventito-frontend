@@ -4,8 +4,7 @@ import {EVENTS_URL} from "@/lib/Constants.js";
 
 export const apiUploadFile = async (uploadInfo, file) => {
     const headers = {
-        'Content-Type': 'application/octet-stream',
-        'X-Goog-Content-Length-Range': `1,${uploadInfo.max_upload_size_mb * 1000000}` //largo del file en bytes -> 5MB
+        'Content-Type': 'application/octet-stream'
     };
     try {
         return await axios.put(uploadInfo.upload_url, file,{ headers: headers } );
