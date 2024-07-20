@@ -21,7 +21,6 @@ export const apiPatchEventStatus = async (eventId, status) => {
         const requestBody = {
             status: status
         };
-        console.log("requestBody: " + requestBody);
         return await axios.patch(url, requestBody, {headers: headers});
     } catch (err) {
         console.log("Error cambiando estado del evento", err);
@@ -57,8 +56,7 @@ export const apiPostEvent = async (event) => {
     try {
         const headers = generateHeaders();
         const url = `${EVENTS_URL}`;
-        const response = await axios.post(url, event, {headers: headers});
-        console.log(JSON.stringify(response));
+        await axios.post(url, event, {headers: headers});
     } catch (err) {
         console.log("Error creando evento", err);
         throw err;
