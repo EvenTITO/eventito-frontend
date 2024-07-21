@@ -1,4 +1,4 @@
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
 import HeaderDivisor from "@/components/ui/HeaderDivisor.jsx";
 import {Button} from "@/components/ui/button.jsx";
@@ -6,19 +6,18 @@ import {useState} from "react";
 import EventHeader from "@/features/events/components/EventHeader.jsx";
 
 export default function EventConfigurationSubmissions() {
-    const navigate = useNavigate();
     const location = useLocation();
     const {id} = useParams();
+    const [saveChangesLoading, setSaveChangesLoading] = useState(false);
     const [editedWork, setEditedWork] = useState(
         (location.state && location.state.editedWork) ? location.state.editedWork :
-            (location.state && location.state.work) ? location.state.work :defaultWork);
+            (location.state && location.state.work) ? location.state.work : defaultWork);
 
-    const nextCreationStep = () => {
-        navigate(`/events/${id}/configuration/pricing`, {state: {...location.state, editedWork: editedWork}});
-    }
-
-    const backCreationStep = () => {
-        navigate(`/events/${id}/configuration/dates`, {state: {...location.state, editedWork: editedWork}});
+    const saveChanges = async () => {
+        console.log("guardar cambios");
+        setSaveChangesLoading(true);
+        //await apiPatchEvent(); TODO
+        setSaveChangesLoading(false);
     }
 
     return (
@@ -61,8 +60,13 @@ export default function EventConfigurationSubmissions() {
                             <CardContent>
                             </CardContent>
                             <CardFooter className="border-t px-6 py-4">
-                                <Button onClick={backCreationStep} className="mx-1.5">Atras</Button>
-                                <Button onClick={nextCreationStep} className="mx-1.5">Siguiente</Button> </CardFooter>
+                                <Button
+                                    onClick={saveChanges}
+                                    disabled={saveChangesLoading || location.state.work === editedWork}
+                                    className="bg-green-600">
+                                    Guardar cambios
+                                </Button>
+                            </CardFooter>
                         </Card>
                     </div>
                 </div>

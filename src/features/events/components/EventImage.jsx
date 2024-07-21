@@ -10,7 +10,7 @@ export default function EventImage({event, refreshData}) {
     const handleUpdateMainImage = (e) => {
         const file = e.target.files[0];
         if (file) {
-            getUploadUrl(event.id)
+            getUploadUrl(event.id, "banner_image")
                 .then(uploadInfo => {
                     apiUploadFile(uploadInfo.upload_url, file)
                         .then((res) => {

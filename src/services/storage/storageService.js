@@ -14,10 +14,10 @@ export const apiUploadFile = async (uploadUrl, file) => {
     }
 }
 
-export const getUploadUrl = async (eventId)  => {
+export const getUploadUrl = async (eventId, fileName)  => {
     try {
         const headers = generateHeaders();
-        const url = `${EVENTS_URL}/${eventId}/upload_url/main_image`;
+        const url = `${EVENTS_URL}/${eventId}/upload_url/${fileName}`;
         const res = await axios.get(url, { headers: headers });
         return res.data;
     } catch (err) {
