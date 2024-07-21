@@ -1,4 +1,4 @@
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
 import HeaderDivisor from "@/components/ui/HeaderDivisor.jsx";
 import {Button} from "@/components/ui/button.jsx";
@@ -21,9 +21,9 @@ import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/compon
 import {Textarea} from "@/components/ui/textarea.jsx";
 
 export default function EventConfigurationPricing() {
-    const navigate = useNavigate();
     const location = useLocation();
     const {id} = useParams();
+    const [saveChangesLoading, setSaveChangesLoading] = useState(false);
     const [editedPricing, setEditedPricing] = useState(
         (location.state && location.state.editedPricing) ? location.state.editedPricing :
             (location.state && location.state.pricing) ? location.state.pricing : defaultPricing
@@ -31,14 +31,11 @@ export default function EventConfigurationPricing() {
     const [addRateOpen, setAddRateOpen] = useState(false);
     const [newRate, setNewRate] = useState(defaultNewRate);
 
-
-    const nextCreationStep = () => {
-        //TODO no hay por ahora siguiente paso
-        navigate(`/events/${id}/configuration/pricing`, {state: {...location.state, editedPricing: editedPricing}});
-    }
-
-    const backCreationStep = () => {
-        navigate(`/events/${id}/configuration/work`, {state: {...location.state, editedPricing: editedPricing}});
+    const saveChanges = async () => {
+        console.log("guardar cambios");
+        setSaveChangesLoading(true);
+        //await apiPatchEvent(); TODO
+        setSaveChangesLoading(false);
     }
 
     const handleIsFreeCheckBox = (value) => {
@@ -149,7 +146,7 @@ export default function EventConfigurationPricing() {
                                                         </div>
                                                     </TooltipTrigger>
                                                     <TooltipContent className="max-w-96">
-                                                            <p className="text-sm text-muted-foreground">{rate.description}</p>
+                                                        <p className="text-sm text-muted-foreground">{rate.description}</p>
                                                     </TooltipContent>
                                                 </Tooltip>
                                             </TooltipProvider>
@@ -242,8 +239,12 @@ export default function EventConfigurationPricing() {
                                     </Dialog>
                                 </CardFooter>)}
                             <CardFooter className="border-t px-6 py-4">
-                                <Button onClick={backCreationStep} className="mx-1.5">Atras</Button>
-                                <Button onClick={nextCreationStep} className="mx-1.5">Siguiente</Button>
+                                <Button
+                                    onClick={saveChanges}
+                                    disabled={saveChangesLoading || location.state.pricing === editedPricing}
+                                    className="bg-green-600">
+                                    Guardar cambios
+                                </Button>
                             </CardFooter>
                         </Card>
                     </div>

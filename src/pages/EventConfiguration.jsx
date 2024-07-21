@@ -1,4 +1,4 @@
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
 import HeaderDivisor from "@/components/ui/HeaderDivisor.jsx";
 import {Input} from "@/components/ui/input.jsx";
@@ -22,11 +22,11 @@ import EventHeader from "@/features/events/components/EventHeader.jsx";
 import {useSelector} from "react-redux";
 
 export default function EventConfiguration() {
-    const navigate = useNavigate();
     const {currentUser} = useSelector((state) => state.user);
     const {toast} = useToast();
     const {id} = useParams();
     const location = useLocation();
+    const [saveChangesLoading, setSaveChangesLoading] = useState(false);
     const [editedEvent, setEditedEvent] = useState(location.state.editedEvent ? location.state.editedEvent : location.state.event);
     const [notificationsMails, setNotificationsMails] = useState(
         (location.state.editedEvent && location.state.editedEvent.notifications_mails)
@@ -34,8 +34,11 @@ export default function EventConfiguration() {
             : location.state.event.notifications_mails?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
     );
 
-    const nextCreationStep = () => {
-        navigate(`/events/${id}/configuration/dates`, {state: {...location.state, editedEvent: editedEvent}});
+    const saveChanges = async () => {
+        console.log("guardar cambios");
+        setSaveChangesLoading(true);
+        //await apiPatchEvent(); TODO
+        setSaveChangesLoading(false);
     }
 
     const handleInputChange = (e) => {
@@ -194,7 +197,12 @@ export default function EventConfiguration() {
                                 </div>
                             </CardContent>
                             <CardFooter className="border-t px-6 py-4">
-                                <Button onClick={nextCreationStep}>Siguiente</Button>
+                                <Button
+                                    onClick={saveChanges}
+                                    disabled={saveChangesLoading || location.state.event === editedEvent}
+                                    className="bg-green-600">
+                                    Guardar cambios
+                                </Button>
                             </CardFooter>
                         </Card>
                     </div>

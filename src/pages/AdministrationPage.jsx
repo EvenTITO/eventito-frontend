@@ -65,8 +65,7 @@ export const AdministrationPage = () => {
     }
 
     const handleEditEventStatus = async (eventId, status) => {
-        const res = await apiPatchEventStatus(eventId, status);
-        console.log(res);
+        await apiPatchEventStatus(eventId, status);
         refreshData().then(r => console.log("Events reloaded"));
     }
 
