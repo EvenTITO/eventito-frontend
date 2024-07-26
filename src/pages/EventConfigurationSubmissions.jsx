@@ -48,6 +48,9 @@ export default function EventConfigurationSubmissions() {
                         <Link to={`/events/${id}/configuration/pricing`}
                               state={{...location.state, editedWork: editedWork}}>
                             Tarifas</Link>
+                        <Link to={`/events/${id}/configuration/members`}
+                              state={{...location.state, editedWork: editedWork}}>
+                            Miembros</Link>
                     </nav>
                     <div className="grid gap-6">
                         <Card x-chunk="dashboard-04-chunk-1">

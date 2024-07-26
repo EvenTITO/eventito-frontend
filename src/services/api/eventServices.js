@@ -31,7 +31,7 @@ export const apiPatchEventStatus = async (eventId, status) => {
 export const apiGetEventById = async (eventId) => {
     try {
         const headers = generateHeaders();
-        const url = `${EVENTS_URL}/${eventId}`;
+        const url = `${EVENTS_URL}/${eventId}/public`; //TODO revisar cambios con lucas
         const res = await axios.get(url, {headers: headers});
         return res.data;
     } catch (err) {
@@ -59,6 +59,18 @@ export const apiPostEvent = async (event) => {
         await axios.post(url, event, {headers: headers});
     } catch (err) {
         console.log("Error creando evento", err);
+        throw err;
+    }
+}
+
+export const apiGetEventMembersByRole = async (eventId, role) => {
+    try {
+        const headers = generateHeaders();
+        const url = `${EVENTS_URL}/${eventId}/${role}`;
+        const res = await axios.get(url, {headers: headers});
+        return res.data;
+    } catch (err) {
+        console.log(`Error en obtener los ${role} del evento`, err);
         throw err;
     }
 }
