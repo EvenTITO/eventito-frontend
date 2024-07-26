@@ -132,6 +132,7 @@ function EventMainImage({event, refreshData}) {
     const showImagePicker = useRef(false);
     const enableEditMainImage = useState(event.roles.includes("ORGANIZER"))
     const [isHovered, setIsHovered] = useState(false);
+    const main_img = event.media.find(m => m.name === 'main_image_url');
 
     const handleUpdateMainImage = (e) => {
         const file = e.target.files[0];
@@ -164,7 +165,7 @@ function EventMainImage({event, refreshData}) {
         <div onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
             <button onClick={handleClick} disabled={!enableEditMainImage}>
                 <img
-                    src={event.main_image_url != null ? event.main_image_url : Logo}
+                    src={main_img ? main_img.url : Logo}
                     onError={event => {
                         event.target.src = Logo
                         event.onerror = null
