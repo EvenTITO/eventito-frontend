@@ -8,7 +8,7 @@ import {Label} from "@/components/ui/label.jsx";
 import {Textarea} from "@/components/ui/textarea"
 import {MultipleSelector} from "@/components/ui/multiple-selector.jsx"
 import {useToast} from '@/components/ui/use-toast';
-import {useState} from "react";
+import {useState, useEffect } from "react";
 import {
     Select,
     SelectContent,
@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/select.jsx";
 import EventHeader from "@/features/events/components/EventHeader.jsx";
 import {useSelector} from "react-redux";
+
+import { apiGetEventFor, apiPutEventFor } from "@/services/api/eventServices.js";
 
 export default function EventConfiguration() {
     const {currentUser} = useSelector((state) => state.user);
@@ -34,32 +36,73 @@ export default function EventConfiguration() {
             : location.state.event.notifications_mails?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
     );
 
+    const [changeSaved, setChangeSaved] = useState(true)
+    useEffect(() => {
+        refreshData().then(r => console.log("Event Configuration loaded"));
+    }, [id]);
+
+    const refreshData = async () => {
+        const ev = await apiGetEventFor(`${id}/configuration`)
+        const ne = ev.notification_mails
+        if( ne && ne.length != 0){
+            setNotificationsMails(ne.map( nm => mapToMultiSelectOption(nm, currentUser.email)))
+        }
+    };
+
     const saveChanges = async () => {
-        console.log("guardar cambios");
+        console.log("guardar cambios event configuration");
+        setChangeSaved(false)
+
         setSaveChangesLoading(true);
-        //await apiPatchEvent(); TODO
-        setSaveChangesLoading(false);
+
+        const editedEv = {
+            "title": editedEvent.title,
+            "description": editedEvent.description,
+            "event_type": editedEvent.event_type,
+            "start_date": editedEvent.start_date,
+            "end_date": editedEvent.end_date,
+            "location": editedEvent.location,
+            "tracks": editedEvent.tracks,   
+            "contact": editedEvent.contact,
+            "organized_by": editedEvent.organized_by,
+            "notification_mails": notificationsMails.map( nm => nm.value)
+        }
+
+        await apiPutEventFor(`${id}/configuration/general`, editedEv)
+
+        setSaveChangesLoading(false)
+        setChangeSaved(true)
     }
 
     const handleInputChange = (e) => {
+        setChangeSaved(false)
+
         const {name, value} = e.target;
         setEditedEvent({...editedEvent, [name]: value});
     };
 
     const handleSelectType = (value) => {
+        setChangeSaved(false)
+
         setEditedEvent({...editedEvent, event_type: value});
     };
 
     const handleNonDecidedLocationCheckBox = (value) => {
+        setChangeSaved(false)
+
         setEditedEvent({...editedEvent, location: "", nonDecidedLocation: value});
     };
 
     const handleOnlyAdminNotificationsCheckBox = (value) => {
+        setChangeSaved(false)
+
         setNotificationsMails([mapToMultiSelectOption(currentUser.email, currentUser.email)]);
         setEditedEvent({...editedEvent, notifications_mails: [currentUser.email], only_admin_notifications: value});
     };
 
     const handleValidateMultiSelectMail = (option) => {
+        setChangeSaved(false)
+
         const validationMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const result = validationMailRegex.test(option.value);
         if (!result) {
@@ -71,6 +114,8 @@ export default function EventConfiguration() {
     }
 
     const handleMultiSelectMail = (selectedMails) => {
+        setChangeSaved(false)
+
         setNotificationsMails(selectedMails.map(sm => mapToMultiSelectOption(sm.value, currentUser.email)));
         setEditedEvent({...editedEvent, notifications_mails: selectedMails.map(sm => sm.value)});
     };
@@ -202,7 +247,7 @@ export default function EventConfiguration() {
                             <CardFooter className="border-t px-6 py-4">
                                 <Button
                                     onClick={saveChanges}
-                                    disabled={saveChangesLoading || location.state.event === editedEvent}
+                                    disabled={saveChangesLoading || changeSaved || location.state.event === editedEvent}
                                     className="bg-green-600">
                                     Guardar cambios
                                 </Button>
