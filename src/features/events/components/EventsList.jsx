@@ -32,6 +32,7 @@ export default function EventsList({ events, setEventSelected }) {
 			</TableHeader>
 			<TableBody>
 				{events.map((event) => {
+					const main_img = event.media.find(m => m.name === 'main_image_url');
 					return (
 						<TableRow onClick={() => setEventSelected(event.id)} key={event.id}>
 							<TableCell className="hidden sm:table-cell">
@@ -39,7 +40,7 @@ export default function EventsList({ events, setEventSelected }) {
 									className="aspect-square rounded-md object-cover"
 									height="64"
 									width="64"
-									src={event.main_image_url != null ? event.main_image_url : Logo}
+									src={ main_img ? main_img.url : Logo}
 									onError={event => {
 										event.target.src = Logo
 										event.onerror = null

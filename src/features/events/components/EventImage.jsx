@@ -6,6 +6,8 @@ export default function EventImage({event, refreshData}) {
     const showImagePicker = useRef(false);
     const enableEditMainImage = useState(event.roles.includes("ORGANIZER"))
     const [isHovered, setIsHovered] = useState(false);
+    const banner_img = event.media.find(m => m.name === 'banner_image_url');
+
 
     const handleUpdateMainImage = (e) => {
         const file = e.target.files[0];
@@ -39,7 +41,7 @@ export default function EventImage({event, refreshData}) {
             <button onClick={handleClick} disabled={!enableEditMainImage} className="object-cover w-full h-40">
                 <img
                     className="object-cover w-full h-40"
-                    src={event.banner_image_url != null ? event.banner_image_url : defaultBanner}
+                    src={banner_img ? banner_img.url : defaultBanner}
                     onError={event => {
                         event.target.src = defaultBanner
                         event.onerror = null

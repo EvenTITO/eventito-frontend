@@ -101,6 +101,9 @@ export default function EventConfiguration() {
                         <Link to={`/events/${id}/configuration/pricing`}
                               state={{...location.state, editedEvent: editedEvent}}>
                             Tarifas</Link>
+                        <Link to={`/events/${id}/configuration/members`}
+                              state={{...location.state, editedEvent: editedEvent}}>
+                            Miembros</Link>
                     </nav>
                     <div className="grid gap-6">
                         <Card x-chunk="dashboard-04-chunk-1">

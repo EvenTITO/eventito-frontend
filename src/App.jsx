@@ -24,6 +24,7 @@ import CompleteRegisterPage from './pages/CompleteRegisterPage'
 import UncompletedUserLayout from './layouts/UncompletedUserLayout/UncompletedUserLayout'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import {Toaster} from "@/components/ui/toaster.jsx";
+import EventConfigurationMembers from "@/pages/EventConfigurationMembers.jsx";
 
 function App() {
     const dispatch = useDispatch();
@@ -69,6 +70,7 @@ function App() {
                             <Route path="events/:id/configuration/dates" element={<EventConfigurationDates/>}/>
                             <Route path="events/:id/configuration/work" element={<EventConfigurationSubmissions/>}/>
                             <Route path="events/:id/configuration/pricing" element={<EventConfigurationPricing/>}/>
+                            <Route path="events/:id/configuration/members" element={<EventConfigurationMembers/>}/>
                         </Route>
                     </Routes>
                 ) :

@@ -12,6 +12,7 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select.jsx";
+import {USER_ROLES} from "@/lib/Constants.js";
 
 export default function UsersList({users, editUser}) {
     const [enableEditUserId, setEnableEditUserId] = useState("");
@@ -69,13 +70,19 @@ export default function UsersList({users, editUser}) {
                                         <SelectContent>
                                             <SelectGroup>
                                                 <SelectLabel>Roles</SelectLabel>
-                                                <SelectItem value="ADMIN">Administrador</SelectItem>
-                                                <SelectItem value="EVENT_CREATOR">Creador de eventos</SelectItem>
-                                                <SelectItem value="DEFAULT">Default</SelectItem>
+                                                {
+                                                    USER_ROLES.map((role) => {
+                                                        return (
+                                                            <SelectItem value={role.key}>{role.label}</SelectItem>
+                                                        )
+                                                    })
+                                                }
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
-                                ) : (user.role)}
+                                ) : (USER_ROLES.filter(role => role.key === user.role)
+                                    .map(role => role.label)
+                                    .at(0))}
                             </TableCell>
                             <TableCell className="font-medium">
                                 {enableEditUserId === user.id ? (
