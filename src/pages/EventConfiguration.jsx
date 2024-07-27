@@ -294,9 +294,9 @@ export default function EventConfiguration() {
                                     />
                                 </div>
                                 <div className="grid gap-2 mb-2">
-                                    <Label htmlFor="organizedBy">Organizado por</Label>
-                                    <Input name="organizedBy"
-                                           id="organizedBy"
+                                    <Label htmlFor="organized_by">Organizado por</Label>
+                                    <Input name="organized_by"
+                                           id="organized_by"
                                            placeholder="Ingrese el organizador del evento..."
                                            onChange={handleInputChange}
                                            value={editedEvent.organized_by}
