@@ -7,7 +7,7 @@ import EventHeader from "@/features/events/components/EventHeader";
 import EventImage from "@/features/events/components/EventImage";
 import EventContent from "@/features/events/components/EventContent";
 
-import {apiGetEventById, apiGetEventPublicById} from "@/services/api/eventServices.js";
+import { apiGetEventPublicById} from "@/services/api/eventServices.js";
 
 export default function EventPage() {
     const {id} = useParams();

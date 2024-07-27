@@ -35,6 +35,11 @@ export default function EventConfiguration() {
             ? location.state.editedEvent.notifications_mails?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
             : location.state.event.notifications_mails?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
     );
+    const [tracks, setTracks] = useState(
+        (location.state.editedEvent && location.state.editedEvent.tracks)
+            ? location.state.editedEvent.tracks?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
+            : location.state.event.tracks?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
+    );
 
     const [changeSaved, setChangeSaved] = useState(true)
     useEffect(() => {
@@ -46,6 +51,10 @@ export default function EventConfiguration() {
         const ne = ev.notification_mails
         if( ne && ne.length != 0){
             setNotificationsMails(ne.map( nm => mapToMultiSelectOption(nm, currentUser.email)))
+        }
+        const tracks = ev.tracks
+        if( tracks && tracks.length != 0){
+            setTracks(tracks.map( t => mapToMultiSelectOption(t, currentUser.email)))
         }
     };
 
@@ -62,7 +71,7 @@ export default function EventConfiguration() {
             "start_date": editedEvent.start_date,
             "end_date": editedEvent.end_date,
             "location": editedEvent.location,
-            "tracks": editedEvent.tracks,   
+            "tracks": tracks.map( nm => nm.value), 
             "contact": editedEvent.contact,
             "organized_by": editedEvent.organized_by,
             "notification_mails": notificationsMails.map( nm => nm.value)
@@ -113,12 +122,31 @@ export default function EventConfiguration() {
         return result;
     }
 
+    const handleValidateTracks = (option) => {
+        setChangeSaved(false)
+
+        const isValid = option.value.length <= 20
+        if( ! isValid ){
+            toast({
+                title: `Track inválido. Asegúrese de que el tamaño sea como máximo de 20 caracteres`
+            });
+        }
+        return isValid
+    }
+
     const handleMultiSelectMail = (selectedMails) => {
         setChangeSaved(false)
 
         setNotificationsMails(selectedMails.map(sm => mapToMultiSelectOption(sm.value, currentUser.email)));
         setEditedEvent({...editedEvent, notifications_mails: selectedMails.map(sm => sm.value)});
     };
+
+    const handleMultiSelectTracks = (selectedTracks) => {
+        setChangeSaved(false)
+
+        setTracks( selectedTracks.map(sm => mapToMultiSelectOption(sm.value, currentUser.email)) )
+        setEditedEvent( {...editedEvent, tracks: selectedTracks.map( s => s.value)})
+    }
 
     return (
         <div className="flex min-h-screen w-full flex-col">
@@ -213,15 +241,25 @@ export default function EventConfiguration() {
                                         placeholder="Agregue los mails a los cuales desea notificar..."
                                     ></MultipleSelector>
                                 </div>
-                                <div className="flex items-center space-x-2 gap-2 mb-5">
-                                    <Checkbox id="onlyAdmin" checked={editedEvent.only_admin_notifications}
-                                              onCheckedChange={handleOnlyAdminNotificationsCheckBox}/>
-                                    <label
-                                        htmlFor="onlyAdmin"
-                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                    >
-                                        Solo notificaciones a los organizadores.
-                                    </label>
+                                <div className="grid gap-2 mb-2">
+                                    <Label htmlFor="tracks">Tracks</Label>
+                                    <MultipleSelector
+                                        id="tracks"
+                                        name="tracks"
+                                        value={tracks}
+                                        onChange={handleMultiSelectTracks}
+                                        onValidateCreatable={handleValidateTracks}
+                                        creatable={true}
+                                        hideClearAllButton={true}
+                                        hidePlaceholderWhenSelected={false}
+                                        maxSelected={5}
+                                        onMaxSelected={(maxLimit) => {
+                                            toast({
+                                                title: `Has alcanzado la cantidad máxima de tracks de mail: ${maxLimit}`,
+                                            });
+                                        }}
+                                        placeholder="Agregue los tracks que desea ..."
+                                    ></MultipleSelector>
                                 </div>
                                 <div className="grid gap-2 mb-2">
                                     <Label htmlFor="location">Ubicación</Label>
