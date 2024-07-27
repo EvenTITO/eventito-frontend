@@ -40,7 +40,7 @@ export default function EventConfiguration() {
             ? location.state.editedEvent.tracks?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
             : location.state.event.tracks?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
     );
-
+      
     const [changeSaved, setChangeSaved] = useState(true)
     useEffect(() => {
         refreshData().then(r => console.log("Event Configuration loaded"));
@@ -56,6 +56,9 @@ export default function EventConfiguration() {
         if( tracks && tracks.length != 0){
             setTracks(tracks.map( t => mapToMultiSelectOption(t, currentUser.email)))
         }
+        
+        editedEvent.organized_by = ev.organized_by
+        editedEvent.contact = ev.contact
     };
 
     const saveChanges = async () => {
@@ -280,6 +283,24 @@ export default function EventConfiguration() {
                                     >
                                         Todavia no decido la ubicación del evento.
                                     </label>
+                                </div>
+                                <div className="grid gap-2 mb-2">
+                                    <Label htmlFor="contact">Contacto</Label>
+                                    <Input name="contact"
+                                           id="contact"
+                                           placeholder="Ingrese el contacto del evento..."
+                                           onChange={handleInputChange}
+                                           value={editedEvent.contact}
+                                    />
+                                </div>
+                                <div className="grid gap-2 mb-2">
+                                    <Label htmlFor="organizedBy">Organizado por</Label>
+                                    <Input name="organizedBy"
+                                           id="organizedBy"
+                                           placeholder="Ingrese el organizador del evento..."
+                                           onChange={handleInputChange}
+                                           value={editedEvent.organized_by}
+                                    />
                                 </div>
                             </CardContent>
                             <CardFooter className="border-t px-6 py-4">
