@@ -8,7 +8,7 @@ import {Label} from "@/components/ui/label.jsx";
 import {Textarea} from "@/components/ui/textarea"
 import {MultipleSelector} from "@/components/ui/multiple-selector.jsx"
 import {useToast} from '@/components/ui/use-toast';
-import {useState} from "react";
+import {useState, useEffect } from "react";
 import {
     Select,
     SelectContent,
@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/select.jsx";
 import EventHeader from "@/features/events/components/EventHeader.jsx";
 import {useSelector} from "react-redux";
+
+import { apiGetEventFor, apiPutEventFor } from "@/services/api/eventServices.js";
 
 export default function EventConfiguration() {
     const {currentUser} = useSelector((state) => state.user);
@@ -33,33 +35,86 @@ export default function EventConfiguration() {
             ? location.state.editedEvent.notifications_mails?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
             : location.state.event.notifications_mails?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
     );
+    const [tracks, setTracks] = useState(
+        (location.state.editedEvent && location.state.editedEvent.tracks)
+            ? location.state.editedEvent.tracks?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
+            : location.state.event.tracks?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
+    );
+      
+    const [changeSaved, setChangeSaved] = useState(true)
+    useEffect(() => {
+        refreshData().then(r => console.log("Event Configuration loaded"));
+    }, [id]);
+
+    const refreshData = async () => {
+        const ev = await apiGetEventFor(`${id}/configuration`)
+        const ne = ev.notification_mails
+        if( ne && ne.length != 0){
+            setNotificationsMails(ne.map( nm => mapToMultiSelectOption(nm, currentUser.email)))
+        }
+        const tracks = ev.tracks
+        if( tracks && tracks.length != 0){
+            setTracks(tracks.map( t => mapToMultiSelectOption(t, currentUser.email)))
+        }
+        
+        editedEvent.organized_by = ev.organized_by
+        editedEvent.contact = ev.contact
+    };
 
     const saveChanges = async () => {
-        console.log("guardar cambios");
+        console.log("guardar cambios event configuration");
+        setChangeSaved(false)
+
         setSaveChangesLoading(true);
-        //await apiPatchEvent(); TODO
-        setSaveChangesLoading(false);
+
+        const editedEv = {
+            "title": editedEvent.title,
+            "description": editedEvent.description,
+            "event_type": editedEvent.event_type,
+            "start_date": editedEvent.start_date,
+            "end_date": editedEvent.end_date,
+            "location": editedEvent.location,
+            "tracks": tracks.map( nm => nm.value), 
+            "contact": editedEvent.contact,
+            "organized_by": editedEvent.organized_by,
+            "notification_mails": notificationsMails.map( nm => nm.value)
+        }
+
+        await apiPutEventFor(`${id}/configuration/general`, editedEv)
+
+        setSaveChangesLoading(false)
+        setChangeSaved(true)
     }
 
     const handleInputChange = (e) => {
+        setChangeSaved(false)
+
         const {name, value} = e.target;
         setEditedEvent({...editedEvent, [name]: value});
     };
 
     const handleSelectType = (value) => {
+        setChangeSaved(false)
+
         setEditedEvent({...editedEvent, event_type: value});
     };
 
     const handleNonDecidedLocationCheckBox = (value) => {
+        setChangeSaved(false)
+
         setEditedEvent({...editedEvent, location: "", nonDecidedLocation: value});
     };
 
     const handleOnlyAdminNotificationsCheckBox = (value) => {
+        setChangeSaved(false)
+
         setNotificationsMails([mapToMultiSelectOption(currentUser.email, currentUser.email)]);
         setEditedEvent({...editedEvent, notifications_mails: [currentUser.email], only_admin_notifications: value});
     };
 
     const handleValidateMultiSelectMail = (option) => {
+        setChangeSaved(false)
+
         const validationMailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const result = validationMailRegex.test(option.value);
         if (!result) {
@@ -70,10 +125,31 @@ export default function EventConfiguration() {
         return result;
     }
 
+    const handleValidateTracks = (option) => {
+        setChangeSaved(false)
+
+        const isValid = option.value.length <= 20
+        if( ! isValid ){
+            toast({
+                title: `Track inválido. Asegúrese de que el tamaño sea como máximo de 20 caracteres`
+            });
+        }
+        return isValid
+    }
+
     const handleMultiSelectMail = (selectedMails) => {
+        setChangeSaved(false)
+
         setNotificationsMails(selectedMails.map(sm => mapToMultiSelectOption(sm.value, currentUser.email)));
         setEditedEvent({...editedEvent, notifications_mails: selectedMails.map(sm => sm.value)});
     };
+
+    const handleMultiSelectTracks = (selectedTracks) => {
+        setChangeSaved(false)
+
+        setTracks( selectedTracks.map(sm => mapToMultiSelectOption(sm.value, currentUser.email)) )
+        setEditedEvent( {...editedEvent, tracks: selectedTracks.map( s => s.value)})
+    }
 
     return (
         <div className="flex min-h-screen w-full flex-col">
@@ -168,15 +244,25 @@ export default function EventConfiguration() {
                                         placeholder="Agregue los mails a los cuales desea notificar..."
                                     ></MultipleSelector>
                                 </div>
-                                <div className="flex items-center space-x-2 gap-2 mb-5">
-                                    <Checkbox id="onlyAdmin" checked={editedEvent.only_admin_notifications}
-                                              onCheckedChange={handleOnlyAdminNotificationsCheckBox}/>
-                                    <label
-                                        htmlFor="onlyAdmin"
-                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                    >
-                                        Solo notificaciones a los organizadores.
-                                    </label>
+                                <div className="grid gap-2 mb-2">
+                                    <Label htmlFor="tracks">Tracks</Label>
+                                    <MultipleSelector
+                                        id="tracks"
+                                        name="tracks"
+                                        value={tracks}
+                                        onChange={handleMultiSelectTracks}
+                                        onValidateCreatable={handleValidateTracks}
+                                        creatable={true}
+                                        hideClearAllButton={true}
+                                        hidePlaceholderWhenSelected={false}
+                                        maxSelected={5}
+                                        onMaxSelected={(maxLimit) => {
+                                            toast({
+                                                title: `Has alcanzado la cantidad máxima de tracks de mail: ${maxLimit}`,
+                                            });
+                                        }}
+                                        placeholder="Agregue los tracks que desea ..."
+                                    ></MultipleSelector>
                                 </div>
                                 <div className="grid gap-2 mb-2">
                                     <Label htmlFor="location">Ubicación</Label>
@@ -198,11 +284,29 @@ export default function EventConfiguration() {
                                         Todavia no decido la ubicación del evento.
                                     </label>
                                 </div>
+                                <div className="grid gap-2 mb-2">
+                                    <Label htmlFor="contact">Contacto</Label>
+                                    <Input name="contact"
+                                           id="contact"
+                                           placeholder="Ingrese el contacto del evento..."
+                                           onChange={handleInputChange}
+                                           value={editedEvent.contact}
+                                    />
+                                </div>
+                                <div className="grid gap-2 mb-2">
+                                    <Label htmlFor="organized_by">Organizado por</Label>
+                                    <Input name="organized_by"
+                                           id="organized_by"
+                                           placeholder="Ingrese el organizador del evento..."
+                                           onChange={handleInputChange}
+                                           value={editedEvent.organized_by}
+                                    />
+                                </div>
                             </CardContent>
                             <CardFooter className="border-t px-6 py-4">
                                 <Button
                                     onClick={saveChanges}
-                                    disabled={saveChangesLoading || location.state.event === editedEvent}
+                                    disabled={saveChangesLoading || changeSaved || location.state.event === editedEvent}
                                     className="bg-green-600">
                                     Guardar cambios
                                 </Button>
