@@ -61,11 +61,8 @@ export default function HomePage() {
     const refreshData = async () => {
         const apiPublicEvents = await apiGetEventsByStatus("STARTED");
         const apiMyEvents = await apiGetMyEvents();
-        
         setMyEvents(apiMyEvents);
         setPublicEvents(apiPublicEvents);
-        // setMyEvents(myEventsDefault);
-        // setPublicEvents(publicEventsDefault);
     };
 
     const onTabChange = (value) => {
@@ -233,49 +230,6 @@ export default function HomePage() {
         );
     }
 }
-
-const publicEventsDefault = [
-    {
-        id: 1234,
-        photo_url: "https://orlandosydney.com/wp-content/uploads/2023/08/Conference-at-Darling-Harbour-Theatre-Interior-Photo%C2%B7-ICC-Sydney.-2500-seated-capacity.-Photography-By-orlandosydney.com-OS1_7156-1200x801.webp",
-        title: "JIAFES 2024",
-        author: "Autor JIAFES",
-        start_date: "2023-07-12 10:45:00",
-        end_date: "",
-        event_type: "CONFERENCE",
-        user_status: "Inscripto",
-        location: "FIUBA - Paseo Colón",
-        only_admin_notifications: false,
-        notifications_mails:[]
-    },
-    {
-        id: 1235,
-        photo_url: "https://orlandosydney.com/wp-content/uploads/2023/08/Conference-at-Darling-Harbour-Theatre-Interior-Photo%C2%B7-ICC-Sydney.-2500-seated-capacity.-Photography-By-orlandosydney.com-OS1_7156-1200x801.webp",
-        title: "ECI 2024",
-        author: "Autor ECI",
-        start_date: "2023-07-15 10:45:00",
-        end_date: "",
-        event_type: "CONFERENCE",
-        user_status: "-",
-        location: "EXACTAS - Ciudad Universitaria",
-        only_admin_notifications: false,
-        notifications_mails:[]
-    },
-];
-
-const myEventsDefault = [
-    {
-        id: 1236,
-        photo_url: "https://images.seeklogo.com/logo-png/53/1/conmebol-copa-america-usa-2024-logo-png_seeklogo-535608.png",
-        title: "Copa America 2024",
-        author: "Fernando Sinisi",
-        start_date: "2024-06-19 17:45:00",
-        end_date: "",
-        event_type: "TALK",
-        location: "Teatro Flores",
-        notifications_mails:[]
-    }
-];
 
 const defaultEvent = {
     title: "",

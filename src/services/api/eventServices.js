@@ -74,3 +74,26 @@ export const apiGetEventMembersByRole = async (eventId, role) => {
         throw err;
     }
 }
+
+export const apiGetEventConfigurationById = async (eventId) => {
+    try {
+        const headers = generateHeaders();
+        const url = `${EVENTS_URL}/${eventId}/configuration`;
+        const res = await axios.get(url, {headers: headers});
+        return res.data;
+    } catch (err) {
+        console.log("Error en obtener la configuracion del evento", err);
+        throw err;
+    }
+}
+
+export const apiPutEventConfiguration = async (eventId, configName, body) => {
+    try {
+        const headers = generateHeaders();
+        const url = `${EVENTS_URL}/${eventId}/configuration/${configName}`;
+        await axios.put(url, body, {headers: headers});
+    } catch (err) {
+        console.log("Error editando evento", err);
+        throw err;
+    }
+}

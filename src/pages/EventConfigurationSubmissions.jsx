@@ -1,29 +1,58 @@
-import {Link, useLocation, useParams} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
 import HeaderDivisor from "@/components/ui/HeaderDivisor.jsx";
 import {Button} from "@/components/ui/button.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import EventHeader from "@/features/events/components/EventHeader.jsx";
+import {apiGetEventById, apiGetEventConfigurationById, apiPutEventConfiguration} from "@/services/api/eventServices.js";
+import {Loader2} from "lucide-react";
+import {defaultEventConfig} from "@/lib/utils.js";
 
 export default function EventConfigurationSubmissions() {
-    const location = useLocation();
     const {id} = useParams();
+    const location = useLocation();
+    const navigate = useNavigate();
     const [saveChangesLoading, setSaveChangesLoading] = useState(false);
-    const [editedWork, setEditedWork] = useState(
-        (location.state && location.state.editedWork) ? location.state.editedWork :
-            (location.state && location.state.work) ? location.state.work : defaultWork);
+    const [saveChangesDisabled, setSaveChangesDisabled] = useState(true);
+    const [event, setEvent] = useState(defaultEventConfig);
+    const [eventConfiguration, setEventConfiguration] = useState({});
+    const [editedSubmissionConfiguration, setEditedSubmissionConfiguration] = useState({});
+
+    useEffect(() => {
+        refreshData().then(r => console.log("Event configuration submissions loaded."));
+    }, [id]);
+
+    const refreshData = async () => {
+        const event = !location.state?.event ? await apiGetEventById(id) : location.state.event;
+        const eventConfiguration = !location.state?.eventConfiguration ?
+            await apiGetEventConfigurationById(id) :
+            location.state.eventConfiguration;
+        setEvent(event)
+        setEventConfiguration(eventConfiguration);
+        setEditedSubmissionConfiguration(eventConfiguration.review_skeleton);
+    };
 
     const saveChanges = async () => {
-        console.log("guardar cambios");
         setSaveChangesLoading(true);
-        //await apiPatchEvent(); TODO
+        const newDateConfig = editedSubmissionConfiguration;
+        apiPutEventConfiguration(id, "review-skeleton", newDateConfig)
+            .then(r => {
+                const newEventConfiguration = {...eventConfiguration, review_skeleton: newDateConfig};
+                navigate(`/events/${id}/configuration/work`, {
+                    state: {
+                        event: event,
+                        eventConfiguration: newEventConfiguration
+                    }
+                });
+            })
         setSaveChangesLoading(false);
+        setSaveChangesDisabled(true);
     }
 
     return (
         <div className="flex min-h-screen w-full flex-col">
             <HeaderDivisor/>
-            <EventHeader event={location.state.event}/>
+            <EventHeader event={event}/>
             <main
                 className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
                 <div className="mx-auto grid w-full max-w-6xl gap-2">
@@ -33,24 +62,46 @@ export default function EventConfigurationSubmissions() {
                     className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                     <nav className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0">
                         <Link to={`/events/${id}/configuration`}
-                              state={{...location.state, editedWork: editedWork}}
-                        >
-                            General
+                              state={{
+                                  event,
+                                  eventConfiguration,
+                                  editedSubmissionConfiguration
+                              }}
+                        >General
                         </Link>
                         <Link to={`/events/${id}/configuration/dates`}
-                              state={{...location.state, editedWork: editedWork}}>
-                            Fechas</Link>
+                              state={{
+                                  event,
+                                  eventConfiguration,
+                                  editedSubmissionConfiguration
+                              }}
+                        >Fechas
+                        </Link>
                         <Link to={`/events/${id}/configuration/work`}
-                              state={{...location.state, editedWork: editedWork}}
+                              state={{
+                                  event,
+                                  eventConfiguration,
+                                  editedSubmissionConfiguration
+                              }}
                               className="font-semibold text-primary"
-                        >
-                            Trabajos</Link>
+                        >Trabajos
+                        </Link>
                         <Link to={`/events/${id}/configuration/pricing`}
-                              state={{...location.state, editedWork: editedWork}}>
-                            Tarifas</Link>
+                              state={{
+                                  event,
+                                  eventConfiguration,
+                                  editedSubmissionConfiguration
+                              }}
+                        >Tarifas
+                        </Link>
                         <Link to={`/events/${id}/configuration/members`}
-                              state={{...location.state, editedWork: editedWork}}>
-                            Miembros</Link>
+                              state={{
+                                  event,
+                                  eventConfiguration,
+                                  editedSubmissionConfiguration
+                              }}
+                        >Miembros
+                        </Link>
                     </nav>
                     <div className="grid gap-6">
                         <Card x-chunk="dashboard-04-chunk-1">
@@ -65,8 +116,9 @@ export default function EventConfigurationSubmissions() {
                             <CardFooter className="border-t px-6 py-4">
                                 <Button
                                     onClick={saveChanges}
-                                    disabled={saveChangesLoading || location.state.work === editedWork}
+                                    disabled={saveChangesLoading || saveChangesDisabled}
                                     className="bg-green-600">
+                                    {saveChangesLoading && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
                                     Guardar cambios
                                 </Button>
                             </CardFooter>

@@ -1,4 +1,4 @@
-import {Link, useLocation, useParams} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card"
 import HeaderDivisor from "@/components/ui/HeaderDivisor.jsx";
 import {Input} from "@/components/ui/input.jsx";
@@ -8,7 +8,7 @@ import {Label} from "@/components/ui/label.jsx";
 import {Textarea} from "@/components/ui/textarea"
 import {MultipleSelector} from "@/components/ui/multiple-selector.jsx"
 import {useToast} from '@/components/ui/use-toast';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {
     Select,
     SelectContent,
@@ -19,44 +19,74 @@ import {
     SelectValue
 } from "@/components/ui/select.jsx";
 import EventHeader from "@/features/events/components/EventHeader.jsx";
-import {useSelector} from "react-redux";
+import {apiGetEventById, apiGetEventConfigurationById, apiPutEventConfiguration} from "@/services/api/eventServices.js";
+import {Loader2} from "lucide-react";
+import {defaultEventConfig} from "@/lib/utils.js";
 
 export default function EventConfiguration() {
-    const {currentUser} = useSelector((state) => state.user);
     const {toast} = useToast();
     const {id} = useParams();
     const location = useLocation();
+    const navigate = useNavigate();
     const [saveChangesLoading, setSaveChangesLoading] = useState(false);
-    const [editedEvent, setEditedEvent] = useState(location.state.editedEvent ? location.state.editedEvent : location.state.event);
-    const [notificationsMails, setNotificationsMails] = useState(
-        (location.state.editedEvent && location.state.editedEvent.notifications_mails)
-            ? location.state.editedEvent.notifications_mails?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
-            : location.state.event.notifications_mails?.map(nm => mapToMultiSelectOption(nm, currentUser.email))
-    );
+    const [saveChangesDisabled, setSaveChangesDisabled] = useState(true);
+    const [event, setEvent] = useState(defaultEventConfig);
+    const [eventConfiguration, setEventConfiguration] = useState(defaultConfig);
+    const [editedGeneralConfiguration, setEditedGeneralConfiguration] = useState(defaultConfig);
+    const [notificationsMails, setNotificationsMails] = useState([]);
+
+    useEffect(() => {
+        refreshData().then(r => console.log("Event configuration loaded."));
+    }, []);
+
+    const refreshData = async () => {
+        const event = !location.state?.event ? await apiGetEventById(id) : location.state.event;
+        const eventConfiguration = !location.state?.eventConfiguration ?
+            await apiGetEventConfigurationById(id) :
+            location.state.eventConfiguration;
+        setEvent(event)
+        setEventConfiguration(eventConfiguration);
+        setEditedGeneralConfiguration(initConfig(eventConfiguration));
+        setNotificationsMails(eventConfiguration.notification_mails.map(mapToMultiSelectOption));
+    };
 
     const saveChanges = async () => {
-        console.log("guardar cambios");
         setSaveChangesLoading(true);
-        //await apiPatchEvent(); TODO
+        const newGeneralConfig = saveConfig(editedGeneralConfiguration);
+        apiPutEventConfiguration(id, "general", newGeneralConfig)
+            .then(r => {
+                const newEvent = {...event, ...newGeneralConfig};
+                const newEventConfig = {...eventConfiguration, ...newGeneralConfig}
+                navigate(`/events/${id}/configuration`, {state: {event: newEvent, eventConfiguration: newEventConfig}});
+            })
         setSaveChangesLoading(false);
+        setSaveChangesDisabled(true);
     }
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
-        setEditedEvent({...editedEvent, [name]: value});
+        setEditedGeneralConfiguration({...editedGeneralConfiguration, [name]: value});
+        setSaveChangesDisabled(false);
     };
 
     const handleSelectType = (value) => {
-        setEditedEvent({...editedEvent, event_type: value});
+        setEditedGeneralConfiguration({...editedGeneralConfiguration, event_type: value});
+        setSaveChangesDisabled(false);
     };
 
     const handleNonDecidedLocationCheckBox = (value) => {
-        setEditedEvent({...editedEvent, location: "", nonDecidedLocation: value});
+        setEditedGeneralConfiguration({...editedGeneralConfiguration, location: "", non_decided_location: value});
+        setSaveChangesDisabled(false);
     };
 
     const handleOnlyAdminNotificationsCheckBox = (value) => {
-        setNotificationsMails([mapToMultiSelectOption(currentUser.email, currentUser.email)]);
-        setEditedEvent({...editedEvent, notifications_mails: [currentUser.email], only_admin_notifications: value});
+        setNotificationsMails([]);
+        setEditedGeneralConfiguration({
+            ...editedGeneralConfiguration,
+            notification_mails: [],
+            only_admin_notifications: value
+        });
+        setSaveChangesDisabled(false);
     };
 
     const handleValidateMultiSelectMail = (option) => {
@@ -71,14 +101,18 @@ export default function EventConfiguration() {
     }
 
     const handleMultiSelectMail = (selectedMails) => {
-        setNotificationsMails(selectedMails.map(sm => mapToMultiSelectOption(sm.value, currentUser.email)));
-        setEditedEvent({...editedEvent, notifications_mails: selectedMails.map(sm => sm.value)});
+        setNotificationsMails(selectedMails.map(sm => mapToMultiSelectOption(sm.value)));
+        setEditedGeneralConfiguration({
+            ...editedGeneralConfiguration,
+            notifications_mails: selectedMails.map(sm => sm.value)
+        });
+        setSaveChangesDisabled(false);
     };
 
     return (
         <div className="flex min-h-screen w-full flex-col">
             <HeaderDivisor/>
-            <EventHeader event={location.state.event}/>
+            <EventHeader event={event}/>
             <main
                 className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
                 <div className="mx-auto grid w-full max-w-6xl gap-2">
@@ -88,21 +122,46 @@ export default function EventConfiguration() {
                     className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                     <nav className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0">
                         <Link to={`/events/${id}/configuration`}
-                              state={{...location.state, editedEvent: editedEvent}}
+                              state={{
+                                  event,
+                                  eventConfiguration,
+                                  editedGeneralConfiguration
+                              }}
                               className="font-semibold text-primary">
                             General
                         </Link>
                         <Link to={`/events/${id}/configuration/dates`}
-                              state={{...location.state, editedEvent: editedEvent}}>
-                            Fechas</Link>
+                              state={{
+                                  event,
+                                  eventConfiguration,
+                                  editedGeneralConfiguration
+                              }}
+                        >
+                            Fechas
+                        </Link>
                         <Link to={`/events/${id}/configuration/work`}
-                              state={{...location.state, editedEvent: editedEvent}}>
+                              state={{
+                                  event,
+                                  eventConfiguration,
+                                  editedGeneralConfiguration
+                              }}
+                        >
                             Trabajos</Link>
                         <Link to={`/events/${id}/configuration/pricing`}
-                              state={{...location.state, editedEvent: editedEvent}}>
+                              state={{
+                                  event,
+                                  eventConfiguration,
+                                  editedGeneralConfiguration
+                              }}
+                        >
                             Tarifas</Link>
                         <Link to={`/events/${id}/configuration/members`}
-                              state={{...location.state, editedEvent: editedEvent}}>
+                              state={{
+                                  event,
+                                  eventConfiguration,
+                                  editedGeneralConfiguration
+                              }}
+                        >
                             Miembros</Link>
                     </nav>
                     <div className="grid gap-6">
@@ -120,7 +179,7 @@ export default function EventConfiguration() {
                                            id="title"
                                            placeholder="Ingrese el título del evento..."
                                            onChange={handleInputChange}
-                                           value={editedEvent.title}
+                                           value={editedGeneralConfiguration.title}
                                            disabled/>
                                 </div>
                                 <div className="grid gap-2 mb-5">
@@ -129,12 +188,13 @@ export default function EventConfiguration() {
                                               id="description"
                                               placeholder="Ingrese un descripción para el evento..."
                                               onChange={handleInputChange}
-                                              value={editedEvent.description}
+                                              value={editedGeneralConfiguration.description}
                                               disabled/>
                                 </div>
                                 <div className="grid gap-2 mb-5">
                                     <Label htmlFor="description">Tipos de evento</Label>
-                                    <Select value={editedEvent.event_type} onValueChange={handleSelectType} disabled>
+                                    <Select value={editedGeneralConfiguration.event_type}
+                                            onValueChange={handleSelectType} disabled>
                                         <SelectTrigger className="w-[180px]">
                                             <SelectValue/>
                                         </SelectTrigger>
@@ -156,7 +216,7 @@ export default function EventConfiguration() {
                                         onChange={handleMultiSelectMail}
                                         onValidateCreatable={handleValidateMultiSelectMail}
                                         creatable={true}
-                                        disabled={editedEvent.only_admin_notifications}
+                                        disabled={editedGeneralConfiguration.only_admin_notifications}
                                         hideClearAllButton={true}
                                         hidePlaceholderWhenSelected={false}
                                         maxSelected={5}
@@ -169,7 +229,8 @@ export default function EventConfiguration() {
                                     ></MultipleSelector>
                                 </div>
                                 <div className="flex items-center space-x-2 gap-2 mb-5">
-                                    <Checkbox id="onlyAdmin" checked={editedEvent.only_admin_notifications}
+                                    <Checkbox id="onlyAdmin"
+                                              checked={editedGeneralConfiguration.only_admin_notifications}
                                               onCheckedChange={handleOnlyAdminNotificationsCheckBox}/>
                                     <label
                                         htmlFor="onlyAdmin"
@@ -184,12 +245,12 @@ export default function EventConfiguration() {
                                            id="location"
                                            placeholder="Ingrese la ubicación del evento..."
                                            onChange={handleInputChange}
-                                           value={editedEvent.location}
-                                           disabled={editedEvent.nonDecidedLocation}
+                                           value={editedGeneralConfiguration.location}
+                                           disabled={editedGeneralConfiguration.non_decided_location}
                                     />
                                 </div>
                                 <div className="flex items-center space-x-2 gap-2 mb-5">
-                                    <Checkbox id="include" checked={editedEvent.nonDecidedLocation}
+                                    <Checkbox id="include" checked={editedGeneralConfiguration.non_decided_location}
                                               onCheckedChange={handleNonDecidedLocationCheckBox}/>
                                     <label
                                         htmlFor="include"
@@ -202,8 +263,9 @@ export default function EventConfiguration() {
                             <CardFooter className="border-t px-6 py-4">
                                 <Button
                                     onClick={saveChanges}
-                                    disabled={saveChangesLoading || location.state.event === editedEvent}
+                                    disabled={saveChangesLoading || saveChangesDisabled}
                                     className="bg-green-600">
+                                    {saveChangesLoading && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
                                     Guardar cambios
                                 </Button>
                             </CardFooter>
@@ -215,9 +277,44 @@ export default function EventConfiguration() {
     )
 }
 
-const mapToMultiSelectOption = (value, userMail) => {
-    if (value === userMail) {
-        return {key: value, label: value, value: value, fixed: true, disable: false}
+const initConfig = (actualConfiguration) => {
+    return {
+        title: actualConfiguration.title,
+        description: actualConfiguration.description,
+        event_type: actualConfiguration.event_type,
+        location: actualConfiguration.location,
+        non_decided_location: !actualConfiguration.location || actualConfiguration.location === "",
+        contact: actualConfiguration.contact,
+        organized_by: actualConfiguration.organized_by,
+        tracks: actualConfiguration.tracks,
+        notification_mails: actualConfiguration.notification_mails,
+        only_admin_notifications: !actualConfiguration.notification_mails || actualConfiguration.notification_mails.length === 0
     }
-    return {key: value, label: value, value: value, fixed: false, disable: false}
 }
+
+const saveConfig = (editedGeneralConfiguration) => {
+    return {
+        location: editedGeneralConfiguration.location,
+        contact: editedGeneralConfiguration.contact,
+        organized_by: editedGeneralConfiguration.organized_by,
+        tracks: editedGeneralConfiguration.tracks,
+        notification_mails: editedGeneralConfiguration.notification_mails
+    }
+}
+
+const mapToMultiSelectOption = (userMail) => {
+    return {key: userMail, label: userMail, value: userMail, fixed: false, disable: false}
+}
+
+const defaultConfig = {
+    title: "",
+    description: "",
+    event_type: "",
+    location: "",
+    contact: "",
+    organized_by: "",
+    tracks: [],
+    notification_mails: []
+}
+
+
