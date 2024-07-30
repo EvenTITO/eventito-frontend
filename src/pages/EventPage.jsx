@@ -6,8 +6,7 @@ import {useDispatch} from "react-redux";
 import EventHeader from "@/features/events/components/EventHeader";
 import EventImage from "@/features/events/components/EventImage";
 import EventContent from "@/features/events/components/EventContent";
-
-import { apiGetEventPublicById} from "@/services/api/eventServices.js";
+import {apiGetEventById} from "@/services/api/eventServices.js";
 
 export default function EventPage() {
     const {id} = useParams();
@@ -25,7 +24,7 @@ export default function EventPage() {
     }, [event]);
 
     const refreshData = async () => {
-        const event = await apiGetEventPublicById(id);
+        const event = await apiGetEventById(id);
         setEvent(event);
     };
 

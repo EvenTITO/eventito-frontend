@@ -42,3 +42,15 @@ export const generateHeaders = () => {
     )
   };
 };
+
+export const defaultEventConfig = {
+  title: "",
+  description: "",
+  event_type: "",
+  location: "",
+  contact: "",
+  organized_by: "",
+  roles: [],
+  tracks: [],
+  notification_mails: []
+}

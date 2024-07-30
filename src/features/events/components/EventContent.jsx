@@ -73,17 +73,17 @@ function EventInfo({event}) {
                     <div className="flex h-5 items-center space-x-4 text-sm">
                         <div className="flex gap-2 w-full"><Calendar className="size-4"/>Comienzo</div>
                         <Separator orientation="vertical"/>
-                        <div className="w-full">{event.start_date}</div>
+                        <div className="w-full">{event.dates.find(d => d.name === "START_DATE").date}</div>
                     </div>
                     <div className="flex h-5 items-center space-x-4 text-sm">
                         <div className="flex gap-2 w-full"><Calendar className="size-4"/>Finalización</div>
                         <Separator orientation="vertical"/>
-                        <div className="w-full">{event.end_date}</div>
+                        <div className="w-full">{event.dates.find(d => d.name === "END_DATE").date}</div>
                     </div>
                     <div className="flex h-5 items-center space-x-4 text-sm">
                         <div className="flex gap-2 w-full"><MapPin className="size-4"/>Ubicación</div>
                         <Separator orientation="vertical"/>
-                        <div className="w-full">FIUBA - Paseo Colon</div>
+                        <div className="w-full">{event.location}</div>
                     </div>
                 </div>
             </div>

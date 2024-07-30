@@ -28,30 +28,6 @@ export const apiPatchEventStatus = async (eventId, status) => {
     }
 }
 
-export const apiGetEventPublicById = async (eventId) => {
-    try {
-        const headers = generateHeaders();
-        const url = `${EVENTS_URL}/${eventId}/public`;
-        const res = await axios.get(url, {headers: headers});
-        return res.data;
-    } catch (err) {
-        console.log("Error for get event", err);
-        throw err;
-    }
-}
-
-export const apiGetEventFor = async (finalUrl) => {
-    try {
-        const headers = generateHeaders();
-        const url = `${EVENTS_URL}/${finalUrl}`;
-        const res = await axios.get(url, {headers: headers});
-        return res.data;
-    } catch (err) {
-        console.log(`Error for url: ${url}`);
-        throw err;
-    }
-}
-
 export const apiGetEventById = async (eventId) => {
     try {
         const headers = generateHeaders();
@@ -99,38 +75,25 @@ export const apiGetEventMembersByRole = async (eventId, role) => {
     }
 }
 
-export const apiPutEventGeneral = async (eventId, eventObject) => {
+export const apiGetEventConfigurationById = async (eventId) => {
     try {
         const headers = generateHeaders();
-        const url = `${EVENTS_URL}/${eventId}/configuration/general`;
-        const reqBody = {
-            "title": eventObject.title,
-            "description": eventObject.description,
-            "event_type": eventObject.event_type,
-            "start_date": eventObject.start_date,
-            "end_date": eventObject.end_date,
-            "location": eventObject.location,
-            "tracks": eventObject.tracks,   
-            "contact": eventObject.contact,
-            "organized_by": eventObject.organized_by,
-            "notification_mails": eventObject.notification_mails
-          }
-        
-        return await axios.put(url, reqBody, {headers: headers});
+        const url = `${EVENTS_URL}/${eventId}/configuration`;
+        const res = await axios.get(url, {headers: headers});
+        return res.data;
     } catch (err) {
-        console.log("Error to change event state", err);
+        console.log("Error en obtener la configuracion del evento", err);
         throw err;
     }
 }
 
-export const apiPutEventFor= async (finalUrl, eventBody) => {
+export const apiPutEventConfiguration = async (eventId, configName, body) => {
     try {
         const headers = generateHeaders();
-        const url = `${EVENTS_URL}/${finalUrl}`;
-        
-        return await axios.put(url, eventBody, {headers: headers});
+        const url = `${EVENTS_URL}/${eventId}/configuration/${configName}`;
+        await axios.put(url, body, {headers: headers});
     } catch (err) {
-        console.log("Error to change event state", err);
+        console.log("Error editando evento", err);
         throw err;
     }
 }
