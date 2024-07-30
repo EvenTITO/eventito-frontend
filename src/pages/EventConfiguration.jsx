@@ -30,10 +30,12 @@ export default function EventConfiguration() {
     const navigate = useNavigate();
     const [saveChangesLoading, setSaveChangesLoading] = useState(false);
     const [saveChangesDisabled, setSaveChangesDisabled] = useState(true);
+    const [changeSaved, setChangeSaved] = useState(true); //todo
     const [event, setEvent] = useState(defaultEventConfig);
     const [eventConfiguration, setEventConfiguration] = useState(defaultConfig);
     const [editedGeneralConfiguration, setEditedGeneralConfiguration] = useState(defaultConfig);
     const [notificationsMails, setNotificationsMails] = useState([]);
+    const [tracks, setTracks] = useState([]);
 
     useEffect(() => {
         refreshData().then(r => console.log("Event configuration loaded."));
@@ -48,6 +50,7 @@ export default function EventConfiguration() {
         setEventConfiguration(eventConfiguration);
         setEditedGeneralConfiguration(initConfig(eventConfiguration));
         setNotificationsMails(eventConfiguration.notification_mails.map(mapToMultiSelectOption));
+        setTracks(eventConfiguration.tracks.map(mapToMultiSelectOption));
     };
 
     const saveChanges = async () => {
@@ -57,13 +60,18 @@ export default function EventConfiguration() {
             .then(r => {
                 const newEvent = {...event, ...newGeneralConfig};
                 const newEventConfig = {...eventConfiguration, ...newGeneralConfig}
+                toast({
+                    title: `Cambios guardados correctamente.`,
+                });
                 navigate(`/events/${id}/configuration`, {state: {event: newEvent, eventConfiguration: newEventConfig}});
+                console.log("general configuration saved.");
             })
         setSaveChangesLoading(false);
         setSaveChangesDisabled(true);
     }
 
     const handleInputChange = (e) => {
+        setChangeSaved(false) //todo para que es
         const {name, value} = e.target;
         setEditedGeneralConfiguration({...editedGeneralConfiguration, [name]: value});
         setSaveChangesDisabled(false);
@@ -100,6 +108,16 @@ export default function EventConfiguration() {
         return result;
     }
 
+    const handleValidateTracks = (option) => {
+        const isValid = option.value.length <= 20
+        if (!isValid) {
+            toast({
+                title: `Track inválido. Asegúrese de que el tamaño sea como máximo de 20 caracteres`
+            });
+        }
+        return isValid
+    }
+
     const handleMultiSelectMail = (selectedMails) => {
         setNotificationsMails(selectedMails.map(sm => mapToMultiSelectOption(sm.value)));
         setEditedGeneralConfiguration({
@@ -108,6 +126,12 @@ export default function EventConfiguration() {
         });
         setSaveChangesDisabled(false);
     };
+
+    const handleMultiSelectTracks = (selectedTracks) => {
+        setTracks(selectedTracks.map(sm => mapToMultiSelectOption(sm.value)))
+        setEditedGeneralConfiguration({...editedGeneralConfiguration, tracks: selectedTracks.map(s => s.value)})
+        setSaveChangesDisabled(false);
+    }
 
     return (
         <div className="flex min-h-screen w-full flex-col">
@@ -239,6 +263,26 @@ export default function EventConfiguration() {
                                         Solo notificaciones a los organizadores.
                                     </label>
                                 </div>
+                                <div className="gap-2 mb-5">
+                                    <Label htmlFor="tracks">Tracks</Label>
+                                    <MultipleSelector
+                                        id="tracks"
+                                        name="tracks"
+                                        value={tracks}
+                                        onChange={handleMultiSelectTracks}
+                                        onValidateCreatable={handleValidateTracks}
+                                        creatable={true}
+                                        hideClearAllButton={true}
+                                        hidePlaceholderWhenSelected={false}
+                                        maxSelected={10}
+                                        onMaxSelected={(maxLimit) => {
+                                            toast({
+                                                title: `Has alcanzado la cantidad máxima de tracks: ${maxLimit}`,
+                                            });
+                                        }}
+                                        placeholder="Agregue los tracks que desea ..."
+                                    ></MultipleSelector>
+                                </div>
                                 <div className="grid gap-2 mb-2">
                                     <Label htmlFor="location">Ubicación</Label>
                                     <Input name="location"
@@ -258,6 +302,24 @@ export default function EventConfiguration() {
                                     >
                                         Todavia no decido la ubicación del evento.
                                     </label>
+                                </div>
+                                <div className="grid gap-2 mb-5">
+                                    <Label htmlFor="contact">Contacto</Label>
+                                    <Input name="contact"
+                                           id="contact"
+                                           placeholder="Ingrese el contacto del evento..."
+                                           onChange={handleInputChange}
+                                           value={editedGeneralConfiguration.contact}
+                                    />
+                                </div>
+                                <div className="grid gap-2 mb-5">
+                                    <Label htmlFor="organized_by">Organizado por</Label>
+                                    <Input name="organized_by"
+                                           id="organized_by"
+                                           placeholder="Ingrese el organizador del evento..."
+                                           onChange={handleInputChange}
+                                           value={editedGeneralConfiguration.organized_by}
+                                    />
                                 </div>
                             </CardContent>
                             <CardFooter className="border-t px-6 py-4">
@@ -302,8 +364,8 @@ const saveConfig = (editedGeneralConfiguration) => {
     }
 }
 
-const mapToMultiSelectOption = (userMail) => {
-    return {key: userMail, label: userMail, value: userMail, fixed: false, disable: false}
+const mapToMultiSelectOption = (option) => {
+    return {key: option, label: option, value: option, fixed: false, disable: false}
 }
 
 const defaultConfig = {

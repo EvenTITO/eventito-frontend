@@ -7,6 +7,7 @@ import EventHeader from "@/features/events/components/EventHeader.jsx";
 import {apiGetEventById, apiGetEventConfigurationById, apiPutEventConfiguration} from "@/services/api/eventServices.js";
 import {Loader2} from "lucide-react";
 import {defaultEventConfig} from "@/lib/utils.js";
+import {toast} from "@/components/ui/use-toast.js";
 
 export default function EventConfigurationSubmissions() {
     const {id} = useParams();
@@ -38,12 +39,16 @@ export default function EventConfigurationSubmissions() {
         apiPutEventConfiguration(id, "review-skeleton", newDateConfig)
             .then(r => {
                 const newEventConfiguration = {...eventConfiguration, review_skeleton: newDateConfig};
+                toast({
+                    title: `Cambios guardados correctamente.`,
+                });
                 navigate(`/events/${id}/configuration/work`, {
                     state: {
                         event: event,
                         eventConfiguration: newEventConfiguration
                     }
                 });
+                console.log("review skeleton configuration saved.");
             })
         setSaveChangesLoading(false);
         setSaveChangesDisabled(true);

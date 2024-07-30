@@ -60,6 +60,9 @@ export default function EventConfigurationDates() {
             .then(r => {
                 const newEvent = {...event, dates: newDateConfig.dates};
                 const newEventConfiguration = {...eventConfiguration, dates: newDateConfig.dates};
+                toast({
+                    title: `Cambios guardados correctamente.`,
+                });
                 navigate(`/events/${id}/configuration/dates`, {
                     state: {
                         event: newEvent,

@@ -21,6 +21,7 @@ import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/compon
 import {Textarea} from "@/components/ui/textarea.jsx";
 import {apiGetEventById, apiGetEventConfigurationById, apiPutEventConfiguration} from "@/services/api/eventServices.js";
 import {defaultEventConfig} from "@/lib/utils.js";
+import {toast} from "@/components/ui/use-toast.js";
 
 export default function EventConfigurationPricing() {
     const {id} = useParams();
@@ -55,12 +56,16 @@ export default function EventConfigurationPricing() {
             .then(r => {
                 const newEvent = {...event, pricing: newPricingConfig};
                 const newEventConfiguration = {...eventConfiguration, pricing: newPricingConfig};
+                toast({
+                    title: `Cambios guardados correctamente.`,
+                });
                 navigate(`/events/${id}/configuration/pricing`, {
                     state: {
                         event: newEvent,
                         eventConfiguration: newEventConfiguration
                     }
                 });
+                console.log("pricing configuration saved.");
             })
         setSaveChangesLoading(false);
         setSaveChangesDisabled(true);
