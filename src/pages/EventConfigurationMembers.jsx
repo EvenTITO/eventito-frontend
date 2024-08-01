@@ -1,4 +1,4 @@
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card"
 import HeaderDivisor from "@/components/ui/HeaderDivisor.jsx";
 import {Button} from "@/components/ui/button.jsx";
@@ -7,9 +7,11 @@ import EventHeader from "@/features/events/components/EventHeader.jsx";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs.jsx";
 import SearchBar from "@/components/SearchBar.jsx";
 import {
+    apiDeleteMemberToEvent,
     apiGetEventById,
     apiGetEventConfigurationById,
     apiGetEventMembersByRole,
+    apiPostNewMemberToEvent,
 } from "@/services/api/eventServices.js";
 import OrganizersList from "@/features/administration/components/OrganizersList.jsx";
 import {
@@ -27,6 +29,7 @@ import {toast} from "@/components/ui/use-toast.js";
 import {Input} from "@/components/ui/input.jsx";
 import {MultipleSelector} from "@/components/ui/multiple-selector.jsx";
 import {defaultEventConfig} from "@/lib/utils.js";
+import ChairsList from "@/features/administration/components/ChairsList.jsx";
 
 export default function EventConfigurationMembers() {
     const {id} = useParams();
@@ -36,7 +39,6 @@ export default function EventConfigurationMembers() {
     const [editedMembersConfiguration, setEditedMembersConfiguration] = useState({});
 
     const [tab, setTab] = useState("organizadores");
-    const [searchText, setSearchText] = useState("");
     const [filteredOrganizers, setFilteredOrganizers] = useState([]);
     const [filteredChairs, setFilteredChairs] = useState([]);
 
@@ -47,16 +49,15 @@ export default function EventConfigurationMembers() {
             location.state.eventConfiguration;
         setEvent(event)
         setEventConfiguration(eventConfiguration);
-        //TODO
         const organizers = await apiGetEventMembersByRole(id, "organizers");
-        const chairs = await apiGetEventMembersByRole(id, "reviewers"); //TODO cambiar por chairs cuando este el back
+        const chairs = await apiGetEventMembersByRole(id, "chairs");
         setFilteredOrganizers(organizers);
         setFilteredChairs(chairs);
         setEditedMembersConfiguration({organizers: organizers, chairs: chairs})
     };
 
     useEffect(() => {
-        refreshData().then(r => {
+        refreshData().then(() => {
             console.log("Organizers and chairs loaded");
         });
     }, []);
@@ -67,23 +68,32 @@ export default function EventConfigurationMembers() {
 
     const handleSearchText = (event) => {
         const text = event.target.value;
-        setSearchText(text);
         const lowerText = text.toLowerCase();
         if (tab === "organizadores") {
-            //todo no tiene sentido que si devuelve organizador tenga otro nodo dentro llamado organizers -> back cambiar
             let showOrganizers = editedMembersConfiguration.organizers
-                .filter(o => o.organizer.name.toLowerCase().includes(lowerText) ||
-                    o.organizer.lastname.toLowerCase().includes(lowerText) ||
-                    o.organizer.email.toLowerCase().includes(lowerText));
+                .filter(o => o.user.name.toLowerCase().includes(lowerText) ||
+                    o.user.lastname.toLowerCase().includes(lowerText) ||
+                    o.user.email.toLowerCase().includes(lowerText));
             setFilteredOrganizers(showOrganizers);
         }
         if (tab === "chairs") {
-            //TODO desde el back el reviewer actual no tiene nodo con datos
-            /*let showChairs = allChairs
-                .filter(c => c.title.toLowerCase().includes(lowerText) ||
-                    c.description.toLowerCase().includes(lowerText));*/
-            //setFilteredChairs(showChairs);
+            let showChairs = editedMembersConfiguration.chairs
+                .filter(c => c.user.title.toLowerCase().includes(lowerText) ||
+                    c.user.description.toLowerCase().includes(lowerText) ||
+                    c.user.email.toLowerCase().includes(lowerText) ||
+                    c.tracks?.includes("lowerText"))
+            setFilteredChairs(showChairs);
         }
+    }
+
+    const handleDelete = (memberId) => {
+        const role = tab === "organizadores" ? "organizers" : "chairs";
+        apiDeleteMemberToEvent(id, role, memberId)
+            .then(() => {
+                console.log("Miembro eliminado del evento.");
+                refreshData().then(() => console.log("Organizers and reviewers reloaded"));
+            })
+        refreshData().then(() => console.log("Organizers and reviewers reloaded"));
     }
 
     return (
@@ -92,11 +102,11 @@ export default function EventConfigurationMembers() {
             <EventHeader event={event}/>
             <main
                 className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
-                <div className="mx-auto grid w-full max-w-6xl gap-2">
+                <div className="mx-auto grid w-full max-w-7xl gap-2">
                     <h1 className="text-3xl font-semibold">Editar evento</h1>
                 </div>
                 <div
-                    className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+                    className="mx-auto grid w-full max-w-7xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                     <nav className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0">
                         <Link to={`/events/${id}/configuration`}
                               state={{
@@ -166,14 +176,16 @@ export default function EventConfigurationMembers() {
                                                 <CardHeader>
                                                     <CardTitle className="flex items-center justify-between">
                                                         Organizadores
-                                                        {newMemberDialog("organizador", refreshData)}
+                                                        {newMemberDialog(id, "organizers", eventConfiguration.tracks, refreshData)}
                                                     </CardTitle>
                                                     <CardDescription>
                                                         Usuarios que administran y configuran el evento.
                                                     </CardDescription>
                                                 </CardHeader>
                                                 <CardContent>
-                                                    <OrganizersList organizers={filteredOrganizers}/>
+                                                    <OrganizersList organizers={filteredOrganizers}
+                                                                    deleteOrganizer={handleDelete}
+                                                    />
                                                 </CardContent>
                                             </Card>
                                         </TabsContent>
@@ -182,13 +194,15 @@ export default function EventConfigurationMembers() {
                                                 <CardHeader>
                                                     <CardTitle className="flex items-center justify-between">
                                                         Chairs
-                                                        {newMemberDialog("Chair", refreshData)}
+                                                        {newMemberDialog(id, "chairs", eventConfiguration.tracks, refreshData)}
                                                     </CardTitle>
                                                     <CardDescription>
                                                         Revisores principales del evento para los distintos tracks.
                                                     </CardDescription>
                                                 </CardHeader>
                                                 <CardContent>
+                                                    {filteredChairs.length !== 0 && (<ChairsList chairs={filteredChairs}
+                                                                                                 deleteChair={handleDelete}/>)}
                                                 </CardContent>
                                             </Card>
                                         </TabsContent>
@@ -203,17 +217,21 @@ export default function EventConfigurationMembers() {
     )
 }
 
-const newMemberDialog = (role, refreshData) => {
-    const [newMember, setNewMember] = useState({...defaultMember, role: role});
+const newMemberDialog = (eventId, role, tracksOptions, refreshData) => {
+    const [newMember, setNewMember] = useState(defaultMember);
+    const [tracks, setTracks] = useState([]);
     const [addMemberOpen, setAddMemberOpen] = useState(false);
     const [addMemberLoading, setAddMemberLoading] = useState(false);
+    const [addMemberDisabled, setAddMemberDisabled] = useState(true);
 
     const handleAddMember = async () => {
         if (validateEmail(newMember.email)) {
             setAddMemberLoading(true);
-            //await apiPostNewMember(newEvent); //TODO usar role para POST al back
-            console.log("guardando miembro al back")
-            refreshData().then(r => console.log("Organizers and reviewers reloaded"));
+            apiPostNewMemberToEvent(eventId, role, newMember)
+                .then(() => {
+                    console.log("Invitación enviada");
+                    refreshData().then(() => console.log("Organizers and reviewers reloaded"));
+                })
             setAddMemberOpen(false);
             setAddMemberLoading(false);
             setNewMember(defaultMember);
@@ -227,13 +245,23 @@ const newMemberDialog = (role, refreshData) => {
             toast({
                 title: `Email inválido. Asegúrese de que tenga el siguiente formato: ejemplo@email.com`,
             });
-            setNewMember({...newMember, error: "hola"})
+            setAddMemberDisabled(true)
         }
         return result;
     }
 
     const handleInputChange = (e) => {
         setNewMember({...newMember, email: e.target.value});
+        setAddMemberDisabled(false)
+    };
+
+    const handleMultiSelectTracks = (selectedTrack) => {
+        setTracks(selectedTrack.map(sm => mapToMultiSelectOption(sm.value)));
+        setNewMember({
+            ...newMember,
+            tracks: selectedTrack.map(sm => sm.value)
+        });
+        setAddMemberDisabled(false)
     };
 
     return (
@@ -242,7 +270,7 @@ const newMemberDialog = (role, refreshData) => {
                 <Button variant="outline"
                         className="bg-eventitoBlue text-white"
                         size="sm">
-                    Agregar {role}
+                    Agregar {role === "organizers" ? "organizador" : "chair"}
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
@@ -263,15 +291,14 @@ const newMemberDialog = (role, refreshData) => {
                         required
                     />
                 </div>
-                {(role === "Chair") && <div className="grid gap-2 mb-2">
+                {(role === "chairs") && <div className="grid gap-2 mb-2">
                     <Label htmlFor="notifications">Tracks</Label>
                     <MultipleSelector
                         id="tracks"
                         name="tracks"
-                        value={newMember.tracks}
-                        //onChange={handleMultiSelectMail}
-                        //onValidateCreatable={handleValidateMultiSelectMail}
-                        defaultOptions={TRACKS_OPTIONS}
+                        value={tracks}
+                        onChange={handleMultiSelectTracks}
+                        defaultOptions={tracksOptions?.map(mapToMultiSelectOption)}
                         creatable={false}
                         disabled={false}
                         hideClearAllButton={true}
@@ -279,7 +306,7 @@ const newMemberDialog = (role, refreshData) => {
                         maxSelected={5}
                         onMaxSelected={(maxLimit) => {
                             toast({
-                                title: `Has alcanzado la cantidad máxima de tracks de para el chair: ${maxLimit}`,
+                                title: `Has alcanzado la cantidad máxima de tracks para el chair: ${maxLimit}`,
                             });
                         }}
                         placeholder="Agregue los tracks asignados a este nuevo miembro..."
@@ -295,6 +322,7 @@ const newMemberDialog = (role, refreshData) => {
                             </Button>) :
                         (
                             <Button type="button"
+                                    disabled={addMemberDisabled || newMember.email === ""}
                                     onClick={handleAddMember}>Enviar</Button>
                         )
                     }
@@ -306,13 +334,9 @@ const newMemberDialog = (role, refreshData) => {
 
 const defaultMember = {
     email: "",
-    tracks: []
 }
 
-//TODO de donde saco los tracks del evento
-const TRACKS_OPTIONS = [
-    {label: 'track1', value: 'track1'},
-    {label: 'track2', value: 'track2'},
-    {label: 'track3', value: 'track3'}
-];
+const mapToMultiSelectOption = (option) => {
+    return {key: option, label: option, value: option, fixed: false, disable: false}
+}
 

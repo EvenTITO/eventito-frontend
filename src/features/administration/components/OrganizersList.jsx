@@ -4,13 +4,12 @@ import {Button} from "@/components/ui/button.jsx";
 import {UserRoundX, Loader2} from "lucide-react";
 import {useState} from "react";
 
-export default function OrganizersList({organizers}) {
+export default function OrganizersList({organizers, deleteOrganizer}) {
     const [loading, setLoading] = useState(false);
 
     const handleDeleteOrganizer = (organizerId) => {
         setLoading(true);
-        //TODO llamada a funcion pasada por parametro de la pantalla anterior
-        console.log("eliminando organizador con id:" + organizerId);
+        deleteOrganizer(organizerId);
         setLoading(false);
     }
 
@@ -30,25 +29,25 @@ export default function OrganizersList({organizers}) {
             <TableBody>
                 {organizers.map((o) => {
                     return (
-                        <TableRow onClick={() => console.log(o.id)} key={o.id}>
+                        <TableRow onClick={() => console.log(o.user_id)} key={o.user_id}>
                             <TableCell className="hidden sm:table-cell">
                                 <Avatar className="hidden h-9 w-9 sm:flex">
                                     <AvatarImage src="https://github.com/shadcn.png" alt="Avatar"/>
-                                    <AvatarFallback>{o.organizer.name[0] + o.organizer.lastname[0]}</AvatarFallback>
+                                    <AvatarFallback>{o.user.name[0] + o.user.lastname[0]}</AvatarFallback>
                                 </Avatar>
                             </TableCell>
                             <TableCell className="font-medium">
-                                {o.organizer.name + " " + o.organizer.lastname}
+                                {o.user.name + " " + o.user.lastname}
                             </TableCell>
                             <TableCell className="font-medium">
-                                {o.organizer.email}
+                                {o.user.email}
                             </TableCell>
                             <TableCell className="font-medium">
-                                ACTIVO
+                                {o.invitation_status}
                             </TableCell>
                             <TableCell className="font-medium">
                                 <Button disabled={loading} className="bg-red-600 ml-1" size="icon"
-                                        onClick={() => handleDeleteOrganizer(o.id)}>
+                                        onClick={() => handleDeleteOrganizer(o.user_id)}>
                                     {(loading) && (<Loader2 className="mr-2 h-4 w-4 animate-spin"/>)}
                                     <UserRoundX />
                                 </Button>

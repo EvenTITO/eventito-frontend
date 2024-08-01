@@ -97,3 +97,25 @@ export const apiPutEventConfiguration = async (eventId, configName, body) => {
         throw err;
     }
 }
+
+export const apiPostNewMemberToEvent = async (eventId, memberType, member) => {
+    try {
+        const headers = generateHeaders();
+        const url = `${EVENTS_URL}/${eventId}/${memberType}`;
+        await axios.post(url, member, {headers: headers});
+    } catch (err) {
+        console.log("Error enviando solicitud de miembro de evento", err);
+        throw err;
+    }
+}
+
+export const apiDeleteMemberToEvent = async (eventId, memberType, memberId) => {
+    try {
+        const headers = generateHeaders();
+        const url = `${EVENTS_URL}/${eventId}/${memberType}/${memberId}`;
+        await axios.delete(url, {headers: headers});
+    } catch (err) {
+        console.log("Error eliminando miembro del evento", err);
+        throw err;
+    }
+}
