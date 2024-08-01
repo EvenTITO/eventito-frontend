@@ -51,9 +51,9 @@ export default function EventConfigurationPricing() {
 
     const saveChanges = async () => {
         setSaveChangesLoading(true);
-        const newPricingConfig = editedPricingConfiguration;
+        const newPricingConfig = saveConfig(editedPricingConfiguration);
         apiPutEventConfiguration(id, "pricing", newPricingConfig)
-            .then(r => {
+            .then(() => {
                 const newEvent = {...event, pricing: newPricingConfig};
                 const newEventConfiguration = {...eventConfiguration, pricing: newPricingConfig};
                 toast({
@@ -73,32 +73,32 @@ export default function EventConfigurationPricing() {
 
     const handleIsFreeCheckBox = (value) => {
         value === true ?
-            setEditedPricingConfiguration({rates: [], is_free: value}) :
-            setEditedPricingConfiguration({rates: editedPricingConfiguration.rates, is_free: value})
+            setEditedPricingConfiguration({pricing: [], is_free: value}) :
+            setEditedPricingConfiguration({pricing: editedPricingConfiguration.pricing, is_free: value})
         setSaveChangesDisabled(false);
 
     };
 
     const handleInputChange = (e) => {
         const {id, value} = e.target;
-        const nextRates = editedPricingConfiguration.rates.map((rate, index) => {
+        const nextRates = editedPricingConfiguration.pricing.map((rate, index) => {
             if (index.toString() === id) {
                 return {...rate, value: value};
             }
             return rate;
         })
-        setEditedPricingConfiguration({...editedPricingConfiguration, rates: nextRates});
+        setEditedPricingConfiguration({...editedPricingConfiguration, pricing: nextRates});
         setSaveChangesDisabled(false);
     };
 
     const handleNeedFileCheckBox = (index, value) => {
-        const nextRates = editedPricingConfiguration.rates.map((rate, i) => {
+        const nextRates = editedPricingConfiguration.pricing.map((rate, i) => {
             if (i === index) {
                 return {...rate, need_verification: value};
             }
             return rate;
         })
-        setEditedPricingConfiguration({...editedPricingConfiguration, rates: nextRates});
+        setEditedPricingConfiguration({...editedPricingConfiguration, pricing: nextRates});
         setSaveChangesDisabled(false);
     }
 
@@ -114,16 +114,16 @@ export default function EventConfigurationPricing() {
     const handleAddRate = () => {
         setEditedPricingConfiguration({
             ...editedPricingConfiguration,
-            rates: [...editedPricingConfiguration.rates, newRate]
+            pricing: [...editedPricingConfiguration.pricing, newRate]
         });
         setAddRateOpen(false);
         setNewRate(defaultNewRate);
     }
 
     const handleDeleteRate = (index) => {
-        const nextRates = editedPricingConfiguration.rates.filter((rate, i) => i !== index);
+        const nextRates = editedPricingConfiguration.pricing.filter((rate, i) => i !== index);
         setEditedPricingConfiguration({
-            rates: nextRates,
+            pricing: nextRates,
             is_free: nextRates.length === 0
         });
     }
@@ -134,11 +134,11 @@ export default function EventConfigurationPricing() {
             <EventHeader event={event}/>
             <main
                 className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
-                <div className="mx-auto grid w-full max-w-6xl gap-2">
+                <div className="mx-auto grid w-full max-w-7xl gap-2">
                     <h1 className="text-3xl font-semibold">Editar evento</h1>
                 </div>
                 <div
-                    className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+                    className="mx-auto grid w-full max-w-7xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
                     <nav className="grid gap-4 text-sm text-muted-foreground" x-chunk="dashboard-04-chunk-0">
                         <Link to={`/events/${id}/configuration`}
                               state={{
@@ -203,8 +203,8 @@ export default function EventConfigurationPricing() {
                                 </div>
                                 {editedPricingConfiguration &&
                                     !editedPricingConfiguration.is_free &&
-                                    editedPricingConfiguration.rates &&
-                                    editedPricingConfiguration.rates.map((rate, i) => {
+                                    editedPricingConfiguration.pricing &&
+                                    editedPricingConfiguration.pricing.map((rate, i) => {
                                         return (
                                             <div className="grid gap-2 mb-3" key={i}>
                                                 <TooltipProvider>
@@ -327,13 +327,19 @@ export default function EventConfigurationPricing() {
 
 const initConfig = (actualConfiguration) => {
     return {
-        rates: actualConfiguration ? actualConfiguration.rates : [],
-        is_free: actualConfiguration && actualConfiguration.rates ? actualConfiguration.rates.length === 0 : true,
+        pricing: actualConfiguration ? actualConfiguration : [],
+        is_free: actualConfiguration ? actualConfiguration.length === 0 : true,
+    }
+}
+
+const saveConfig = (editedPricingConfiguration) => {
+    return {
+        pricing: editedPricingConfiguration.pricing
     }
 }
 
 const defaultConfig = {
-    rates: [],
+    pricing: [],
     is_free: true
 }
 
