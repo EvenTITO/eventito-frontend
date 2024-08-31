@@ -1,4 +1,8 @@
 # Eventito frontend
+## TODO
+Esta en spanglish porque complete los datos con chatgpt y me tradujo todo a ingles por hablarle en ese idioma cipayo...
+Despues lo cambio.
+
 ## Install the dependencies
 ```sh
 npm install
