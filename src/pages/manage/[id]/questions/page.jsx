@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -6,12 +6,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Sheet,
   SheetContent,
@@ -19,57 +19,74 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
-import { PlusIcon, Trash2Icon } from 'lucide-react'
+} from "@/components/ui/sheet";
+import { PlusIcon, Trash2Icon } from "lucide-react";
 
 export default function QuestionsPage() {
   const [questions, setQuestions] = useState([
-    { id: 1, text: "How would you rate the overall quality of this submission?", type: "Calification", isMandatory: true },
-    { id: 2, text: "What are the main strengths of this submission?", type: "Question", isMandatory: true },
-    { id: 3, text: "Is this submission suitable for presentation?", type: "MultipleChoice", options: ["Yes", "No", "Maybe"], isMandatory: true },
-  ])
+    {
+      id: 1,
+      text: "How would you rate the overall quality of this submission?",
+      type: "Calification",
+      isMandatory: true,
+    },
+    {
+      id: 2,
+      text: "What are the main strengths of this submission?",
+      type: "Question",
+      isMandatory: true,
+    },
+    {
+      id: 3,
+      text: "Is this submission suitable for presentation?",
+      type: "MultipleChoice",
+      options: ["Yes", "No", "Maybe"],
+      isMandatory: true,
+    },
+  ]);
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const [newQuestion, setNewQuestion] = useState({
-    text: '',
-    type: 'Question',
+    text: "",
+    type: "Question",
     options: [],
-    isMandatory: false
-  })
+    isMandatory: false,
+  });
 
   const handleAddOption = () => {
-    setNewQuestion(prev => ({
+    setNewQuestion((prev) => ({
       ...prev,
-      options: [...(prev.options || []), '']
-    }))
-  }
+      options: [...(prev.options || []), ""],
+    }));
+  };
 
   const handleRemoveOption = (index) => {
-    setNewQuestion(prev => ({
+    setNewQuestion((prev) => ({
       ...prev,
-      options: prev.options?.filter((_, i) => i !== index)
-    }))
-  }
+      options: prev.options?.filter((_, i) => i !== index),
+    }));
+  };
 
   const handleOptionChange = (index, value) => {
-    setNewQuestion(prev => ({
+    setNewQuestion((prev) => ({
       ...prev,
-      options: prev.options?.map((option, i) => i === index ? value : option)
-    }))
-  }
+      options: prev.options?.map((option, i) => (i === index ? value : option)),
+    }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    const newId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) + 1 : 1
-    setQuestions([...questions, { ...newQuestion, id: newId }])
+    e.preventDefault();
+    const newId =
+      questions.length > 0 ? Math.max(...questions.map((q) => q.id)) + 1 : 1;
+    setQuestions([...questions, { ...newQuestion, id: newId }]);
     setNewQuestion({
-      text: '',
-      type: 'Question',
+      text: "",
+      type: "Question",
       options: [],
-      isMandatory: false
-    })
-    setIsOpen(false)
-  }
+      isMandatory: false,
+    });
+    setIsOpen(false);
+  };
 
   return (
     <div className="container mx-auto py-10">
@@ -95,7 +112,9 @@ export default function QuestionsPage() {
                 <Input
                   id="questionText"
                   value={newQuestion.text}
-                  onChange={(e) => setNewQuestion({ ...newQuestion, text: e.target.value })}
+                  onChange={(e) =>
+                    setNewQuestion({ ...newQuestion, text: e.target.value })
+                  }
                   placeholder="Enter question text"
                   required
                 />
@@ -104,7 +123,9 @@ export default function QuestionsPage() {
                 <Label>Question Type</Label>
                 <RadioGroup
                   value={newQuestion.type}
-                  onValueChange={(value) => setNewQuestion({ ...newQuestion, type: value })}
+                  onValueChange={(value) =>
+                    setNewQuestion({ ...newQuestion, type: value })
+                  }
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="Calification" id="calification" />
@@ -115,28 +136,42 @@ export default function QuestionsPage() {
                     <Label htmlFor="question">Question</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="MultipleChoice" id="multipleChoice" />
+                    <RadioGroupItem
+                      value="MultipleChoice"
+                      id="multipleChoice"
+                    />
                     <Label htmlFor="multipleChoice">Multiple Choice</Label>
                   </div>
                 </RadioGroup>
               </div>
-              {newQuestion.type === 'MultipleChoice' && (
+              {newQuestion.type === "MultipleChoice" && (
                 <div className="space-y-2">
                   <Label>Options</Label>
                   {newQuestion.options?.map((option, index) => (
                     <div key={index} className="flex items-center space-x-2">
                       <Input
                         value={option}
-                        onChange={(e) => handleOptionChange(index, e.target.value)}
+                        onChange={(e) =>
+                          handleOptionChange(index, e.target.value)
+                        }
                         placeholder={`Option ${index + 1}`}
                         required
                       />
-                      <Button type="button" variant="outline" size="icon" onClick={() => handleRemoveOption(index)}>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={() => handleRemoveOption(index)}
+                      >
                         <Trash2Icon className="h-4 w-4" />
                       </Button>
                     </div>
                   ))}
-                  <Button type="button" variant="outline" onClick={handleAddOption}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleAddOption}
+                  >
                     Add Option
                   </Button>
                 </div>
@@ -145,11 +180,15 @@ export default function QuestionsPage() {
                 <Checkbox
                   id="mandatory"
                   checked={newQuestion.isMandatory}
-                  onCheckedChange={(checked) => setNewQuestion({ ...newQuestion, isMandatory})}
+                  onCheckedChange={(checked) =>
+                    setNewQuestion({ ...newQuestion, isMandatory })
+                  }
                 />
                 <Label htmlFor="mandatory">Mandatory</Label>
               </div>
-              <Button type="submit" className="w-full">Add Question</Button>
+              <Button type="submit" className="w-full">
+                Add Question
+              </Button>
             </form>
           </SheetContent>
         </Sheet>
@@ -168,12 +207,12 @@ export default function QuestionsPage() {
             <TableRow key={question.id}>
               <TableCell className="font-medium">{question.text}</TableCell>
               <TableCell>{question.type}</TableCell>
-              <TableCell>{question.options?.join(', ') || '-'}</TableCell>
-              <TableCell>{question.isMandatory ? 'Yes' : 'No'}</TableCell>
+              <TableCell>{question.options?.join(", ") || "-"}</TableCell>
+              <TableCell>{question.isMandatory ? "Yes" : "No"}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }
