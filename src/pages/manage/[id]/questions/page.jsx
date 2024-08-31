@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/sheet";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 
-export default function QuestionsPage() {
+export default function Component() {
   const [questions, setQuestions] = useState([
     {
       id: 1,
@@ -180,9 +180,12 @@ export default function QuestionsPage() {
                 <Checkbox
                   id="mandatory"
                   checked={newQuestion.isMandatory}
-                  onCheckedChange={(checked) =>
-                    setNewQuestion({ ...newQuestion, isMandatory })
-                  }
+                  onCheckedChange={(checked) => {
+                    setNewQuestion({
+                      ...newQuestion,
+                      isMandatory: checked === true,
+                    });
+                  }}
                 />
                 <Label htmlFor="mandatory">Mandatory</Label>
               </div>
