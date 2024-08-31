@@ -9,6 +9,9 @@ export default function HomePage() {
 
   if (isPending) {
     return <div>Loading....</div>;
+  } else if (error) {
+    console.log("error" + error);
+    return <div>error!</div>;
   }
 
   console.log(data);
