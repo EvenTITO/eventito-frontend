@@ -5,9 +5,7 @@ const httpClient = new HTTPClient(EVENTS_URL);
 
 export const apiGetEventById = async (eventId) => {
   try {
-    const url = `/${eventId}/public`;
-    const res = await httpClient.get(url);
-    return res.data;
+    return (await httpClient.get(`/${eventId}/public`)).data;
   } catch (err) {
     throw err;
   }
