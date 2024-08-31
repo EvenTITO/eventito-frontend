@@ -4,13 +4,13 @@ import svgr from "vite-plugin-svgr";
 import path from "path";
 
 export default defineConfig({
-  plugins: [svgr(), react()],
-  css: {
-    postcss: './postcss.config.js',
-  },
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
+	plugins: [svgr(), react()],
+	css: {
+		postcss: './postcss.config.js',
+	},
+	resolve: {
+		alias: {
+			"@": path.resolve(__dirname, "./src"),
+		},
+	},
 });
