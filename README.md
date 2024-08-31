@@ -1,7 +1,7 @@
 # Eventito frontend
 ## TODO
-Esta en spanglish porque complete los datos con chatgpt y me tradujo todo a ingles por hablarle en ese idioma cipayo...
-Despues lo cambio.
+- Esta en spanglish porque complete los datos con chatgpt y me tradujo todo a ingles por hablarle en ese idioma cipayo... Despues lo cambio.
+- Puse nombre en todos lados para usar el user pero va el mail, lo hice la semana pasada y me lo comi
 
 ## Install the dependencies
 ```sh
