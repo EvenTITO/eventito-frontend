@@ -1,24 +1,6 @@
 import { apiGetEventById } from "@/services/api/events/general/queries";
 import { useQuery } from "@tanstack/react-query";
-
-export default function HomePage() {
-  const { isPending, error, data } = useQuery({
-    queryKey: ["getEventById"],
-    queryFn: () => apiGetEventById("f2c9f5d2-3941-491e-93fc-8de65163c1d2"),
-  });
-
-  if (isPending) {
-    return <div>Loading....</div>;
-  } else if (error) {
-    console.log("error" + error);
-    return <div>error!</div>;
-  }
-
-  return <Event eventData={data} />;
-}
-
 import React from "react";
-import { format } from "date-fns";
 import {
   Calendar,
   MapPin,
@@ -31,6 +13,24 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useParams } from "react-router-dom";
+
+export default function EventViewPage() {
+  const { id: eventId } = useParams();
+  const { isPending, error, data } = useQuery({
+    queryKey: ["getEventById"],
+    queryFn: () => apiGetEventById(eventId),
+  });
+
+  if (isPending) {
+    return <div>Loading....</div>;
+  } else if (error) {
+    console.log("error" + error);
+    return <div>error!</div>;
+  }
+
+  return <Event eventData={data} />;
+}
 
 function Event({ eventData }) {
   return (
@@ -62,8 +62,7 @@ function Event({ eventData }) {
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center">
                   <Calendar className="mr-2 h-4 w-4" />
-                  <span>
-                  </span>
+                  <span></span>
                 </div>
                 <div className="flex items-center">
                   <MapPin className="mr-2 h-4 w-4" />
@@ -75,9 +74,7 @@ function Event({ eventData }) {
                 </div>
                 <div className="flex items-center">
                   <Clock className="mr-2 h-4 w-4" />
-                  <span>
-                    Submission Deadline:{" "}
-                  </span>
+                  <span>Submission Deadline: </span>
                 </div>
               </div>
             </CardContent>

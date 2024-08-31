@@ -1,14 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import LayoutParticipants from "../participants/layout";
+import EventViewPage from "./[id]/view/page";
 
-export default function RoutesParticipants() {
+export default function RoutesEvent() {
   return (
     <Routes>
       <Route path="/events" element={<LayoutParticipants />}>
-        <Route path="/events/:id/panel/assistant" element={< />} />
-        <Route path="/events/:id/panel/chair" element={< />} />
-        <Route path="/events/:id/panel/author" element={< />} />
-        <Route path="/events/:id/panel/reviewer" element={< />} />
+        <Route path="/events/:id/view" element={<EventViewPage />} />
+        <Route path="/events/:id/view/general" element={<EventViewPage />} />
       </Route>
     </Routes>
   );

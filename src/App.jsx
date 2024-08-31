@@ -8,6 +8,7 @@ import { onAuthStateChanged } from "@firebase/auth";
 import { auth } from "@/services/firebase/firebaseAuth.js";
 import { logout } from "./state/user/userSlice";
 import { useDispatch } from "react-redux";
+import RoutesEvent from "./pages/event/routes";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +32,7 @@ function App() {
     <BrowserRouter>
       <RoutesAuth />
       <RoutesHome />
+      <RoutesEvent />
       <RoutesManage />
       <RoutesParticipants />
     </BrowserRouter>
