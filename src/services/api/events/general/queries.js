@@ -9,7 +9,14 @@ export const apiGetEventById = async (eventId) => {
     const res = await httpClient.get(url);
     return res.data;
   } catch (err) {
-    console.log("Error en obtener el evento", err);
+    throw err;
+  }
+};
+
+export const apiGetMyEvents = async () => {
+  try {
+    return (await httpClient.get("/my-events")).data;
+  } catch (err) {
     throw err;
   }
 };
