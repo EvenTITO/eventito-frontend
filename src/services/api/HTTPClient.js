@@ -20,12 +20,12 @@ export class HTTPClient {
     }
 
     async post(url, body) {
-        headers = createHeaders();
+        const headers = this.createHeaders();
         return await this.axiosInstance.post(url, body, headers);
     }
 
     async get(url) {
-        headers = createHeaders();
+        const headers = this.createHeaders();
         return await this.axiosInstance.get(url, headers);
     }
 }
