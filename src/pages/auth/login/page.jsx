@@ -20,12 +20,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { getUser, login } from "@/services/api/auth";
-import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
-import { clearAuth, register } from "@/state/auth/authSlice";
 import { useLoginForm } from "../_components/schemas";
-import { loginCompleted } from "@/state/user/userSlice";
+import { useLogin } from "@/services/api/auth/hooks";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -35,28 +32,9 @@ export default function LoginPage() {
 
   const form = useLoginForm();
 
-  const getId = useMutation({
-    mutationFn: login,
-    onSuccess: async (data) => {
-      dispatch(register({ idUser: data.uid, email: email }));
-      console.log("cargando")
-      const userObtained = await getUser(data.uid);
-
-      dispatch(clearAuth());
-      console.log("yendo a login")
-      dispatch(loginCompleted(userObtained));
-      console.log("completo")
-    },
-    onError: (error) => {
-      console.log("error", error);
-    },
-    onSettled: () => {
-      console.log("settled");
-    },
-  });
-
+  const logger = useLogin();
   const onSubmit = (values) => {
-    getId.mutate({ email: values.email, password: values.password });
+    logger.mutate({ email: values.email, password: values.password });
   };
 
   if (currentUser) {

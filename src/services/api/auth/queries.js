@@ -1,4 +1,4 @@
-import { apiGetUser, apiPostUser } from "@/services/api/userServices";
+import { apiGetUser, apiPostUser } from "@/services/api/auth/services";
 import {
 	firebaseLogOut,
 	firebaseLogin,
