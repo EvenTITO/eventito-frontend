@@ -16,7 +16,7 @@ import { BottomContainer } from "./bottomContainer";
 import { useSelector } from "react-redux";
 import SubmitButton from "./SubmitButton";
 
-export default function CreateEventStep3({ step }) {
+export default function CreateEventStep3({ step, setStep }) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [location, setLocation] = useState(null);

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { addEventOptional } from "@/state/events/createEventSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -7,6 +8,7 @@ export default function SubmitButton({ startDate, endDate, location }) {
     (state) => state.createEvent,
   );
   const dispatch = useDispatch();
+  const { toast } = useToast();
 
   function handleSubmit() {
     dispatch(
@@ -17,7 +19,17 @@ export default function SubmitButton({ startDate, endDate, location }) {
       }),
     );
 
-    console.log(startDate);
+    // fetch backend
+    const fetcherror = false;
+    if (fetcherror) {
+      toast({
+        variant: "destructiveOutline",
+        title: "Error al crear el evento",
+        description: "El titulo se encuentra repetido",
+      });
+    } else {
+      navigate("/home/my-events");
+    }
   }
 
   return (

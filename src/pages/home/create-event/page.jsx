@@ -42,37 +42,7 @@ export default function CreateEvent() {
     <div className="min-h-screen flex flex-col">
       <CreateEventStep1 step={step} setStep={setStep} />
       <CreateEventStep2 step={step} setStep={setStep} />
-      <CreateEventStep3 step={step} />
+      <CreateEventStep3 step={step} setStep={setStep} />
     </div>
   );
 }
-
-/*
-      <div
-        className={cn(
-          "py-4 bg-background",
-          isScrollable ? "fixed bottom-0 left-0 right-0" : "",
-        )}
-      >
-        <div className="container mx-auto px-4 max-w-3xl flex justify-between">
-          {step > 1 ? (
-            <Button type="button" variant="outline" onClick={handleBack}>
-              Atrás
-            </Button>
-          ) : (
-            <Link to={"/home"}>
-              <Button variant="outline">Cancelar</Button>
-            </Link>
-          )}
-          {step < 3 ? (
-            <Button type="button" onClick={handleNext}>
-              Siguiente
-            </Button>
-          ) : (
-            <Button type="submit" onClick={handleSubmit}>
-              Crear evento
-            </Button>
-          )}
-        </div>
-      </div>
-*/
