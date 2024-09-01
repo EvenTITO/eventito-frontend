@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { addEventOptional } from "@/state/events/createEventSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function SubmitButton({ startDate, endDate, location }) {
+  const navigate = useNavigate();
   const { event_type, title, description, organized_by } = useSelector(
     (state) => state.createEvent,
   );
