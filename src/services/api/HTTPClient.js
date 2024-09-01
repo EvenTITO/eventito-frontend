@@ -5,15 +5,8 @@ import axios from "axios";
 export class HTTPClient {
   axiosInstance;
 
-  constructor(baseURL, dispatch) {
+  constructor(baseURL) {
     this.axiosInstance = axios.create({ baseURL: baseURL });
-    this.dispatch = dispatch;
-  }
-
-  verifyResult(error, config) {
-    if (error.response.status >= 400 && config.fowardError) {
-      this.dispatch(serverDown());
-    }
   }
 
   createHeaders() {
@@ -28,15 +21,11 @@ export class HTTPClient {
 
   async post(url, body, config = { fowardError: true }) {
     const headers = this.createHeaders();
-    return await this.axiosInstance
-      .post(url, body, headers)
-      .catch((error) => this.verifyResult(error, config));
+    return await this.axiosInstance.post(url, body, headers);
   }
 
   async get(url, config = { fowardError: true }) {
     const headers = this.createHeaders();
-    return await this.axiosInstance
-      .get(url, headers)
-      .catch((error) => this.verifyResult(error, config));
+    return await this.axiosInstance.get(url, headers);
   }
 }

@@ -1,3 +1,4 @@
+import { apiGetUser, apiPostUser } from "@/services/api/userServices";
 import {
 	firebaseLogOut,
 	firebaseLogin,
@@ -46,3 +47,26 @@ export const signUp = async (userData) => {
 		throw exception;
 	}
 }
+
+export const completeRegister = async (userData) => {
+	return apiPostUser(
+		userData.uid,
+		userData.name,
+		userData.lastname,
+		userData.email
+	)
+};
+
+export const getUser = async (userId) => {
+	try {
+		return await apiGetUser(userId);
+	} catch (exception) {
+		exception.idUser = userId;
+		exception.source = 'API';
+		throw exception;
+	}
+};
+
+export const sendResetPassword = async (email) => {
+	await firebaseSendResetPassword(email);
+};

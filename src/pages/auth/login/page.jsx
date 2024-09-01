@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import { Mail, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,25 +20,32 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { login } from "@/services/api/auth";
+import { getUser, login } from "@/services/api/auth";
 import { useMutation } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { register } from "@/state/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { clearAuth, register } from "@/state/auth/authSlice";
 import { useLoginForm } from "../_components/schemas";
+import { loginCompleted } from "@/state/user/userSlice";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const navigation = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
 
   const form = useLoginForm();
 
-  const mutation = useMutation({
+  const getId = useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
-      dispatch(register({idUser: data.uid, email: email}));
-      navigation("/home");
+    onSuccess: async (data) => {
+      dispatch(register({ idUser: data.uid, email: email }));
+      console.log("cargando")
+      const userObtained = await getUser(data.uid);
+
+      dispatch(clearAuth());
+      console.log("yendo a login")
+      dispatch(loginCompleted(userObtained));
+      console.log("completo")
     },
     onError: (error) => {
       console.log("error", error);
@@ -49,9 +56,12 @@ export default function LoginPage() {
   });
 
   const onSubmit = (values) => {
-    mutation.mutate({ email: values.email, password: values.password });
+    getId.mutate({ email: values.email, password: values.password });
   };
 
+  if (currentUser) {
+    return <Navigate to="/home" />;
+  }
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
       <header className="mb-8 flex items-center space-x-2">
@@ -128,9 +138,7 @@ export default function LoginPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-muted-foreground">
-                O
-              </span>
+              <span className="bg-white px-2 text-muted-foreground">O</span>
             </div>
           </div>
           <Button variant="outline" className="w-full mt-4">
