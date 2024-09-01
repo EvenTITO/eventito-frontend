@@ -59,9 +59,11 @@ export default function MyEventsPage() {
               <SelectItem value="REVIEWER">Reviewer</SelectItem>
             </SelectContent>
           </Select>
-          <Button
-            onClick={navigate("/home/create-event")}
-          >Crear nuevo evento</Button>
+          <Link to={"/home/create-event"}>
+          <Button>
+            Crear nuevo evento
+          </Button>
+          </Link>
         </div>
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -79,7 +81,7 @@ export default function MyEventsPage() {
 }
 
 function EventCard({ event }) {
-    return (
+  return (
     <Link to={`/events/${event.id}/view`} className="block">
       <Card className="transition-all duration-300 hover:shadow-lg focus-within:shadow-lg group min-h-[250px]">
         <CardHeader>

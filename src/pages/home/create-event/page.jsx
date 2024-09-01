@@ -12,7 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const eventTypes = [
   {
@@ -29,6 +29,7 @@ const eventTypes = [
 ];
 
 export default function CreateEvent() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [eventType, setEventType] = useState("");
   const [title, setTitle] = useState("");
@@ -43,7 +44,7 @@ export default function CreateEvent() {
     const checkScrollable = () => {
       const content = document.getElementById("form-content");
       if (content) {
-        setIsScrollable(content.scrollHeight > window.innerHeight - 200); // 200px for header and buttons
+        setIsScrollable(content.scrollHeight > window.innerHeight - 200);
       }
     };
 
@@ -256,8 +257,10 @@ export default function CreateEvent() {
               Atrás
             </Button>
           ) : (
-            <Link href="/events">
-              <Button variant="outline">Cancelar</Button>
+            <Link to={"/home"}>
+              <Button variant="outline">
+                Cancelar
+              </Button>
             </Link>
           )}
           {step < 3 ? (
