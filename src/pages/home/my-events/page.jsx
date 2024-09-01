@@ -76,7 +76,7 @@ export default function MyEventsPage() {
 
 function EventCard({ event }) {
     return (
-    <Link href={`/events/${event.id}`} className="block">
+    <Link to={`/events/${event.id}/view`} className="block">
       <Card className="transition-all duration-300 hover:shadow-lg focus-within:shadow-lg group">
         <CardHeader>
           <div className="flex justify-between items-start">

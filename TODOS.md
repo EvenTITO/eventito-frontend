@@ -1,3 +1,6 @@
+# TODOs
+
+## General
 - cambiar a español
 - agregar pantalla de fowardeo en caso de 500
 - agregar custom hooks de las llamadas al back y consumirlos directo
@@ -11,3 +14,6 @@
 - reutilizar cards
 - parseo de fechas es medio quilombo
 - agregar un conversor de roles -> definirlo en utils
+
+## styles
+- agregarle margin al header maybe para que este mas centrado? -> molesto para el header del evento, pero no tan malo para header home
