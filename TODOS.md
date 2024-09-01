@@ -1,5 +1,11 @@
 # TODOs
 
+## Evento
+
+- enchufar, ni bien se obtiene datos del evento, en redux -> also los hooks
+- renderizar todo en base a redux
+- sidebar aparece solo si el usuario tiene roles (hacer el flujo para ver que boton en caso de distintos roles)
+
 ## General
 
 - cambiar a español
