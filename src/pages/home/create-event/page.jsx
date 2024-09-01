@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CreateEventStep1 from "./_components/step1";
 import CreateEventStep2 from "./_components/step2";
 import CreateEventStep3 from "./_components/step3";
 
 export default function CreateEvent() {
+  const navigate = useNavigate();
+
   const [step, setStep] = useState(1);
   const [eventType, setEventType] = useState("");
   const [title, setTitle] = useState("");
@@ -49,6 +51,7 @@ export default function CreateEvent() {
       endDate,
       location,
     });
+    navigate("/home/my-events");
   };
 
   return (
