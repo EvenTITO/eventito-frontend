@@ -1,20 +1,10 @@
-import { HTTPClient } from "@/services/api/HTTPClient";
-import { apiGetMyEvents } from "@/services/api/events/general/queries";
-import { useQuery } from "@tanstack/react-query";
-import { EVENTS_URL } from "@/lib/Constants";
-import { useDispatch } from "react-redux";
 import FetchStatus from "@/components/FetchStatus";
+import { getPublicEvents } from "@/services/api/events/general/hooks";
 
 export default function HomePage() {
-  const dispatch = useDispatch();
-  const httpClient = new HTTPClient(EVENTS_URL, dispatch);
+  const { isPending, error, data: events } = getPublicEvents();
 
-  const { isPending, error, data } = useQuery({
-    queryKey: ["getMyEvents"],
-    queryFn: () => apiGetMyEvents(httpClient),
-  });
-
-  const component = <HomeMain />;
+  const component = <HomeMain events={events} />;
   return (
     <FetchStatus isPending={isPending} error={error} component={component} />
   );
@@ -30,13 +20,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { CalendarDays, MapPin, Users, Search, ArrowRight } from "lucide-react";
-import { eventData } from "@/services/api/events/general/mockData";
+import { CalendarDays, MapPin, Search, ArrowRight } from "lucide-react";
 
-function HomeMain() {
+function HomeMain({events}) {
   const [searchTerm, setSearchTerm] = useState("");
-
-  const events = eventData;
 
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -103,13 +90,13 @@ function EventCard({ event }) {
           <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
             <CalendarDays className="h-4 w-4" />
             <span>
-              Inicio: {event.startDate}
+              Inicio: {event.startDate ? event.startDate : "A definir"}
             </span>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
             <CalendarDays className="h-4 w-4" />
             <span>
-              Ultimo dia: {event.endDate}
+              Ultimo dia: {event.endData ? event.endData : "A definir"}
             </span>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">

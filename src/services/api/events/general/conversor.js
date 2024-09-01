@@ -1,4 +1,8 @@
 export function convertEventData(data) {
+  return data.map(convertEventItem);
+}
+
+function convertEventItem(data) {
   const startDate =
     data.dates.find((date) => date.name === "START_DATE")?.date || null;
   const endDate =

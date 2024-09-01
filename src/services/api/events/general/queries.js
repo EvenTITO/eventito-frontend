@@ -14,6 +14,6 @@ export const apiGetMyEvents = async () => {
   return (await httpClient.get("/my-events")).data;
 };
 
-export const apiGetAllEvents = async () => {
+export const apiGetAllEvents = async (httpClient) => {
   return (await httpClient.get("/")).data;
 }
