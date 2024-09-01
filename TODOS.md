@@ -1,0 +1,5 @@
+- cambiar a español 
+- agregar pantalla de fowardeo en caso de 500
+- agregar custom hooks de las llamadas al back y consumirlos directo
+    - herencia para el http client -> que los cree cada hook
+- agregar estilo de contenedores para importarlos directamente
