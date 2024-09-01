@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import userReducer from './user/userSlice';
 import eventReducer from './events/eventSlice';
+import appReducer from './app/appSlice';
 import userEventReducer from './events/userEventSlice';
 import authReducer from './auth/authSlice';
 import { persistReducer, persistStore } from 'redux-persist';
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
 	event: eventReducer,
 	userEvent: userEventReducer,
 	auth: authReducer,
+	app: appReducer,
 });
 
 const persistConfig = {
