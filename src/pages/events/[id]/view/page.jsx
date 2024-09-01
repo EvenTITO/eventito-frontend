@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { CalendarDays, MapPin, Tag, FileText, Users, Clock, Mail } from "lucide-react"
+import { RegistrationTab } from "./prices"
 
 export default function EventViewPage() {
   const [activeTab, setActiveTab] = useState("overview")
@@ -120,28 +121,7 @@ export default function EventViewPage() {
             </Card>
           </TabsContent>
           <TabsContent value="registration">
-            <Card>
-              <CardHeader>
-                <CardTitle>Informacion de registro</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Precios</h3>
-                  {event.pricing.map((price, index) => (
-                    <div key={index} className="flex items-center justify-between">
-                      <div>
-                        <span className="font-medium">{price.name}</span>
-                        <p className="text-sm text-muted-foreground">{price.description}</p>
-                      </div>
-                      <div className="text-right">
-                        <span className="font-bold">{price.value} {price.currency}</span>
-                      </div>
-                    </div>
-                  ))}
-                  <Button className="mt-4">Registro</Button>
-                </div>
-              </CardContent>
-            </Card>
+            <RegistrationTab event={event} />
           </TabsContent>
           <TabsContent value="contact">
             <Card>
