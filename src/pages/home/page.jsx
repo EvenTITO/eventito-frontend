@@ -80,7 +80,7 @@ function HomeMain({events}) {
 
 function EventCard({ event }) {
   return (
-    <Link href={`/events/${event.id}`} className="block">
+    <Link to={`/events/${event.id}/view`} className="block">
       <Card className="transition-all duration-300 hover:shadow-lg focus-within:shadow-lg group">
         <CardHeader>
           <CardTitle>{event.title}</CardTitle>
