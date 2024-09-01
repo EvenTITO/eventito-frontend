@@ -24,17 +24,17 @@ export default function CreateEventStep2({
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter event title"
+              placeholder="Ingresar titulo del evento"
               required
             />
           </div>
           <div>
-            <Label htmlFor="description">Descripcion corta del evento</Label>
+            <Label htmlFor="description">Descripcion</Label>
             <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter event description"
+              placeholder="Ingresar una descripcion corta del evento"
               required
             />
           </div>
@@ -44,7 +44,7 @@ export default function CreateEventStep2({
               id="organizer"
               value={organizer}
               onChange={(e) => setOrganizer(e.target.value)}
-              placeholder="Enter organizer name"
+              placeholder="Ingresar persona, grupo u organizacion a cargo del evento"
               required
             />
           </div>

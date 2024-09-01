@@ -74,7 +74,7 @@ export default function CreateEventStep3({
                     {endDate ? (
                       format(endDate, "PPP")
                     ) : (
-                      <span>Pick a date</span>
+                      <span>Seleccionar fecha</span>
                     )}
                   </Button>
                 </PopoverTrigger>
