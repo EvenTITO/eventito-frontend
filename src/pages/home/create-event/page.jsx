@@ -24,14 +24,14 @@ export default function CreateEvent() {
     return () => window.removeEventListener("resize", checkScrollable);
   }, [step]);
 
-  const handleSubmit = () => {
+  const handlesubmit = () => {
     // fetch backend
-    const fetchError = true;
-    if (fetchError) {
+    const fetcherror = true;
+    if (fetcherror) {
       toast({
-        variant: "destructiveOutline",
-        title: "Error al crear el evento",
-        description: "El titulo se encuentra repetido",
+        variant: "destructiveoutline",
+        title: "error al crear el evento",
+        description: "el titulo se encuentra repetido",
       });
     } else {
       navigate("/home/my-events");
