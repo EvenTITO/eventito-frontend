@@ -31,9 +31,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { CalendarDays, MapPin, Users, Search, ArrowRight } from "lucide-react";
+import { eventData } from "@/services/api/events/general/mockData";
 
 function HomeMain() {
   const [searchTerm, setSearchTerm] = useState("");
+
+  const events = eventData;
 
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -122,38 +125,3 @@ function EventCard({ event }) {
     </Link>
   );
 }
-
-const events = [
-  {
-    id: 1,
-    title: "Community Cleanup",
-    description: "Join us for a day of cleaning up our local park.",
-    startDate: "2023-09-15",
-    endDate: "2023-09-16",
-    location: "Central Park",
-  },
-  {
-    id: 2,
-    title: "Food Drive",
-    description: "Help collect food donations for the local food bank.",
-    startDate: "2023-09-15",
-    endDate: "2023-09-16",
-    location: "City Hall",
-  },
-  {
-    id: 3,
-    title: "Senior Center Visit",
-    description: "Spend time with seniors at the local care center.",
-    startDate: "2023-09-15",
-    endDate: "2023-09-16",
-    location: "Sunshine Senior Living",
-  },
-  {
-    id: 4,
-    title: "Beach Cleanup",
-    description: "Help clean up our local beach and protect marine life.",
-    startDate: "2023-09-15",
-    endDate: "2023-09-16",
-    location: "Sunny Beach",
-  },
-];
