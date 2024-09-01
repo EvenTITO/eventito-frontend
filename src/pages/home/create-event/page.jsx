@@ -86,7 +86,7 @@ export default function CreateEvent() {
                 <h2 className="text-2xl font-semibold mb-4">
                   Paso 1: Seleccionar el tipo de evento
                 </h2>
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="flex flex-col gap-4 sm:grid-cols-2">
                   {eventTypes.map((type) => (
                     <div
                       key={type.id}
@@ -167,7 +167,7 @@ export default function CreateEvent() {
                 </h2>
                 <div className="space-y-4">
                   <div>
-                    <Label>Start Date</Label>
+                    <Label>Fecha de inicio</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -181,7 +181,7 @@ export default function CreateEvent() {
                           {startDate ? (
                             format(startDate, "PPP")
                           ) : (
-                            <span>Pick a date</span>
+                            <span>Seleccionar fecha</span>
                           )}
                         </Button>
                       </PopoverTrigger>
@@ -198,7 +198,7 @@ export default function CreateEvent() {
 
                   {eventType === "conference" && (
                     <div>
-                      <Label>End Date</Label>
+                      <Label>Fecha de finalizacion</Label>
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button
@@ -229,12 +229,12 @@ export default function CreateEvent() {
                   )}
 
                   <div>
-                    <Label htmlFor="location">Location</Label>
+                    <Label htmlFor="location">Ubicacion</Label>
                     <Input
                       id="location"
                       value={location}
                       onChange={(e) => setLocation(e.target.value)}
-                      placeholder="Enter event location"
+                      placeholder="Ingresar ubicacion del evento"
                     />
                   </div>
                 </div>
