@@ -1,4 +1,6 @@
 import Logo from "@/components/Logo";
+import { Button } from "@/components/ui/button";
+import { User, UserIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Header() {
@@ -9,24 +11,23 @@ export default function Header() {
         <span className="sr-only">Eventos, charlas y conferencias</span>
       </Link>
       <nav className="ml-auto flex gap-4 sm:gap-6">
-        <Link
-          className="text-sm font-medium hover:underline underline-offset-4"
-          href="#"
-        >
-          Inicio
-        </Link>
-        <Link
-          className="text-sm font-medium hover:underline underline-offset-4"
-          href="#"
-        >
-          Mis eventos
-        </Link>
-        <Link
-          className="text-sm font-medium hover:underline underline-offset-4"
-          href="#"
-        >
-          Contact
-        </Link>
+        <div className="flex items-center space-x-1 gap-4 sm:gap-6">
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="#"
+          >
+            Inicio
+          </Link>
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="#"
+          >
+            Mis eventos
+          </Link>
+          <Button variant="table" size="icon">
+            <User className="h-5 w-5" />
+          </Button>
+        </div>
       </nav>
     </header>
   );
