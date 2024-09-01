@@ -14,7 +14,6 @@ export default function HomePage() {
     queryFn: () => apiGetMyEvents(httpClient),
   });
 
-  console.log(data);
   const component = <HomeMain />;
   return (
     <FetchStatus isPending={isPending} error={error} component={component} />
@@ -101,16 +100,18 @@ function EventCard({ event }) {
           <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
             <CalendarDays className="h-4 w-4" />
             <span>
-              {event.startDate} - {event.endDate}
+              Inicio: {event.startDate}
+            </span>
+          </div>
+          <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
+            <CalendarDays className="h-4 w-4" />
+            <span>
+              Ultimo dia: {event.endDate}
             </span>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
             <MapPin className="h-4 w-4" />
             <span>{event.location}</span>
-          </div>
-          <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
-            <Users className="h-4 w-4" />
-            <span>{event.attendees} attendees</span>
           </div>
           <div className="mt-4 flex items-center text-sm font-medium text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
             Ver sitio del evento
@@ -130,7 +131,6 @@ const events = [
     startDate: "2023-09-15",
     endDate: "2023-09-16",
     location: "Central Park",
-    attendees: 50,
   },
   {
     id: 2,
@@ -139,7 +139,6 @@ const events = [
     startDate: "2023-09-15",
     endDate: "2023-09-16",
     location: "City Hall",
-    attendees: 30,
   },
   {
     id: 3,
@@ -148,7 +147,6 @@ const events = [
     startDate: "2023-09-15",
     endDate: "2023-09-16",
     location: "Sunshine Senior Living",
-    attendees: 20,
   },
   {
     id: 4,
@@ -157,6 +155,5 @@ const events = [
     startDate: "2023-09-15",
     endDate: "2023-09-16",
     location: "Sunny Beach",
-    attendees: 40,
   },
 ];
