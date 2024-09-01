@@ -10,24 +10,22 @@ export default function Header() {
         <Logo showName={false} bgColor="white" />
         <span className="sr-only">Eventos, charlas y conferencias</span>
       </Link>
-      <nav className="ml-auto flex gap-4 sm:gap-6">
-        <div className="flex items-center space-x-1 gap-4 sm:gap-6">
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
-            Inicio
-          </Link>
-          <Link
-            className="text-sm font-medium hover:underline underline-offset-4"
-            href="#"
-          >
-            Mis eventos
-          </Link>
-          <Button variant="table" size="icon">
-            <User className="h-5 w-5" />
-          </Button>
-        </div>
+      <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
+        <Link
+          className="text-sm font-medium hover:underline underline-offset-4"
+          href="#"
+        >
+          Inicio
+        </Link>
+        <Link
+          className="text-sm font-medium hover:underline underline-offset-4"
+          href="#"
+        >
+          Mis eventos
+        </Link>
+        <Button variant="table" size="icon">
+          <User className="h-5 w-5" />
+        </Button>
       </nav>
     </header>
   );
