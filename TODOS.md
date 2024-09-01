@@ -1,6 +1,7 @@
 # TODOs
 
 ## General
+
 - cambiar a español
 - agregar pantalla de fowardeo en caso de 500
 - agregar custom hooks de las llamadas al back y consumirlos directo
@@ -10,12 +11,16 @@
 - codigo duplicado que podria sacar pero hay que abstraer un poco
 
 ## My events
+
 - reutilizar cards
 - agregar un conversor de roles -> definirlo en utils
 - si hay muchos eventos? entonces hacer paginacion / infinite scrolling
 
 ## Create event
-- cuando la descripcion es muy grande, los botones de abajo se van a cualquier lado -> no los pude dejar fixed
+
+- agregar x para cerrar
+- agregar la publicacion del evento con su custom hook
 
 ## styles
+
 - agregarle margin al header maybe para que este mas centrado? -> molesto para el header del evento, pero no tan malo para header home
