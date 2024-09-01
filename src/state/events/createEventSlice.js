@@ -15,17 +15,17 @@ const createEventSlice = createSlice({
   initialState,
   reducers: {
     addEventType: (state, action) => {
-      state.event_type = action;
+      state.event_type = action.payload;
     },
     addEventMandatory: (state, action) => {
-      state.title = action.title;
-      state.description = action.description;
-      state.organized_by = action.organized_by;
+      state.title = action.payload.title;
+      state.description = action.payload.description;
+      state.organized_by = action.payload.organized_by;
     },
     addEventOptional: (state, action) => {
-      state.start_date = action.start_date;
-      state.description = action.description;
-      state.location = action.location;
+      state.start_date = action.payload.startDate;
+      state.end_date = action.payload.endDate;
+      state.location = action.payload.location;
     },
     reset: (state) => {
       state = initialState;

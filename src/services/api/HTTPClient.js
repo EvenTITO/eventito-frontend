@@ -1,5 +1,4 @@
 import { getAuthUser } from "@/services/firebase/firebaseServices.js";
-import { serverDown } from "@/state/app/appSlice";
 import axios from "axios";
 
 export class HTTPClient {
