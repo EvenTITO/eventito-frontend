@@ -46,23 +46,17 @@ export default function CreateEvent() {
   };
 
   const handleSubmit = () => {
-    toast({
-      variant: "destructiveOutline",
-      title: "Error al crear el evento",
-      description: "El titulo se encuentra repetido",
-    });
-
-    console.log("creando evento");
-    console.log({
-      eventType,
-      title,
-      description,
-      organizer,
-      startDate,
-      endDate,
-      location,
-    });
-    //navigate("/home/my-events");
+    // fetch backend
+    const fetchError = true;
+    if (fetchError) {
+      toast({
+        variant: "destructiveOutline",
+        title: "Error al crear el evento",
+        description: "El titulo se encuentra repetido",
+      });
+    } else {
+      navigate("/home/my-events");
+    }
   };
 
   return (
