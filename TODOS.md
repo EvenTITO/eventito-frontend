@@ -10,10 +10,9 @@
 - codigo duplicado que podria sacar pero hay que abstraer un poco
 
 ## My events
-- cards mismo tamanio
 - reutilizar cards
-- parseo de fechas es medio quilombo
 - agregar un conversor de roles -> definirlo en utils
+- si hay muchos eventos? entonces hacer paginacion / infinite scrolling
 
 ## styles
 - agregarle margin al header maybe para que este mas centrado? -> molesto para el header del evento, pero no tan malo para header home

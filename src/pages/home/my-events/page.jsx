@@ -77,7 +77,7 @@ export default function MyEventsPage() {
 function EventCard({ event }) {
     return (
     <Link to={`/events/${event.id}/view`} className="block">
-      <Card className="transition-all duration-300 hover:shadow-lg focus-within:shadow-lg group">
+      <Card className="transition-all duration-300 hover:shadow-lg focus-within:shadow-lg group min-h-[250px]">
         <CardHeader>
           <div className="flex justify-between items-start">
             <CardTitle className="mr-2">{event.title}</CardTitle>
@@ -85,7 +85,6 @@ function EventCard({ event }) {
               {event.status}
             </Badge>
           </div>
-          <CardDescription>{event.description}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
