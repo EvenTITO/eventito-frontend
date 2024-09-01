@@ -12,7 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const eventTypes = [
   {
@@ -29,7 +29,6 @@ const eventTypes = [
 ];
 
 export default function CreateEvent() {
-  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [eventType, setEventType] = useState("");
   const [title, setTitle] = useState("");

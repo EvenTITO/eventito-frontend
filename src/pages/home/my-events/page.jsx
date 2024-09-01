@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -17,11 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CalendarDays, MapPin, Search, Users, ArrowRight } from "lucide-react";
+import { CalendarDays, MapPin, Search, ArrowRight } from "lucide-react";
 
 export default function MyEventsPage() {
-  const navigate = useNavigate();
-
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState("All");
 
