@@ -9,6 +9,7 @@ import { auth } from "@/services/firebase/firebaseAuth.js";
 import { logout } from "./state/user/userSlice";
 import { useDispatch } from "react-redux";
 import RoutesEvent from "./pages/event/routes";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -30,6 +31,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Toaster />
       <RoutesAuth />
       <RoutesHome />
       <RoutesEvent />
