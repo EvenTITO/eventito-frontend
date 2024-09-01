@@ -1,7 +1,6 @@
 import { isAuthenticated } from "@/lib/routes/isAuthenticated";
 import { Navigate, Outlet } from "react-router-dom";
 import Header from "./_components/Header";
-import { Toaster } from "@/components/ui/toaster";
 
 export default function LayoutHome() {
   if (isAuthenticated()) {

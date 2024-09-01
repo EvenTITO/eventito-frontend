@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import CreateEventStep1 from "./_components/step1";
 import CreateEventStep2 from "./_components/step2";
 import CreateEventStep3 from "./_components/step3";
+import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 export default function CreateEvent() {
   const navigate = useNavigate();
@@ -18,6 +20,9 @@ export default function CreateEvent() {
   const [endDate, setEndDate] = useState();
   const [location, setLocation] = useState("");
   const [isScrollable, setIsScrollable] = useState(false);
+
+  const [createError, setCreateError] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     const checkScrollable = () => {
@@ -41,7 +46,13 @@ export default function CreateEvent() {
   };
 
   const handleSubmit = () => {
-    console.log("creando evento")
+    toast({
+      variant: "destructiveOutline",
+      title: "Error al crear el evento",
+      description: "El titulo se encuentra repetido",
+    });
+
+    console.log("creando evento");
     console.log({
       eventType,
       title,
@@ -51,7 +62,7 @@ export default function CreateEvent() {
       endDate,
       location,
     });
-    navigate("/home/my-events");
+    //navigate("/home/my-events");
   };
 
   return (
