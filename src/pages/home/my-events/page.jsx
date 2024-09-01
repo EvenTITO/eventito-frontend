@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -20,6 +20,8 @@ import {
 import { CalendarDays, MapPin, Search, Users, ArrowRight } from "lucide-react";
 
 export default function MyEventsPage() {
+  const navigate = useNavigate();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState("All");
 
@@ -57,7 +59,9 @@ export default function MyEventsPage() {
               <SelectItem value="REVIEWER">Reviewer</SelectItem>
             </SelectContent>
           </Select>
-          <Button>Crear nuevo evento</Button>
+          <Button
+            onClick={navigate("/home/create-event")}
+          >Crear nuevo evento</Button>
         </div>
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
