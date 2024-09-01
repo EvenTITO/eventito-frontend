@@ -14,6 +14,7 @@ export default function HomePage() {
     queryFn: () => apiGetMyEvents(httpClient),
   });
 
+  console.log(data);
   const component = <HomeMain />;
   return (
     <FetchStatus isPending={isPending} error={error} component={component} />
@@ -22,7 +23,6 @@ export default function HomePage() {
 
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,

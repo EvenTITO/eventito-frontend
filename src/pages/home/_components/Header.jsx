@@ -1,6 +1,6 @@
 import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
-import { User, UserIcon } from "lucide-react";
+import { User } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Header() {
@@ -13,13 +13,13 @@ export default function Header() {
       <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
         <Link
           className="text-sm font-medium hover:underline underline-offset-4"
-          href="#"
+          to={"/home"}
         >
           Inicio
         </Link>
         <Link
           className="text-sm font-medium hover:underline underline-offset-4"
-          href="#"
+          to={"/home/my-events"}
         >
           Mis eventos
         </Link>
