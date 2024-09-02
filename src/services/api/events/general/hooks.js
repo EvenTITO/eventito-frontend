@@ -3,11 +3,12 @@
  *  wrapping the backend calls.
  * */
 
-import { useQuery } from "@tanstack/react-query";
-import { apiGetAllEvents, apiGetMyEvents } from "./queries";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { apiGetAllEvents, apiGetMyEvents, apiPostCreateEvent } from "./queries";
 import { convertEventData, convertMyEventsData } from "./conversor";
 import { EVENTS_URL } from "@/lib/Constants";
 import { HTTPClient } from "@/services/api/HTTPClient";
+import { constructCreateEventBody } from "./constructors";
 
 export function getPublicEvents() {
   return useQuery({
@@ -27,6 +28,22 @@ export function getMyEvents() {
       const httpClient = new HTTPClient(EVENTS_URL);
       const eventData = await apiGetMyEvents(httpClient);
       return convertMyEventsData(eventData);
+    },
+  });
+}
+
+export function createEvent() {
+  return useMutation({
+    mutationFn: async (eventData) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const body = constructCreateEventBody(eventData);
+      return await apiPostCreateEvent(body, httpClient);
+    },
+    onSuccess: (data) => {
+      console.log("Event created successfully:", data);
+    },
+    onError: (error) => {
+      console.error("Error creating event:", error);
     },
   });
 }

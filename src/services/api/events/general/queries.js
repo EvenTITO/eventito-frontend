@@ -13,3 +13,7 @@ export const apiGetMyEvents = async (httpClient) => {
 export const apiGetAllEvents = async (httpClient) => {
   return (await httpClient.get("/")).data;
 };
+
+export const apiPostCreateEvent = async (body, httpClient) => {
+  return (await httpClient.post("", body));
+};

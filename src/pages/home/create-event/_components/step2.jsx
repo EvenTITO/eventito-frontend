@@ -28,7 +28,7 @@ export default function CreateEventStep2({ step, setStep }) {
         addEventMandatory({
           title: title,
           description: description,
-          organizer: organizer,
+          organized_by: organizer,
         }),
       );
       setStep(3);
