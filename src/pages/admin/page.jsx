@@ -9,15 +9,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Separator } from "@/components/ui/separator";
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -25,11 +16,10 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Search, ChevronRight } from "lucide-react";
+import { Search, ChevronRight, Bell, User } from "lucide-react";
 
-export default function AdminPage() {
+export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("events");
-
   const [events, setEvents] = useState([
     {
       id: "1",
@@ -73,7 +63,6 @@ export default function AdminPage() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [newStatus, setNewStatus] = useState("");
 
-
   const handleStatusChange = (id, newStatus) => {
     setEvents(
       events.map((event) =>
@@ -106,137 +95,115 @@ export default function AdminPage() {
   );
 
   return (
-    <div className="container mx-auto p-6">
-      <header className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">Admin Panel</h1>
-        <div className="space-x-2">
-          <Button
-            variant={activeTab === "events" ? "default" : "outline"}
-            onClick={() => setActiveTab("events")}
-          >
-            Events
-          </Button>
-          <Button
-            variant={activeTab === "members" ? "default" : "outline"}
-            onClick={() => setActiveTab("members")}
-          >
-            Members
-          </Button>
+    <div className="min-h-screen bg-gray-100">
+      <header className="bg-white shadow">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-8">
+            <h1 className="text-2xl font-bold">Admin Panel</h1>
+            <nav className="hidden md:flex space-x-6">
+              <button
+                onClick={() => setActiveTab("events")}
+                className={`text-base ${activeTab === "events" ? "text-black font-semibold" : "text-gray-500 hover:text-primary"}`}
+              >
+                Events
+              </button>
+              <button
+                onClick={() => setActiveTab("members")}
+                className={`text-base ${activeTab === "members" ? "text-black font-semibold" : "text-gray-500 hover:text-primary"}`}
+              >
+                Members
+              </button>
+            </nav>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost" size="icon">
+              <Bell className="w-5 h-5" />
+            </Button>
+            <Button variant="ghost" size="icon">
+              <User className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       </header>
-      <Separator className="my-4" />
 
-      {activeTab === "events" && (
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">Events</h2>
-          <div className="flex items-center space-x-2 mb-4">
-            <Search className="w-4 h-4 text-gray-500" />
-            <Input
-              placeholder="Search events..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-grow"
-            />
-          </div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Event Title</TableHead>
-                <TableHead>Organizer</TableHead>
-                <TableHead className="w-[100px]"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredEvents.map((event) => (
-                <TableRow
-                  key={event.id}
-                  onClick={() => setSelectedEvent(event)}
-                  className="cursor-pointer hover:bg-gray-100 group"
-                >
-                  <TableCell>{event.title}</TableCell>
-                  <TableCell>{event.organizer}</TableCell>
-                  <TableCell className="text-right">
-                    <span className="invisible group-hover:visible text-primary flex items-center justify-end">
-                      View event <ChevronRight className="w-4 h-4 ml-1" />
-                    </span>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      )}
-
-      {activeTab === "members" && (
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">Members</h2>
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="flex items-center space-x-2 flex-grow">
+      <main className="container mx-auto px-4 py-8">
+        <div className="bg-white shadow rounded-lg p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-semibold">
+              {activeTab === "events"
+                ? "Events Management"
+                : "Members Management"}
+            </h2>
+            <div className="flex items-center space-x-2 w-64">
               <Search className="w-4 h-4 text-gray-500" />
               <Input
-                placeholder="Search members..."
+                placeholder={`Search ${activeTab}...`}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="flex-grow"
               />
             </div>
-            <Select
-              value={roleFilter}
-              onValueChange={(value) => setRoleFilter(value)}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="All">All Roles</SelectItem>
-                <SelectItem value="Administrator">Administrator</SelectItem>
-                <SelectItem value="Event Creator">Event Creator</SelectItem>
-                <SelectItem value="No Role">No Role</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredMembers.map((member) => (
-                <TableRow key={member.id}>
-                  <TableCell>{member.name}</TableCell>
-                  <TableCell>{member.email}</TableCell>
-                  <TableCell>{member.role}</TableCell>
-                  <TableCell>
-                    <Select
-                      value={member.role}
-                      onValueChange={(value) =>
-                        handleRoleChange(member.id, value)
-                      }
-                    >
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Administrator">
-                          Administrator
-                        </SelectItem>
-                        <SelectItem value="Event Creator">
-                          Event Creator
-                        </SelectItem>
-                        <SelectItem value="No Role">No Role</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                </TableRow>
+
+          {activeTab === "events" && (
+            <div className="space-y-4">
+              {filteredEvents.map((event) => (
+                <div
+                  key={event.id}
+                  onClick={() => setSelectedEvent(event)}
+                  className="flex justify-between items-center p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100"
+                >
+                  <div>
+                    <h3 className="font-semibold">{event.title}</h3>
+                    <p className="text-sm text-gray-500">{event.organizer}</p>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-gray-400" />
+                </div>
               ))}
-            </TableBody>
-          </Table>
+            </div>
+          )}
+
+          {activeTab === "members" && (
+            <div className="space-y-4">
+              {filteredMembers.map((member) => (
+                <div
+                  key={member.id}
+                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
+                      <User className="w-6 h-6 text-gray-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">{member.name}</h3>
+                      <p className="text-sm text-gray-500">{member.email}</p>
+                    </div>
+                  </div>
+                  <Select
+                    value={member.role}
+                    onValueChange={(value) =>
+                      handleRoleChange(member.id, value)
+                    }
+                  >
+                    <SelectTrigger className="w-[140px]">
+                      <SelectValue placeholder="Select role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Administrator">
+                        Administrator
+                      </SelectItem>
+                      <SelectItem value="Event Creator">
+                        Event Creator
+                      </SelectItem>
+                      <SelectItem value="No Role">No Role</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </main>
 
       <Dialog
         open={!!selectedEvent}
