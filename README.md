@@ -1,23 +1,17 @@
-# eventito-frontend
+# Eventito frontend
 
-## Levantar la app
-```
-yarn dev
-```
+## Install the dependencies
 
-## Deploy
-TODO: agregar el deploy con yarn
-
-```
-yarn build
+```sh
+npm install
 ```
 
-### Vercel
-```
-https://vercel.com/eventito/eventito-frontend
+## Run the app
+
+```sh
+npm run dev
 ```
 
-## Libreria para agregar componentes al codigo
-```
-https://ui.shadcn.com/
-```
+## Curl
+
+curl -X POST -d '{"email":"mateocapon@gmail.com","password":"adminadmin","returnSecureToken":true}' -H "Content-Type: application/json" "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBJdOMRxl7_IENGO8LB1lp3moUpPeAVaME"
