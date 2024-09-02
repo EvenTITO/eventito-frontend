@@ -9,7 +9,7 @@ export default function Header() {
   const headerStyle = "px-4 lg:px-6 h-14 flex items-center bg-white"
 
   return (
-    <header className={cn(headerStyle)}>
+    <header className={cn(fixedHeader, headerStyle)}>
       <Link className="flex items-center justify-center" href="#">
         <Logo showName={false} bgColor="white" />
         <span className="sr-only">Eventos, charlas y conferencias</span>

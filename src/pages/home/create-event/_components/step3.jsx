@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+//import { format } from "date-fns";
+import { format, parse } from "@formkit/tempo"
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -45,7 +46,7 @@ export default function CreateEventStep3({ step, setStep }) {
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {startDate ? (
-                          format(startDate, "PPP")
+                          format(startDate, "full")
                         ) : (
                           <span>Seleccionar fecha</span>
                         )}
@@ -76,7 +77,7 @@ export default function CreateEventStep3({ step, setStep }) {
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {endDate ? (
-                            format(endDate, "PPP")
+                            format(endDate, "full")
                           ) : (
                             <span>Seleccionar fecha</span>
                           )}
