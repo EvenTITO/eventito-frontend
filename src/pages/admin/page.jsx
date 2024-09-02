@@ -34,7 +34,6 @@ export default function AdminPanel() {
       end_date: "2024-11-10",
       status: "pending",
     },
-    // Add more sample events here...
   ]);
 
   const [members, setMembers] = useState([
@@ -99,27 +98,24 @@ export default function AdminPanel() {
       <header className="bg-white shadow">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-8">
-            <h1 className="text-2xl font-bold">Admin Panel</h1>
+            <h1 className="text-2xl font-bold">Panel de administrador</h1>
             <nav className="hidden md:flex space-x-6">
               <button
                 onClick={() => setActiveTab("events")}
-                className={`text-base ${activeTab === "events" ? "text-black font-semibold" : "text-gray-500 hover:text-primary"}`}
+                className={`text-base ${activeTab === "events" ? "text-black" : "text-gray-400 hover:text-gray-600"}`}
               >
-                Events
+                Eventos
               </button>
               <button
                 onClick={() => setActiveTab("members")}
-                className={`text-base ${activeTab === "members" ? "text-black font-semibold" : "text-gray-500 hover:text-primary"}`}
+                className={`text-base ${activeTab === "members" ? "text-black" : "text-gray-400 hover:text-gray-600"}`}
               >
-                Members
+                Miembros
               </button>
             </nav>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon">
-              <Bell className="w-5 h-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="table" size="icon">
               <User className="w-5 h-5" />
             </Button>
           </div>
@@ -131,8 +127,8 @@ export default function AdminPanel() {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold">
               {activeTab === "events"
-                ? "Events Management"
-                : "Members Management"}
+                ? "Solicitudes de eventos"
+                : "Miembros y roles"}
             </h2>
             <div className="flex items-center space-x-2 w-64">
               <Search className="w-4 h-4 text-gray-500" />
@@ -190,7 +186,7 @@ export default function AdminPanel() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Administrator">
-                        Administrator
+                        Administrador
                       </SelectItem>
                       <SelectItem value="Event Creator">
                         Event Creator
@@ -215,56 +211,56 @@ export default function AdminPanel() {
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Organizer</Label>
+              <Label className="text-right">Usuario</Label>
               <div className="col-span-3">{selectedEvent?.organizer}</div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Location</Label>
+              <Label className="text-right">Ubicacion</Label>
               <div className="col-span-3">{selectedEvent?.location}</div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Contact</Label>
+              <Label className="text-right">Contacto</Label>
               <div className="col-span-3">{selectedEvent?.contact}</div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Organized by</Label>
+              <Label className="text-right">Organizado por</Label>
               <div className="col-span-3">{selectedEvent?.organized_by}</div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Description</Label>
+              <Label className="text-right">Descripcion</Label>
               <div className="col-span-3">{selectedEvent?.description}</div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Event Type</Label>
+              <Label className="text-right">Tipo de evento</Label>
               <div className="col-span-3">{selectedEvent?.event_type}</div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Start Date</Label>
+              <Label className="text-right">Fecha de inicio</Label>
               <div className="col-span-3">{selectedEvent?.start_date}</div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">End Date</Label>
+              <Label className="text-right">Fecha de fin</Label>
               <div className="col-span-3">{selectedEvent?.end_date}</div>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Define the status:</Label>
+              <Label className="text-right">Definir solicitud:</Label>
               <Select
                 value={newStatus}
                 onValueChange={(value) => setNewStatus(value)}
               >
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select status" />
+                  <SelectValue placeholder="Seleccionar estado" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="approved">Approved</SelectItem>
-                  <SelectItem value="rejected">Rejected</SelectItem>
+                  <SelectItem value="approved">Aprobado</SelectItem>
+                  <SelectItem value="rejected">Rechazado</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setSelectedEvent(null)}>
-              Cancel
+              Cancelar
             </Button>
             <Button
               onClick={() =>
@@ -274,7 +270,7 @@ export default function AdminPanel() {
               }
               disabled={!newStatus}
             >
-              Submit
+              Enviar
             </Button>
           </DialogFooter>
         </DialogContent>
