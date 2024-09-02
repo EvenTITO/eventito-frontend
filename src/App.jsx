@@ -10,6 +10,7 @@ import { logout } from "./state/user/userSlice";
 import { useDispatch } from "react-redux";
 import RoutesEvent from "./pages/events/routes";
 import { Toaster } from "./components/ui/toaster";
+import RoutesAdmin from "./pages/admin/routes";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,6 +35,7 @@ function App() {
       <Toaster />
       <RoutesAuth />
       <RoutesHome />
+      <RoutesAdmin />
       <RoutesEvent />
       <RoutesManage />
       <RoutesParticipants />
