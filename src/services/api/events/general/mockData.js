@@ -214,4 +214,4 @@ const originalData = [
   },
 ];
 
-export const eventData = originalData.map(convertEventData);
+export const eventData = convertEventData(originalData);

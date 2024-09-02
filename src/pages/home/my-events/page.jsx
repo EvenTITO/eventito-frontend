@@ -1,3 +1,18 @@
+import FetchStatus from "@/components/FetchStatus";
+import { getMyEvents } from "@/services/api/events/general/hooks";
+
+export default function MyEventsPage() {
+  const { isPending, error, data: events } = getMyEvents();
+
+  const component = <MyEvents events={events} />;
+  if (events) {
+    console.log(events);
+  }
+  return (
+    <FetchStatus isPending={isPending} error={error} component={component} />
+  );
+}
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -18,7 +33,7 @@ import {
 } from "@/components/ui/select";
 import { CalendarDays, MapPin, Search, ArrowRight } from "lucide-react";
 
-export default function MyEventsPage() {
+function MyEvents({ events }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState("All");
 
@@ -57,9 +72,9 @@ export default function MyEventsPage() {
             </SelectContent>
           </Select>
           <Link to={"/home/create-event"}>
-          <Button>
-            Crear nuevo evento
-          </Button>
+            <Button>
+              Crear nuevo evento
+            </Button>
           </Link>
         </div>
       </div>
@@ -117,89 +132,3 @@ function EventCard({ event }) {
   );
 }
 
-const events = [
-  {
-    id: "f2c9f5d2-3941-491e-93fc-8de65163c1d2",
-    title: "CONGRESO DE QUIMICA",
-    description: "Evento en FIUBA",
-    event_type: "CONFERENCE",
-    location: "FIUBA, Av. Paseo Colon 850",
-    dates: [
-      {
-        date: null,
-        description: "Fecha de comienzo del evento.",
-        is_mandatory: true,
-        label: "Fecha de Comienzo",
-        name: "START_DATE",
-        time: null,
-      },
-      {
-        date: null,
-        description: "Fecha de comienzo del evento.",
-        is_mandatory: true,
-        label: "Fecha de Finalización",
-        name: "END_DATE",
-        time: null,
-      },
-      {
-        date: null,
-        description: "Fecha límite de envío de trabajos.",
-        is_mandatory: true,
-        label: "Fecha de envío de trabajos",
-        name: "SUBMISSION_DEADLINE_DATE",
-        time: null,
-      },
-    ],
-    roles: ["ORGANIZER"],
-    status: "CREATED",
-    tracks: ["track1", "track2", "track3"],
-  },
-  {
-    id: "f2c9f5d2-3941-491e-93fc-8de65163c1d2",
-    title: "SIMPOSIO DE INGENIERÍA",
-    description: "Evento anual de ingeniería",
-    event_type: "SYMPOSIUM",
-    location: "FIUBA, Av. Las Heras 2214",
-    dates: [
-      {
-        date: "2023-11-15",
-        description: "Fecha de comienzo del evento.",
-        is_mandatory: true,
-        label: "Fecha de Comienzo",
-        name: "START_DATE",
-        time: null,
-      },
-      {
-        date: "2023-11-17",
-        description: "Fecha de finalización del evento.",
-        is_mandatory: true,
-        label: "Fecha de Finalización",
-        name: "END_DATE",
-        time: null,
-      },
-    ],
-    roles: ["CHAIR", "REVIEWER"],
-    status: "UPCOMING",
-    tracks: ["track1", "track2"],
-  },
-  {
-    id: "f2c9f5d2-3941-491e-93fc-8de65163c1d2",
-    title: "WORKSHOP DE PROGRAMACIÓN",
-    description: "Taller práctico de programación avanzada",
-    event_type: "WORKSHOP",
-    location: "Online",
-    dates: [
-      {
-        date: "2023-12-01",
-        description: "Fecha del workshop.",
-        is_mandatory: true,
-        label: "Fecha del Workshop",
-        name: "EVENT_DATE",
-        time: null,
-      },
-    ],
-    roles: ["ASSISTANT", "AUTHOR"],
-    status: "REGISTRATION_OPEN",
-    tracks: ["track1"],
-  },
-];

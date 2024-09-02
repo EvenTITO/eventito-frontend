@@ -17,3 +17,24 @@ function convertEventItem(data) {
     location: data.location,
   };
 }
+
+export function convertMyEventsData(data) {
+  return data.map((event) => ({
+    id: event.id,
+    title: event.title,
+    description: event.description,
+    event_type: event.event_type,
+    location: event.location,
+    dates: event.dates.map((date) => ({
+      date: date.date,
+      description: date.description,
+      is_mandatory: date.is_mandatory,
+      label: date.label,
+      name: date.name,
+      time: date.time,
+    })),
+    roles: event.roles,
+    status: event.status,
+    tracks: event.tracks,
+  }));
+}
