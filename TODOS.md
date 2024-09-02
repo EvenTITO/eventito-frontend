@@ -35,6 +35,7 @@
 - integrar con el back
 - algunas cosas quedaron en ingles por como las defini
 - agregar filtro de tipos de eventos y de rol
+- agregar ir y volver de home
 
 ## styles
 
