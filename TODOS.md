@@ -30,6 +30,12 @@
   - estaria bueno definirle schemas a los forms para validar las mismas cosas que el back (que el titulo tenga X size, etc)
   - cambiar un poco la estructura para que tenga solo dos pasos
 
+## Administracion de evento
+
+- integrar con el back
+- algunas cosas quedaron en ingles por como las defini
+- agregar filtro de tipos de eventos y de rol
+
 ## styles
 
 - agregarle margin al header maybe para que este mas centrado? -> molesto para el header del evento, pero no tan malo para header home
