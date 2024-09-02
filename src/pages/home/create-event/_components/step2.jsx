@@ -49,7 +49,7 @@ export default function CreateEventStep2({ step, setStep }) {
             )}
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold mb-4">
-                Paso 2: Informacion general
+                Paso 2/3: Informacion general
               </h2>
               <div className="space-y-4">
                 <div>

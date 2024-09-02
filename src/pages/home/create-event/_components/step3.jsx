@@ -29,7 +29,7 @@ export default function CreateEventStep3({ step, setStep }) {
           <form className="space-y-8">
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold mb-4">
-                Paso 3: informacion adicional
+                Paso 3/3: informacion adicional
               </h2>
               <div className="space-y-4">
                 <div>

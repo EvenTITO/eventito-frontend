@@ -54,7 +54,7 @@ export default function CreateEventStep1({ step, setStep }) {
             )}
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold mb-4">
-                Paso 1: Seleccionar el tipo de evento
+                Paso 1/3: Seleccionar el tipo de evento
               </h2>
               <div className="flex flex-col gap-4 sm:grid-cols-2">
                 {eventTypes.map((type) => (

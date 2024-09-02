@@ -25,7 +25,10 @@
 ## Create event
 
 - agregar x para cerrar
-- agregar la publicacion del evento con su custom hook
+- cuando esta cargando, estaria bueno que no se pueda hacer mas nada, pero no pondria un loader invasivo en toda la pantalla
+- tratar errores
+  - estaria bueno definirle schemas a los forms para validar las mismas cosas que el back (que el titulo tenga X size, etc)
+  - cambiar un poco la estructura para que tenga solo dos pasos
 
 ## styles
 
