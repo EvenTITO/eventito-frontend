@@ -133,7 +133,7 @@ export default function ReviewerDashboard() {
 
         <div className="mb-6">
           <div className="flex border-b">
-            {["Work Information", "Review Form"].map((tab) => (
+            {["Work Info", "Review Form"].map((tab) => (
               <button
                 key={tab}
                 className={`px-4 py-2 font-medium text-sm focus:outline-none ${
