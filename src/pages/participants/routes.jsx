@@ -5,6 +5,7 @@ import ChairPage from "./chair/page";
 import AuthorPage from "./author/page";
 import OrganizerDummyPage from "./organizer/page";
 import MyPaymentsPage from "./assistant/my-payments/page";
+import InscriptionPage from "./assistant/inscription/page";
 
 export default function RoutesParticipants() {
   return (
@@ -14,6 +15,10 @@ export default function RoutesParticipants() {
         <Route
           path="/events/:id/panel/assistant/my-payments"
           element={<MyPaymentsPage />}
+        />
+        <Route
+          path="/events/:id/panel/assistant/inscription"
+          element={<InscriptionPage />}
         />
         <Route path="/events/:id/panel/chair" element={<ChairPage />} />
         <Route path="/events/:id/panel/author" element={<AuthorPage />} />
