@@ -72,7 +72,7 @@ export default function MyPaymentsPage() {
     setIsOpen(false);
   };
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (paymentStatus) => {
     return "bg-gray-500";
   };
 
