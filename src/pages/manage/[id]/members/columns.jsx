@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { changeMemberRole } from "@/services/api/events/data";
+import { changeMemberRole } from "@/services/api/events/members/mockData";
 
 
 export const columns = [
