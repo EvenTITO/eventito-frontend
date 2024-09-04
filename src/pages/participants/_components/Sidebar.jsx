@@ -100,7 +100,7 @@ const itemList = [
       {
         label: "Mis pagos",
         icon: <DollarSign className={classNameIcons} />,
-        to: "panel/assistant/payments",
+        to: "panel/assistant/my-payments",
       },
       {
         label: "Inscripcion",
