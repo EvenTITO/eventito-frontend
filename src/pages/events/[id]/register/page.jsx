@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Upload } from "lucide-react";
 
@@ -13,11 +13,21 @@ const roles = [
     title: "Asistente",
     description: "Asistir al evento para escuchar charlas",
   },
-  { id: "author", title: "Autor", description: "Presentar uno o más trabajos en el evento" },
-  { id: "attendee-author", title: "Asistente y autor", description: "Asistir a charlas y presentar trabajos" },
+  {
+    id: "author",
+    title: "Autor",
+    description: "Presentar uno o más trabajos en el evento",
+  },
+  {
+    id: "attendee-author",
+    title: "Asistente y autor",
+    description: "Asistir a charlas y presentar trabajos",
+  },
 ];
 
 export default function EventRegistrationPage() {
+  const { id } = useParams();
+
   const [role, setRole] = useState("");
   const [affiliation, setAffiliation] = useState("");
   const [file, setFile] = useState(null);
@@ -70,7 +80,9 @@ export default function EventRegistrationPage() {
             )}
 
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold mb-4">Seleccionar tu actividad en el evento</h2>
+              <h2 className="text-2xl font-semibold mb-4">
+                Seleccionar tu actividad en el evento
+              </h2>
               <div className="grid gap-4 sm:grid-cols-2">
                 {roles.map((roleOption) => (
                   <div
@@ -151,11 +163,11 @@ export default function EventRegistrationPage() {
         )}
       >
         <div className="container mx-auto px-4 max-w-3xl flex justify-between">
-          <Link href="/events">
-            <Button variant="outline">Cancel</Button>
+          <Link to={`/events/${id}/view`}>
+            <Button variant="outline">Cancelar</Button>
           </Link>
           <Button type="submit" form="form-content">
-            Register
+            Registrarme
           </Button>
         </div>
       </div>
