@@ -25,7 +25,7 @@ import { ChevronDownIcon } from 'lucide-react'
 
 
 const tracks = [
-  "All Tracks",
+  "Seleccionar track",
   "AI in Medicine",
   "Quantum Technologies",
   "Green Technologies",
@@ -34,7 +34,7 @@ const tracks = [
 ]
 
 export default function ChairPage() {
-  const [currentTrack, setCurrentTrack] = useState("All Tracks")
+  const [currentTrack, setCurrentTrack] = useState("Seleccionar track")
   const [assignments, setAssignments] = useState([
     {
       id: 1,
@@ -83,7 +83,7 @@ export default function ChairPage() {
     }
   ])
 
-  const filteredAssignments = currentTrack === "All Tracks" 
+  const filteredAssignments = currentTrack === "Seleccionar track" 
     ? assignments 
     : assignments.filter(assignment => assignment.track === currentTrack)
 
@@ -94,7 +94,7 @@ export default function ChairPage() {
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Chair Dashboard</h1>
+        <h1 className="text-2xl font-bold">Administración de tracks</h1>
         <Select value={currentTrack} onValueChange={setCurrentTrack}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select track" />
@@ -111,12 +111,12 @@ export default function ChairPage() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Authors</TableHead>
-            <TableHead>Submitter</TableHead>
-            <TableHead>Max Review Date</TableHead>
+            <TableHead>Título</TableHead>
+            <TableHead>Autores</TableHead>
+            <TableHead>Usuario</TableHead>
+            <TableHead>Límite de revisión</TableHead>
             <TableHead>Track</TableHead>
-            <TableHead>Reviewers</TableHead>
+            <TableHead>Revisores</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -135,7 +135,7 @@ export default function ChairPage() {
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button variant="outline" className="h-8 px-2 lg:px-3">
-                      {assignment.reviewers.length} Reviewers
+                      {assignment.reviewers.length} Revisores
                       <ChevronDownIcon className="ml-2 h-4 w-4" />
                     </Button>
                   </PopoverTrigger>
