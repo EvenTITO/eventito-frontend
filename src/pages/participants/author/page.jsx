@@ -137,7 +137,6 @@ export default function PresenterDashboard() {
 
   const handleSubmitWork = () => {
     console.log("Submitting new work:", newWork);
-    alert("Work submitted successfully!");
     setIsNewSubmission(false);
     setNewWork({
       title: "",
@@ -192,29 +191,26 @@ export default function PresenterDashboard() {
           }}
           className="inline-flex items-center text-sm font-medium text-blue-600 hover:underline mb-6"
         >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back to My Works
+          <ArrowLeft className="mr-2 h-4 w-4" /> Volver a mis entregas
         </a>
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">{selectedWork.title}</h1>
           {!isEditing && (
             <Button onClick={handleEditWork}>
-              <Edit2 className="mr-2 h-4 w-4" /> Edit Work
+              <Edit2 className="mr-2 h-4 w-4" /> Editar entrega
             </Button>
           )}
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Work Details</CardTitle>
-            <CardDescription>
-              Information about your submitted work
-            </CardDescription>
+            <CardTitle>Detalles de la entrega</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {isEditing ? (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="edit-title">Title</Label>
+                  <Label htmlFor="edit-title">Titulo</Label>
                   <Input
                     id="edit-title"
                     value={newWork.title}
@@ -224,7 +220,7 @@ export default function PresenterDashboard() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Authors</Label>
+                  <Label>Autores</Label>
                   {newWork.authors.map((author, index) => (
                     <div
                       key={index}
@@ -257,7 +253,7 @@ export default function PresenterDashboard() {
                     </div>
                   ))}
                   <Button variant="outline" onClick={addAuthor}>
-                    <Plus className="mr-2 h-4 w-4" /> Add Author
+                    <Plus className="mr-2 h-4 w-4" /> Agregar autor
                   </Button>
                 </div>
                 <div className="space-y-2">
@@ -269,7 +265,7 @@ export default function PresenterDashboard() {
                     }
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a track" />
+                      <SelectValue placeholder="Seleccionar track" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="AI in Medicine">
@@ -303,7 +299,7 @@ export default function PresenterDashboard() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="edit-pdf-upload">
-                    Upload New PDF (Optional)
+                    Cargar nuevo PDF
                   </Label>
                   <Input
                     id="edit-pdf-upload"
@@ -317,18 +313,18 @@ export default function PresenterDashboard() {
               <>
                 <div className="flex items-center space-x-2">
                   <Users className="h-5 w-5 text-muted-foreground" />
-                  <span className="font-semibold">Authors:</span>
+                  <span className="font-semibold">Autores:</span>
                   {selectedWork.authors.map((author, index) => (
                     <span key={index}>
                       {author.name}
-                      {author.isOrator ? " (Orator)" : ""}
+                      {author.isOrator ? " (Presentador)" : ""}
                       {index < selectedWork.authors.length - 1 ? ", " : ""}
                     </span>
                   ))}
                 </div>
                 <div className="flex items-center space-x-2">
                   <Calendar className="h-5 w-5 text-muted-foreground" />
-                  <span className="font-semibold">Submission Date:</span>{" "}
+                  <span className="font-semibold">Fecha de entrega:</span>{" "}
                   {format(selectedWork.submissionDate, "MMMM d, yyyy")}
                 </div>
                 <div className="flex items-center space-x-2">
@@ -338,7 +334,7 @@ export default function PresenterDashboard() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <User className="h-5 w-5 text-muted-foreground" />
-                  <span className="font-semibold">Status:</span>{" "}
+                  <span className="font-semibold">Estado:</span>{" "}
                   {selectedWork.status}
                 </div>
                 <Separator />
@@ -352,7 +348,7 @@ export default function PresenterDashboard() {
                   className="w-full"
                   onClick={() => window.open(selectedWork.pdfLink, "_blank")}
                 >
-                  <FileDown className="mr-2 h-4 w-4" /> Download Full Paper
+                  <FileDown className="mr-2 h-4 w-4" /> Descargar PDF de entrega
                   (PDF)
                 </Button>
               </>
@@ -361,7 +357,7 @@ export default function PresenterDashboard() {
           {isEditing && (
             <CardFooter>
               <Button onClick={handleSaveEdit} className="w-full">
-                <Save className="mr-2 h-4 w-4" /> Save Changes
+                <Save className="mr-2 h-4 w-4" /> Guardar cambios
               </Button>
             </CardFooter>
           )}
@@ -381,16 +377,13 @@ export default function PresenterDashboard() {
           }}
           className="inline-flex items-center text-sm font-medium text-blue-600 hover:underline mb-6"
         >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back to My Works
+          <ArrowLeft className="mr-2 h-4 w-4" /> Volver a mis entregas
         </a>
-        <h1 className="text-3xl font-bold mb-6">New Submission</h1>
+        <h1 className="text-3xl font-bold mb-6">Nueva entrega</h1>
 
         <Card>
           <CardHeader>
-            <CardTitle>Submit New Work</CardTitle>
-            <CardDescription>
-              Please provide details about your new submission
-            </CardDescription>
+            <CardTitle>Realizar una nueva entrega</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -399,7 +392,7 @@ export default function PresenterDashboard() {
                 id="title"
                 value={newWork.title}
                 onChange={(e) => handleNewWorkChange("title", e.target.value)}
-                placeholder="Enter the title of your work"
+                placeholder="Ingresa el titulo de tu trabajo"
               />
             </div>
             <div className="space-y-2">
@@ -411,7 +404,7 @@ export default function PresenterDashboard() {
                     onChange={(e) =>
                       handleAuthorChange(index, "name", e.target.value)
                     }
-                    placeholder="Author name"
+                    placeholder="Nombre del autor"
                   />
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -421,7 +414,7 @@ export default function PresenterDashboard() {
                         handleAuthorChange(index, "isOrator", checked)
                       }
                     />
-                    <Label htmlFor={`orator-${index}`}>Orator</Label>
+                    <Label htmlFor={`orator-${index}`}>Presentador</Label>
                   </div>
                   <Button
                     variant="outline"
@@ -433,7 +426,7 @@ export default function PresenterDashboard() {
                 </div>
               ))}
               <Button variant="outline" onClick={addAuthor}>
-                <Plus className="mr-2 h-4 w-4" /> Add Author
+                <Plus className="mr-2 h-4 w-4" /> Agregar autor
               </Button>
             </div>
             <div className="space-y-2">
@@ -467,12 +460,12 @@ export default function PresenterDashboard() {
                 onChange={(e) =>
                   handleNewWorkChange("abstract", e.target.value)
                 }
-                placeholder="Enter the abstract of your work"
+                placeholder="Ingresa el abstract de tu trabajo"
                 className="min-h-[200px]"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="pdf-upload">Upload PDF</Label>
+              <Label htmlFor="pdf-upload">Subir PDF</Label>
               <Input
                 id="pdf-upload"
                 type="file"
@@ -483,7 +476,7 @@ export default function PresenterDashboard() {
           </CardContent>
           <CardFooter>
             <Button onClick={handleSubmitWork} className="w-full">
-              Submit Work
+              Finalizar entrega
             </Button>
           </CardFooter>
         </Card>
@@ -494,19 +487,19 @@ export default function PresenterDashboard() {
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">My Works</h1>
+        <h1 className="text-2xl font-bold">Mis entregas</h1>
         <Button onClick={handleNewSubmission}>
-          <Plus className="mr-2 h-4 w-4" /> New Submission
+          <Plus className="mr-2 h-4 w-4" /> Nueva entrega
         </Button>
       </div>
       {works.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center h-64">
             <p className="text-xl text-gray-500 mb-4">
-              You haven't submitted any works yet.
+              No se realizaron entregas.
             </p>
             <Button onClick={handleNewSubmission}>
-              <Plus className="mr-2 h-4 w-4" /> Submit Your First Work
+              <Plus className="mr-2 h-4 w-4" /> Nueva entrega
             </Button>
           </CardContent>
         </Card>
@@ -514,10 +507,10 @@ export default function PresenterDashboard() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Title</TableHead>
-              <TableHead>Authors</TableHead>
-              <TableHead>Submission Date</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Titulo</TableHead>
+              <TableHead>Autores</TableHead>
+              <TableHead>Fecha de entrega</TableHead>
+              <TableHead>Estado</TableHead>
               <TableHead>Track</TableHead>
             </TableRow>
           </TableHeader>

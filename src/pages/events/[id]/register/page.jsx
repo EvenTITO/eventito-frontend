@@ -166,9 +166,11 @@ export default function EventRegistrationPage() {
           <Link to={`/events/${id}/view`}>
             <Button variant="outline">Cancelar</Button>
           </Link>
-          <Button type="submit" form="form-content">
-            Registrarme
-          </Button>
+          <Link to={`/events/${id}/panel/assistant/inscription`}>
+            <Button type="submit" form="form-content">
+              Registrarme
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

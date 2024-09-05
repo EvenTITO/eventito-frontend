@@ -88,11 +88,6 @@ const itemList = [
         icon: <Calendar className={classNameIcons} />,
         to: "view/calendar",
       },
-      {
-        label: "Presentaciones",
-        icon: <FileText className={classNameIcons} />,
-        to: "view/talks",
-      },
     ],
   },
   {
@@ -102,11 +97,6 @@ const itemList = [
         label: "Inscripcion",
         icon: <ClipboardPenLine className={classNameIcons} />,
         to: "panel/assistant/inscription",
-      },
-      {
-        label: "Mis pagos",
-        icon: <DollarSign className={classNameIcons} />,
-        to: "panel/assistant/my-payments",
       },
       {
         label: "Entregas",

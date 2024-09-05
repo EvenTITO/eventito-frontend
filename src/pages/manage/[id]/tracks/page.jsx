@@ -63,21 +63,18 @@ export default function TracksPage() {
           <SheetTrigger asChild>
             <Button onClick={() => handleOpenSheet()}>
               <PlusIcon className="mr-2 h-4 w-4" />
-              Add New Track
+              Nuevo track
             </Button>
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>
               <SheetTitle>
-                {currentTrack?.id ? "Edit Track" : "Add New Track"}
+                {currentTrack?.id ? "Editar track" : "Nuevo track"}
               </SheetTitle>
-              <SheetDescription>
-                Enter the details for the track below.
-              </SheetDescription>
             </SheetHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label htmlFor="trackName">Track Name</Label>
+                <Label htmlFor="trackName">Nombre</Label>
                 <Input
                   id="trackName"
                   value={currentTrack?.name || ""}
@@ -92,7 +89,7 @@ export default function TracksPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="memberInCharge">Member in Charge</Label>
+                <Label htmlFor="memberInCharge">Chair</Label>
                 <Input
                   id="memberInCharge"
                   value={currentTrack?.memberInCharge || ""}
@@ -116,9 +113,9 @@ export default function TracksPage() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Track Name</TableHead>
-            <TableHead>Member in Charge</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead>Nombre</TableHead>
+            <TableHead>Chair</TableHead>
+            <TableHead className="text-right">Acciones</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
