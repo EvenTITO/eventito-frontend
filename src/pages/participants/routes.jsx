@@ -6,6 +6,7 @@ import AuthorPage from "./author/page";
 import OrganizerDummyPage from "./organizer/page";
 import MyPaymentsPage from "./assistant/my-payments/page";
 import InscriptionPage from "./assistant/inscription/page";
+import NewPaymentPage from "./assistant/my-payments/new/page";
 
 export default function RoutesParticipants() {
   return (
@@ -28,6 +29,10 @@ export default function RoutesParticipants() {
           element={<OrganizerDummyPage />}
         />
       </Route>
+      <Route
+        path="/events/:id/panel/assistant/my-payments/new"
+        element={<NewPaymentPage />}
+      />
     </Routes>
   );
 }
