@@ -8,26 +8,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { PlusIcon } from "lucide-react";
 import { format } from "date-fns";
+import { Link, useParams } from "react-router-dom";
 
 export default function MyPaymentsPage() {
   const [payments, setPayments] = useState([
@@ -76,14 +60,18 @@ export default function MyPaymentsPage() {
     return "bg-gray-500";
   };
 
+  const {id} = useParams();
+
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Mis pagos</h1>
+        <Link to={`/events/${id}/panel/assistant/my-payments/new`}>
         <Button>
           <PlusIcon className="mr-2 h-4 w-4" />
-          Cargar nuevo pago
+          Nuevo pago
         </Button>
+        </Link>
       </div>
       {payments.length === 0 ? (
         <div className="text-center py-10">

@@ -1,4 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState } from "react"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Separator } from "@/components/ui/separator"
 import {
   Table,
   TableBody,
@@ -8,146 +19,228 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { Button } from "@/components/ui/button"
-import { format } from 'date-fns'
-import { ChevronDownIcon } from 'lucide-react'
+  ArrowLeft,
+} from "lucide-react"
+import { format } from "date-fns"
+import { es } from "date-fns/locale"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-
-const tracks = [
-  "Seleccionar track",
-  "AI in Medicine",
-  "Quantum Technologies",
-  "Green Technologies",
-  "Internet of Things",
-  "Biotechnology"
-]
-
-export default function ChairPage() {
-  const [currentTrack, setCurrentTrack] = useState("Seleccionar track")
-  const [assignments, setAssignments] = useState([
+export default function ChairDashboard() {
+  const [trabajos, setTrabajos] = useState([
     {
       id: 1,
-      title: "Machine Learning in Healthcare",
-      authorCount: 3,
-      submitter: "Dr. Jane Smith",
-      maxReviewDate: new Date(2023, 6, 15),
-      track: "AI in Medicine",
-      reviewers: ["Dr. Alan Turing", "Dr. Grace Hopper", "Dr. John von Neumann"]
+      titulo: "Aprendizaje Automático en Salud: Un Estudio Exhaustivo",
+      autores: [
+        { nombre: "Dra. Juana Pérez", esOrador: true },
+        { nombre: "Prof. Juan García", esOrador: false },
+        { nombre: "Dra. Emilia Moreno", esOrador: false },
+      ],
+      fechaEnvio: new Date(2023, 5, 1),
+      estado: "En Revisión",
+      categoria: "IA en Medicina",
+      resumen:
+        "Este estudio explora el potencial transformador del aprendizaje automático en la atención médica, centrándose en la detección temprana de enfermedades, planes de tratamiento personalizados y análisis predictivo.",
+      enlacePDF: "https://ejemplo.com/aprendizaje-automatico-salud.pdf",
+      revisores: [
+        { id: 1, nombre: "Dr. Carlos Rodríguez", fechaLimite: new Date(2023, 6, 15), revision: "Excelente trabajo, recomiendo su aceptación." },
+        { id: 2, nombre: "Dra. Ana Martínez", fechaLimite: new Date(2023, 6, 20), revision: "Necesita revisiones menores antes de ser aceptado." },
+      ],
     },
     {
       id: 2,
-      title: "Quantum Computing: A New Era",
-      authorCount: 2,
-      submitter: "Prof. John Doe",
-      maxReviewDate: new Date(2023, 6, 20),
-      track: "Quantum Technologies",
-      reviewers: ["Dr. Richard Feynman", "Dr. Marie Curie"]
+      titulo: "Computación Cuántica: Una Nueva Era",
+      autores: [
+        { nombre: "Prof. Juan García", esOrador: true },
+        { nombre: "Dra. Alicia Jiménez", esOrador: false },
+      ],
+      fechaEnvio: new Date(2023, 5, 15),
+      estado: "Pendiente de Revisión",
+      categoria: "Tecnologías Cuánticas",
+      resumen:
+        "Este artículo introduce avances revolucionarios en computación cuántica, mostrando un nuevo enfoque para la manipulación de qubits que reduce significativamente la decoherencia.",
+      enlacePDF: "https://ejemplo.com/computacion-cuantica-nueva-era.pdf",
+      revisores: [],
     },
-    {
-      id: 3,
-      title: "Sustainable Energy Solutions",
-      authorCount: 4,
-      submitter: "Dr. Emily Brown",
-      maxReviewDate: new Date(2023, 6, 18),
-      track: "Green Technologies",
-      reviewers: ["Dr. Nikola Tesla", "Dr. Thomas Edison", "Dr. Albert Einstein", "Dr. Michael Faraday"]
-    },
-    {
-      id: 4,
-      title: "Cybersecurity in IoT Devices",
-      authorCount: 2,
-      submitter: "Alex Johnson",
-      maxReviewDate: new Date(2023, 6, 25),
-      track: "Internet of Things",
-      reviewers: ["Dr. Ada Lovelace", "Dr. Claude Shannon"]
-    },
-    {
-      id: 5,
-      title: "Advancements in CRISPR Technology",
-      authorCount: 5,
-      submitter: "Dr. Michael Lee",
-      maxReviewDate: new Date(2023, 6, 22),
-      track: "Biotechnology",
-      reviewers: ["Dr. Jennifer Doudna", "Dr. Emmanuelle Charpentier", "Dr. George Church"]
-    }
   ])
 
-  const filteredAssignments = currentTrack === "Seleccionar track" 
-    ? assignments 
-    : assignments.filter(assignment => assignment.track === currentTrack)
+  const [trabajoSeleccionado, setTrabajoSeleccionado] = useState(null)
+  const [nuevoRevisor, setNuevoRevisor] = useState({ nombre: "", fechaLimite: "" })
 
-  const handleRowClick = (assignment) => {
-    alert(`You clicked on: ${assignment.title}\nIn the future, this will navigate to a detailed view.`)
+  const handleRowClick = (trabajo) => {
+    setTrabajoSeleccionado(trabajo)
+  }
+
+  const handleAddRevisor = () => {
+    if (nuevoRevisor.nombre && nuevoRevisor.fechaLimite) {
+      const updatedTrabajos = trabajos.map(trabajo => {
+        if (trabajo.id === trabajoSeleccionado.id) {
+          return {
+            ...trabajo,
+            revisores: [
+              ...trabajo.revisores,
+              {
+                id: Date.now(),
+                nombre: nuevoRevisor.nombre,
+                fechaLimite: new Date(nuevoRevisor.fechaLimite),
+                revision: ""
+              }
+            ]
+          }
+        }
+        return trabajo
+      })
+      setTrabajos(updatedTrabajos)
+      setTrabajoSeleccionado(updatedTrabajos.find(t => t.id === trabajoSeleccionado.id))
+      setNuevoRevisor({ nombre: "", fechaLimite: "" })
+    }
+  }
+
+  const handleSubmitDecision = (decision) => {
+    const updatedTrabajos = trabajos.map(trabajo => {
+      if (trabajo.id === trabajoSeleccionado.id) {
+        return {
+          ...trabajo,
+          estado: decision === 'aceptar' ? 'Aceptado' : 'Rechazado'
+        }
+      }
+      return trabajo
+    })
+    setTrabajos(updatedTrabajos)
+    setTrabajoSeleccionado(null)
+  }
+
+  if (trabajoSeleccionado) {
+    return (
+      <div className="container mx-auto py-10 px-4 max-w-6xl">
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault()
+            setTrabajoSeleccionado(null)
+          }}
+          className="inline-flex items-center text-sm font-medium text-blue-600 hover:underline mb-6"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" /> Volver a la Lista de Trabajos
+        </a>
+        <h1 className="text-3xl font-bold mb-6">{trabajoSeleccionado.titulo}</h1>
+
+        <Tabs defaultValue="revisiones" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="revisiones">Revisiones</TabsTrigger>
+            <TabsTrigger value="revisores">Gestión de Revisores</TabsTrigger>
+          </TabsList>
+          <TabsContent value="revisiones">
+            <Card>
+              <CardHeader>
+                <CardTitle>Revisiones del Trabajo</CardTitle>
+                <CardDescription>
+                  Revisa los comentarios de los revisores y toma una decisión
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {trabajoSeleccionado.revisores.length > 0 ? (
+                  trabajoSeleccionado.revisores.map((revisor) => (
+                    <div key={revisor.id} className="mb-4 p-4 border rounded">
+                      <h3 className="font-bold">{revisor.nombre}</h3>
+                      <p className="text-sm text-gray-500">
+                        Fecha límite: {format(revisor.fechaLimite, "d 'de' MMMM 'de' yyyy", { locale: es })}
+                      </p>
+                      <p className="mt-2">{revisor.revision || "Revisión pendiente"}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>No hay revisiones disponibles aún.</p>
+                )}
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <Button onClick={() => handleSubmitDecision('rechazar')} variant="destructive">
+                  Rechazar Trabajo
+                </Button>
+                <Button onClick={() => handleSubmitDecision('aceptar')}>
+                  Aceptar Trabajo
+                </Button>
+              </CardFooter>
+            </Card>
+          </TabsContent>
+          <TabsContent value="revisores">
+            <Card>
+              <CardHeader>
+                <CardTitle>Gestión de Revisores</CardTitle>
+                <CardDescription>
+                  Añade o elimina revisores para este trabajo
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="font-bold mb-2">Revisores Actuales</h3>
+                    {trabajoSeleccionado.revisores.length > 0 ? (
+                      <ul className="list-disc pl-5">
+                        {trabajoSeleccionado.revisores.map((revisor) => (
+                          <li key={revisor.id}>
+                            {revisor.nombre} - Fecha límite: {format(revisor.fechaLimite, "d 'de' MMMM 'de' yyyy", { locale: es })}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No hay revisores asignados aún.</p>
+                    )}
+                  </div>
+                  <Separator />
+                  <div>
+                    <h3 className="font-bold mb-2">Añadir Nuevo Revisor</h3>
+                    <div className="flex gap-4">
+                      <Input
+                        placeholder="Nombre del revisor"
+                        value={nuevoRevisor.nombre}
+                        onChange={(e) => setNuevoRevisor({...nuevoRevisor, nombre: e.target.value})}
+                      />
+                      <Input
+                        type="date"
+                        value={nuevoRevisor.fechaLimite}
+                        onChange={(e) => setNuevoRevisor({...nuevoRevisor, fechaLimite: e.target.value})}
+                      />
+                      <Button onClick={handleAddRevisor}>Añadir Revisor</Button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    )
   }
 
   return (
     <div className="container mx-auto py-10">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Administración de tracks</h1>
-        <Select value={currentTrack} onValueChange={setCurrentTrack}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select track" />
-          </SelectTrigger>
-          <SelectContent>
-            {tracks.map((track) => (
-              <SelectItem key={track} value={track}>
-                {track}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <h1 className="text-2xl font-bold mb-6">Gestión de Tracks</h1>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Título</TableHead>
             <TableHead>Autores</TableHead>
-            <TableHead>Usuario</TableHead>
-            <TableHead>Límite de revisión</TableHead>
-            <TableHead>Track</TableHead>
-            <TableHead>Revisores</TableHead>
+            <TableHead>Fecha de Envío</TableHead>
+            <TableHead>Estado</TableHead>
+            <TableHead>Categoría</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredAssignments.map((assignment) => (
-            <TableRow 
-              key={assignment.id} 
-              onClick={() => handleRowClick(assignment)}
+          {trabajos.map((trabajo) => (
+            <TableRow
+              key={trabajo.id}
+              onClick={() => handleRowClick(trabajo)}
               className="cursor-pointer hover:bg-muted/50"
             >
-              <TableCell className="font-medium">{assignment.title}</TableCell>
-              <TableCell>{assignment.authorCount}</TableCell>
-              <TableCell>{assignment.submitter}</TableCell>
-              <TableCell>{format(assignment.maxReviewDate, 'MMM d, yyyy')}</TableCell>
-              <TableCell>{assignment.track}</TableCell>
+              <TableCell className="font-medium">{trabajo.titulo}</TableCell>
               <TableCell>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="h-8 px-2 lg:px-3">
-                      {assignment.reviewers.length} Revisores
-                      <ChevronDownIcon className="ml-2 h-4 w-4" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <ul className="list-none p-2">
-                      {assignment.reviewers.map((reviewer, index) => (
-                        <li key={index} className="py-1">{reviewer}</li>
-                      ))}
-                    </ul>
-                  </PopoverContent>
-                </Popover>
+                {trabajo.autores.map((autor) => autor.nombre).join(", ")}
               </TableCell>
+              <TableCell>
+                {format(trabajo.fechaEnvio, "d MMM yyyy", { locale: es })}
+              </TableCell>
+              <TableCell>{trabajo.estado}</TableCell>
+              <TableCell>{trabajo.categoria}</TableCell>
             </TableRow>
           ))}
         </TableBody>

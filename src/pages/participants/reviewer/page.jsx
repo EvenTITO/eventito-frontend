@@ -80,7 +80,7 @@ export default function ReviewerDashboard() {
   ]);
 
   const [selectedAssignment, setSelectedAssignment] = useState(null);
-  const [activeTab, setActiveTab] = useState("entregas");
+  const [activeTab, setActiveTab] = useState("entrega");
   const [review, setReview] = useState({
     technicalMerit: "",
     novelty: "",
@@ -102,7 +102,6 @@ export default function ReviewerDashboard() {
 
   const handleSubmitReview = () => {
     console.log("Submitting review:", review);
-    alert("Review submitted successfully!");
     setSelectedAssignment(null);
     setReview({
       technicalMerit: "",

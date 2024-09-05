@@ -15,13 +15,12 @@ import { format } from "date-fns";
 
 export default function GeneralPage() {
   const [eventInfo, setEventInfo] = useState({
-    title: "Annual Tech Conference",
+    title: "Pycon 2024",
     startDate: new Date(2023, 8, 15),
     endDate: new Date(2023, 8, 17),
-    location: "San Francisco Convention Center",
-    contactName: "John Doe",
-    contactEmail: "john.doe@example.com",
-    contactPhone: "+1 (555) 123-4567",
+    location: "FIUBA",
+    contactName: "Depto. de informatica",
+    contactEmail: "informatica@fi.uba.ar",
   });
 
   const [editingField, setEditingField] = useState(null);
@@ -99,11 +98,11 @@ export default function GeneralPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">Event Configuration</h1>
+      <h1 className="text-3xl font-bold mb-6">Configuracion general</h1>
       <div className="space-y-6">
         <div className="bg-card text-card-foreground rounded-lg border shadow-sm p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold">Event Details</h2>
+            <h2 className="text-2xl font-semibold">Detalles del evento</h2>
             <Button
               variant="outline"
               size="icon"
@@ -115,13 +114,13 @@ export default function GeneralPage() {
           <p className="text-xl mb-2">{eventInfo.title}</p>
           <div className="flex flex-col sm:flex-row sm:space-x-4">
             <p>
-              <span className="font-medium">Start:</span>{" "}
+              <span className="font-medium">Comienzo:</span>{" "}
               {eventInfo.startDate
                 ? format(eventInfo.startDate, "PPP")
                 : "Not set"}
             </p>
             <p>
-              <span className="font-medium">End:</span>{" "}
+              <span className="font-medium">Finalizacion:</span>{" "}
               {eventInfo.endDate ? format(eventInfo.endDate, "PPP") : "Not set"}
             </p>
           </div>
@@ -129,7 +128,7 @@ export default function GeneralPage() {
 
         <div className="bg-card text-card-foreground rounded-lg border shadow-sm p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold">Location</h2>
+            <h2 className="text-2xl font-semibold">Ubicacion</h2>
             <Button
               variant="outline"
               size="icon"
@@ -143,7 +142,7 @@ export default function GeneralPage() {
 
         <div className="bg-card text-card-foreground rounded-lg border shadow-sm p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold">Contact Information</h2>
+            <h2 className="text-2xl font-semibold">Informacion de contacto</h2>
             <Button
               variant="outline"
               size="icon"
@@ -157,9 +156,6 @@ export default function GeneralPage() {
           </p>
           <p>
             <span className="font-medium">Email:</span> {eventInfo.contactEmail}
-          </p>
-          <p>
-            <span className="font-medium">Phone:</span> {eventInfo.contactPhone}
           </p>
         </div>
       </div>

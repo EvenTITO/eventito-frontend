@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
@@ -7,190 +11,196 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { PlusIcon, Trash2Icon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Textarea } from "@/components/ui/textarea";
 
-export default function Component() {
-  const [questions, setQuestions] = useState([
+export default function RevisionesPage() {
+  const [preguntas, setPreguntas] = useState([
     {
       id: 1,
-      text: "How would you rate the overall quality of this submission?",
-      type: "Calification",
-      isMandatory: true,
+      texto: "¿Cuál es la calidad general del trabajo?",
+      tipo: "numerica",
+      requerida: true,
     },
     {
       id: 2,
-      text: "What are the main strengths of this submission?",
-      type: "Question",
-      isMandatory: true,
+      texto: "¿El trabajo es original?",
+      tipo: "seleccion",
+      opciones: ["Sí", "No", "Parcialmente"],
+      requerida: true,
     },
     {
       id: 3,
-      text: "Is this submission suitable for presentation?",
-      type: "MultipleChoice",
-      options: ["Yes", "No", "Maybe"],
-      isMandatory: true,
+      texto: "Comentarios adicionales",
+      tipo: "texto",
+      requerida: false,
     },
   ]);
-
   const [isOpen, setIsOpen] = useState(false);
-  const [newQuestion, setNewQuestion] = useState({
-    text: "",
-    type: "Question",
-    options: [],
-    isMandatory: false,
+  const [editingPregunta, setEditingPregunta] = useState(null);
+  const [nuevaPregunta, setNuevaPregunta] = useState({
+    texto: "",
+    tipo: "texto",
+    requerida: false,
   });
 
-  const handleAddOption = () => {
-    setNewQuestion((prev) => ({
-      ...prev,
-      options: [...(prev.options || []), ""],
-    }));
-  };
-
-  const handleRemoveOption = (index) => {
-    setNewQuestion((prev) => ({
-      ...prev,
-      options: prev.options?.filter((_, i) => i !== index),
-    }));
-  };
-
-  const handleOptionChange = (index, value) => {
-    setNewQuestion((prev) => ({
-      ...prev,
-      options: prev.options?.map((option, i) => (i === index ? value : option)),
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleAddOrUpdatePregunta = (e) => {
     e.preventDefault();
-    const newId =
-      questions.length > 0 ? Math.max(...questions.map((q) => q.id)) + 1 : 1;
-    setQuestions([...questions, { ...newQuestion, id: newId }]);
-    setNewQuestion({
-      text: "",
-      type: "Question",
-      options: [],
-      isMandatory: false,
+    if (editingPregunta) {
+      setPreguntas(
+        preguntas.map((p) =>
+          p.id === editingPregunta.id
+            ? { ...editingPregunta, ...nuevaPregunta }
+            : p,
+        ),
+      );
+    } else {
+      setPreguntas([
+        ...preguntas,
+        { id: preguntas.length + 1, ...nuevaPregunta },
+      ]);
+    }
+    setNuevaPregunta({
+      texto: "",
+      tipo: "texto",
+      requerida: false,
     });
+    setEditingPregunta(null);
     setIsOpen(false);
+  };
+
+  const handleEditPregunta = (pregunta) => {
+    setEditingPregunta(pregunta);
+    setNuevaPregunta(pregunta);
+    setIsOpen(true);
   };
 
   return (
     <div className="container mx-auto py-10">
+      <h1 className="text-2xl font-bold mb-6">Configuración de Revisiones</h1>
+
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Review Questions</h1>
+        <h2 className="text-xl font-semibold">Lista de Preguntas</h2>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button>
               <PlusIcon className="mr-2 h-4 w-4" />
-              Add New Question
+              Nueva Pregunta
             </Button>
           </SheetTrigger>
-          <SheetContent className="overflow-y-auto">
+          <SheetContent>
             <SheetHeader>
-              <SheetTitle>Add New Review Question</SheetTitle>
-              <SheetDescription>
-                Enter the details for the new review question below.
-              </SheetDescription>
+              <SheetTitle>
+                {editingPregunta ? "Editar Pregunta" : "Nueva Pregunta"}
+              </SheetTitle>
             </SheetHeader>
-            <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label htmlFor="questionText">Question Text</Label>
-                <Input
-                  id="questionText"
-                  value={newQuestion.text}
-                  onChange={(e) =>
-                    setNewQuestion({ ...newQuestion, text: e.target.value })
-                  }
-                  placeholder="Enter question text"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Question Type</Label>
-                <RadioGroup
-                  value={newQuestion.type}
-                  onValueChange={(value) =>
-                    setNewQuestion({ ...newQuestion, type: value })
-                  }
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Calification" id="calification" />
-                    <Label htmlFor="calification">Calification</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Question" id="question" />
-                    <Label htmlFor="question">Question</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      value="MultipleChoice"
-                      id="multipleChoice"
-                    />
-                    <Label htmlFor="multipleChoice">Multiple Choice</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-              {newQuestion.type === "MultipleChoice" && (
-                <div className="space-y-2">
-                  <Label>Options</Label>
-                  {newQuestion.options?.map((option, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <Input
-                        value={option}
+            <form
+              onSubmit={handleAddOrUpdatePregunta}
+              className="space-y-4 mt-4"
+            >
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>
+                    Información de la Pregunta
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-2">
+                      <Label htmlFor="preguntaTexto">
+                        Texto de la Pregunta
+                      </Label>
+                      <Textarea
+                        id="preguntaTexto"
+                        value={nuevaPregunta.texto}
                         onChange={(e) =>
-                          handleOptionChange(index, e.target.value)
+                          setNuevaPregunta({
+                            ...nuevaPregunta,
+                            texto: e.target.value,
+                          })
                         }
-                        placeholder={`Option ${index + 1}`}
+                        placeholder="Ingrese la pregunta"
                         required
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={() => handleRemoveOption(index)}
-                      >
-                        <Trash2Icon className="h-4 w-4" />
-                      </Button>
                     </div>
-                  ))}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleAddOption}
-                  >
-                    Add Option
-                  </Button>
-                </div>
-              )}
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="mandatory"
-                  checked={newQuestion.isMandatory}
-                  onCheckedChange={(checked) => {
-                    setNewQuestion({
-                      ...newQuestion,
-                      isMandatory: checked === true,
-                    });
-                  }}
-                />
-                <Label htmlFor="mandatory">Mandatory</Label>
-              </div>
+                    <div className="space-y-2 mt-4">
+                      <Label htmlFor="preguntaTipo">Tipo de Respuesta</Label>
+                      <Select
+                        value={nuevaPregunta.tipo}
+                        onValueChange={(value) =>
+                          setNuevaPregunta({ ...nuevaPregunta, tipo: value })
+                        }
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Seleccionar tipo" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="texto">Texto</SelectItem>
+                          <SelectItem value="numerica">Numérica</SelectItem>
+                          <SelectItem value="seleccion">Selección</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {nuevaPregunta.tipo === "seleccion" && (
+                      <div className="space-y-2 mt-4">
+                        <Label htmlFor="preguntaOpciones">
+                          Opciones (separadas por coma)
+                        </Label>
+                        <Input
+                          id="preguntaOpciones"
+                          value={nuevaPregunta.opciones?.join(", ") || ""}
+                          onChange={(e) =>
+                            setNuevaPregunta({
+                              ...nuevaPregunta,
+                              opciones: e.target.value.split(", "),
+                            })
+                          }
+                          placeholder="Opción 1, Opción 2, Opción 3"
+                          required
+                        />
+                      </div>
+                    )}
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2">
+                  <AccordionTrigger>Configuración Adicional</AccordionTrigger>
+                  <AccordionContent>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="requerida"
+                        checked={nuevaPregunta.requerida}
+                        onCheckedChange={(checked) => {
+                          setNuevaPregunta({
+                            ...nuevaPregunta,
+                            requerida: Boolean(checked),
+                          });
+                        }}
+                      />
+                      <Label htmlFor="requerida">Pregunta Requerida</Label>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
               <Button type="submit" className="w-full">
-                Add Question
+                {editingPregunta ? "Actualizar Pregunta" : "Agregar Pregunta"}
               </Button>
             </form>
           </SheetContent>
@@ -199,19 +209,27 @@ export default function Component() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Question</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Options</TableHead>
-            <TableHead>Mandatory</TableHead>
+            <TableHead>Pregunta</TableHead>
+            <TableHead>Tipo</TableHead>
+            <TableHead>Requerida</TableHead>
+            <TableHead>Acciones</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {questions.map((question) => (
-            <TableRow key={question.id}>
-              <TableCell className="font-medium">{question.text}</TableCell>
-              <TableCell>{question.type}</TableCell>
-              <TableCell>{question.options?.join(", ") || "-"}</TableCell>
-              <TableCell>{question.isMandatory ? "Yes" : "No"}</TableCell>
+          {preguntas.map((pregunta) => (
+            <TableRow key={pregunta.id}>
+              <TableCell className="font-medium">{pregunta.texto}</TableCell>
+              <TableCell>{pregunta.tipo}</TableCell>
+              <TableCell>{pregunta.requerida ? "Sí" : "No"}</TableCell>
+              <TableCell>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleEditPregunta(pregunta)}
+                >
+                  Editar
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -219,3 +237,4 @@ export default function Component() {
     </div>
   );
 }
+

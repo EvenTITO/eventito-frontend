@@ -36,7 +36,7 @@ export default function EventDashboard() {
   const [registration, setRegistration] = useState({
     role: "Asistente",
     name: "John Doe",
-    affiliation: "Tech University",
+    affiliation: "FIUBA",
     file: null,
   });
   const [error, setError] = useState("");
