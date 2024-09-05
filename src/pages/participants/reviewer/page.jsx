@@ -80,7 +80,7 @@ export default function ReviewerDashboard() {
   ]);
 
   const [selectedAssignment, setSelectedAssignment] = useState(null);
-  const [activeTab, setActiveTab] = useState("work-info");
+  const [activeTab, setActiveTab] = useState("entregas");
   const [review, setReview] = useState({
     technicalMerit: "",
     novelty: "",
@@ -127,13 +127,13 @@ export default function ReviewerDashboard() {
           }}
           className="inline-flex items-center text-sm font-medium text-blue-600 hover:underline mb-6"
         >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Assignments
+          <ArrowLeft className="mr-2 h-4 w-4" /> Volver a asignaciones
         </a>
         <h1 className="text-3xl font-bold mb-6">{selectedAssignment.title}</h1>
 
         <div className="mb-6">
           <div className="flex border-b">
-            {["Work Info", "Review Form"].map((tab) => (
+            {["Entrega", "Formulario"].map((tab) => (
               <button
                 key={tab}
                 className={`px-4 py-2 font-medium text-sm focus:outline-none ${
@@ -151,23 +151,20 @@ export default function ReviewerDashboard() {
           </div>
         </div>
 
-        {activeTab === "work-info" && (
+        {activeTab === "entrega" && (
           <Card>
             <CardHeader>
-              <CardTitle>Work Details</CardTitle>
-              <CardDescription>
-                Comprehensive information about the submitted work
-              </CardDescription>
+              <CardTitle>Detalles de la entrega</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center space-x-2">
                 <Users className="h-5 w-5 text-muted-foreground" />
-                <span className="font-semibold">Authors:</span>{" "}
+                <span className="font-semibold">Autores:</span>{" "}
                 {selectedAssignment.authors.join(", ")}
               </div>
               <div className="flex items-center space-x-2">
                 <User className="h-5 w-5 text-muted-foreground" />
-                <span className="font-semibold">Orator:</span>{" "}
+                <span className="font-semibold">Orador:</span>{" "}
                 {selectedAssignment.orator}
               </div>
               <div className="flex items-center space-x-2">
@@ -177,7 +174,7 @@ export default function ReviewerDashboard() {
               </div>
               <div className="flex items-center space-x-2">
                 <Calendar className="h-5 w-5 text-muted-foreground" />
-                <span className="font-semibold">Review Deadline:</span>{" "}
+                <span className="font-semibold">Fecha límite de revisión:</span>{" "}
                 {format(selectedAssignment.maxReviewDate, "MMMM d, yyyy")}
               </div>
               <Separator />
@@ -193,27 +190,24 @@ export default function ReviewerDashboard() {
                   window.open(selectedAssignment.pdfLink, "_blank")
                 }
               >
-                <FileDown className="mr-2 h-4 w-4" /> Download Full Paper (PDF)
+                <FileDown className="mr-2 h-4 w-4" /> Descargar entrega (PDF)
               </Button>
             </CardContent>
           </Card>
         )}
 
-        {activeTab === "review-form" && (
+        {activeTab === "formulario" && (
           <Card>
             <CardHeader>
-              <CardTitle>Review Form</CardTitle>
+              <CardTitle>Formulario de revisión</CardTitle>
               <CardDescription>
-                Please provide your evaluation of the work
+                Respondé algunas preguntas para finalizar la revisión.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
-                  { label: "Technical Merit", field: "technicalMerit" },
-                  { label: "Novelty", field: "novelty" },
-                  { label: "Clarity", field: "clarity" },
-                  { label: "Relevance", field: "relevance" },
+                  { label: "Calificación", field: "technicalMerit" },
                 ].map((item) => (
                   <div key={item.field} className="space-y-2">
                     <Label className="text-lg font-semibold">
@@ -251,7 +245,7 @@ export default function ReviewerDashboard() {
 
               <div className="space-y-2">
                 <Label className="text-lg font-semibold">
-                  Overall Recommendation
+                  Estado del trabajo
                 </Label>
                 <RadioGroup
                   onValueChange={(value) =>
@@ -259,7 +253,7 @@ export default function ReviewerDashboard() {
                   }
                   className="flex flex-wrap gap-4"
                 >
-                  {["Accept", "Minor Revision", "Major Revision", "Reject"].map(
+                  {["Aceptado", "Correcciones", "Rechazado"].map(
                     (option) => (
                       <div key={option} className="flex items-center">
                         <RadioGroupItem
@@ -284,47 +278,15 @@ export default function ReviewerDashboard() {
               </div>
 
               <div className="space-y-2">
-                <Label className="text-lg font-semibold">
-                  Confidence Level
-                </Label>
-                <RadioGroup
-                  onValueChange={(value) =>
-                    handleReviewChange("confidenceLevel", value)
-                  }
-                  className="flex flex-wrap gap-4"
-                >
-                  {["Expert", "High", "Medium", "Low"].map((option) => (
-                    <div key={option} className="flex items-center">
-                      <RadioGroupItem
-                        value={option}
-                        id={`confidence-${option}`}
-                        className="sr-only"
-                      />
-                      <Label
-                        htmlFor={`confidence-${option}`}
-                        className={`px-4 py-2 rounded-full cursor-pointer transition-colors ${
-                          review.confidenceLevel === option
-                            ? "bg-blue-600 text-white"
-                            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                        }`}
-                      >
-                        {option}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </div>
-
-              <div className="space-y-2">
                 <Label
                   htmlFor="comments-to-authors"
                   className="text-lg font-semibold"
                 >
-                  Comments to Authors
+                  Comentarios al autor
                 </Label>
                 <Textarea
                   id="comments-to-authors"
-                  placeholder="Provide detailed feedback for the authors"
+                  placeholder="Realizá un resumen de los cambios solicitados."
                   value={review.commentsToAuthors}
                   onChange={(e) =>
                     handleReviewChange("commentsToAuthors", e.target.value)
@@ -338,11 +300,11 @@ export default function ReviewerDashboard() {
                   htmlFor="confidential-comments"
                   className="text-lg font-semibold"
                 >
-                  Confidential Comments to Committee
+                  Comentario al comité organizador (confidencial)
                 </Label>
                 <Textarea
                   id="confidential-comments"
-                  placeholder="Any additional comments for the committee (not shared with authors)"
+                  placeholder="Agregá cualquier comentario que consideres necesario acerca de esta entrega."
                   value={review.confidentialComments}
                   onChange={(e) =>
                     handleReviewChange("confidentialComments", e.target.value)
@@ -353,7 +315,7 @@ export default function ReviewerDashboard() {
             </CardContent>
             <CardFooter>
               <Button onClick={handleSubmitReview} className="w-full">
-                Submit Review
+                Finalizar revisión
               </Button>
             </CardFooter>
           </Card>
@@ -364,14 +326,14 @@ export default function ReviewerDashboard() {
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-6">Reviewer Assignments</h1>
+      <h1 className="text-2xl font-bold mb-6">Asignaciones de revisión</h1>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Authors</TableHead>
-            <TableHead>Submitter</TableHead>
-            <TableHead>Max Review Date</TableHead>
+            <TableHead>Título</TableHead>
+            <TableHead>Autores</TableHead>
+            <TableHead>Usuario</TableHead>
+            <TableHead>Fecha límite de revisión</TableHead>
             <TableHead>Track</TableHead>
           </TableRow>
         </TableHeader>
