@@ -76,7 +76,7 @@ export const columns = [
     cell: ({ row }) => <div>{row.getValue("username")}</div>,
   },
   {
-    accessorKey: "table",
+    accessorKey: "role",
     header: () => (
       <Button variant="table" className="text-black text-right" disabled>
         Rol
