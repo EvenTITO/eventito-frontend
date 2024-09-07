@@ -2,16 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import { apiGetEventMembers } from "./queries";
 import { EVENTS_URL } from "@/lib/Constants";
 import { HTTPClient } from "@/services/api/HTTPClient";
+import { convertEventMembers } from "./conversor";
+import { getMembers } from "./mockData";
 
 export function useQueryMembers(eventId) {
   return useQuery({
     queryKey: ["getEventMembers", eventId],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      console.log(`Llamando a la api ${eventId}`)
       const eventMembers = await apiGetEventMembers(httpClient, eventId);
-      console.log(`Se obtienen los members ${eventMembers}`)
-      return eventMembers;
+      const eventMembersConverted = convertEventMembers(eventMembers);
+      return eventMembersConverted;
     },
   });
 }

@@ -1,4 +1,12 @@
 export const EventRole = {
+  "ORGANIZER": "ORGANIZER",
+  "CHAIR": "CHAIR",
+  "REVIEWER": "REVIEWER",
+  "SPEAKER": "SPEAKER",
+  "ATTENDEE": "ATTENDEE"
+};
+
+export const EventRoleToView = {
   "ORGANIZER": "Organizador",
   "CHAIR": "Chair",
   "REVIEWER": "Revisor",

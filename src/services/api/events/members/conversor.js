@@ -1,4 +1,4 @@
-import {EventRole, RoleImportance} from '@/services/api/events/members'
+import { EventRoleToView, RoleImportance } from "@/services/api/events/members/common"
 
 export function convertEventMembers(members) {
   return members.map(convertMemberData);
@@ -6,9 +6,10 @@ export function convertEventMembers(members) {
 
 function convertMemberData(data) {
   const role = getMostImportantRole(data.roles);
-  const username = data.name + ' ' + data.lastname;
+  const userData = data.user;
+  const username = userData.name + ' ' + userData.lastname;
   const id = data.user_id;
-  const email = data.email;
+  const email = userData.email;
   return {
     id: id,
     email: email,
@@ -21,12 +22,12 @@ function convertMemberData(data) {
 function getMostImportantRole(roles) {
   let mostImportantRole = null;
   let highestImportance = Infinity;
-
+  
   for (const role of roles) {
     const importance = RoleImportance[role];
     if (importance < highestImportance) {
       highestImportance = importance;
-      mostImportantRole = EventRole[role];
+      mostImportantRole = EventRoleToView[role];
     }
   }
   return mostImportantRole;
