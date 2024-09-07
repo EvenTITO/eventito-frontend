@@ -1,17 +1,31 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { CheckCircle, DollarSign, Clock, AlertCircle } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { CheckCircle, DollarSign, Clock, AlertCircle } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
 
 export function RegistrationTab({ event }) {
+  const { id: eventId } = useParams();
+
   return (
     <Card>
       <CardHeader>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-          <CardTitle className="text-3xl font-bold">Información de Registro</CardTitle>
-          <Button size="lg" className="mt-4 md:mt-0">
-            Iniciar Registro
-          </Button>
+          <CardTitle className="text-3xl font-bold">
+            Información de Registro
+          </CardTitle>
+          <Link to={`/events/${eventId}/register`}>
+            <Button size="lg" className="mt-4 md:mt-0">
+              Iniciar Registro
+            </Button>
+          </Link>
         </div>
       </CardHeader>
       <CardContent className="space-y-8">
@@ -45,7 +59,9 @@ export function RegistrationTab({ event }) {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl font-semibold">Información Importante</CardTitle>
+            <CardTitle className="text-xl font-semibold">
+              Información Importante
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
@@ -55,16 +71,20 @@ export function RegistrationTab({ event }) {
               </li>
               <li className="flex items-center">
                 <DollarSign className="w-5 h-5 mr-2 text-yellow-500" />
-                <span>Opcion de subir comprobantes de pagos segun tu conveniencia</span>
+                <span>
+                  Opcion de subir comprobantes de pagos segun tu conveniencia
+                </span>
               </li>
               <li className="flex items-center">
                 <Clock className="w-5 h-5 mr-2 text-blue-500" />
-                <span>Registro anticipado recomendado para mejores tarifas</span>
+                <span>
+                  Registro anticipado recomendado para mejores tarifas
+                </span>
               </li>
             </ul>
           </CardContent>
         </Card>
-        
+
         <div className="text-center">
           <p className="text-sm text-muted-foreground">
             ¿Tienes preguntas? Contáctanos en {event.contact}
@@ -72,5 +92,5 @@ export function RegistrationTab({ event }) {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

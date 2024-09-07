@@ -27,8 +27,9 @@ export default function Sidebar({ isSidebarOpen }) {
 
   return (
     <aside
-      className={`w-64 bg-[#f7f7fa] border-r fixed top-16 bottom-0 left-0 z-30 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+      className={`w-64 bg-[#f7f7fa] border-r fixed top-16 bottom-0 left-0 z-30 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      }`}
     >
       <ScrollArea className="h-full">
         <div className="p-4">
@@ -87,21 +88,11 @@ const itemList = [
         icon: <Calendar className={classNameIcons} />,
         to: "view/calendar",
       },
-      {
-        label: "Presentaciones",
-        icon: <FileText className={classNameIcons} />,
-        to: "view/talks",
-      },
     ],
   },
   {
     label: "Mis actividades",
     children: [
-      {
-        label: "Mis pagos",
-        icon: <DollarSign className={classNameIcons} />,
-        to: "panel/assistant/payments",
-      },
       {
         label: "Inscripcion",
         icon: <ClipboardPenLine className={classNameIcons} />,

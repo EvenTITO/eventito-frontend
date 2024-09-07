@@ -1,6 +1,5 @@
 /*
- *  Custom hooks to consume for the api of the events,
- *  wrapping the backend calls.
+ *  Custom hooks to consume from the events API
  * */
 
 import { useMutation, useQuery } from "@tanstack/react-query";
