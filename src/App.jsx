@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import RoutesEvent from "./pages/events/routes";
 import { Toaster } from "./components/ui/toaster";
 import RoutesAdmin from "./pages/admin/routes";
+import RoutesEvents from "./pages/(events-manage)/events/routes";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,6 +38,7 @@ function App() {
       <RoutesHome />
       <RoutesAdmin />
       <RoutesEvent />
+      <RoutesEvents />
       <RoutesManage />
       <RoutesParticipants />
     </BrowserRouter>
