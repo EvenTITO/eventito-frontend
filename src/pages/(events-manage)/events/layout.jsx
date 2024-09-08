@@ -48,7 +48,7 @@ function Layout({ eventTitle, roles }) {
 
       {roles.length > 0 ? (
         <div className="flex flex-1 pt-16">
-          <Sidebar isSidebarOpen={true} />
+          <Sidebar isSidebarOpen={true} roles={roles} />
           <main className="flex-1 p-4 md:ml-64 pt-4 overflow-auto">
             <Outlet />
           </main>
