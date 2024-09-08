@@ -20,6 +20,7 @@ export default function LayoutEvents() {
       error,
       data: eventInfo,
     } = getEvent("f2c9f5d2-3941-491e-93fc-8de65163c1d2");
+    // } = getEvent(eventIdParams);
 
     if (eventInfo) {
       dispatch(
