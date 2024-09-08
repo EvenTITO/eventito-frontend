@@ -10,8 +10,9 @@ import {
 import { CalendarDays, MapPin, Tag, Users, Clock, Mail } from "lucide-react";
 import { RegistrationTab } from "./prices";
 
-export default function Page({eventInfo}) {
+export default function Page({ eventInfo }) {
   const [activeTab, setActiveTab] = useState("overview");
+  console.log(eventInfo);
 
   return (
     <div className="min-h-screen bg-background">
@@ -34,7 +35,8 @@ export default function Page({eventInfo}) {
               {eventInfo.media.find((item) => item.name === "banner_image") && (
                 <img
                   src={
-                    eventInfo.media.find((item) => item.name === "banner_image").url
+                    eventInfo.media.find((item) => item.name === "banner_image")
+                      .url
                   }
                   alt="Event Banner"
                   width={1200}
@@ -93,7 +95,8 @@ export default function Page({eventInfo}) {
                 {eventInfo.media.find((item) => item.name === "main_image") && (
                   <img
                     src={
-                      eventInfo.media.find((item) => item.name === "main_image").url
+                      eventInfo.media.find((item) => item.name === "main_image")
+                        .url
                     }
                     alt="Event Main Image"
                     width={800}
@@ -148,7 +151,7 @@ export default function Page({eventInfo}) {
             </Card>
           </TabsContent>
           <TabsContent value="registration">
-            <RegistrationTab event={event} />
+            <RegistrationTab event={eventInfo} />
           </TabsContent>
           <TabsContent value="contact">
             <Card>
@@ -178,4 +181,3 @@ export default function Page({eventInfo}) {
     </div>
   );
 }
-
