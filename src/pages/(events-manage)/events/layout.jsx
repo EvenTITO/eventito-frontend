@@ -1,12 +1,49 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import Header from "../_components/Header";
+import { useDispatch, useSelector } from "react-redux";
+import { getEvent } from "@/services/api/events/general/hooks";
+import { loadEvent } from "@/state/events/eventSlice";
+import FetchStatus from "@/components/FetchStatus";
 
 export default function LayoutEvents() {
-  const title = "Pycon 2024: Exploring the power of Python";
+  const { id: eventIdParams } = useParams();
+  const { eventId, eventTitle } = useSelector((state) => state.event);
+  const dispatch = useDispatch();
 
+  const layoutComponent = <Layout eventTitle={eventTitle} />;
+  if (eventId && eventId === eventIdParams) {
+    return layoutComponent;
+  } else {
+    const {
+      isPending,
+      error,
+      data: eventInfo,
+    } = getEvent("f2c9f5d2-3941-491e-93fc-8de65163c1d2");
+
+    if (eventInfo) {
+      dispatch(
+        loadEvent({
+          roles: eventInfo.roles,
+          eventTitle: eventInfo.title,
+          eventId: eventInfo.id,
+        }),
+      );
+    }
+
+    return (
+      <FetchStatus
+        isPending={isPending}
+        error={error}
+        component={layoutComponent}
+      />
+    );
+  }
+}
+
+function Layout({ eventTitle }) {
   return (
     <div className="flex flex-col h-screen bg-background">
-      <Header toggleSidebar={false} headerTitle={title} />
+      <Header toggleSidebar={false} headerTitle={eventTitle} />
 
       <div className="pt-12">
         <main>
@@ -16,4 +53,3 @@ export default function LayoutEvents() {
     </div>
   );
 }
-
