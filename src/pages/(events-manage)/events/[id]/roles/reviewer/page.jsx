@@ -7,8 +7,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { format } from "date-fns";
 import Assigment from "./assigment";
+import { format } from "@formkit/tempo";
+import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
+import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 
 export default function Page({ assignments }) {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
@@ -27,8 +29,8 @@ export default function Page({ assignments }) {
   }
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-6">Asignaciones de revisión</h1>
+    <ContainerPage>
+      <TitlePage title={"Asignaciones de revisión"} />
       <Table>
         <TableHeader>
           <TableRow>
@@ -49,14 +51,12 @@ export default function Page({ assignments }) {
               <TableCell className="font-medium">{assignment.title}</TableCell>
               <TableCell>{assignment.authorCount}</TableCell>
               <TableCell>{assignment.submitter}</TableCell>
-              <TableCell>
-                {format(assignment.maxReviewDate, "MMM d, yyyy")}
-              </TableCell>
+              <TableCell>{format(assignment.maxReviewDate, "long")}</TableCell>
               <TableCell>{assignment.track}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </div>
+    </ContainerPage>
   );
 }

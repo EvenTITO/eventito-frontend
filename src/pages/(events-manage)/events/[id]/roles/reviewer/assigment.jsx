@@ -23,6 +23,8 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import LineTabs from "@/components/LineTabs";
+import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
+import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 
 export default function Assigment({
   selectedAssignment,
@@ -232,7 +234,7 @@ export default function Assigment({
   }
 
   return (
-    <div className="container mx-auto py-10 px-4 max-w-6xl">
+    <ContainerPage>
       <a
         href="#"
         onClick={handleBack}
@@ -240,7 +242,7 @@ export default function Assigment({
       >
         <ArrowLeft className="mr-2 h-4 w-4" /> Volver a asignaciones
       </a>
-      <h1 className="text-3xl font-bold mb-6">{selectedAssignment.title}</h1>
+      <TitlePage title={selectedAssignment.title} />
 
       <div className="mb-6">
         <LineTabs
@@ -250,6 +252,6 @@ export default function Assigment({
           ]}
         />
       </div>
-    </div>
+    </ContainerPage>
   );
 }
