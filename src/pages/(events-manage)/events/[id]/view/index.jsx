@@ -1,6 +1,16 @@
+import { getEvent } from "@/services/api/events/general/hooks";
 import Page from "./page";
 
 export default function EventViewPage() {
+  const { isPending, error, data: eventInfo } = getEvent("f2c9f5d2-3941-491e-93fc-8de65163c1d2");
+  if (isPending) {
+    console.log("loading...");
+  } else if (error) {
+    console.log("error", error);
+  } else {
+    console.log(eventInfo);
+  }
+
   return <Page eventInfo={event} />;
 }
 
