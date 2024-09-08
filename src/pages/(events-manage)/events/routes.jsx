@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import EventViewPage from "./[id]/view";
 import LayoutEvents from "./layout";
+import EventViewPage from "./[id]/view";
 
 export default function RoutesEvents() {
   return (
