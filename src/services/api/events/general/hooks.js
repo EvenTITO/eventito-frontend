@@ -52,7 +52,7 @@ export function createEvent() {
     mutationFn: async (eventData) => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const body = constructCreateEventBody(eventData);
-      return await apiPostCreateEvent(body, httpClient);
+      return await apiPostCreateEvent(httpClient, body);
     },
     onSuccess: (data) => {
       console.log("Event created successfully:", data);

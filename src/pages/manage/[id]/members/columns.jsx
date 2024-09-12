@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { changeMemberRole } from "@/services/api/events/data";
+import { changeMemberRole } from "@/services/api/events/members/mockData";
 
 
 export const columns = [
@@ -76,7 +76,7 @@ export const columns = [
     cell: ({ row }) => <div>{row.getValue("username")}</div>,
   },
   {
-    accessorKey: "table",
+    accessorKey: "role",
     header: () => (
       <Button variant="table" className="text-black text-right" disabled>
         Rol

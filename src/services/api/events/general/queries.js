@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const uuidSchema = z.string().uuid();
 
-export const apiGetEventById = async (eventId, httpClient) => {
+export const apiGetEventById = async (httpClient, eventId) => {
   return (await httpClient.get(`/${uuidSchema.parse(eventId)}/public`)).data;
 };
 
@@ -14,6 +14,6 @@ export const apiGetAllEvents = async (httpClient) => {
   return (await httpClient.get("/")).data;
 };
 
-export const apiPostCreateEvent = async (body, httpClient) => {
+export const apiPostCreateEvent = async (httpClient, body) => {
   return (await httpClient.post("", body));
 };
