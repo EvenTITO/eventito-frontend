@@ -64,9 +64,9 @@ function ReviewsTable({ reviews }) {
               </TableCell>
               <TableCell>
                 {review.completed ? (
-                  <Check className="text-green-500" />
+                  <span>Sí</span>
                 ) : (
-                  <X className="text-red-500" />
+                  <span>No</span>
                 )}
               </TableCell>
             </TableRow>
