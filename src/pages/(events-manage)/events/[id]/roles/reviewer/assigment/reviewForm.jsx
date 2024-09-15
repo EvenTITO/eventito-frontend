@@ -86,12 +86,12 @@ const questions = [
     description: "Rate the overall quality of the submission",
     type: "rating",
   },
-  /*{
+  {
     title: "Recommendation",
     description: "What is your recommendation for this submission?",
     type: "singleChoice",
     options: ["Accept", "Minor Revision", "Major Revision", "Reject"],
-  },*/
+  },
   {
     title: "Areas for Improvement",
     description: "Select all areas that need improvement",

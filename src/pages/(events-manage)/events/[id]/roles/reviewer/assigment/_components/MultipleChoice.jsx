@@ -1,41 +1,54 @@
 import React from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 export default function MultipleChoice({ options, value, onChange }) {
-  const handleChange = (option, checked) => {
-    if (checked) {
-      onChange([...value, option]);
-    } else {
+  const handleOptionClick = (option) => {
+    if (value.includes(option)) {
       onChange(value.filter((item) => item !== option));
+    } else {
+      onChange([...value, option]);
     }
   };
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-4 sm:grid-cols-2">
       {options.map((option) => (
         <div
           key={option}
           className={cn(
-            "flex items-center space-x-2 rounded-lg border p-4 transition-colors",
+            "p-4 border rounded-lg cursor-pointer transition-all",
             value.includes(option)
-              ? "border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-950"
-              : "border-gray-200 bg-white hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-900",
+              ? "border-primary bg-primary/10"
+              : "border-gray-200 hover:border-primary",
           )}
+          onClick={() => handleOptionClick(option)}
         >
-          <Checkbox
-            id={`option-${option}`}
-            checked={value.includes(option)}
-            onCheckedChange={(checked) => handleChange(option, checked)}
-            className="h-5 w-5 rounded border-2 border-primary"
-          />
-          <Label
-            htmlFor={`option-${option}`}
-            className="flex-grow text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            {option}
-          </Label>
+          <div className="flex items-center space-x-2">
+            <div
+              className={cn(
+                "w-4 h-4 rounded border-2",
+                value.includes(option)
+                  ? "border-primary bg-primary"
+                  : "border-gray-400",
+              )}
+            >
+              {value.includes(option) && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="white"
+                  className="w-3 h-3"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
+            </div>
+            <h3 className="">{option}</h3>
+          </div>
         </div>
       ))}
     </div>

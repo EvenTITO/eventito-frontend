@@ -1,31 +1,35 @@
-import React from "react";
-import { RadioGroup } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import React, { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export default function SingleChoice({ options, value, onChange }) {
-  console.log(options, value);
+  const [selectedOption, setSelectedOption] = useState(null);
+
   return (
-    <RadioGroup value={value} onValueChange={onChange} className="space-y-2">
+    <div className="flex flex-col gap-4 sm:grid-cols-2">
       {options.map((option) => (
-        <div key={option} className="flex items-center">
-          <RadioGroup.Item
-            value={option}
-            id={`option-${option}`}
-            className="peer sr-only"
-          />
-          <Label
-            htmlFor={`option-${option}`}
-            className="flex flex-1 items-center justify-between rounded-lg border border-gray-200 p-4 hover:bg-gray-100 [&:has([data-state=checked])]:border-blue-500 [&:has([data-state=checked])]:bg-blue-50"
-          >
-            <div className="flex items-center">
-              <div className="w-4 h-4 mr-2 rounded-full border border-gray-300 flex items-center justify-center peer-data-[state=checked]:border-blue-500 peer-data-[state=checked]:bg-blue-500">
-                <div className="w-2 h-2 rounded-full bg-white hidden peer-data-[state=checked]:block" />
-              </div>
-              <span className="font-medium">{option}</span>
-            </div>
-          </Label>
+        <div
+          key={option}
+          className={cn(
+            "p-4 border rounded-lg cursor-pointer transition-all",
+            selectedOption === option
+              ? "border-primary bg-primary/10"
+              : "border-gray-200 hover:border-primary",
+          )}
+          onClick={() => setSelectedOption(option)}
+        >
+          <div className="flex items-center space-x-2">
+            <div
+              className={cn(
+                "w-4 h-4 rounded-full border-2",
+                selectedOption === option
+                  ? "border-primary bg-primary"
+                  : "border-gray-400",
+              )}
+            ></div>
+            <h3 className="">{option}</h3>
+          </div>
         </div>
       ))}
-    </RadioGroup>
+    </div>
   );
 }
