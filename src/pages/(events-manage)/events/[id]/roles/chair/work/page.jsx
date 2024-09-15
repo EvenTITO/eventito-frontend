@@ -5,10 +5,10 @@ import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import { useNavigator } from "@/lib/navigation";
 import { DetailsTab } from "./details";
-import { ReviewerForm } from "./reviewForm";
+import Reviews from "./reviews";
 
-export default function Page({ selectedAssignment, questions }) {
-  const navigator = useNavigator("/assignments");
+export default function Page({ selectedAssignment }) {
+  const navigator = useNavigator("/works");
 
   function handleBack(e) {
     e.preventDefault();
@@ -22,7 +22,7 @@ export default function Page({ selectedAssignment, questions }) {
         onClick={handleBack}
         className="inline-flex items-center text-sm font-medium text-blue-600 hover:underline mb-6"
       >
-        <ArrowLeft className="mr-2 h-4 w-4" /> Volver a asignaciones
+        <ArrowLeft className="mr-2 h-4 w-4" /> Volver a tracks
       </a>
       <TitlePage title={selectedAssignment.title} />
 
@@ -39,8 +39,8 @@ export default function Page({ selectedAssignment, questions }) {
               ),
             },
             {
-              label: "Formulario",
-              component: <ReviewerForm handleBack={handleBack} questions={questions} />,
+              label: "Revisiones",
+              component: <Reviews />,
             },
           ]}
         />
