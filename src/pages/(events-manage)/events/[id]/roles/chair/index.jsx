@@ -25,6 +25,8 @@ const assignments = [
     abstract:
       "This study explores the transformative potential of machine learning in healthcare, focusing on early disease detection, personalized treatment plans, and predictive analytics. We present a novel approach that combines deep learning algorithms with electronic health records to improve diagnostic accuracy and patient outcomes. Our findings suggest significant improvements in early detection rates for several chronic conditions, potentially revolutionizing preventive care strategies.",
     pdfLink: "https://example.com/machine-learning-healthcare.pdf",
+    status: "-",
+    published: false
   },
   {
     id: 2,
@@ -38,6 +40,8 @@ const assignments = [
     abstract:
       "This paper introduces groundbreaking advancements in quantum computing, showcasing a novel approach to qubit manipulation that significantly reduces decoherence. Our research demonstrates a 50% improvement in quantum circuit depth, paving the way for more complex quantum algorithms and bringing us closer to practical quantum supremacy.",
     pdfLink: "https://example.com/quantum-computing-new-era.pdf",
+    status: "-",
+    published: false
   },
   {
     id: 3,
@@ -56,5 +60,7 @@ const assignments = [
     abstract:
       "Our research presents an innovative approach to sustainable energy production, combining advanced solar cell technology with AI-driven energy distribution systems. This integrated solution shows a 30% increase in energy efficiency and a 25% reduction in carbon emissions compared to current best practices, offering a scalable model for smart cities of the future.",
     pdfLink: "https://example.com/sustainable-energy-solutions.pdf",
+    status: "-",
+    published: false
   },
 ];
