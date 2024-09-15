@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -7,26 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Assigment from "./assigment";
 import { format } from "@formkit/tempo";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
+import { useNavigator } from "@/lib/navigation";
 
 export default function Page({ assignments }) {
-  const [selectedAssignment, setSelectedAssignment] = useState(null);
+  const navigator = useNavigator();
 
   const handleRowClick = (assignment) => {
-    setSelectedAssignment(assignment);
+    const path = `assignments/${assignment.id}`;
+    navigator.foward(path);
   };
-
-  if (selectedAssignment) {
-    return (
-      <Assigment
-        selectedAssignment={selectedAssignment}
-        setSelectedAssignment={setSelectedAssignment}
-      />
-    );
-  }
 
   return (
     <ContainerPage>

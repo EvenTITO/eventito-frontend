@@ -43,13 +43,14 @@ export default function LayoutEvents() {
 }
 
 function Layout({ eventTitle, roles }) {
+  const roles2 = ["ORGANIZER", "CHAIR", "REVIEWER", "ATTENDEE", "AUTHOR"];
   return (
     <div className="flex flex-col h-screen bg-background">
       <Header toggleSidebar={false} headerTitle={eventTitle} />
 
       {roles.length > 0 ? (
         <div className="flex flex-1 pt-16">
-          <Sidebar isSidebarOpen={true} roles={roles} />
+          <Sidebar isSidebarOpen={true} roles={roles2} />
           <main className="flex-1 p-4 md:ml-64 pt-4 overflow-auto">
             <Outlet />
           </main>
