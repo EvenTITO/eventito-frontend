@@ -41,7 +41,7 @@ export function getEvent(eventId) {
     queryKey: ["getMyEvents"],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      const eventData = await apiGetEventById(eventId, httpClient);
+      const eventData = await apiGetEventById(httpClient, eventId);
       return eventData;
     },
   });
