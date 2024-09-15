@@ -13,14 +13,32 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "@formkit/tempo";
 import { Check, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Reviews() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className={"flex items-center justify-between"}>
+          <span>Listado de revisiones</span>
+          <Button>Agregar revisor</Button>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <ReviewsTable reviews={reviews} />
+      </CardContent>
+    </Card>
+  );
+}
+
+function ReviewsTable({ reviews }) {
   const [selectedReview, setSelectedReview] = useState(null);
 
   return (
-    <div>
+    <>
       <Table>
         <TableHeader>
           <TableRow>
@@ -74,7 +92,7 @@ export default function Reviews() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }
 
