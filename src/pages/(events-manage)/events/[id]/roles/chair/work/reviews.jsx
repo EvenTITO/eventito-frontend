@@ -43,9 +43,9 @@ function ReviewsTable({ reviews }) {
         <TableHeader>
           <TableRow>
             <TableHead>Revisor</TableHead>
-            <TableHead>Completado</TableHead>
-            <TableHead>Estado</TableHead>
+            <TableHead>Recomendación</TableHead>
             <TableHead>Fecha límite</TableHead>
+            <TableHead>Completado</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -58,16 +58,16 @@ function ReviewsTable({ reviews }) {
               onClick={() => review.completed && setSelectedReview(review)}
             >
               <TableCell>{review.reviewer}</TableCell>
+              <TableCell>{review.status || "-"}</TableCell>
+              <TableCell>
+                {format(new Date(review.deadlineDate), "long")}
+              </TableCell>
               <TableCell>
                 {review.completed ? (
                   <Check className="text-green-500" />
                 ) : (
                   <X className="text-red-500" />
                 )}
-              </TableCell>
-              <TableCell>{review.status || "Pendiente"}</TableCell>
-              <TableCell>
-                {format(new Date(review.deadlineDate), "long")}
               </TableCell>
             </TableRow>
           ))}
