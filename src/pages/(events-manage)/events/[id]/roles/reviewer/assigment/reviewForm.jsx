@@ -29,9 +29,10 @@ export function ReviewerForm({ handleBack }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Review Form</CardTitle>
+        <CardTitle>Formulario de reivisión</CardTitle>
         <CardDescription>
-          Please answer the following questions to complete your review.
+          Para terminar con la revisión, deben completarse las siguientes
+          preguntas.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -43,8 +44,7 @@ export function ReviewerForm({ handleBack }) {
               <Rating
                 value={review[question.title] || 0}
                 onChange={(value) => handleReviewChange(question.title, value)}
-                lowLabel="Poor"
-                highLabel="Excellent"
+                max={question.maxValue}
               />
             )}
             {question.type === "singleChoice" && question.options && (
@@ -82,31 +82,28 @@ export function ReviewerForm({ handleBack }) {
 
 const questions = [
   {
-    title: "Overall Quality",
-    description: "Rate the overall quality of the submission",
+    title: "Calificación general",
+    description: "",
     type: "rating",
+    maxValue: 10,
   },
   {
-    title: "Recommendation",
-    description: "What is your recommendation for this submission?",
+    title: "Recomendación",
+    description: "¿Cuál es tu recomendación para el estado del trabajo?",
     type: "singleChoice",
-    options: ["Accept", "Minor Revision", "Major Revision", "Reject"],
+    options: ["Aceptado", "A revisión", "Rechazado"],
   },
   {
-    title: "Areas for Improvement",
-    description: "Select all areas that need improvement",
+    title: "Área de mejora",
+    description:
+      "En caso de necesitarlo, indicar las áreas de mejora del trabajo.",
     type: "multipleChoice",
-    options: [
-      "Methodology",
-      "Literature Review",
-      "Data Analysis",
-      "Conclusions",
-      "Presentation",
-    ],
+    options: ["Abstract", "Mejorar redacción", "Imágenes"],
   },
   {
-    title: "Comments to Authors",
-    description: "Provide detailed feedback for the authors",
+    title: "Comentarios a los autores",
+    description:
+      "Realizar una crítica constructiva que será pública para los autores.",
     type: "text",
   },
 ];
