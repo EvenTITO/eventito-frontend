@@ -7,7 +7,7 @@ import { useNavigator } from "@/lib/navigation";
 import { DetailsTab } from "./details";
 import { ReviewerForm } from "./reviewForm";
 
-export default function Page({ selectedAssignment }) {
+export default function Page({ selectedAssignment, questions }) {
   const navigator = useNavigator("/assignments");
 
   function handleBack(e) {
@@ -40,7 +40,9 @@ export default function Page({ selectedAssignment }) {
             },
             {
               label: "Formulario",
-              component: <ReviewerForm handleBack={handleBack} />,
+              component: (
+                <ReviewerForm handleBack={handleBack} questions={questions} />
+              ),
             },
           ]}
         />

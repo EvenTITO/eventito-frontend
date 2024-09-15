@@ -14,7 +14,7 @@ import SingleChoice from "./_components/SingleChoice";
 import MultipleChoice from "./_components/MultipleChoice";
 import TextInput from "./_components/TextInput";
 
-export function ReviewerForm({ handleBack }) {
+export function ReviewerForm({ handleBack, questions }) {
   const [review, setReview] = useState({});
 
   const handleReviewChange = (field, value) => {
@@ -79,31 +79,3 @@ export function ReviewerForm({ handleBack }) {
     </Card>
   );
 }
-
-const questions = [
-  {
-    title: "Calificación general",
-    description: "",
-    type: "rating",
-    maxValue: 10,
-  },
-  {
-    title: "Recomendación",
-    description: "¿Cuál es tu recomendación para el estado del trabajo?",
-    type: "singleChoice",
-    options: ["Aceptado", "A revisión", "Rechazado"],
-  },
-  {
-    title: "Área de mejora",
-    description:
-      "En caso de necesitarlo, indicar las áreas de mejora del trabajo.",
-    type: "multipleChoice",
-    options: ["Abstract", "Mejorar redacción", "Imágenes"],
-  },
-  {
-    title: "Comentarios a los autores",
-    description:
-      "Realizar una crítica constructiva que será pública para los autores.",
-    type: "text",
-  },
-];
