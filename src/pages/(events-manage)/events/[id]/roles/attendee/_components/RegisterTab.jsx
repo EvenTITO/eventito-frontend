@@ -105,7 +105,7 @@ export default function RegisterTab({ error }) {
               />
             ) : (
               <div className="p-2 bg-gray-100 rounded-md">
-                {registration.affiliation || "Not provided"}
+                {registration.affiliation || "-"}
               </div>
             )}
           </div>
