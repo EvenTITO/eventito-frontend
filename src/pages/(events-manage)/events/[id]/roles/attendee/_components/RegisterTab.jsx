@@ -37,17 +37,6 @@ export default function RegisterTab({ error }) {
     console.log("Saving updated registration:", registration);
   };
 
-  const handleInputChange = (field, value) => {
-    setRegistration((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setRegistration((prev) => ({ ...prev, file }));
-    }
-  };
-
   return (
     <Card>
       <CardHeader>
@@ -62,87 +51,15 @@ export default function RegisterTab({ error }) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
+        {isEditing ? (
+          <EditInscription
+            registration={registration}
+            setRegistration={setRegistration}
+            error={error}
+          />
+        ) : (
+          <ViewInscription registration={registration} />
         )}
-
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="role">Participación elegida</Label>
-            {isEditing ? (
-              <Select
-                value={registration.role}
-                onValueChange={(value) => handleInputChange("role", value)}
-              >
-                <SelectTrigger id="role">
-                  <SelectValue placeholder="Select role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Asistente">Asistente</SelectItem>
-                  <SelectItem value="Autor">Autor</SelectItem>
-                  <SelectItem value="Asistente y autor">
-                    Asistente y autor
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            ) : (
-              <div className="p-2 bg-gray-100 rounded-md">
-                {registration.role}
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="affiliation">Filiacion (Opcional)</Label>
-            {isEditing ? (
-              <Input
-                id="affiliation"
-                value={registration.affiliation}
-                onChange={(e) =>
-                  handleInputChange("affiliation", e.target.value)
-                }
-                placeholder="Ingresa tu filiacion"
-              />
-            ) : (
-              <div className="p-2 bg-gray-100 rounded-md">
-                {registration.affiliation || "-"}
-              </div>
-            )}
-          </div>
-
-          {isEditing && (
-            <div className="space-y-2">
-              <Label htmlFor="file-upload">
-                Comprobante de filiacion (Opcional)
-              </Label>
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    document.getElementById("file-upload")?.click()
-                  }
-                >
-                  <Upload className="h-4 w-4 mr-2" />
-                  Elegir archivo
-                </Button>
-                <span className="text-sm text-gray-500">
-                  {registration.file
-                    ? registration.file.name
-                    : "Ningun archivo seleccionado"}
-                </span>
-              </div>
-              <input
-                id="file-upload"
-                type="file"
-                className="hidden"
-                onChange={handleFileChange}
-              />
-            </div>
-          )}
-        </div>
       </CardContent>
     </Card>
   );
@@ -169,6 +86,103 @@ function EditInscriptionButton({
     <Button onClick={handleEdit} variant="outline">
       Editar
     </Button>
+  );
+}
+
+function ViewInscription({ registration }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-2 items-center">
+        <span className="font-semibold">
+          Participación elegida: {registration.role}
+        </span>
+      </div>
+      <div className="flex gap-2 items-center">
+        <span className="font-semibold">
+          Filiación (opcional): {registration.affiliation || "Sin filiación"}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function EditInscription({ registration, setRegistration, error }) {
+  const handleInputChange = (field, value) => {
+    setRegistration((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setRegistration((prev) => ({ ...prev, file }));
+    }
+  };
+  return (
+    <>
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="role">Participación elegida</Label>
+          <Select
+            value={registration.role}
+            onValueChange={(value) => handleInputChange("role", value)}
+          >
+            <SelectTrigger id="role">
+              <SelectValue placeholder="Select role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Asistente">Asistente</SelectItem>
+              <SelectItem value="Autor">Autor</SelectItem>
+              <SelectItem value="Asistente y autor">
+                Asistente y autor
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="affiliation">Filiacion (Opcional)</Label>
+          <Input
+            id="affiliation"
+            value={registration.affiliation}
+            onChange={(e) => handleInputChange("affiliation", e.target.value)}
+            placeholder="Ingresa tu filiacion"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="file-upload">
+            Comprobante de filiacion (Opcional)
+          </Label>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => document.getElementById("file-upload")?.click()}
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Elegir archivo
+            </Button>
+            <span className="text-sm text-gray-500">
+              {registration.file
+                ? registration.file.name
+                : "Ningun archivo seleccionado"}
+            </span>
+          </div>
+          <input
+            id="file-upload"
+            type="file"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </div>
+      </div>
+    </>
   );
 }
 
