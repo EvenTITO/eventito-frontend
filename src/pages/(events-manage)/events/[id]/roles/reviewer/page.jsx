@@ -7,27 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Assigment from "./assigment";
 import { format } from "@formkit/tempo";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Page({ assignments }) {
-  const [selectedAssignment, setSelectedAssignment] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleRowClick = (assignment) => {
-    console.log(assignment);
-    setSelectedAssignment(assignment);
+    navigate(`${location.pathname}/assignments/${assignment.id}`);
   };
-
-  if (selectedAssignment) {
-    return (
-      <Assigment
-        selectedAssignment={selectedAssignment}
-        setSelectedAssignment={setSelectedAssignment}
-      />
-    );
-  }
 
   return (
     <ContainerPage>
