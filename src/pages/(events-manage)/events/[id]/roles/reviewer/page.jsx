@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -10,14 +10,14 @@ import {
 import { format } from "@formkit/tempo";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigator } from "@/lib/navigation";
 
 export default function Page({ assignments }) {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigator = useNavigator();
 
   const handleRowClick = (assignment) => {
-    navigate(`${location.pathname}/assignments/${assignment.id}`);
+    const path = `assignments/${assignment.id}`;
+    navigator.foward(path);
   };
 
   return (
