@@ -40,3 +40,8 @@
 ## styles
 
 - agregarle margin al header maybe para que este mas centrado? -> molesto para el header del evento, pero no tan malo para header home
+
+## chair page
+- popup de revisión (pantalla de revisiones):
+    - si es de tipo descripción, entonces permitir colapsar la revisión 
+    - si es de otro tipo, entonces que figure a la derecha 
