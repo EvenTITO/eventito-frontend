@@ -56,6 +56,8 @@ export default function RegisterTab({ error }) {
           <EditInscriptionButton
             isEditing={isEditing}
             handleEdit={handleEdit}
+            handleSave={handleSave}
+            handleCancel={handleCancel}
           />
         </CardTitle>
       </CardHeader>
@@ -141,41 +143,33 @@ export default function RegisterTab({ error }) {
             </div>
           )}
         </div>
-
-        <div className="flex w-full justify-end space-x-2">
-          <EditInscriptionFooter
-            isEditing={isEditing}
-            handleCancel={handleCancel}
-            handleSave={handleSave}
-          />
-        </div>
       </CardContent>
     </Card>
   );
 }
 
-function EditInscriptionButton({ isEditing, handleEdit }) {
-  if (isEditing) return null;
+function EditInscriptionButton({
+  isEditing,
+  handleEdit,
+  handleCancel,
+  handleSave,
+}) {
+  if (isEditing) {
+    return (
+      <div className="flex gap-2">
+        <Button variant="outline" onClick={handleCancel}>
+          Cancelar
+        </Button>
+        <Button onClick={handleSave}>Guardar</Button>
+      </div>
+    );
+  }
+
   return (
     <Button onClick={handleEdit} variant="outline">
       Editar
     </Button>
   );
-}
-
-function EditInscriptionFooter({ isEditing, handleCancel, handleSave }) {
-  if (isEditing) {
-    return (
-      <>
-        <Button variant="outline" onClick={handleCancel}>
-          Cancelar
-        </Button>
-        <Button onClick={handleSave}>Guardar</Button>
-      </>
-    );
-  }
-
-  return null;
 }
 
 const userRegistration = {
