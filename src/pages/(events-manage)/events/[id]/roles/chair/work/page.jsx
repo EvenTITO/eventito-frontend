@@ -1,4 +1,3 @@
-import React from "react";
 import { ArrowLeft } from "lucide-react";
 import LineTabs from "@/components/LineTabs";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
@@ -6,6 +5,7 @@ import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import { useNavigator } from "@/lib/navigation";
 import { DetailsTab } from "./details";
 import Reviews from "./reviews";
+import StatusSelector from "./_components/StatusSelector";
 
 export default function Page({ selectedAssignment }) {
   const navigator = useNavigator("/works");
@@ -24,7 +24,10 @@ export default function Page({ selectedAssignment }) {
       >
         <ArrowLeft className="mr-2 h-4 w-4" /> Volver a tracks
       </a>
-      <TitlePage title={selectedAssignment.title} />
+      <TitlePage
+        title={selectedAssignment.title}
+        rightComponent={<StatusSelector />}
+      />
 
       <div className="mb-6">
         <LineTabs
@@ -48,3 +51,4 @@ export default function Page({ selectedAssignment }) {
     </ContainerPage>
   );
 }
+

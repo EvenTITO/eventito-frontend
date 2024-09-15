@@ -37,6 +37,7 @@ export default function Page({ tracks, selectedTrack, assignments }) {
             <TableHead>Autores</TableHead>
             <TableHead>Fecha de envío</TableHead>
             <TableHead>Estado</TableHead>
+            <TableHead>Revisión enviada</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -51,6 +52,7 @@ export default function Page({ tracks, selectedTrack, assignments }) {
               <TableCell>{assignment.authorCount}</TableCell>
               <TableCell>{format(assignment.submissionDate, "long")}</TableCell>
               <TableCell>{assignment.status}</TableCell>
+              <TableCell>{assignment.published ? "Sí" : "No"}</TableCell>
             </TableRow>
           ))}
         </TableBody>
