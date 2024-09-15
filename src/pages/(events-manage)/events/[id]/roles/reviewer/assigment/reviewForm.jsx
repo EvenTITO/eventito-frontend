@@ -73,7 +73,7 @@ export function ReviewerForm({ handleBack }) {
       </CardContent>
       <CardFooter>
         <Button onClick={handleSubmitReview} className="w-full">
-          Submit Review
+          Finalizar revisión
         </Button>
       </CardFooter>
     </Card>
