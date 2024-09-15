@@ -11,6 +11,7 @@ import { format } from "@formkit/tempo";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import { useNavigator } from "@/lib/navigation";
+import TrackSelector from "./_components/TrackSelector";
 
 export default function Page({ tracks, selectedTrack, assignments }) {
   const navigator = useNavigator();
@@ -55,36 +56,5 @@ export default function Page({ tracks, selectedTrack, assignments }) {
         </TableBody>
       </Table>
     </ContainerPage>
-  );
-}
-
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-function TrackSelector({ tracks, selectedTrack }) {
-  return (
-    <div className="flex gap-2 items-center">
-      <span>Track actual: </span>
-      <Select value={selectedTrack} onValueChange={(track) => alert(track)}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder={selectedTrack} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Elección de track</SelectLabel>
-            {tracks.map((track) => (
-              <SelectItem value={track}>{track}</SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
   );
 }
