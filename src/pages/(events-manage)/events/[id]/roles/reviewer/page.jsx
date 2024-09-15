@@ -16,6 +16,7 @@ export default function Page({ assignments }) {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
 
   const handleRowClick = (assignment) => {
+    console.log(assignment);
     setSelectedAssignment(assignment);
   };
 
