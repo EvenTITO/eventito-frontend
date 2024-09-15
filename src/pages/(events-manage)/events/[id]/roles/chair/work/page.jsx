@@ -4,6 +4,8 @@ import LineTabs from "@/components/LineTabs";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import { useNavigator } from "@/lib/navigation";
+import { DetailsTab } from "./details";
+import Reviews from "./reviews";
 
 export default function Page({ selectedAssignment }) {
   const navigator = useNavigator("/works");
@@ -29,15 +31,16 @@ export default function Page({ selectedAssignment }) {
           tabs={[
             {
               label: "Entrega",
-              component: <div>Detalles</div>,
+              component: (
+                <DetailsTab
+                  handleBack={handleBack}
+                  selectedAssignment={selectedAssignment}
+                />
+              ),
             },
             {
               label: "Revisiones",
-              component: <div>Revisiones</div>,
-            },
-            {
-              label: "Revisores",
-              component: <div>Revisores</div>,
+              component: <Reviews />,
             },
           ]}
         />

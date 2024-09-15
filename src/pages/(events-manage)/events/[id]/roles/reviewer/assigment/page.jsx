@@ -40,9 +40,7 @@ export default function Page({ selectedAssignment, questions }) {
             },
             {
               label: "Formulario",
-              component: (
-                <ReviewerForm handleBack={handleBack} questions={questions} />
-              ),
+              component: <ReviewerForm handleBack={handleBack} questions={questions} />,
             },
           ]}
         />
