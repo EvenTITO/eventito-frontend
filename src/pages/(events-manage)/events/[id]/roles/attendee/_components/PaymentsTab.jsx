@@ -7,12 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlusIcon } from "lucide-react";
 import { format } from "@formkit/tempo";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function PaymentsTab({ error }) {
+export default function PaymentsTab() {
   return (
     <Card>
       <CardHeader>
@@ -20,7 +19,7 @@ export default function PaymentsTab({ error }) {
           <span>Mis pagos</span>
           <Button>
             <PlusIcon className="mr-2 h-4 w-4" />
-            Cargar nuevo pago
+            Nuevo pago
           </Button>
         </CardTitle>
       </CardHeader>

@@ -10,8 +10,10 @@ export default function Page() {
   return (
     <ContainerPage>
       <TitlePage title={"Mi inscripción"} />
-      <RegisterTab error={error} />,
-      <PaymentsTab error={error} />,
+      <div className="flex flex-col gap-6">
+      <RegisterTab error={error} />
+      <PaymentsTab />
+      </div>
     </ContainerPage>
   );
 }
