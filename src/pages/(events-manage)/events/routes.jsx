@@ -7,6 +7,7 @@ import AuthorPage from "./[id]/roles/author";
 import AssignmentPage from "./[id]/roles/reviewer/assigment";
 import ChairWorkPage from "./[id]/roles/chair/work";
 import AttendeePage from "./[id]/roles/attendee";
+import NewPaymentPage from "./[id]/roles/attendee/new-payment/page";
 
 export default function RoutesEvents() {
   return (
@@ -31,6 +32,10 @@ export default function RoutesEvents() {
           element={<AssignmentPage />}
         />
       </Route>
+      <Route
+        path="/events2/:id/roles/attendee/new-payment"
+        element={<NewPaymentPage />}
+      />
     </Routes>
   );
 }

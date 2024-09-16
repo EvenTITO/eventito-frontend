@@ -10,14 +10,17 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlusIcon } from "lucide-react";
 import { format } from "@formkit/tempo";
+import { useNavigator } from "@/lib/navigation";
 
 export default function PaymentsTab() {
+  const navigator = useNavigator();
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Mis pagos</span>
-          <Button>
+          <Button onClick={() => navigator.foward("/new-payment")}>
             <PlusIcon className="mr-2 h-4 w-4" />
             Nuevo pago
           </Button>
