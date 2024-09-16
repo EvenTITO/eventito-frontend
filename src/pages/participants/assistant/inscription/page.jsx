@@ -20,15 +20,10 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import {
-  CreditCard,
-  FileText,
-  User,
-  AlertTriangle,
   Upload,
   PlusIcon,
 } from "lucide-react";
 import { format } from "date-fns";
-import { Progress } from "@/components/ui/progress";
 
 export default function EventDashboard() {
   const [activeTab, setActiveTab] = useState("registro");
