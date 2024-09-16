@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { PlusIcon } from "lucide-react";
-import { format } from "date-fns";
+import { format } from "@formkit/tempo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function PaymentsTab({ error }) {
@@ -37,21 +37,18 @@ export default function PaymentsTab({ error }) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Fecha de pago</TableHead>
-                <TableHead>Estado</TableHead>
                 <TableHead>Tarifa pagada</TableHead>
+                <TableHead>Fecha de pago</TableHead>
                 <TableHead>Valor</TableHead>
-                <TableHead>Trabajos</TableHead>
+                <TableHead>Trabajos asociados</TableHead>
+                <TableHead>Estado</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {payments.map((payment) => (
                 <TableRow key={payment.id}>
-                  <TableCell>{format(payment.date, "MMM d, yyyy")}</TableCell>
-                  <TableCell>
-                    <Badge className={"bg-gray-500"}>{payment.status}</Badge>
-                  </TableCell>
                   <TableCell className="font-medium">{payment.name}</TableCell>
+                  <TableCell>{format(payment.date, "long")}</TableCell>
                   <TableCell>${payment.amount}</TableCell>
                   <TableCell>
                     {payment.works.length > 0 ? (
@@ -66,6 +63,7 @@ export default function PaymentsTab({ error }) {
                       </span>
                     )}
                   </TableCell>
+                  <TableCell>{payment.status}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -81,7 +79,7 @@ const payments = [
     id: 1,
     date: new Date(2023, 5, 15),
     status: "Confirmado",
-    name: "Tarifa de alumno regular",
+    name: "Presentador: descuento de profesores FIUBA",
     amount: 150,
     works: [
       { id: 1, title: "Advancements in Quantum Computing" },
@@ -92,8 +90,8 @@ const payments = [
     id: 2,
     date: new Date(2023, 5, 20),
     status: "Pendiente",
-    name: "Tarifa gratuita de profesores",
+    name: "Asistente: descuento de profesores FIUBA",
     amount: 0,
-    works: [{ id: 3, title: "Blockchain in Supply Chain Management" }],
+    works: [],
   },
 ];
