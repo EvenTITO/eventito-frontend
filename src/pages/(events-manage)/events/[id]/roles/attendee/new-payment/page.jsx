@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Upload } from "lucide-react";
+import { useNavigator } from "@/lib/navigation";
 
 export default function NewPaymentPage() {
   const [tarifa, setTarifa] = useState("");
@@ -12,6 +13,7 @@ export default function NewPaymentPage() {
   const [isScrollable, setIsScrollable] = useState(false);
   const [error, setError] = useState("");
   const [etapa, setEtapa] = useState(1);
+  const navigator = useNavigator("/new-payment");
 
   useEffect(() => {
     const checkScrollable = () => {
@@ -150,9 +152,9 @@ export default function NewPaymentPage() {
       >
         <div className="container mx-auto px-4 max-w-3xl flex justify-between">
           {etapa === 1 ? (
-            <Link href="/eventos">
-              <Button variant="outline">Cancelar</Button>
-            </Link>
+            <Button variant="outline" onClick={() => navigator.back()}>
+              Cancelar
+            </Button>
           ) : (
             <Button variant="outline" onClick={() => setEtapa(1)}>
               Atrás
