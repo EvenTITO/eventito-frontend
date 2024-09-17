@@ -10,18 +10,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format } from "@formkit/tempo";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Page({ works }) {
   const navigator = useNavigator();
 
   const handleRowClick = (work) => {
-    const path = `works/${work.id}`;
+    const path = `submissions/${work.id}`;
     navigator.foward(path);
   };
 
   return (
     <ContainerPage>
-      <TitlePage title={"Entregas de presentaciones"} />
+      <TitlePage
+        title={"Entregas de presentaciones"}
+        rightComponent={<NewSubmissionButton />}
+      />
       <Table>
         <TableHeader>
           <TableRow>
@@ -49,5 +54,19 @@ export default function Page({ works }) {
         </TableBody>
       </Table>
     </ContainerPage>
+  );
+}
+
+function NewSubmissionButton() {
+  const navigator = useNavigator();
+
+  function handleNewSubmission() {
+    navigator.foward("new-submission");
+  }
+
+  return (
+    <Button onClick={handleNewSubmission}>
+      <Plus className="mr-2 h-4 w-4" /> Nueva entrega
+    </Button>
   );
 }
