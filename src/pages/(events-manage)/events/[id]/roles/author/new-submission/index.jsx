@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import Content from "./Content";
-import Members from "./Members";
+import Members from "../_components/Members";
 import GoBackLink from "@/pages/(events-manage)/_components/GoBackLink";
 
 export default function NewSubmissionPage() {

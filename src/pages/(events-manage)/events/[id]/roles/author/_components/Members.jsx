@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import AddAuthorDialog from "./_components/AddAuthorDialog";
-import AuthorsTable from "./_components/AuthorsTable";
+import AddAuthorDialog from "./AddAuthorDialog";
+import AuthorsTable from "./AuthorsTable";
 
-export default function Members() {
-  const [authors, setAuthors] = useState([]);
+// TODO: que reciba una lista de autores y que la pagina se encargue
+// de pasarselo
+export default function Members({ authorList = [] }) {
+  const [authors, setAuthors] = useState(authorList);
 
   return (
     <Card>
