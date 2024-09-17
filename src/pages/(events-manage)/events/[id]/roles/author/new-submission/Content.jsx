@@ -36,43 +36,43 @@ export default function Content() {
           Ingresar los siguientes datos para completar la entrega.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-2">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
-            <Input id="title" placeholder="Enter the title of your work" />
+            <Label htmlFor="title">Título</Label>
+            <Input id="title" placeholder="Ingresar título del trabajo" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="track">Track</Label>
             <Select>
               <SelectTrigger id="track">
-                <SelectValue placeholder="Select the track" />
+                <SelectValue placeholder="Seleccionar un track" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="science">Science</SelectItem>
-                <SelectItem value="technology">Technology</SelectItem>
-                <SelectItem value="engineering">Engineering</SelectItem>
-                <SelectItem value="mathematics">Mathematics</SelectItem>
-                <SelectItem value="humanities">Humanities</SelectItem>
-                <SelectItem value="social-sciences">Social Sciences</SelectItem>
+                <SelectItem value="IA">IA</SelectItem>
+                <SelectItem value="Química">Química</SelectItem>
+                <SelectItem value="Python">Python</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
         <div className="space-y-2">
           <Label htmlFor="keywords">Keywords</Label>
-          <Input id="keywords" placeholder="Enter keywords (comma-separated)" />
+          <Input
+            id="keywords"
+            placeholder="Ingresar keywords (separadas por coma)"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="abstract">Abstract</Label>
           <Textarea
             id="abstract"
-            placeholder="Enter the abstract of your work"
+            placeholder="Ingresar el abstract del trabajo"
             className="min-h-[100px]"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="pdf">Upload PDF</Label>
+          <Label htmlFor="pdf">Cargar PDF</Label>
           <div className="flex items-center space-x-2">
             <Input
               id="pdf"
@@ -87,7 +87,7 @@ export default function Content() {
               className="w-full"
             >
               <Upload className="mr-2 h-4 w-4" />
-              {file ? file.name : "Choose PDF file"}
+              {file ? file.name : "Elegir archivo PDF"}
             </Button>
           </div>
         </div>
