@@ -31,6 +31,8 @@ export default function RoutesEvents() {
           path="/events2/:id/roles/reviewer/assignments/:assignmentId"
           element={<AssignmentPage />}
         />
+
+        <Route path="/events2/:id/roles/author" element={<AuthorPage />} />
       </Route>
       <Route
         path="/events2/:id/roles/attendee/new-payment"
