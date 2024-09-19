@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiGetEventMembers } from "./queries";
+import { apiGetEventMembers, apiPutMemberRole } from "./queries";
 import { EVENTS_URL } from "@/lib/Constants";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { convertEventMembers } from "./conversor";
-import { getMembers } from "./mockData";
+import { EventRole } from "./common";
 
 export function useQueryMembers(eventId) {
   return useQuery({
@@ -18,12 +18,21 @@ export function useQueryMembers(eventId) {
 }
 
 export function changeMemberRole() {
-  return useQuery({
-    queryKey: ["changeMemberRole"],
-    queryFn: async (member, role) => {
-      console.log("changing member role", member, role);
-      // TODO: update con idx -> debo obtener info del miembro
-      return null;
+  return useMutation({
+    mutationFn: async (userId, eventId, newRole) => {
+      const roles = [newRole];
+      if (newRole === EventRole.ORGANIZER) {
+        roles.push(EventRole.CHAIR);
+      }
+
+      const httpClient = HTTPClient(EVENTS_URL);
+      return await apiPutMemberRole(httpClient, userId, roles, eventId);
+    },
+    onSuccess: (data) => {
+      console.log("Role actualizado con exito");
+    },
+    onError: (error) => {
+      console.error("Rompio");
     },
   });
 }

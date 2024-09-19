@@ -20,7 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { changeMemberRole } from "@/services/api/events/members/mockData";
-
+import { useParams } from "react-router-dom";
+import { EventRole } from "@/services/api/events/members/common";
 
 export const columns = [
   {
@@ -87,24 +88,29 @@ export const columns = [
         row.getValue("role"),
       );
 
-      function onValueChange(e) {
-        // TODO: back interaction to set member.role
-        changeMemberRole(row.getValue("email"), e);
+      const { mutate: changeRole } = changeMemberRole();
+      const { id: eventId } = useParams();
 
-        setSelectedRole(e);
+      function onValueChange(newRole) {
+        changeRole(row.getValue("id"), eventId, newRole);
+        changeMemberRole(row.getValue("email"), newRole);
+
+        setSelectedRole(newRole);
       }
 
       return (
         <Select value={selectedRole} onValueChange={onValueChange}>
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder={selectedRole ? selectedRole : "Seleccionar rol"} />
+            <SelectValue
+              placeholder={selectedRole ? selectedRole : "Seleccionar rol"}
+            />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="Organizador" className="">
+              <SelectItem value={EventRole.ORGANIZER} className="">
                 Organizador
               </SelectItem>
-              <SelectItem value="Chair" className="">
+              <SelectItem value={EventRole.CHAIR} className="">
                 Chair
               </SelectItem>
             </SelectGroup>
