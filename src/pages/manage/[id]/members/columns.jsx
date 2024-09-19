@@ -22,6 +22,7 @@ import {
 import { changeMemberRole } from "@/services/api/events/members/mockData";
 import { useParams } from "react-router-dom";
 import { EventRole } from "@/services/api/events/members/common";
+import { updateMemberRole } from "@/services/api/events/members/hooks";
 
 export const columns = [
   {
@@ -87,12 +88,11 @@ export const columns = [
       const [selectedRole, setSelectedRole] = React.useState(
         row.getValue("role"),
       );
-
-      const { mutate: changeRole } = changeMemberRole();
+      const { mutate } = updateMemberRole();
       const { id: eventId } = useParams();
 
       function onValueChange(newRole) {
-        changeRole(row.getValue("id"), eventId, newRole);
+        mutate({ userId: row.original.id, eventId: eventId, newRole: newRole });
         changeMemberRole(row.getValue("email"), newRole);
 
         setSelectedRole(newRole);

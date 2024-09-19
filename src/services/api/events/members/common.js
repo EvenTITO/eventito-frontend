@@ -6,14 +6,6 @@ export const EventRole = {
   "ATTENDEE": "ATTENDEE"
 };
 
-export const EventRoleToView = {
-  "ORGANIZER": "Organizador",
-  "CHAIR": "Chair",
-  "REVIEWER": "Revisor",
-  "SPEAKER": "Presentador",
-  "ATTENDEE": "Inscripto"
-};
-
 // Roles ordered from the highest permissions to lowest.
 export const RoleImportance = {
   [EventRole.ORGANIZER]: 1,
