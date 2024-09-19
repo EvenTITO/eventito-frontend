@@ -23,6 +23,11 @@ export class HTTPClient {
     return await this.axiosInstance.post(url, body, headers);
   }
 
+  async put(url, body, config = { fowardError: true }) {
+    const headers = this.createHeaders();
+    return await this.axiosInstance.put(url, body, headers);
+  }
+
   async get(url, config = { fowardError: true }) {
     const headers = this.createHeaders();
     return await this.axiosInstance.get(url, headers);
