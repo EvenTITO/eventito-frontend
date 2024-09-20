@@ -1,3 +1,4 @@
+import TableCursorRow from "@/components/TableCursorRow";
 import TableHeaderTitle from "@/components/TableHeaderTitle";
 import {
   Table,
@@ -23,10 +24,9 @@ export default function ChairTable({ assignments, handleRowClick }) {
       </TableHeaderTitle>
       <TableBody>
         {assignments.map((assignment) => (
-          <TableRow
+          <TableCursorRow
             key={assignment.id}
             onClick={() => handleRowClick(assignment)}
-            className="cursor-pointer hover:bg-muted/50"
           >
             <TableCell className="font-medium">{assignment.title}</TableCell>
             <TableCell>{assignment.submitter}</TableCell>
@@ -34,7 +34,7 @@ export default function ChairTable({ assignments, handleRowClick }) {
             <TableCell>{format(assignment.submissionDate, "long")}</TableCell>
             <TableCell>{assignment.status}</TableCell>
             <TableCell>{assignment.published ? "Sí" : "No"}</TableCell>
-          </TableRow>
+          </TableCursorRow>
         ))}
       </TableBody>
     </Table>
