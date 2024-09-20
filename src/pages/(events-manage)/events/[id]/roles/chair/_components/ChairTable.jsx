@@ -1,9 +1,9 @@
+import TableHeaderTitle from "@/components/TableHeaderTitle";
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { format } from "@formkit/tempo";
@@ -11,7 +11,7 @@ import { format } from "@formkit/tempo";
 export default function ChairTable({ assignments, handleRowClick }) {
   return (
     <Table>
-      <TableHeader>
+      <TableHeaderTitle>
         <TableRow>
           <TableHead>Título</TableHead>
           <TableHead>Responsable</TableHead>
@@ -20,7 +20,7 @@ export default function ChairTable({ assignments, handleRowClick }) {
           <TableHead>Estado</TableHead>
           <TableHead>Revisión enviada</TableHead>
         </TableRow>
-      </TableHeader>
+      </TableHeaderTitle>
       <TableBody>
         {assignments.map((assignment) => (
           <TableRow
