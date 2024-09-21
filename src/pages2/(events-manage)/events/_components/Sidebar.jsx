@@ -104,19 +104,19 @@ const itemList = [
       {
         label: "Inscripcion",
         icon: <ClipboardPenLine className={classNameIcons} />,
-        to: "roles/attendee",
+        to: "panel/assistant/inscription",
         requiredRoles: ["ATTENDEE", "AUTHOR"],
       },
       {
         label: "Entregas",
         icon: <BriefcaseBusiness className={classNameIcons} />,
-        to: "roles/author",
+        to: "panel/author",
         requiredRoles: ["AUTHOR"],
       },
       {
         label: "Asignaciones de revision",
         icon: <FileCheck className={classNameIcons} />,
-        to: "roles/reviewer",
+        to: "panel/reviewer",
         requiredRoles: ["REVIEWER"],
       },
     ],
@@ -127,7 +127,7 @@ const itemList = [
       {
         label: "Tracks",
         icon: <FileStack className={classNameIcons} />,
-        to: "roles/chair",
+        to: "panel/chair",
         requiredRoles: ["ORGANIZER", "CHAIR"],
       },
       {
