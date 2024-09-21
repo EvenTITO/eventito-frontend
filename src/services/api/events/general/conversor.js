@@ -2,11 +2,21 @@ export function convertEventData(data) {
   return data.map(convertEventItem);
 }
 
+function convertDate(eventData, typeDate) {
+  return eventData.dates.find((date) => date.name === typeDate)?.date || null;
+}
+
+export function convertStartDate(eventData) {
+  return convertDate(eventData, "START_DATE");
+}
+
+export function convertEndDate(eventData) {
+  return convertDate(eventData, "END_DATE");
+}
+
 function convertEventItem(data) {
-  const startDate =
-    data.dates.find((date) => date.name === "START_DATE")?.date || null;
-  const endDate =
-    data.dates.find((date) => date.name === "END_DATE")?.date || null;
+  const startDate = convertStartDate(data);
+  const endDate = convertEndDate(data);
 
   return {
     id: data.id,
