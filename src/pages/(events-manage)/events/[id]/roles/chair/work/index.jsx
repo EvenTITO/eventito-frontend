@@ -8,6 +8,8 @@ export default function ChairWorkPage() {
   return <Page selectedAssignment={selectedAssignment} />;
 }
 
+// TODO (api): obtener el trabajo
+// el workId ya se encuentra en el url (ver línea de useParams)
 const selectedAssignment = {
   id: 1,
   title: "Machine Learning in Healthcare: A Comprehensive Study",

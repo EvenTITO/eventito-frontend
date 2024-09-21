@@ -22,7 +22,7 @@ export default function Page({ tracks, selectedTrack, assignments }) {
           <TrackSelector tracks={tracks} selectedTrack={selectedTrack} />
         }
       />
-      <TableContent title={"Revisiones"}>
+      <TableContent title={"Entregas en track: " + selectedTrack}>
         <ChairTable assignments={assignments} handleRowClick={handleRowClick} />
       </TableContent>
     </ContainerPage>

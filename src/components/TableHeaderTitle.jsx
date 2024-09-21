@@ -1,8 +1,8 @@
 import { TableHeader } from "./ui/table";
 
-export default function TableHeaderTitle({children}) {
+export default function TableHeaderTitle({children, headerColor}) {
   return (
-    <TableHeader className="bg-slate-50">
+    <TableHeader className={headerColor ||"bg-slate-50"}>
       {children}
     </TableHeader>
   );

@@ -14,46 +14,20 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { format } from "@formkit/tempo";
+import TableHeaderTitle from "@/components/TableHeaderTitle";
+import TableCursorRow from "@/components/TableCursorRow";
+import TableContent from "@/components/TableContent";
 
 export default function ReviewsTable({ reviews }) {
   const [selectedReview, setSelectedReview] = useState(null);
 
   return (
-    <>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Revisor</TableHead>
-            <TableHead>Recomendación</TableHead>
-            <TableHead>Fecha límite</TableHead>
-            <TableHead>Completado</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {reviews.map((review, index) => (
-            <TableRow
-              key={index}
-              className={
-                review.completed ? "cursor-pointer hover:bg-muted/50" : ""
-              }
-              onClick={() => review.completed && setSelectedReview(review)}
-            >
-              <TableCell>{review.reviewer}</TableCell>
-              <TableCell>{review.status || "-"}</TableCell>
-              <TableCell>
-                {format(new Date(review.deadlineDate), "long")}
-              </TableCell>
-              <TableCell>
-                {review.completed ? (
-                  <span>Sí</span>
-                ) : (
-                  <span>No</span>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div className="space-y-8">
+      <CompletedReviews
+        reviews={reviews}
+        setSelectedReview={setSelectedReview}
+      />
+      <NonCompletedReviews reviews={reviews} />
 
       <Dialog
         open={selectedReview !== null}
@@ -73,6 +47,68 @@ export default function ReviewsTable({ reviews }) {
           </div>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
+  );
+}
+
+function CompletedReviews({ reviews, setSelectedReview }) {
+  return (
+    <TableContent title={"Revisiones finalizadas"}>
+      <Table>
+        <TableHeaderTitle>
+          <TableRow>
+            <TableHead>Revisor</TableHead>
+            <TableHead>Recomendación</TableHead>
+            <TableHead>Fecha límite</TableHead>
+          </TableRow>
+        </TableHeaderTitle>
+        <TableBody>
+          {reviews.map((review, index) =>
+            review.completed ? (
+              <TableCursorRow
+                key={index}
+                onClick={() => review.completed && setSelectedReview(review)}
+              >
+                <TableCell>{review.reviewer}</TableCell>
+                <TableCell>{review.status || "-"}</TableCell>
+                <TableCell>
+                  {format(new Date(review.deadlineDate), "long")}
+                </TableCell>
+              </TableCursorRow>
+            ) : null,
+          )}
+        </TableBody>
+      </Table>
+    </TableContent>
+  );
+}
+
+function NonCompletedReviews({ reviews }) {
+  return (
+    <TableContent title={"Revisiones pendientes"}>
+      <Table>
+        <TableHeaderTitle>
+          <TableRow>
+            <TableHead>Revisor</TableHead>
+            <TableHead>Fecha límite</TableHead>
+          </TableRow>
+        </TableHeaderTitle>
+        <TableBody>
+          {reviews.map((review, index) =>
+            !review.completed ? (
+              <TableCursorRow
+                key={index}
+                onClick={() => review.completed && setSelectedReview(review)}
+              >
+                <TableCell>{review.reviewer}</TableCell>
+                <TableCell>
+                  {format(new Date(review.deadlineDate), "full")}
+                </TableCell>
+              </TableCursorRow>
+            ) : null,
+          )}
+        </TableBody>
+      </Table>
+    </TableContent>
   );
 }

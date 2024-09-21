@@ -1,20 +1,15 @@
+import { EVENTS_URL } from "@/lib/Constants";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { apiGetEventById } from "@/services/api/events/general/queries";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
-export function useEventState(eventId) {
-  const queryClient = useQueryClient();
-
-  const { data: eventData, isLoading } = useQuery({
-    queryKey: ["getEventById", { eventId }],
+export function useGetEvent(eventId) {
+  return useQuery({
+    queryKey: ["getEventById2", { eventId }],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const eventData = await apiGetEventById(httpClient, eventId);
       return eventData;
     },
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
   });
-
-  return { eventData, isLoading };
 }
