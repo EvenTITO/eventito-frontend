@@ -1,6 +1,6 @@
 import { EVENTS_URL } from "@/lib/Constants";
 import { HTTPClient } from "../../HTTPClient";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useGetAssignments(track) {
   return useQuery({
@@ -20,6 +20,19 @@ export function useGetReviews(workId) {
       const httpClient = new HTTPClient(EVENTS_URL);
       // TODO (api)
       return reviewsMock;
+    },
+  });
+}
+
+export function useAddReviewer() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({email, deadline}) => {
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getReviews"] });
     },
   });
 }
