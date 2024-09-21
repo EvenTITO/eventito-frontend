@@ -13,6 +13,17 @@ export function useGetAssignments(track) {
   });
 }
 
+export function useGetReviews(workId) {
+  return useQuery({
+    queryKey: ["getReviews", { workId }],
+    queryFn: async () => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      // TODO (api)
+      return reviewsMock;
+    },
+  });
+}
+
 const mock = [
   {
     id: 1,
@@ -63,5 +74,49 @@ const mock = [
     pdfLink: "https://example.com/sustainable-energy-solutions.pdf",
     status: "-",
     published: false,
+  },
+];
+
+const reviewForm = [
+  {
+    title: "Calificación general",
+    answer: 8,
+  },
+  {
+    title: "Recomendación",
+    answer: "Aceptado",
+  },
+  {
+    title: "Área de mejora",
+    answer: "Ninguna",
+  },
+  {
+    title: "Comentarios a los autores",
+    answer:
+      "Muy buen trabajo general, revisar que todas las imágenes tengan el mismo tamaño para el momento de la presentación.",
+  },
+];
+
+const reviewsMock = [
+  {
+    reviewer: "Gonzalo Sabatino",
+    completed: true,
+    deadlineDate: "2024/09/20",
+    status: "Aceptado",
+    reviewForm: reviewForm,
+  },
+  {
+    reviewer: "Fernando Sinisi",
+    completed: true,
+    deadlineDate: "2024/09/20",
+    status: "A revisión",
+    reviewForm: reviewForm,
+  },
+  {
+    reviewer: "Lucas Verón",
+    completed: false,
+    deadlineDate: "2024/09/20",
+    status: null,
+    reviewForm: null,
   },
 ];
