@@ -2,7 +2,7 @@
  *  Custom hooks to consume from the reviewers API
  * */
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGetAssignment } from "./queries";
 import { EVENTS_URL } from "@/lib/Constants";
 import { HTTPClient } from "@/services/api/HTTPClient";
@@ -13,6 +13,20 @@ export function useGetMyAssignments() {
     queryFn: async () => {
       // TODO: api
       return assignmentsMock;
+    },
+  });
+}
+
+export function useSubmitReview() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ review }) => {
+      console.log("reviews", review);
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getMyAssignments"] });
     },
   });
 }

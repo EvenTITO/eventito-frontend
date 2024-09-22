@@ -13,6 +13,7 @@ import Rating from "./_components/Rating";
 import SingleChoice from "./_components/SingleChoice";
 import MultipleChoice from "./_components/MultipleChoice";
 import TextInput from "./_components/TextInput";
+import { useSubmitReview } from "@/services/api/events/reviewer/hooks";
 
 export function ReviewerForm({ handleBack, questions }) {
   const [review, setReview] = useState({});
@@ -21,8 +22,10 @@ export function ReviewerForm({ handleBack, questions }) {
     setReview((prev) => ({ ...prev, [field]: value }));
   };
 
+  const { mutate } = useSubmitReview();
+
   const handleSubmitReview = () => {
-    console.log("Submitting review:", review);
+    mutate({ review: review });
     handleBack();
   };
 
