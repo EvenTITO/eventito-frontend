@@ -1,17 +1,17 @@
 import { useState } from "react";
-import FormSelectPayment from "./FormSelectPayment";
-import FormSubmitPayment from "./FormSubmitFile";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
-export default function SteppedForm({ onSave, onCancel, booleanForSteps }) {
+export default function SteppedForm({
+  title,
+  onSave,
+  onCancel,
+  booleanForSteps,
+  stepsComponents
+}) {
   const [step, setStep] = useState(0);
   const [error, setError] = useState("");
-  const steps = [
-    <FormSelectPayment setError={setError} />,
-    <FormSubmitPayment setError={setError} />,
-  ];
 
   function stepIsCompleted() {
     if (booleanForSteps[step]) {
@@ -39,7 +39,7 @@ export default function SteppedForm({ onSave, onCancel, booleanForSteps }) {
   return (
     <FormContainer>
       <FormContent>
-        <FormHeader title={"Proceso de pago"} />
+        <FormHeader title={title} />
 
         <form id="form-content" className="space-y-8">
           {error && (
@@ -48,7 +48,7 @@ export default function SteppedForm({ onSave, onCancel, booleanForSteps }) {
             </Alert>
           )}
 
-          {steps.map((stepItem, idx) => idx === step && stepItem)}
+          {stepsComponents.map((stepItem, idx) => idx === step && stepItem)}
         </form>
       </FormContent>
 
@@ -57,7 +57,7 @@ export default function SteppedForm({ onSave, onCancel, booleanForSteps }) {
         handleCancel={onCancel}
         step={step}
         setStep={setStep}
-        amountSteps={steps.length - 1}
+        amountSteps={stepsComponents.length - 1}
         handleNext={handleNext}
         handleSubmit={handleSubmit}
       />

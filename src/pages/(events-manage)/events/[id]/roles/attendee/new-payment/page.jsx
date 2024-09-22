@@ -1,8 +1,10 @@
 import { useNavigator } from "@/lib/navigation";
-import SteppedForm from "./form/SteppedForm";
 import { useDispatch, useSelector } from "react-redux";
 import { reset } from "@/state/events/newPaymentSlice";
 import { useNewPayment } from "@/hooks/events/attendeeHooks";
+import FormSelectPayment from "./form/FormSelectPayment";
+import FormSubmitPayment from "./form/FormSubmitFile";
+import SteppedForm from "@/components/SteppedForm";
 
 export default function NewPaymentPage() {
   const navigator = useNavigator("/new-payment");
@@ -11,6 +13,7 @@ export default function NewPaymentPage() {
   const { pricing, pdfFile } = useSelector((state) => state.newPayment);
   const { currentUser } = useSelector((state) => state.user);
   const booleanForSteps = [pricing, pdfFile];
+  const stepsComponents = [<FormSelectPayment />, <FormSubmitPayment />];
 
   async function onSave() {
     await newPayment({
@@ -27,9 +30,11 @@ export default function NewPaymentPage() {
 
   return (
     <SteppedForm
+      title={"Proceso de pago"}
       onSave={onSave}
       onCancel={onCancel}
       booleanForSteps={booleanForSteps}
+      stepsComponents={stepsComponents}
     />
   );
 }
