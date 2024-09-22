@@ -7,3 +7,8 @@ export const apiGetWorksByTrack = async (httpClient, eventId, track, limit=100, 
     limit
   })).data;
 };
+
+
+export const apiGetWorkById = async (httpClient, eventId, workId) => {
+  return (await httpClient.get(`/${eventId}/works/${workId}`)).data;
+};

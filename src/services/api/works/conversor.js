@@ -4,13 +4,14 @@ export function convertWorks(works) {
 }
 
 
-function convertWork(work) {
+export function convertWork(work) {
   return {
     id: work.id,
     title: work.title,
     authorCount: work.authors.length,
     submitter: getMainAuthorFullName(work),
     creationDate: work.creation_date,
+    lastUpdate: work.last_update,
     track: work.track,
     authors: work.authors.map((a) => a.full_name),
     abstract: work.abstract,

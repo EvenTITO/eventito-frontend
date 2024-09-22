@@ -7,7 +7,7 @@ import { DetailsTab } from "./details";
 import Reviews from "./reviews";
 import StatusSelector from "./_components/StatusSelector";
 
-export default function Page({ selectedAssignment, reviews }) {
+export default function Page({ selectedWork, reviews }) {
   const navigator = useNavigator("/works");
 
   function handleBack(e) {
@@ -25,7 +25,7 @@ export default function Page({ selectedAssignment, reviews }) {
         <ArrowLeft className="mr-2 h-4 w-4" /> Volver a tracks
       </a>
       <TitlePage
-        title={selectedAssignment.title}
+        title={selectedWork.title}
         rightComponent={<StatusSelector />}
       />
 
@@ -37,7 +37,7 @@ export default function Page({ selectedAssignment, reviews }) {
               component: (
                 <DetailsTab
                   handleBack={handleBack}
-                  selectedAssignment={selectedAssignment}
+                  selectedWork={selectedWork}
                 />
               ),
             },

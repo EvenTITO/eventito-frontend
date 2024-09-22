@@ -1,13 +1,13 @@
 import FetchStatus from "@/components/FetchStatus";
 import Page from "./page";
-import { useGetWorkForAssignment } from "@/hooks/events/worksHooks";
+import { useGetWorkById } from "@/hooks/events/worksHooks";
 
 export default function AssignmentPage() {
   const {
     isPending,
     error,
     data: selectedAssignment,
-  } = useGetWorkForAssignment();
+  } = useGetWorkById();
 
   const pageComponent = (
     <Page selectedAssignment={selectedAssignment} questions={reviewSkeleton} />

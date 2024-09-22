@@ -7,10 +7,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { WORKS_STATUS_LABELS } from "@/lib/Constants"
 
 export default function StatusSelector() {
   const [status, setStatus] = useState(null);
-  const statusOptions = ["Aceptada", "A revisión", "Rechazada"];
+  const statusOptions = Object.values(WORKS_STATUS_LABELS);
 
   return (
     <div className="flex gap-2 items-center">
