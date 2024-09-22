@@ -15,6 +15,32 @@ export function useGetTrackAssignments(track) {
   });
 }
 
+export function useGetWorkForAssignment() {
+  const workId = getWorkId();
+  const eventId = getEventId();
+
+  return useQuery({
+    queryKey: ["getWorkForAssignment", { workId }],
+    queryFn: async () => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      return selectedAssignment;
+    },
+  });
+}
+
+export function useGetReviewsForAssignment() {
+  const workId = getWorkId();
+  const eventId = getEventId();
+
+  return useQuery({
+    queryKey: ["getReviewsForAssignment", { workId }],
+    queryFn: async () => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      return reviews;
+    },
+  });
+}
+
 const mockAssignments = [
   {
     id: 1,
@@ -68,19 +94,6 @@ const mockAssignments = [
   },
 ];
 
-export function useGetWorkForAssignment() {
-  const workId = getWorkId();
-  const eventId = getEventId();
-
-  return useQuery({
-    queryKey: ["getWorkForAssignment", { workId }],
-    queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL);
-      return selectedAssignment;
-    },
-  });
-}
-
 const selectedAssignment = {
   id: 1,
   title: "Machine Learning in Healthcare: A Comprehensive Study",
@@ -94,3 +107,47 @@ const selectedAssignment = {
     "This study explores the transformative potential of machine learning in healthcare, focusing on early disease detection, personalized treatment plans, and predictive analytics. We present a novel approach that combines deep learning algorithms with electronic health records to improve diagnostic accuracy and patient outcomes. Our findings suggest significant improvements in early detection rates for several chronic conditions, potentially revolutionizing preventive care strategies.",
   pdfLink: "https://example.com/machine-learning-healthcare.pdf",
 };
+
+const reviewForm = [
+  {
+    title: "Calificación general",
+    answer: 8,
+  },
+  {
+    title: "Recomendación",
+    answer: "Aceptado",
+  },
+  {
+    title: "Área de mejora",
+    answer: "Ninguna",
+  },
+  {
+    title: "Comentarios a los autores",
+    answer:
+      "Muy buen trabajo general, revisar que todas las imágenes tengan el mismo tamaño para el momento de la presentación.",
+  },
+];
+
+const reviews = [
+  {
+    reviewer: "Gonzalo Sabatino",
+    completed: true,
+    deadlineDate: "2024/09/20",
+    status: "Aceptado",
+    reviewForm: reviewForm,
+  },
+  {
+    reviewer: "Fernando Sinisi",
+    completed: true,
+    deadlineDate: "2024/09/20",
+    status: "A revisión",
+    reviewForm: reviewForm,
+  },
+  {
+    reviewer: "Lucas Verón",
+    completed: false,
+    deadlineDate: "2024/09/20",
+    status: null,
+    reviewForm: null,
+  },
+];
