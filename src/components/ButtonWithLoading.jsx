@@ -6,6 +6,7 @@ export default function ButtonWithLoading({
   isLoading,
   className,
   text,
+  children,
 }) {
   return (
     <Button onClick={onClick} className={className} disabled={isLoading}>
@@ -15,7 +16,10 @@ export default function ButtonWithLoading({
           Cargando...
         </>
       ) : (
-        <span>{text}</span>
+        <>
+          <span>{text}</span>
+          {children}
+        </>
       )}
     </Button>
   );
