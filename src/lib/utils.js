@@ -24,3 +24,9 @@ export function getEventId() {
 
   return eventId;
 }
+
+export function getWorkId() {
+  const { workId } = useParams();
+
+  return workId;
+}
