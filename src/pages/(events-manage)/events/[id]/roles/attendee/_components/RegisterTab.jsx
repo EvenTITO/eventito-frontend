@@ -12,29 +12,38 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Upload } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useChangeRegister } from "@/hooks/events/attendeeHooks";
+import { useSelector } from "react-redux";
+import ButtonWithLoading from "@/components/ButtonWithLoading";
 
-export default function RegisterTab({ registerData, error }) {
+export default function RegisterTab({ registerData }) {
   const [isEditing, setIsEditing] = useState(false);
   const [registration, setRegistration] = useState(registerData);
+  const { currentUser } = useSelector((state) => state.user);
+  const {
+    mutateAsync: changeRegistration,
+    isPending,
+    error,
+  } = useChangeRegister();
 
   const handleEdit = () => {
     setIsEditing(true);
-    setError("");
   };
 
   const handleCancel = () => {
     setIsEditing(false);
-    setError("");
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!registration.name) {
       setError("Por favor completar todos los campos.");
       return;
     }
+    await changeRegistration({
+      userId: currentUser.id,
+      newRegisterData: registration,
+    });
     setIsEditing(false);
-    setError("");
-    console.log("Saving updated registration:", registration);
   };
 
   return (
@@ -47,6 +56,7 @@ export default function RegisterTab({ registerData, error }) {
             handleEdit={handleEdit}
             handleSave={handleSave}
             handleCancel={handleCancel}
+            isLoading={isPending}
           />
         </CardTitle>
       </CardHeader>
@@ -70,6 +80,7 @@ function EditInscriptionButton({
   handleEdit,
   handleCancel,
   handleSave,
+  isLoading,
 }) {
   if (isEditing) {
     return (
@@ -77,7 +88,11 @@ function EditInscriptionButton({
         <Button variant="outline" onClick={handleCancel}>
           Cancelar
         </Button>
-        <Button onClick={handleSave}>Guardar</Button>
+        <ButtonWithLoading
+          onClick={handleSave}
+          isLoading={isLoading}
+          text="Guardar"
+        />
       </div>
     );
   }

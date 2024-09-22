@@ -1,5 +1,5 @@
 import { EVENTS_URL } from "@/lib/Constants";
-import { getEventId } from "@/lib/utils";
+import { getEventId, wait } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -23,6 +23,22 @@ export function useGetPayments(userId) {
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       return mockPaymentsList;
+    },
+  });
+}
+
+export function useChangeRegister() {
+  const eventId = getEventId();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ userId, newRegisterData }) => {
+      await wait(2);
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getRegisterData"] });
     },
   });
 }
