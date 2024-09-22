@@ -1,10 +1,9 @@
-import { useParams } from "react-router-dom";
 import { useGetEvent } from "@/hooks/events/useEventState";
 import Page from "./page";
 
 export default function ChairPage() {
-  const { id: eventId } = useParams();
-  const { data: eventData } = useGetEvent(eventId);
+  const { data: eventData } = useGetEvent();
+
   return (
     <Page
       tracks={eventData?.tracks || []}
