@@ -1,6 +1,6 @@
 import { useGetEvent } from "@/hooks/events/useEventState";
 import Page from "./page";
-import { useGetTrackAssignments } from "@/hooks/events/chairHooks";
+import { useGetWorksByTrack } from "@/hooks/events/chairHooks";
 import { useState } from "react";
 
 export default function ChairPage() {
@@ -9,7 +9,11 @@ export default function ChairPage() {
     eventData?.tracks[0] || "",
   );
 
-  const { data: assignments } = useGetTrackAssignments(selectedTrack);
+  const { data: assignments, isPending, error } = useGetWorksByTrack(selectedTrack);
+  if (error) {
+    console.log('ocurrio un error');
+    console.error(error);
+  }
 
   return (
     <Page

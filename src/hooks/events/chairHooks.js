@@ -2,15 +2,23 @@ import { EVENTS_URL } from "@/lib/Constants";
 import { getEventId, getWorkId } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { apiGetWorksByTrack } from "@/services/api/works/queries";
+import { convertWorks } from "@/services/api/works/conversor";
 
-export function useGetTrackAssignments(track) {
+export function useGetWorksByTrack(track) {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getTrackAssignments", { eventId, track }],
+    queryKey: ["getWorksByTrack", { eventId, track }],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      return mockAssignments;
+      console.log(`llamando. id: ${eventId} track: ${track}`)
+      const works = await apiGetWorksByTrack(httpClient, eventId, track);
+      console.log(`se llama a get works: ${JSON.stringify(works)}`);
+      return convertWorks(works);
+    },
+    onError: (error) => {
+      console.error(error);
     },
   });
 }
@@ -43,6 +51,10 @@ export function useAddReviewer() {
     },
   });
 }
+
+
+
+
 
 const mockAssignments = [
   {

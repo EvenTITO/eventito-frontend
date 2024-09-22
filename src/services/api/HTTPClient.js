@@ -30,6 +30,7 @@ export class HTTPClient {
 
   async get(url, params = {}, config = { fowardError: true }) {
     const headers = this.createHeaders();
+    console.log(`params es: ${params}`)
     const response = await this.axiosInstance.get(url, {
       headers: headers.headers,
       params: params
