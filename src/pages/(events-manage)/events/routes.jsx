@@ -14,10 +14,9 @@ import ViewSubmissionPage from "./[id]/roles/author/submissions";
 export default function RoutesEvents() {
   return (
     <Routes>
+      <Route path="/events/:id/view" element={<EventViewPage />} />
+      <Route path="/events/:id/view/general" element={<EventViewPage />} />
       <Route path="/events" element={<LayoutEvents />}>
-        <Route path="/events/:id/view" element={<EventViewPage />} />
-        <Route path="/events/:id/view/general" element={<EventViewPage />} />
-
         <Route path="/events/:id/roles/attendee" element={<AttendeePage />} />
 
         <Route path="/events/:id/roles/author" element={<AuthorPage />} />
