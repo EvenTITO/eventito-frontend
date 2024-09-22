@@ -17,9 +17,15 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Search, ChevronRight, Bell, User } from "lucide-react";
+import { getEventsWaitingApproval } from "@/services/api/admin/events/hooks"
 
 export default function AdminPanel() {
+  const { isPending, error, data: eventsWaitingApproval } = getEventsWaitingApproval();
+  if (!isPending) {
+    console.log(`events waiting approval: ${JSON.stringify(eventsWaitingApproval)}`)
+  }
   const [activeTab, setActiveTab] = useState("events");
+
   const [events, setEvents] = useState([
     {
       id: "1",

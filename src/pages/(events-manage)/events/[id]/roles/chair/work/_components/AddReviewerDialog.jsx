@@ -26,6 +26,8 @@ export default function AddReviewerDialog() {
   const [open, setOpen] = useState(false);
   const { mutate: addReviewer } = useAddReviewer();
 
+  const { mutate, error } = useAddReviewer();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email && deadline) {

@@ -1,48 +1,43 @@
-/*
- *  Custom hooks to consume from the reviewers API
- * */
-
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGetAssignment } from "./queries";
 import { EVENTS_URL } from "@/lib/Constants";
-import { HTTPClient } from "@/services/api/HTTPClient";
+import { HTTPClient } from "../../HTTPClient";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useGetMyAssignments() {
+export function useGetAssignments(track) {
   return useQuery({
-    queryKey: ["getMyAssignments"],
+    queryKey: ["getAssigments", { track }],
     queryFn: async () => {
-      // TODO: api
-      return assignmentsMock;
+      const httpClient = new HTTPClient(EVENTS_URL);
+      // TODO (api)
+      return mock;
     },
   });
 }
 
-export function useSubmitReview() {
+export function useGetReviews(workId) {
+  return useQuery({
+    queryKey: ["getReviews", { workId }],
+    queryFn: async () => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      // TODO (api)
+      return reviewsMock;
+    },
+  });
+}
+
+export function useAddReviewer() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ review }) => {
-      console.log("reviews", review);
+    mutationFn: async ({email, deadline}) => {
       return null;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getMyAssignments"] });
+      queryClient.invalidateQueries({ queryKey: ["getReviews"] });
     },
   });
 }
 
-export function getAssignmentInfo(workId) {
-  return useQuery({
-    queryKey: ["getAssignmentInfo"],
-    queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL);
-      const assignmentInfo = await apiGetAssignment(httpClient, workId);
-      return assignmentInfo;
-    },
-  });
-}
-
-const assignmentsMock = [
+const mock = [
   {
     id: 1,
     title: "Machine Learning in Healthcare: A Comprehensive Study",
@@ -55,6 +50,8 @@ const assignmentsMock = [
     abstract:
       "This study explores the transformative potential of machine learning in healthcare, focusing on early disease detection, personalized treatment plans, and predictive analytics. We present a novel approach that combines deep learning algorithms with electronic health records to improve diagnostic accuracy and patient outcomes. Our findings suggest significant improvements in early detection rates for several chronic conditions, potentially revolutionizing preventive care strategies.",
     pdfLink: "https://example.com/machine-learning-healthcare.pdf",
+    status: "-",
+    published: false,
   },
   {
     id: 2,
@@ -68,6 +65,8 @@ const assignmentsMock = [
     abstract:
       "This paper introduces groundbreaking advancements in quantum computing, showcasing a novel approach to qubit manipulation that significantly reduces decoherence. Our research demonstrates a 50% improvement in quantum circuit depth, paving the way for more complex quantum algorithms and bringing us closer to practical quantum supremacy.",
     pdfLink: "https://example.com/quantum-computing-new-era.pdf",
+    status: "-",
+    published: false,
   },
   {
     id: 3,
@@ -86,5 +85,51 @@ const assignmentsMock = [
     abstract:
       "Our research presents an innovative approach to sustainable energy production, combining advanced solar cell technology with AI-driven energy distribution systems. This integrated solution shows a 30% increase in energy efficiency and a 25% reduction in carbon emissions compared to current best practices, offering a scalable model for smart cities of the future.",
     pdfLink: "https://example.com/sustainable-energy-solutions.pdf",
+    status: "-",
+    published: false,
+  },
+];
+
+const reviewForm = [
+  {
+    title: "Calificación general",
+    answer: 8,
+  },
+  {
+    title: "Recomendación",
+    answer: "Aceptado",
+  },
+  {
+    title: "Área de mejora",
+    answer: "Ninguna",
+  },
+  {
+    title: "Comentarios a los autores",
+    answer:
+      "Muy buen trabajo general, revisar que todas las imágenes tengan el mismo tamaño para el momento de la presentación.",
+  },
+];
+
+const reviewsMock = [
+  {
+    reviewer: "Gonzalo Sabatino",
+    completed: true,
+    deadlineDate: "2024/09/20",
+    status: "Aceptado",
+    reviewForm: reviewForm,
+  },
+  {
+    reviewer: "Fernando Sinisi",
+    completed: true,
+    deadlineDate: "2024/09/20",
+    status: "A revisión",
+    reviewForm: reviewForm,
+  },
+  {
+    reviewer: "Lucas Verón",
+    completed: false,
+    deadlineDate: "2024/09/20",
+    status: null,
+    reviewForm: null,
   },
 ];
