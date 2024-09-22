@@ -6,7 +6,12 @@ import TrackSelector from "./_components/TrackSelector";
 import ChairTable from "./_components/ChairTable";
 import TableContent from "@/components/TableContent";
 
-export default function Page({ tracks, selectedTrack, assignments }) {
+export default function Page({
+  tracks,
+  selectedTrack,
+  setSelectedTrack,
+  assignments,
+}) {
   const navigator = useNavigator();
 
   const handleRowClick = (assignment) => {
@@ -19,7 +24,11 @@ export default function Page({ tracks, selectedTrack, assignments }) {
       <TitlePage
         title={`Administración de revisiones`}
         rightComponent={
-          <TrackSelector tracks={tracks} selectedTrack={selectedTrack} />
+          <TrackSelector
+            tracks={tracks}
+            selectedTrack={selectedTrack}
+            setSelectedTrack={setSelectedTrack}
+          />
         }
       />
       <TableContent title={"Entregas en track: " + selectedTrack}>
