@@ -1,16 +1,18 @@
 import { EVENTS_URL } from "@/lib/Constants";
 import { getEventId, getWorkId, wait } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
+import { apiGetAssignment } from "@/services/api/events/reviewer/queries";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-export function useGetMyAssignments(track) {
-  const eventId = getEventId();
+export function useGetMyAssignments() {
   const workId = getWorkId();
 
   return useQuery({
     queryKey: ["getMyAssignments", { workId }],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
+      const assignmentInfo = await apiGetAssignment(httpClient, workId);
+      // return assignmentInfo; // commented to see better results
       return mockAssignments;
     },
   });
