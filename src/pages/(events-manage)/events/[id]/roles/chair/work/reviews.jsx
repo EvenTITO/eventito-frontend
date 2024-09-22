@@ -18,10 +18,6 @@ export default function Reviews() {
   );
 }
 
-// TODO (api): obtener esto. Son dos calls distintas
-// - obtener las reviews.
-// - obtener las respuestas de las reviews (puede hacerse en el mismo hook o en dos).
-
 const reviewForm = [
   {
     title: "Calificación general",

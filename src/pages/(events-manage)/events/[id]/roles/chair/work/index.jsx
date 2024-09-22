@@ -4,8 +4,14 @@ import { useGetWorkForAssignment } from "@/hooks/events/chairHooks";
 
 export default function ChairWorkPage() {
   // TODO: cambiar esto para que sea global?
-  const { data: selectedAssignment, isPending, error } = useGetWorkForAssignment();
+  const assignmentInfo = useGetWorkForAssignment();
 
-  const component = <Page selectedAssignment={selectedAssignment} />;
-  return <FetchStatus component={component} isPending={isPending} error={error} />;
+  const component = <Page selectedAssignment={assignmentInfo.data} />;
+  return (
+    <FetchStatus
+      component={component}
+      isPending={assignmentInfo.isPending}
+      error={assignmentInfo.error}
+    />
+  );
 }
