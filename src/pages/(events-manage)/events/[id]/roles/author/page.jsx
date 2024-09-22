@@ -12,6 +12,7 @@ import {
 import { format } from "@formkit/tempo";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WORKS_STATUS_LABELS } from "@/lib/Constants"
 
 export default function Page({ works }) {
   const navigator = useNavigator();
@@ -48,7 +49,7 @@ export default function Page({ works }) {
               <TableCell>{work.authors.length}</TableCell>
               <TableCell>{format(work.deadlineDate, "long")}</TableCell>
               <TableCell>{work.track}</TableCell>
-              <TableCell>{work.status}</TableCell>
+              <TableCell>{WORKS_STATUS_LABELS[work.status]}</TableCell>
             </TableRow>
           ))}
         </TableBody>

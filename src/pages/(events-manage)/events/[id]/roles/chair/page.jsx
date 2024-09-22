@@ -10,12 +10,12 @@ export default function Page({
   tracks,
   selectedTrack,
   setSelectedTrack,
-  assignments,
+  works,
 }) {
   const navigator = useNavigator();
 
-  const handleRowClick = (assignment) => {
-    const path = `works/${assignment.id}`;
+  const handleRowClick = (work) => {
+    const path = `works/${work.id}`;
     navigator.foward(path);
   };
 
@@ -32,7 +32,7 @@ export default function Page({
         }
       />
       <TableContent title={"Entregas en track: " + selectedTrack}>
-        <ChairTable assignments={assignments} handleRowClick={handleRowClick} />
+        <ChairTable works={works} handleRowClick={handleRowClick} />
       </TableContent>
     </ContainerPage>
   );

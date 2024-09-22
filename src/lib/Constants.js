@@ -12,3 +12,11 @@ export const ORGANIZER_ROLE = "ORGANIZER";
 export const CHAIR_ROLE = "CHAIR";
 export const REVIEWER_ROLE = "REVIEWER";
 export const AUTHOR_ROLE = "AUTHOR";
+
+
+export const WORKS_STATUS_LABELS = {
+  "APPROVED": "Aprobado",
+  "REJECTED": "Rechazado",
+  "RE_SUBMIT": "Debe reentregar",
+  "SUBMITTED": "Entregado"
+}

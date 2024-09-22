@@ -9,7 +9,7 @@ export default function ChairPage() {
     eventData?.tracks[0] || "",
   );
 
-  const { data: assignments, isPending, error } = useGetWorksByTrack(selectedTrack);
+  const { data: works, isPending, error } = useGetWorksByTrack(selectedTrack);
   if (error) {
     console.log('ocurrio un error');
     console.error(error);
@@ -20,7 +20,7 @@ export default function ChairPage() {
       tracks={eventData?.tracks || []}
       selectedTrack={selectedTrack}
       setSelectedTrack={setSelectedTrack}
-      assignments={assignments || []}
+      works={works || []}
     />
   );
 }

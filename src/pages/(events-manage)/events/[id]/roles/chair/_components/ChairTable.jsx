@@ -8,8 +8,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format } from "@formkit/tempo";
+import { WORKS_STATUS_LABELS } from "@/lib/Constants"
 
-export default function ChairTable({ assignments, handleRowClick }) {
+export default function ChairTable({ works: works, handleRowClick }) {
   return (
     <Table>
       <TableHeaderTitle>
@@ -23,17 +24,17 @@ export default function ChairTable({ assignments, handleRowClick }) {
         </TableRow>
       </TableHeaderTitle>
       <TableBody>
-        {assignments.map((assignment) => (
+        {works.map((work) => (
           <TableCursorRow
-            key={assignment.id}
-            onClick={() => handleRowClick(assignment)}
+            key={work.id}
+            onClick={() => handleRowClick(work)}
           >
-            <TableCell className="font-medium">{assignment.title}</TableCell>
-            <TableCell>{assignment.submitter}</TableCell>
-            <TableCell>{assignment.authorCount}</TableCell>
-            <TableCell>{format(assignment.submissionDate, "long")}</TableCell>
-            <TableCell>{assignment.status}</TableCell>
-            <TableCell>{assignment.published ? "Sí" : "No"}</TableCell>
+            <TableCell className="font-medium">{work.title}</TableCell>
+            <TableCell>{work.submitter}</TableCell>
+            <TableCell>{work.authorCount}</TableCell>
+            <TableCell>{format(work.submissionDate, "long")}</TableCell>
+            <TableCell>{WORKS_STATUS_LABELS[work.status]}</TableCell>
+            <TableCell>{work.published ? "Sí" : "No"}</TableCell>
           </TableCursorRow>
         ))}
       </TableBody>
