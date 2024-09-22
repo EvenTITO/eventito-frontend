@@ -43,9 +43,10 @@ export function DetailsTab({ selectedWork: work, getFileData, isPending }) {
         <ButtonWithLoading
           onClick={() => getFileData()}
           className="w-full"
-          text="Descargar entrega (PDF)"
           isLoading={isPending}
-        />
+        >
+          <FileDown className="mr-2 h-4 w-4" /> Descargar PDF de entrega
+        </ButtonWithLoading>
       </CardContent>
     </Card>
   );
