@@ -2,8 +2,8 @@ import { EVENTS_URL } from "@/lib/Constants";
 import { getEventId, getWorkId } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGetWorksByTrack } from "@/services/api/works/queries";
-import { convertWorks } from "@/services/api/works/conversor";
+import { apiGetWorksByTrack, apiGetReviewsForWork } from "@/services/api/works/queries";
+import { convertWorks, convertReviews } from "@/services/api/works/conversor";
 
 export function useGetWorksByTrack(track) {
   const eventId = getEventId();
@@ -21,15 +21,18 @@ export function useGetWorksByTrack(track) {
   });
 }
 
-export function useGetReviewsForAssignment() {
+export function useGetReviewsForWork() {
   const workId = getWorkId();
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getReviewsForAssignment", { workId }],
+    queryKey: ["getReviewsForWork", { workId }],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      return reviews;
+      const workReviews = await apiGetReviewsForWork(httpClient, eventId, workId);
+      console.log(`llega el review: ${JSON.stringify(workReviews)}`)
+      console.log(`reviews harcoded: ${JSON.stringify(reviews)}`)
+      return convertReviews(workReviews);
     },
   });
 }

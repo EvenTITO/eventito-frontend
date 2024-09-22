@@ -1,7 +1,7 @@
 import FetchStatus from "@/components/FetchStatus";
 import Page from "./page";
 import {
-  useGetReviewsForAssignment,
+  useGetReviewsForWork,
 } from "@/hooks/events/chairHooks";
 import { useGetWorkById, useGetWorkDownloadURL } from "@/hooks/events/worksHooks";
 import { useToast } from "@/hooks/use-toast";
@@ -10,7 +10,7 @@ import { useEffect } from "react";
 export default function ChairWorkPage() {
   // TODO: cambiar esto para que sea global?
   const workInfo = useGetWorkById();
-  const reviews = useGetReviewsForAssignment();
+  const reviews = useGetReviewsForWork();
   const {data: fileData, mutate: downloadWorkFile, isError, isPending, isSuccess, error} = useGetWorkDownloadURL();
   const { toast } = useToast();
 

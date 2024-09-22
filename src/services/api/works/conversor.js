@@ -29,3 +29,41 @@ function getMainAuthorFullName(work) {
   }
   return mainAuthor.full_name;
 }
+
+export function convertReviews(reviews) {
+  reviews.map(convertReview)
+}
+
+function convertReview(review) {
+  return {
+    reviewer: "Gonzalo Sabatino",
+    completed: true,
+    deadlineDate: "2024/09/20",
+    status: "Aceptado",
+    reviewForm: reviewForm,
+  }
+}
+
+const reviews = [
+  {
+    reviewer: "Gonzalo Sabatino",
+    completed: true,
+    deadlineDate: "2024/09/20",
+    status: "Aceptado",
+    reviewForm: reviewForm,
+  },
+  {
+    reviewer: "Fernando Sinisi",
+    completed: true,
+    deadlineDate: "2024/09/20",
+    status: "A revisión",
+    reviewForm: reviewForm,
+  },
+  {
+    reviewer: "Lucas Verón",
+    completed: false,
+    deadlineDate: "2024/09/20",
+    status: null,
+    reviewForm: null,
+  },
+];
