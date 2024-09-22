@@ -13,9 +13,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Upload } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function RegisterTab({ error }) {
+export default function RegisterTab({ registerData, error }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [registration, setRegistration] = useState(userRegistration);
+  const [registration, setRegistration] = useState(registerData);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -185,10 +185,3 @@ function EditInscription({ registration, setRegistration, error }) {
     </>
   );
 }
-
-const userRegistration = {
-  role: "Asistente",
-  name: "John Doe",
-  affiliation: "FIUBA",
-  file: null,
-};

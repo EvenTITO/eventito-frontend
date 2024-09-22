@@ -12,7 +12,7 @@ import { PlusIcon } from "lucide-react";
 import { format } from "@formkit/tempo";
 import { useNavigator } from "@/lib/navigation";
 
-export default function PaymentsTab() {
+export default function PaymentsTab({ payments }) {
   const navigator = useNavigator();
 
   return (
@@ -75,25 +75,3 @@ export default function PaymentsTab() {
     </Card>
   );
 }
-
-const payments = [
-  {
-    id: 1,
-    date: new Date(2023, 5, 15),
-    status: "Confirmado",
-    name: "Presentador: descuento de profesores FIUBA",
-    amount: 150,
-    works: [
-      { id: 1, title: "Advancements in Quantum Computing" },
-      { id: 2, title: "AI in Healthcare: A Comprehensive Review" },
-    ],
-  },
-  {
-    id: 2,
-    date: new Date(2023, 5, 20),
-    status: "Pendiente",
-    name: "Asistente: descuento de profesores FIUBA",
-    amount: 0,
-    works: [],
-  },
-];
