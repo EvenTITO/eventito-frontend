@@ -1,13 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AddReviewerDialog from "./_components/AddReviewerDialog";
 import ReviewsTable from "./_components/ReviewsTable";
-import { useParams } from "react-router-dom";
-import { useGetReviews } from "@/services/api/events/chair/hooks";
 
-export default function Reviews() {
-  const { workId } = useParams();
-  const { data: reviews } = useGetReviews(workId);
-
+export default function Reviews({ reviews }) {
   return (
     <Card>
       <CardHeader>

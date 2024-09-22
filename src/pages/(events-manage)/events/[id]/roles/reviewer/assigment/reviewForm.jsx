@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -13,19 +12,19 @@ import Rating from "./_components/Rating";
 import SingleChoice from "./_components/SingleChoice";
 import MultipleChoice from "./_components/MultipleChoice";
 import TextInput from "./_components/TextInput";
-import { useSubmitReview } from "@/services/api/events/reviewer/hooks";
+import { useSubmitReview } from "@/hooks/events/reviewerHooks";
+import ButtonWithLoading from "@/components/ButtonWithLoading";
 
 export function ReviewerForm({ handleBack, questions }) {
   const [review, setReview] = useState({});
+  const { mutateAsync: submitReview, isPending } = useSubmitReview();
 
   const handleReviewChange = (field, value) => {
     setReview((prev) => ({ ...prev, [field]: value }));
   };
 
-  const { mutate } = useSubmitReview();
-
-  const handleSubmitReview = () => {
-    mutate({ review: review });
+  const handleSubmitReview = async () => {
+    await submitReview({ review });
     handleBack();
   };
 
@@ -75,9 +74,12 @@ export function ReviewerForm({ handleBack, questions }) {
         ))}
       </CardContent>
       <CardFooter>
-        <Button onClick={handleSubmitReview} className="w-full">
-          Finalizar revisión
-        </Button>
+        <ButtonWithLoading
+          onClick={handleSubmitReview}
+          isLoading={isPending}
+          className="w-full"
+          text="Finalizar revisión"
+        />
       </CardFooter>
     </Card>
   );

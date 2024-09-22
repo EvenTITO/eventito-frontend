@@ -1,17 +1,13 @@
 import FetchStatus from "@/components/FetchStatus";
 import Page from "./page";
-import { useParams } from "react-router-dom";
-import { getAssignmentInfo } from "@/services/api/events/reviewer/hooks";
+import { useGetWorkForAssignment } from "@/hooks/events/worksHooks";
 
 export default function AssignmentPage() {
-  // TODO: cambiar esto para que sea global?
-  const { assignmentId } = useParams();
-
   const {
     isPending,
     error,
     data: selectedAssignment,
-  } = getAssignmentInfo(assignmentId);
+  } = useGetWorkForAssignment();
 
   const pageComponent = (
     <Page selectedAssignment={selectedAssignment} questions={reviewSkeleton} />
@@ -25,8 +21,7 @@ export default function AssignmentPage() {
   );
 }
 
-// TODO: consumirlo desde redux -> en el get del evento lo estoy obteniendo
-// ojo con los tipos
+// TODO: consumirlo desde el evento
 const reviewSkeleton = [
   {
     title: "Calificación general",

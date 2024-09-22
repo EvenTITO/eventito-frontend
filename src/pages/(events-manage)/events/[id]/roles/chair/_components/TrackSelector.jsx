@@ -8,11 +8,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function TrackSelector({ tracks, selectedTrack }) {
+export default function TrackSelector({
+  tracks,
+  selectedTrack,
+  setSelectedTrack,
+}) {
   return (
     <div className="flex gap-2 items-center">
       <span>Track actual: </span>
-      <Select value={selectedTrack} onValueChange={(track) => alert(track)}>
+      <Select
+        value={selectedTrack}
+        onValueChange={(track) => setSelectedTrack(track)}
+      >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder={selectedTrack} />
         </SelectTrigger>

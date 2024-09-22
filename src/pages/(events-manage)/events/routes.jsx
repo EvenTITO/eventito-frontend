@@ -14,39 +14,39 @@ import ViewSubmissionPage from "./[id]/roles/author/submissions";
 export default function RoutesEvents() {
   return (
     <Routes>
-      <Route path="/events2" element={<LayoutEvents />}>
-        <Route path="/events2/:id/view" element={<EventViewPage />} />
-        <Route path="/events2/:id/view/general" element={<EventViewPage />} />
+      <Route path="/events" element={<LayoutEvents />}>
+        <Route path="/events/:id/view" element={<EventViewPage />} />
+        <Route path="/events/:id/view/general" element={<EventViewPage />} />
 
-        <Route path="/events2/:id/roles/attendee" element={<AttendeePage />} />
+        <Route path="/events/:id/roles/attendee" element={<AttendeePage />} />
 
-        <Route path="/events2/:id/roles/author" element={<AuthorPage />} />
+        <Route path="/events/:id/roles/author" element={<AuthorPage />} />
 
-        <Route path="/events2/:id/roles/chair" element={<ChairPage />} />
+        <Route path="/events/:id/roles/chair" element={<ChairPage />} />
         <Route
-          path="/events2/:id/roles/chair/works/:workId"
+          path="/events/:id/roles/chair/works/:workId"
           element={<ChairWorkPage />}
         />
 
-        <Route path="/events2/:id/roles/reviewer" element={<ReviewerPage />} />
+        <Route path="/events/:id/roles/reviewer" element={<ReviewerPage />} />
         <Route
-          path="/events2/:id/roles/reviewer/assignments/:assignmentId"
+          path="/events/:id/roles/reviewer/assignments/:workId"
           element={<AssignmentPage />}
         />
 
-        <Route path="/events2/:id/roles/author" element={<AuthorPage />} />
+        <Route path="/events/:id/roles/author" element={<AuthorPage />} />
         <Route
-          path="/events2/:id/roles/author/new-submission"
+          path="/events/:id/roles/author/new-submission"
           element={<NewSubmissionPage />}
         />
         <Route
-          path="/events2/:id/roles/author/submissions/:submissionId"
+          path="/events/:id/roles/author/submissions/:workId"
           element={<ViewSubmissionPage />}
         />
       </Route>
 
       <Route
-        path="/events2/:id/roles/attendee/new-payment"
+        path="/events/:id/roles/attendee/new-payment"
         element={<NewPaymentPage />}
       />
     </Routes>

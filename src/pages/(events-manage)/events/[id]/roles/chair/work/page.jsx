@@ -7,7 +7,7 @@ import { DetailsTab } from "./details";
 import Reviews from "./reviews";
 import StatusSelector from "./_components/StatusSelector";
 
-export default function Page({ selectedAssignment }) {
+export default function Page({ selectedAssignment, reviews }) {
   const navigator = useNavigator("/works");
 
   function handleBack(e) {
@@ -43,7 +43,7 @@ export default function Page({ selectedAssignment }) {
             },
             {
               label: "Revisiones",
-              component: <Reviews />,
+              component: <Reviews reviews={reviews} />,
             },
           ]}
         />
@@ -51,4 +51,3 @@ export default function Page({ selectedAssignment }) {
     </ContainerPage>
   );
 }
-

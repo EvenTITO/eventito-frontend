@@ -1,8 +1,13 @@
-import { useGetMyAssignments } from "@/services/api/events/reviewer/hooks";
+import { useGetMyAssignments } from "@/hooks/events/reviewerHooks";
 import Page from "./page";
+import FetchStatus from "@/components/FetchStatus";
 
 export default function ReviewerPage() {
-  const { data: assignments } = useGetMyAssignments();
+  const { data: assignments, isPending, error } = useGetMyAssignments();
 
-  return <Page assignments={assignments || []} />;
+  const component = <Page assignments={assignments} />;
+
+  return (
+    <FetchStatus component={component} isPending={isPending} error={error} />
+  );
 }

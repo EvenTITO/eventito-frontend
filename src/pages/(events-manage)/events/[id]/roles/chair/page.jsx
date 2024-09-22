@@ -1,19 +1,17 @@
 import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { format } from "@formkit/tempo";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import { useNavigator } from "@/lib/navigation";
 import TrackSelector from "./_components/TrackSelector";
+import ChairTable from "./_components/ChairTable";
+import TableContent from "@/components/TableContent";
 
-export default function Page({ tracks, selectedTrack, assignments }) {
+export default function Page({
+  tracks,
+  selectedTrack,
+  setSelectedTrack,
+  assignments,
+}) {
   const navigator = useNavigator();
 
   const handleRowClick = (assignment) => {
@@ -26,37 +24,16 @@ export default function Page({ tracks, selectedTrack, assignments }) {
       <TitlePage
         title={`Administración de revisiones`}
         rightComponent={
-          <TrackSelector tracks={tracks} selectedTrack={selectedTrack} />
+          <TrackSelector
+            tracks={tracks}
+            selectedTrack={selectedTrack}
+            setSelectedTrack={setSelectedTrack}
+          />
         }
       />
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Título</TableHead>
-            <TableHead>Responsable</TableHead>
-            <TableHead>Autores</TableHead>
-            <TableHead>Fecha de envío</TableHead>
-            <TableHead>Estado</TableHead>
-            <TableHead>Revisión enviada</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {assignments.map((assignment) => (
-            <TableRow
-              key={assignment.id}
-              onClick={() => handleRowClick(assignment)}
-              className="cursor-pointer hover:bg-muted/50"
-            >
-              <TableCell className="font-medium">{assignment.title}</TableCell>
-              <TableCell>{assignment.submitter}</TableCell>
-              <TableCell>{assignment.authorCount}</TableCell>
-              <TableCell>{format(assignment.submissionDate, "long")}</TableCell>
-              <TableCell>{assignment.status}</TableCell>
-              <TableCell>{assignment.published ? "Sí" : "No"}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <TableContent title={"Entregas en track: " + selectedTrack}>
+        <ChairTable assignments={assignments} handleRowClick={handleRowClick} />
+      </TableContent>
     </ContainerPage>
   );
 }
