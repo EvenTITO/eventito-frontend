@@ -18,15 +18,18 @@ import {
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAddReviewer } from "@/hooks/events/chairHooks";
 
 export default function AddReviewerDialog() {
   const [email, setEmail] = useState("");
   const [deadline, setDeadline] = useState(null);
   const [open, setOpen] = useState(false);
+  const { mutate: addReviewer } = useAddReviewer();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email && deadline) {
+      addReviewer({ email: email, deadline: deadline });
       setEmail("");
       setDeadline(null);
       setOpen(false);
@@ -83,9 +86,9 @@ export default function AddReviewerDialog() {
             </Popover>
           </div>
           <div className="w-full flex justify-end">
-          <Button type="submit" disabled={!email || !deadline}>
-            Agregar revisor
-          </Button>
+            <Button type="submit" disabled={!email || !deadline}>
+              Agregar revisor
+            </Button>
           </div>
         </form>
       </DialogContent>

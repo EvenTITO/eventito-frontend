@@ -1,7 +1,7 @@
 import { EVENTS_URL } from "@/lib/Constants";
 import { getEventId, getWorkId } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useGetTrackAssignments(track) {
   const eventId = getEventId();
@@ -37,6 +37,22 @@ export function useGetReviewsForAssignment() {
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       return reviews;
+    },
+  });
+}
+
+export function useAddReviewer() {
+  const workId = getWorkId();
+  const eventId = getEventId();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ email, deadline }) => {
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getReviewsForAssignment"] });
     },
   });
 }
