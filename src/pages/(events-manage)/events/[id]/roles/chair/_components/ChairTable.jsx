@@ -32,7 +32,7 @@ export default function ChairTable({ works: works, handleRowClick }) {
             <TableCell className="font-medium">{work.title}</TableCell>
             <TableCell>{work.submitter}</TableCell>
             <TableCell>{work.authorCount}</TableCell>
-            <TableCell>{format(work.submissionDate, "long")}</TableCell>
+            <TableCell>{format(work.creationDate, "long")}</TableCell>
             <TableCell>{WORKS_STATUS_LABELS[work.status]}</TableCell>
             <TableCell>{work.published ? "Sí" : "No"}</TableCell>
           </TableCursorRow>
