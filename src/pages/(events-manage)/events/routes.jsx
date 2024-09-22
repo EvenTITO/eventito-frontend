@@ -30,7 +30,7 @@ export default function RoutesEvents() {
 
         <Route path="/events/:id/roles/reviewer" element={<ReviewerPage />} />
         <Route
-          path="/events/:id/roles/reviewer/assignments/:assignmentId"
+          path="/events/:id/roles/reviewer/assignments/:workId"
           element={<AssignmentPage />}
         />
 
@@ -40,7 +40,7 @@ export default function RoutesEvents() {
           element={<NewSubmissionPage />}
         />
         <Route
-          path="/events/:id/roles/author/submissions/:submissionId"
+          path="/events/:id/roles/author/submissions/:workId"
           element={<ViewSubmissionPage />}
         />
       </Route>

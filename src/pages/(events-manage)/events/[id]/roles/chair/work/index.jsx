@@ -2,8 +2,8 @@ import FetchStatus from "@/components/FetchStatus";
 import Page from "./page";
 import {
   useGetReviewsForAssignment,
-  useGetWorkForAssignment,
 } from "@/hooks/events/chairHooks";
+import { useGetWorkForAssignment } from "@/hooks/events/worksHooks";
 
 export default function ChairWorkPage() {
   // TODO: cambiar esto para que sea global?

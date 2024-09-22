@@ -10,8 +10,7 @@ import { ReviewerForm } from "./reviewForm";
 export default function Page({ selectedAssignment, questions }) {
   const navigator = useNavigator("/assignments");
 
-  function handleBack(e) {
-    e.preventDefault();
+  function handleBack() {
     navigator.back();
   }
 

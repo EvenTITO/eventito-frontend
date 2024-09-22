@@ -30,3 +30,7 @@ export function getWorkId() {
 
   return workId;
 }
+
+export async function wait(secs) {
+  return new Promise((resolve) => setTimeout(resolve, secs * 1000));
+}
