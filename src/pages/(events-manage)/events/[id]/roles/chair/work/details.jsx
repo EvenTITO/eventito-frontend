@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { FileDown, Calendar, Users, User, BookOpen } from "lucide-react";
 import { format } from "date-fns";
 
-export function DetailsTab({ selectedWork: work }) {
+export function DetailsTab({ selectedWork: work, getFileData }) {
   return (
     <Card>
       <CardHeader>
@@ -42,7 +42,7 @@ export function DetailsTab({ selectedWork: work }) {
         </div>
         <Button
           className="w-full"
-          onClick={() => window.open(work.pdfLink, "_blank")}
+          onClick={() => getFileData()}
         >
           <FileDown className="mr-2 h-4 w-4" /> Descargar entrega (PDF)
         </Button>

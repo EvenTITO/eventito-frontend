@@ -7,7 +7,7 @@ import { DetailsTab } from "./details";
 import Reviews from "./reviews";
 import StatusSelector from "./_components/StatusSelector";
 
-export default function Page({ selectedWork, reviews }) {
+export default function Page({ selectedWork, reviews, getFileData }) {
   const navigator = useNavigator("/works");
 
   function handleBack(e) {
@@ -38,6 +38,7 @@ export default function Page({ selectedWork, reviews }) {
                 <DetailsTab
                   handleBack={handleBack}
                   selectedWork={selectedWork}
+                  getFileData={getFileData}
                 />
               ),
             },
