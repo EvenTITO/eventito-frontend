@@ -8,10 +8,10 @@ import { onAuthStateChanged } from "@firebase/auth";
 import { auth } from "@/services/firebase/firebaseAuth.js";
 import { logout } from "./state/user/userSlice";
 import { useDispatch } from "react-redux";
-import RoutesEvent from "./pages2/events/routes";
 import { Toaster } from "./components/ui/toaster";
 import RoutesAdmin from "./pages2/admin/routes";
 import RoutesEvents from "./pages/(events-manage)/events/routes";
+import RouteViewEvent from "./pages/(events-manage)/view/routes";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,8 +37,8 @@ function App() {
       <RoutesAuth />
       <RoutesHome />
       <RoutesAdmin />
-      <RoutesEvent />
       <RoutesEvents />
+      <RouteViewEvent />
       <RoutesManage />
       <RoutesParticipants />
     </BrowserRouter>

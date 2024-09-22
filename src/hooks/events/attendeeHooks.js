@@ -43,6 +43,19 @@ export function useChangeRegister() {
   });
 }
 
+export function useNewPayment() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ userId, paymentData }) => {
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getPayments"] });
+    },
+  });
+}
+
 const mockUserRegistration = {
   role: "Asistente",
   name: "John Doe",
