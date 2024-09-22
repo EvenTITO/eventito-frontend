@@ -5,7 +5,9 @@ import { useState } from "react";
 
 export default function ChairPage() {
   const { data: eventData } = useGetEvent();
-  const [selectedTrack, setSelectedTrack] = useState(eventData?.tracks[0] || "");
+  const [selectedTrack, setSelectedTrack] = useState(
+    eventData?.tracks[0] || "",
+  );
 
   const { data: assignments } = useGetTrackAssignments(selectedTrack);
 
