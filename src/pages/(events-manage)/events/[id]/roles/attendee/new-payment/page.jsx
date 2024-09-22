@@ -10,6 +10,7 @@ export default function NewPaymentPage() {
   const { mutateAsync: newPayment, isPending, error } = useNewPayment();
   const { pricing, pdfFile } = useSelector((state) => state.newPayment);
   const { currentUser } = useSelector((state) => state.user);
+  const booleanForSteps = [pricing, pdfFile];
 
   async function onSave() {
     await newPayment({
@@ -24,5 +25,11 @@ export default function NewPaymentPage() {
     navigator.back();
   }
 
-  return <SteppedForm onSave={onSave} onCancel={onCancel} />;
+  return (
+    <SteppedForm
+      onSave={onSave}
+      onCancel={onCancel}
+      booleanForSteps={booleanForSteps}
+    />
+  );
 }

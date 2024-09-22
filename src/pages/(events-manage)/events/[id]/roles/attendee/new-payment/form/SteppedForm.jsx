@@ -1,33 +1,36 @@
 import { useState } from "react";
 import FormSelectPayment from "./FormSelectPayment";
 import FormSubmitPayment from "./FormSubmitFile";
-import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
-export default function SteppedForm({ onSave, onCancel }) {
+export default function SteppedForm({ onSave, onCancel, booleanForSteps }) {
   const [step, setStep] = useState(0);
   const [error, setError] = useState("");
   const steps = [
     <FormSelectPayment setError={setError} />,
     <FormSubmitPayment setError={setError} />,
   ];
-  const { pricing, pdfFile } = useSelector((state) => state.newPayment);
+
+  function stepIsCompleted() {
+    if (booleanForSteps[step]) {
+      return true;
+    } else {
+      setError("Completar los datos para continuar.");
+      return false;
+    }
+  }
 
   function handleNext() {
-    if (!pricing) {
-      setError("Elegir una tarifa para continuar.");
-    } else {
+    if (stepIsCompleted()) {
       setError("");
       setStep(step + 1);
     }
   }
 
   function handleSubmit() {
-    if (!pdfFile) {
-      setError("Subir un comprobante del pago para continuar.");
-    } else {
+    if (stepIsCompleted()) {
       setError("");
       onSave();
     }
