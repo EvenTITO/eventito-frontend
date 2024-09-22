@@ -50,7 +50,6 @@ export function useAddReviewer() {
   });
 }
 
-
 const reviewForm = [
   {
     title: "Calificación general",
