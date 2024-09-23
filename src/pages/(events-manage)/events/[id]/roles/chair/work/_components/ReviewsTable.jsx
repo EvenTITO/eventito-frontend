@@ -17,6 +17,7 @@ import { format } from "@formkit/tempo";
 import TableHeaderTitle from "@/components/TableHeaderTitle";
 import TableCursorRow from "@/components/TableCursorRow";
 import TableContent from "@/components/TableContent";
+import {REVIEW_STATUS_LABELS} from "@/lib/Constants.js";
 
 export default function ReviewsTable({ reviews }) {
   const [selectedReview, setSelectedReview] = useState(null);
@@ -59,7 +60,7 @@ function CompletedReviews({ reviews, setSelectedReview }) {
           <TableRow>
             <TableHead>Revisor</TableHead>
             <TableHead>Recomendación</TableHead>
-            <TableHead>Fecha límite</TableHead>
+            <TableHead>Fecha de revisión</TableHead>
           </TableRow>
         </TableHeaderTitle>
         <TableBody>
@@ -70,9 +71,9 @@ function CompletedReviews({ reviews, setSelectedReview }) {
                 onClick={() => review.completed && setSelectedReview(review)}
               >
                 <TableCell>{review.reviewer}</TableCell>
-                <TableCell>{review.status || "-"}</TableCell>
+                <TableCell>{REVIEW_STATUS_LABELS[review.status]}</TableCell>
                 <TableCell>
-                  {format(new Date(review.deadlineDate), "long")}
+                  {format(new Date(review.creationDate), "long")}
                 </TableCell>
               </TableCursorRow>
             ) : null,
