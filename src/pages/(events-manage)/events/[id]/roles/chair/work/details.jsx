@@ -1,12 +1,12 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { FileDown, Calendar, Users, User, BookOpen } from "lucide-react";
 import { format } from "date-fns";
+import ButtonWithLoading from "@/components/ButtonWithLoading";
 
-export function DetailsTab({ selectedWork: work, getFileData }) {
+export function DetailsTab({ selectedWork: work, getFileData, isPending }) {
   return (
     <Card>
       <CardHeader>
@@ -40,12 +40,13 @@ export function DetailsTab({ selectedWork: work, getFileData }) {
             <p>{work.abstract}</p>
           </ScrollArea>
         </div>
-        <Button
-          className="w-full"
+        <ButtonWithLoading
           onClick={() => getFileData()}
+          className="w-full"
+          isLoading={isPending}
         >
-          <FileDown className="mr-2 h-4 w-4" /> Descargar entrega (PDF)
-        </Button>
+          <FileDown className="mr-2 h-4 w-4" /> Descargar PDF de entrega
+        </ButtonWithLoading>
       </CardContent>
     </Card>
   );
