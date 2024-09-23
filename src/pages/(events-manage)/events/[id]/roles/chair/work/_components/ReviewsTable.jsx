@@ -14,6 +14,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { format } from "@formkit/tempo";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TableHeaderTitle from "@/components/TableHeaderTitle";
 import TableCursorRow from "@/components/TableCursorRow";
 import TableContent from "@/components/TableContent";
@@ -22,12 +24,16 @@ export default function ReviewsTable({ reviews }) {
   const [selectedReview, setSelectedReview] = useState(null);
 
   return (
-    <div className="space-y-8">
-      <CompletedReviews
-        reviews={reviews}
-        setSelectedReview={setSelectedReview}
-      />
-      <NonCompletedReviews reviews={reviews} />
+    <div className="flex space-x-8">
+      <div className="flex-grow space-y-8">
+        <CompletedReviews
+          reviews={reviews}
+          setSelectedReview={setSelectedReview}
+        />
+      </div>
+      <div className="w-1/3">
+        <AllReviewers reviews={reviews} />
+      </div>
 
       <Dialog
         open={selectedReview !== null}
@@ -83,32 +89,38 @@ function CompletedReviews({ reviews, setSelectedReview }) {
   );
 }
 
-function NonCompletedReviews({ reviews }) {
+function AllReviewers({ reviews }) {
   return (
-    <TableContent title={"Revisiones pendientes"}>
-      <Table>
-        <TableHeaderTitle>
-          <TableRow>
-            <TableHead>Revisor</TableHead>
-            <TableHead>Fecha límite</TableHead>
-          </TableRow>
-        </TableHeaderTitle>
-        <TableBody>
-          {reviews.map((review, index) =>
-            !review.completed ? (
-              <TableCursorRow
-                key={index}
-                onClick={() => review.completed && setSelectedReview(review)}
-              >
-                <TableCell>{review.reviewer}</TableCell>
-                <TableCell>
-                  {format(new Date(review.deadlineDate), "full")}
-                </TableCell>
-              </TableCursorRow>
-            ) : null,
-          )}
-        </TableBody>
-      </Table>
-    </TableContent>
+    <Card>
+      <CardHeader>
+        <CardTitle>Todos los revisores</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {reviews.map((review, index) => (
+            <div key={index} className="flex items-center space-x-4">
+              <Avatar>
+                <AvatarImage
+                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${review.reviewer}`}
+                />
+                <AvatarFallback>{review.reviewer.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div className="flex-grow">
+                <p className="text-sm font-medium">{review.reviewer}</p>
+                <p className="text-sm text-muted-foreground">
+                  Fecha límite: {format(new Date(review.deadlineDate), "long")}
+                </p>
+              </div>
+              <div
+                className="w-3 h-3 rounded-full bg-green-500"
+                style={{
+                  backgroundColor: review.completed ? "green" : "orange",
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
