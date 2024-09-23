@@ -7,6 +7,7 @@ import ChairTable from "./_components/ChairTable";
 import TableContent from "@/components/TableContent";
 import Stats from "./_components/Stats";
 import Insights from "./_components/Insights";
+import Tables from "./_components/Tables";
 
 export default function Component({
   tracks,
@@ -36,11 +37,11 @@ export default function Component({
       <div className="space-y-6 pt-6">
         <Stats works={works} />
 
-        <TableContent
-          title={`Trabajos pendientes a revisar en track: ${selectedTrack}`}
-        >
-          <ChairTable works={works} handleRowClick={handleRowClick} />
-        </TableContent>
+        <Tables
+          works={works}
+          selectedTrack={selectedTrack}
+          handleRowClick={handleRowClick}
+        />
 
         <Insights works={works} />
       </div>

@@ -20,7 +20,6 @@ export default function ChairTable({ works: works, handleRowClick }) {
           <TableHead>Autores</TableHead>
           <TableHead>Fecha de envío</TableHead>
           <TableHead>Estado</TableHead>
-          <TableHead>Revisión enviada</TableHead>
         </TableRow>
       </TableHeaderTitle>
       <TableBody>
@@ -34,7 +33,6 @@ export default function ChairTable({ works: works, handleRowClick }) {
             <TableCell>{work.authorCount}</TableCell>
             <TableCell>{format(work.creationDate, "long")}</TableCell>
             <TableCell>{WORKS_STATUS_LABELS[work.status]}</TableCell>
-            <TableCell>{work.published ? "Sí" : "No"}</TableCell>
           </TableCursorRow>
         ))}
       </TableBody>
