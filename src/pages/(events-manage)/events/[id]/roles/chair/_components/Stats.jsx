@@ -1,10 +1,11 @@
+import { WORKS_STATUS_LABELS } from "@/lib/Constants";
 import StatCard from "./StatCard";
 
 export default function Stats({ works }) {
   const totalWorks = works.length;
   const publishedWorks = works.filter((work) => work.published).length;
   const acceptedWorks = works.filter(
-    (work) => work.status === "Aceptado",
+    (work) => WORKS_STATUS_LABELS[work.status] === "Aceptado",
   ).length;
 
   return (
