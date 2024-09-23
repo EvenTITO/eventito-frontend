@@ -11,6 +11,7 @@ export default function ChairWorkPage() {
   // TODO: cambiar esto para que sea global?
   const workInfo = useGetWorkById();
   const reviews = useGetReviewsForWork();
+  //const reviewers = useGetReviewersForWork();
   const {data: fileData, mutate: downloadWorkFile, isError, isPending, isSuccess, error} = useGetWorkDownloadURL();
   const { toast } = useToast();
 

@@ -20,3 +20,8 @@ export const WORKS_STATUS_LABELS = {
   "RE_SUBMIT": "Debe reentregar",
   "SUBMITTED": "Entregado"
 }
+
+export const REVIEW_STATUS_LABELS = {
+  "APPROVED": "Aprobado",
+  "NOT_APPROVED": "Desaprobado"
+}

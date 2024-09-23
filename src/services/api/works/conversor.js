@@ -1,10 +1,12 @@
+import {format} from "date-fns";
 
 export function convertWorks(works) {
-  return works.map(convertWork);
+  return works.map((w) => convertWork(w,undefined));
 }
 
 
-export function convertWork(work) {
+export function convertWork(work, submissions = undefined) {
+  console.log("submission in convert ", submissions)
   return {
     id: work.id,
     title: work.title,
@@ -16,7 +18,9 @@ export function convertWork(work) {
     authors: work.authors.map((a) => a.full_name),
     abstract: work.abstract,
     status: work.state,
-    published: work.state !== "SUBMITTED"
+    published: work.state !== "SUBMITTED",
+    submissions: submissions,
+    lastSubmission: submissions ? submissions.toSorted((a, b) => a.creation_date - b.creation_date)[0] : null,
   }
 }
 
@@ -31,39 +35,35 @@ function getMainAuthorFullName(work) {
 }
 
 export function convertReviews(reviews) {
-  reviews.map(convertReview)
+  return reviews.map(convertReview)
 }
 
 function convertReview(review) {
   return {
-    reviewer: "Gonzalo Sabatino",
+    reviewer: review.reviewer.name + " " + review.reviewer.lastname,
     completed: true,
-    deadlineDate: "2024/09/20",
-    status: "Aceptado",
+    creationDate: review.creation_date,
+    status: review.status,
     reviewForm: reviewForm,
   }
 }
 
-const reviews = [
+const reviewForm = [
   {
-    reviewer: "Gonzalo Sabatino",
-    completed: true,
-    deadlineDate: "2024/09/20",
-    status: "Aceptado",
-    reviewForm: reviewForm,
+    title: "Calificación general",
+    answer: 8,
   },
   {
-    reviewer: "Fernando Sinisi",
-    completed: true,
-    deadlineDate: "2024/09/20",
-    status: "A revisión",
-    reviewForm: reviewForm,
+    title: "Recomendación",
+    answer: "Aceptado",
   },
   {
-    reviewer: "Lucas Verón",
-    completed: false,
-    deadlineDate: "2024/09/20",
-    status: null,
-    reviewForm: null,
+    title: "Área de mejora",
+    answer: "Ninguna",
+  },
+  {
+    title: "Comentarios a los autores",
+    answer:
+        "Muy buen trabajo general, revisar que todas las imágenes tengan el mismo tamaño para el momento de la presentación.",
   },
 ];
