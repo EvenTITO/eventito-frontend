@@ -12,16 +12,38 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { format } from "@formkit/tempo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
 import TableHeaderTitle from "@/components/TableHeaderTitle";
 import TableCursorRow from "@/components/TableCursorRow";
 import TableContent from "@/components/TableContent";
 
-export default function ReviewsTable({ reviews }) {
+export default function ReviewsTable({
+  reviews,
+  onUpdateReview,
+}) {
   const [selectedReview, setSelectedReview] = useState(null);
+  const [selectedReviewer, setSelectedReviewer] = useState(null);
+  const [newDeadline, setNewDeadline] = useState(null);
+
+  const handleUpdateDeadline = () => {
+    if (selectedReviewer && newDeadline) {
+      onUpdateReview(selectedReviewer.id, { deadlineDate: newDeadline });
+      setSelectedReviewer(null);
+      setNewDeadline(null);
+    }
+  };
 
   return (
     <div className="flex space-x-8">
@@ -32,7 +54,10 @@ export default function ReviewsTable({ reviews }) {
         />
       </div>
       <div className="w-1/3">
-        <AllReviewers reviews={reviews} />
+        <AllReviewers
+          reviews={reviews}
+          setSelectedReviewer={setSelectedReviewer}
+        />
       </div>
 
       <Dialog
@@ -51,6 +76,69 @@ export default function ReviewsTable({ reviews }) {
               </div>
             ))}
           </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={selectedReviewer !== null}
+        onOpenChange={() => {
+          setSelectedReviewer(null);
+          setNewDeadline(null);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              Gestionar revisor: {selectedReviewer?.reviewer}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Fecha límite actual
+              </label>
+              <p>
+                {selectedReviewer &&
+                  format(new Date(selectedReviewer.deadlineDate), "long")}
+              </p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Nueva fecha límite
+              </label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-left font-normal"
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {newDeadline ? (
+                      format(newDeadline, "long")
+                    ) : (
+                      <span>Seleccionar fecha</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={newDeadline}
+                    onSelect={setNewDeadline}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSelectedReviewer(null)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleUpdateDeadline} disabled={!newDeadline}>
+              Actualizar fecha límite
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
@@ -89,7 +177,7 @@ function CompletedReviews({ reviews, setSelectedReview }) {
   );
 }
 
-function AllReviewers({ reviews }) {
+function AllReviewers({ reviews, setSelectedReviewer }) {
   return (
     <Card>
       <CardHeader>
@@ -98,7 +186,11 @@ function AllReviewers({ reviews }) {
       <CardContent>
         <div className="space-y-4">
           {reviews.map((review, index) => (
-            <div key={index} className="flex items-center space-x-4">
+            <div
+              key={index}
+              className="flex items-center space-x-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md transition-colors"
+              onClick={() => setSelectedReviewer(review)}
+            >
               <Avatar>
                 <AvatarImage
                   src={`https://api.dicebear.com/6.x/initials/svg?seed=${review.reviewer}`}
