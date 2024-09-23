@@ -11,7 +11,7 @@ export function useGetMyAssignments() {
     queryKey: ["getMyAssignments", { workId }],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      const assignmentInfo = await apiGetAssignment(httpClient, workId);
+      //const assignmentInfo = await apiGetAssignment(httpClient, workId);
       // return assignmentInfo; // commented to see better results
       return mockAssignments;
     },
