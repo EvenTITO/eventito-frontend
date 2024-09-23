@@ -1,12 +1,9 @@
-import {format} from "date-fns";
-
 export function convertWorks(works) {
-  return works.map((w) => convertWork(w,undefined));
+  return works.map((w) => convertWork(w, undefined));
 }
 
 
 export function convertWork(work, submissions = undefined) {
-  console.log("submission in convert ", submissions)
   return {
     id: work.id,
     title: work.title,
@@ -29,7 +26,7 @@ function getMainAuthorFullName(work) {
   let mainAuthor = work.authors.filter(a => a.is_main)[0]
   if (!mainAuthor) {
     console.error("Should have created the work with a main author in the frontend");
-    mainAuthor =  work.authors[0]
+    mainAuthor = work.authors[0]
   }
   return mainAuthor.full_name;
 }
@@ -44,26 +41,6 @@ function convertReview(review) {
     completed: true,
     creationDate: review.creation_date,
     status: review.status,
-    reviewForm: reviewForm,
+    reviewForm: review.review.answers
   }
 }
-
-const reviewForm = [
-  {
-    title: "Calificación general",
-    answer: 8,
-  },
-  {
-    title: "Recomendación",
-    answer: "Aceptado",
-  },
-  {
-    title: "Área de mejora",
-    answer: "Ninguna",
-  },
-  {
-    title: "Comentarios a los autores",
-    answer:
-        "Muy buen trabajo general, revisar que todas las imágenes tengan el mismo tamaño para el momento de la presentación.",
-  },
-];
