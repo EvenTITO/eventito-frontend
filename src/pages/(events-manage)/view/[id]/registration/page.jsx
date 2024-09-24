@@ -67,7 +67,7 @@ export default function RegistrationPage({ event }) {
             <Label htmlFor="affiliation">Filiación (Opcional)</Label>
             <Input
               id="affiliation"
-              placeholder="Enter your affiliation"
+              placeholder="Ingresar filiación (esto podrás cambiarlo luego) en caso de tener"
               className="w-full"
             />
           </MotionDiv>
@@ -76,7 +76,7 @@ export default function RegistrationPage({ event }) {
             <Label htmlFor="document">DNI</Label>
             <Input
               id="document"
-              placeholder="Enter your document number"
+              placeholder="Ingresar documento de identidad"
               className="w-full"
             />
           </MotionDiv>
