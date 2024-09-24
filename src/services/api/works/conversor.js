@@ -57,8 +57,7 @@ function convertReviewer(reviewer) {
   return {
     fullname: reviewer.user.name + " " + reviewer.user.lastname,
     email: reviewer.user.email,
-    // review_deadline: reviewer.review_deadline
-    deadline: "2024-01-04T00:00:00"
+    deadline: reviewer.works[0].review_deadline
   }
 }
 
