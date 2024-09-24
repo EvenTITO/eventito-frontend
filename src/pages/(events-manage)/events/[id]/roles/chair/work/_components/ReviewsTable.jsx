@@ -19,7 +19,7 @@ import TableCursorRow from "@/components/TableCursorRow";
 import TableContent from "@/components/TableContent";
 import {REVIEW_STATUS_LABELS} from "@/lib/Constants.js";
 
-export default function ReviewsTable({ reviews }) {
+export default function ReviewsTable({ reviews, reviewers_pending}) {
   const [selectedReview, setSelectedReview] = useState(null);
 
   return (
@@ -28,7 +28,7 @@ export default function ReviewsTable({ reviews }) {
         reviews={reviews}
         setSelectedReview={setSelectedReview}
       />
-      <NonCompletedReviews reviews={reviews} />
+      <NonCompletedReviews reviews={reviewers_pending} />
 
       <Dialog
         open={selectedReview !== null}
@@ -101,9 +101,9 @@ function NonCompletedReviews({ reviews }) {
                 key={index}
                 onClick={() => review.completed && setSelectedReview(review)}
               >
-                <TableCell>{review.reviewer}</TableCell>
+                <TableCell>{review.fullname}</TableCell>
                 <TableCell>
-                  {format(new Date(review.deadlineDate), "full")}
+                  {format(new Date(review.deadline), "full")}
                 </TableCell>
               </TableCursorRow>
             ) : null,

@@ -2,8 +2,8 @@ import { EVENTS_URL } from "@/lib/Constants";
 import { getEventId, getWorkId } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGetWorksByTrack, apiGetReviewsForWork } from "@/services/api/works/queries";
-import { convertWorks, convertReviews } from "@/services/api/works/conversor";
+import { apiGetWorksByTrack, apiGetReviewsForWork, apiGetReviewersForWork } from "@/services/api/works/queries";
+import { convertWorks, convertReviews, convertReviewers } from "@/services/api/works/conversor";
 
 export function useGetWorksByTrack(track) {
   const eventId = getEventId();
@@ -30,12 +30,27 @@ export function useGetReviewsForWork() {
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const workReviews = await apiGetReviewsForWork(httpClient, eventId, workId);
-      console.log(`llega el review: ${JSON.stringify(workReviews)}`)
+      console.log(`llegan las reviews: ${JSON.stringify(workReviews)}`)
       console.log(`reviews harcoded: ${JSON.stringify(reviews)}`)
       return convertReviews(workReviews);
     },
   });
 }
+
+export function useGetReviewersForWork() {
+  const workId = getWorkId();
+  const eventId = getEventId();
+
+  return useQuery({
+    queryKey: ["getReviewersForWork", { workId }],
+    queryFn: async () => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const reviewers = await apiGetReviewersForWork(httpClient, eventId, workId);
+      return convertReviewers(reviewers)
+    },
+  });
+}
+
 
 export function useAddReviewer() {
   const workId = getWorkId();

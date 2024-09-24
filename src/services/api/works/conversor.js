@@ -41,10 +41,24 @@ export function convertReviews(reviews) {
 function convertReview(review) {
   return {
     reviewer: review.reviewer.name + " " + review.reviewer.lastname,
+    email: review.reviewer.email,
     completed: true,
     creationDate: review.creation_date,
     status: review.status,
     reviewForm: reviewForm,
+  }
+}
+
+export function convertReviewers(reviewers) {
+  return reviewers.map(convertReviewer)
+}
+
+function convertReviewer(reviewer) {
+  return {
+    fullname: reviewer.user.name + " " + reviewer.user.lastname,
+    email: reviewer.user.email,
+    // review_deadline: reviewer.review_deadline
+    deadline: "2024-01-04T00:00:00"
   }
 }
 
