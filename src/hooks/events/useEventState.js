@@ -8,7 +8,7 @@ export function useGetEvent(id = null) {
   const eventId = id || getEventId();
 
   return useQuery({
-    queryKey: ["getEventById2", { eventId }],
+    queryKey: ["getEventById", { eventId }],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const eventData = await apiGetEventById(httpClient, eventId);
