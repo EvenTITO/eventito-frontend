@@ -1,16 +1,14 @@
 import FetchStatus from "@/components/FetchStatus";
 import Page from "./page";
-import { useGetWorkById } from "@/hooks/events/worksHooks";
+import {useGetWorkById} from "@/hooks/events/worksHooks";
+import {useGetEvent} from "@/hooks/events/useEventState.js";
 
 export default function AssignmentPage() {
-  const {
-    isPending,
-    error,
-    data: selectedAssignment,
-  } = useGetWorkById();
+  const {isPending, error, data: selectedWork} = useGetWorkById();
+  const { data: eventData } = useGetEvent();
 
   const pageComponent = (
-    <Page selectedAssignment={selectedAssignment} questions={reviewSkeleton} />
+    <Page selectedWork={selectedWork} questions={eventData.review_skeleton.questions}/>
   );
   return (
     <FetchStatus
@@ -21,7 +19,6 @@ export default function AssignmentPage() {
   );
 }
 
-// TODO: consumirlo desde el evento
 const reviewSkeleton = [
   {
     title: "Calificación general",
