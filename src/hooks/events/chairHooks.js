@@ -68,6 +68,11 @@ export function useAddReviewer() {
   });
 }
 
+export function getReviewersPending(reviews, reviewers) {
+  const reviews_emails = reviews != undefined && reviews.data != undefined ? reviews.data.map(r => r.email) : [];
+  const reviewers_pending = reviewers != undefined && reviewers.data != undefined ? reviewers.data.filter(r => !reviews_emails.includes(r.email)) : [];
+  return reviewers_pending
+}
 const reviewForm = [
   {
     title: "Calificación general",
