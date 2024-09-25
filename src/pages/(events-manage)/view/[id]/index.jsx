@@ -1,6 +1,6 @@
 import { useGetEvent } from "@/hooks/events/useEventState";
-import Page from "./page";
 import FetchStatus from "@/components/FetchStatus";
+import Page from "./page";
 
 export default function EventViewPage() {
   const { data: event, isPending, error } = useGetEvent();

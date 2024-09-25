@@ -26,11 +26,10 @@ export default function LayoutViewEvent() {
 function Layout({ eventTitle }) {
   const { id } = useParams();
   const tabs = [
-    { type: "normal", label: "General", to: `${id}/general` },
+    { type: "normal", label: "General", to: `${id}/` },
     { type: "normal", label: "Inscripción", to: `${id}/register` },
     { type: "normal", label: "Calendario", to: `${id}/calendar` },
     { type: "normal", label: "Presentaciones", to: `${id}/pressentations` },
-    { type: "normal", label: "Contacto", to: `${id}/contact` },
   ];
 
   return (
