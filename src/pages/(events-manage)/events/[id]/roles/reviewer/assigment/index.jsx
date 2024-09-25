@@ -18,31 +18,3 @@ export default function AssignmentPage() {
     />
   );
 }
-
-const reviewSkeleton = [
-  {
-    title: "Calificación general",
-    description: "",
-    type: "rating",
-    maxValue: 10,
-  },
-  {
-    title: "Recomendación",
-    description: "¿Cuál es tu recomendación para el estado del trabajo?",
-    type: "singleChoice",
-    options: ["Aceptado", "A revisión", "Rechazado"],
-  },
-  {
-    title: "Área de mejora",
-    description:
-      "En caso de necesitarlo, indicar las áreas de mejora del trabajo.",
-    type: "multipleChoice",
-    options: ["Abstract", "Mejorar redacción", "Imágenes"],
-  },
-  {
-    title: "Comentarios a los autores",
-    description:
-      "Realizar una crítica constructiva que será pública para los autores.",
-    type: "text",
-  },
-];
