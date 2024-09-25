@@ -22,8 +22,8 @@ export default function StatusSelector() {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {statusOptions.map((s) => (
-              <SelectItem value={s}>{s}</SelectItem>
+            {statusOptions.map((s,index) => (
+              <SelectItem key={index} value={s}>{s}</SelectItem>
             ))}
           </SelectGroup>
         </SelectContent>

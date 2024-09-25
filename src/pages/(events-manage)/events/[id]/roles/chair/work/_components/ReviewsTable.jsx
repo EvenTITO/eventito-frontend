@@ -1,45 +1,26 @@
-import { useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { format } from "@formkit/tempo";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
+import {useState} from "react";
+import {Table, TableBody, TableCell, TableHead, TableRow,} from "@/components/ui/table";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,} from "@/components/ui/dialog";
+import {format} from "@formkit/tempo";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Button} from "@/components/ui/button";
+import {Calendar} from "@/components/ui/calendar";
+import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover";
+import {CalendarIcon} from "lucide-react";
 import TableHeaderTitle from "@/components/TableHeaderTitle";
 import TableCursorRow from "@/components/TableCursorRow";
 import TableContent from "@/components/TableContent";
+import {REVIEW_STATUS_LABELS} from "@/lib/Constants.js";
 
-export default function ReviewsTable({
-  reviews,
-  onUpdateReview,
-}) {
+export default function ReviewsTable({reviews, onUpdateReview}) {
   const [selectedReview, setSelectedReview] = useState(null);
   const [selectedReviewer, setSelectedReviewer] = useState(null);
   const [newDeadline, setNewDeadline] = useState(null);
 
   const handleUpdateDeadline = () => {
     if (selectedReviewer && newDeadline) {
-      onUpdateReview(selectedReviewer.id, { deadlineDate: newDeadline });
+      onUpdateReview(selectedReviewer.id, {deadlineDate: newDeadline});
       setSelectedReviewer(null);
       setNewDeadline(null);
     }
@@ -71,7 +52,7 @@ export default function ReviewsTable({
           <div className="space-y-4">
             {selectedReview?.reviewForm.map((item, index) => (
               <div key={index}>
-                <h3 className="font-semibold">{item.title}</h3>
+                <h3 className="font-semibold">{item.question}</h3>
                 <p>{item.answer}</p>
               </div>
             ))}
@@ -112,7 +93,7 @@ export default function ReviewsTable({
                     variant="outline"
                     className="w-full justify-start text-left font-normal"
                   >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    <CalendarIcon className="mr-2 h-4 w-4"/>
                     {newDeadline ? (
                       format(newDeadline, "long")
                     ) : (
@@ -145,7 +126,7 @@ export default function ReviewsTable({
   );
 }
 
-function CompletedReviews({ reviews, setSelectedReview }) {
+function CompletedReviews({reviews, setSelectedReview}) {
   return (
     <TableContent title={"Revisiones finalizadas"}>
       <Table>
@@ -153,7 +134,7 @@ function CompletedReviews({ reviews, setSelectedReview }) {
           <TableRow>
             <TableHead>Revisor</TableHead>
             <TableHead>Recomendación</TableHead>
-            <TableHead>Fecha límite</TableHead>
+            <TableHead>Fecha de revisión</TableHead>
           </TableRow>
         </TableHeaderTitle>
         <TableBody>
@@ -164,9 +145,9 @@ function CompletedReviews({ reviews, setSelectedReview }) {
                 onClick={() => review.completed && setSelectedReview(review)}
               >
                 <TableCell>{review.reviewer}</TableCell>
-                <TableCell>{review.status || "-"}</TableCell>
+                <TableCell>{REVIEW_STATUS_LABELS[review.status]}</TableCell>
                 <TableCell>
-                  {format(new Date(review.deadlineDate), "long")}
+                  {format(new Date(review.creationDate), "long")}
                 </TableCell>
               </TableCursorRow>
             ) : null,
@@ -177,7 +158,7 @@ function CompletedReviews({ reviews, setSelectedReview }) {
   );
 }
 
-function AllReviewers({ reviews, setSelectedReviewer }) {
+function AllReviewers({reviews, setSelectedReviewer}) {
   return (
     <Card>
       <CardHeader>
@@ -200,7 +181,7 @@ function AllReviewers({ reviews, setSelectedReviewer }) {
               <div className="flex-grow">
                 <p className="text-sm font-medium">{review.reviewer}</p>
                 <p className="text-sm text-muted-foreground">
-                  Fecha límite: {format(new Date(review.deadlineDate), "long")}
+                  Fecha límite: {format(new Date(review.creationDate), "long")}
                 </p>
               </div>
               <div
