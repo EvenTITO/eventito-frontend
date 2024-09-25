@@ -30,7 +30,6 @@ function Layout({ eventTitle }) {
     { type: "normal", label: "Inscripción", to: `${id}/register` },
     { type: "normal", label: "Calendario", to: `${id}/calendar` },
     { type: "normal", label: "Presentaciones", to: `${id}/pressentations` },
-    { type: "normal", label: "Contacto", to: `${id}/contact` },
   ];
 
   return (
