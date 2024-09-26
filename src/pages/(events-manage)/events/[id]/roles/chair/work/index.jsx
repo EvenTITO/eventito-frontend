@@ -1,20 +1,50 @@
 import FetchStatus from "@/components/FetchStatus";
 import Page from "./page";
-import {useGetReviewsForWork} from "@/hooks/events/chairHooks";
+import {useGetReviewsForWork, useGetReviewersForWork} from "@/hooks/events/chairHooks";
 import {useGetWorkById} from "@/hooks/events/worksHooks";
 
 export default function ChairWorkPage() {
-    const workInfo = useGetWorkById();
-    const reviews = useGetReviewsForWork();
+  const workInfo = useGetWorkById();
+  const reviews = useGetReviewsForWork();
+  const reviewers = useGetReviewersForWork();
+  const reviewsWithSubmissionNumber = getReviewsData(workInfo.data, reviews.data);
+  const reviewersWithStatus = getReviewersData(workInfo.data, reviews.data, reviewers.data);
+  
+  const component = (
+    <Page selectedWork={workInfo.data} reviews={reviewsWithSubmissionNumber} reviewers={reviewersWithStatus}/>
+  );
+  return (
+    <FetchStatus
+      component={component}
+      isPending={workInfo.isPending || reviews.isPending || reviewers.isPending}
+      error={workInfo.error || reviews.error || reviewers.error}
+    />
+  );
+}
 
-    const component = (
-        <Page selectedWork={workInfo.data} reviews={reviews.data}/>
-    );
-    return (
-        <FetchStatus
-            component={component}
-            isPending={workInfo.isPending || reviews.isPending}
-            error={workInfo.error || reviews.error}
-        />
-    );
+const getReviewsData = (work, reviews) => {
+  if (work === undefined || reviews === undefined) {
+    return;
+  }
+  const sortedSubmissions = work.submissions.toSorted((a, b) => a.creation_date - b.creation_date)
+  const reviewsWithSubmissionNumber = reviews.map((r) => {
+    return {
+      ...r,
+      submissionNumber: sortedSubmissions.findIndex((s) => s.id === r.submissionId)
+    }
+  });
+  return reviewsWithSubmissionNumber;
+}
+
+const getReviewersData = (work, reviews, reviewers) => {
+  if (work === undefined || reviews === undefined || reviewers === undefined) {
+    return;
+  }
+  const lastSubmissionId = work.lastSubmission.id;
+  return reviewers.map(reviewer => {
+    return {
+      ...reviewer,
+      reviewAlreadySubmitted: reviews.some((r) => r.submissionId === lastSubmissionId && r.reviewerId === reviewer.id)
+    }
+  });
 }

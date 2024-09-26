@@ -38,9 +38,25 @@ export function convertReviews(reviews) {
 function convertReview(review) {
   return {
     reviewer: review.reviewer.name + " " + review.reviewer.lastname,
+    email: review.reviewer.email,
     completed: true,
     creationDate: review.creation_date,
     status: review.status,
+    submissionId: review.submission_id,
+    reviewerId: review.reviewer_id,
     reviewForm: review.review.answers
+  }
+}
+
+export function convertReviewers(reviewers) {
+  return reviewers.map(convertReviewer)
+}
+
+function convertReviewer(reviewer) {
+  return {
+    id: reviewer.user_id,
+    reviewer: reviewer.user.name + " " + reviewer.user.lastname,
+    email: reviewer.user.email,
+    deadline: reviewer.works[0].review_deadline
   }
 }

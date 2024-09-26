@@ -13,7 +13,7 @@ import TableCursorRow from "@/components/TableCursorRow";
 import TableContent from "@/components/TableContent";
 import {REVIEW_STATUS_LABELS} from "@/lib/Constants.js";
 
-export default function ReviewsTable({reviews, onUpdateReview}) {
+export default function ReviewsTable({reviews, reviewers, onUpdateReview}) {
   const [selectedReview, setSelectedReview] = useState(null);
   const [selectedReviewer, setSelectedReviewer] = useState(null);
   const [newDeadline, setNewDeadline] = useState(null);
@@ -36,7 +36,7 @@ export default function ReviewsTable({reviews, onUpdateReview}) {
       </div>
       <div className="w-1/3">
         <AllReviewers
-          reviews={reviews}
+          reviewers={reviewers || []}
           setSelectedReviewer={setSelectedReviewer}
         />
       </div>
@@ -133,24 +133,24 @@ function CompletedReviews({reviews, setSelectedReview}) {
         <TableHeaderTitle>
           <TableRow>
             <TableHead>Revisor</TableHead>
+            <TableHead>Entrega</TableHead>
             <TableHead>Recomendación</TableHead>
             <TableHead>Fecha de revisión</TableHead>
           </TableRow>
         </TableHeaderTitle>
         <TableBody>
           {reviews.map((review, index) =>
-            review.completed ? (
               <TableCursorRow
                 key={index}
-                onClick={() => review.completed && setSelectedReview(review)}
+                onClick={() => setSelectedReview(review)}
               >
                 <TableCell>{review.reviewer}</TableCell>
+                <TableCell>{review.submissionNumber + 1}</TableCell>
                 <TableCell>{REVIEW_STATUS_LABELS[review.status]}</TableCell>
                 <TableCell>
                   {format(new Date(review.creationDate), "long")}
                 </TableCell>
               </TableCursorRow>
-            ) : null,
           )}
         </TableBody>
       </Table>
@@ -158,7 +158,8 @@ function CompletedReviews({reviews, setSelectedReview}) {
   );
 }
 
-function AllReviewers({reviews, setSelectedReviewer}) {
+function AllReviewers({reviewers, setSelectedReviewer}) {
+  console.log('revieeeres', JSON.stringify(reviewers))
   return (
     <Card>
       <CardHeader>
@@ -166,28 +167,28 @@ function AllReviewers({reviews, setSelectedReviewer}) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {reviews.map((review, index) => (
+          {reviewers.map((reviewer, index) => (
             <div
               key={index}
               className="flex items-center space-x-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md transition-colors"
-              onClick={() => setSelectedReviewer(review)}
+              onClick={() => setSelectedReviewer(reviewer)}
             >
               <Avatar>
                 <AvatarImage
-                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${review.reviewer}`}
+                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${reviewer.reviewer}`}
                 />
-                <AvatarFallback>{review.reviewer.charAt(0)}</AvatarFallback>
+                <AvatarFallback>{reviewer.reviewer.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="flex-grow">
-                <p className="text-sm font-medium">{review.reviewer}</p>
+                <p className="text-sm font-medium">{reviewer.reviewer}</p>
                 <p className="text-sm text-muted-foreground">
-                  Fecha límite: {format(new Date(review.creationDate), "long")}
+                  Fecha límite: {format(new Date(reviewer.deadline), "long")}
                 </p>
               </div>
               <div
                 className="w-3 h-3 rounded-full bg-green-500"
                 style={{
-                  backgroundColor: review.completed ? "green" : "orange",
+                  backgroundColor: reviewer.reviewAlreadySubmitted ? "green" : "orange",
                 }}
               />
             </div>
