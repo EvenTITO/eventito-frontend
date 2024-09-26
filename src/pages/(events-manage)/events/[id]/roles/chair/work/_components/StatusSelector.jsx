@@ -25,6 +25,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import ButtonWithLoading from "@/components/ButtonWithLoading";
 
 const statuses = [
   { value: "aceptado", label: "Aceptado" },
@@ -32,7 +33,11 @@ const statuses = [
   { value: "rechazado", label: "Rechazado" },
 ];
 
-export default function StatusSelector() {
+export default function StatusSelector({
+  submitChairReview,
+  isPending,
+  onSubmit,
+}) {
   const [open, setOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [date, setDate] = useState(null);
@@ -44,10 +49,10 @@ export default function StatusSelector() {
     }
   };
 
-  const handleContinue = () => {
-    console.log("Selected status:", selectedStatus);
-    console.log("Selected date:", date);
+  const handleContinue = async () => {
+    await submitChairReview({ status: selectedStatus, deadlineDate: date });
     setOpen(false);
+    onSubmit();
   };
 
   return (
@@ -109,7 +114,9 @@ export default function StatusSelector() {
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancelar
           </Button>
-          <Button onClick={handleContinue}>Continuar</Button>
+          <ButtonWithLoading onClick={handleContinue} isLoading={isPending}>
+            Continuar
+          </ButtonWithLoading>
         </DialogFooter>
       </DialogContent>
     </Dialog>

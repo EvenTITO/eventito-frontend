@@ -9,6 +9,7 @@ import StatusSelector from "./_components/StatusSelector";
 import { useGetWorkDownloadURL } from "@/hooks/events/worksHooks";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
+import { useSubmitChairReview } from "@/hooks/events/chairHooks";
 
 export default function Page({ selectedWork, reviews }) {
   const navigator = useNavigator("/works");
@@ -19,6 +20,7 @@ export default function Page({ selectedWork, reviews }) {
     isPending,
     isSuccess,
   } = useGetWorkDownloadURL();
+  const chairReview = useSubmitChairReview();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -38,6 +40,10 @@ export default function Page({ selectedWork, reviews }) {
     navigator.back();
   }
 
+  function onSubmit() {
+    navigator.back();
+  }
+
   return (
     <ContainerPage>
       <a
@@ -49,7 +55,13 @@ export default function Page({ selectedWork, reviews }) {
       </a>
       <TitlePage
         title={selectedWork.title}
-        rightComponent={<StatusSelector />}
+        rightComponent={
+          <StatusSelector
+            submitChairReview={chairReview.mutateAsync}
+            isPending={chairReview.isPending}
+            onSubmit={onSubmit}
+          />
+        }
       />
 
       <div className="mb-6">
