@@ -8,6 +8,7 @@ export function useSubmitRegistration() {
 
   return useMutation({
     mutationFn: async ({ registrationData }) => {
+      console.log("registration date", registrationData);
       await wait(2);
       return null;
     },
