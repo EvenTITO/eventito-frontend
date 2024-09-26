@@ -10,10 +10,6 @@ export default function ChairPage() {
   );
 
   const { data: works, isPending, error } = useGetWorksByTrack(selectedTrack);
-  if (error) {
-    console.log('ocurrio un error');
-    console.error(error);
-  }
 
   return (
     <Page

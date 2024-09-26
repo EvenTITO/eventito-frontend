@@ -1,12 +1,9 @@
-import {format} from "date-fns";
-
 export function convertWorks(works) {
-  return works.map((w) => convertWork(w,undefined));
+  return works.map((w) => convertWork(w, undefined));
 }
 
 
 export function convertWork(work, submissions = undefined) {
-  console.log("submission in convert ", submissions)
   return {
     id: work.id,
     title: work.title,
@@ -29,7 +26,7 @@ function getMainAuthorFullName(work) {
   let mainAuthor = work.authors.filter(a => a.is_main)[0]
   if (!mainAuthor) {
     console.error("Should have created the work with a main author in the frontend");
-    mainAuthor =  work.authors[0]
+    mainAuthor = work.authors[0]
   }
   return mainAuthor.full_name;
 }
@@ -45,7 +42,7 @@ function convertReview(review) {
     completed: true,
     creationDate: review.creation_date,
     status: review.status,
-    reviewForm: reviewForm,
+    reviewForm: review.review.answers
   }
 }
 
@@ -55,7 +52,7 @@ export function convertReviewers(reviewers) {
 
 function convertReviewer(reviewer) {
   return {
-    fullname: reviewer.user.name + " " + reviewer.user.lastname,
+    reviewer: reviewer.user.name + " " + reviewer.user.lastname,
     email: reviewer.user.email,
     deadline: reviewer.works[0].review_deadline
   }

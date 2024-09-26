@@ -1,12 +1,15 @@
 import React from "react";
+import { useNavigator } from "@/lib/navigation";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
-import { useNavigator } from "@/lib/navigation";
 import TrackSelector from "./_components/TrackSelector";
 import ChairTable from "./_components/ChairTable";
 import TableContent from "@/components/TableContent";
+import Stats from "./_components/Stats";
+import Insights from "./_components/Insights";
+import Tables from "./_components/Tables";
 
-export default function Page({
+export default function Component({
   tracks,
   selectedTrack,
   setSelectedTrack,
@@ -22,7 +25,7 @@ export default function Page({
   return (
     <ContainerPage>
       <TitlePage
-        title={`Administración de revisiones`}
+        title={"Administración y envío de revisiones"}
         rightComponent={
           <TrackSelector
             tracks={tracks}
@@ -31,9 +34,17 @@ export default function Page({
           />
         }
       />
-      <TableContent title={"Entregas en track: " + selectedTrack}>
-        <ChairTable works={works} handleRowClick={handleRowClick} />
-      </TableContent>
+      <div className="space-y-6 pt-6">
+        <Stats works={works} />
+
+        <Tables
+          works={works}
+          selectedTrack={selectedTrack}
+          handleRowClick={handleRowClick}
+        />
+
+        <Insights works={works} />
+      </div>
     </ContainerPage>
   );
 }

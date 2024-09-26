@@ -9,7 +9,7 @@ export function useGetWorksByTrack(track) {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getWorksByTrack", { eventId, track }],
+    queryKey: ["getWorksByTrack", {eventId, track}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const works = await apiGetWorksByTrack(httpClient, eventId, track);
@@ -26,12 +26,10 @@ export function useGetReviewsForWork() {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getReviewsForWork", { workId }],
+    queryKey: ["getReviewsForWork", {workId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const workReviews = await apiGetReviewsForWork(httpClient, eventId, workId);
-      console.log(`llegan las reviews: ${JSON.stringify(workReviews)}`)
-      console.log(`reviews harcoded: ${JSON.stringify(reviews)}`)
       return convertReviews(workReviews);
     },
   });
@@ -59,20 +57,46 @@ export function useAddReviewer() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ email, deadline }) => {
+    mutationFn: async ({email, deadline}) => {
       return null;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getReviewsForAssignment"] });
+      queryClient.invalidateQueries({queryKey: ["getReviewsForAssignment"]});
     },
   });
 }
 
-export function getReviewersPending(reviews, reviewers) {
+function getReviewersPending(reviews, reviewers) {
   const reviews_emails = reviews != undefined && reviews.data != undefined ? reviews.data.map(r => r.email) : [];
   const reviewers_pending = reviewers != undefined && reviewers.data != undefined ? reviewers.data.filter(r => !reviews_emails.includes(r.email)) : [];
-  return reviewers_pending
+  return reviewers_pending.map(rp => rp.email)
 }
+
+function convertReview(review) {
+  return {
+    reviewer: review.reviewer.name + " " + review.reviewer.lastname,
+    email: review.reviewer.email,
+    completed: true,
+    creationDate: review.creation_date,
+    status: review.status,
+    reviewForm: review.review.answers
+  }
+}
+
+export function getReviewersWithStatus(reviews, reviewers) {
+  const reviewers_email_pending = getReviewersPending(reviews, reviewers)
+  if(reviewers != undefined && reviewers.data != undefined){
+    reviewers.data.forEach(r => {
+      if(reviewers_email_pending.includes(r.email)){
+        r['completed'] = false
+      } else {
+        r['completed'] = true
+      }
+    });
+  }
+  return reviewers
+}
+
 const reviewForm = [
   {
     title: "Calificación general",

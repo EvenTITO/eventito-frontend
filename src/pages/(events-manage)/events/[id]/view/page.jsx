@@ -38,7 +38,6 @@ export default function Page({ eventInfo }) {
                     eventInfo.media.find((item) => item.name === "banner_image")
                       .url
                   }
-                  alt="Event Banner"
                   width={1200}
                   height={400}
                   className="w-full h-[200px] md:h-[400px] object-cover rounded-lg mb-6"

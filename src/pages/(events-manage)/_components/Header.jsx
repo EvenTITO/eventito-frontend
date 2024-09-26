@@ -6,7 +6,7 @@ export default function Header({ headerTitle, toggleSidebar }) {
     headerTitle.length < 50 ? headerTitle : `${headerTitle.slice(0, 50)}...`;
 
   return (
-    <header className="h-16 bg-[#121827] border-b flex items-center justify-between px-4 fixed top-0 left-0 right-0 z-50 text-white">
+    <header className="h-16 bg-[#121827] flex items-center justify-between px-4 fixed top-0 left-0 right-0 z-50 text-white">
       <div className="flex items-center">
         <GoBack />
         <div className={`h-6 border-l border-gray-500 mx-4`}></div>

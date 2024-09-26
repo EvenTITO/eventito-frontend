@@ -10,7 +10,7 @@ import { useGetWorkDownloadURL } from "@/hooks/events/worksHooks";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 
-export default function Page({ selectedWork, reviews, reviewers_pending}) {
+export default function Page({ selectedWork, reviews, reviewers}) {
   const navigator = useNavigator("/works");
   const {
     data: fileData,
@@ -68,7 +68,7 @@ export default function Page({ selectedWork, reviews, reviewers_pending}) {
             },
             {
               label: "Revisiones",
-              component: <Reviews reviews={reviews} reviewers_pending={reviewers_pending} />,
+              component: <Reviews reviews={reviews} reviewers={reviewers} />,
             },
           ]}
         />
