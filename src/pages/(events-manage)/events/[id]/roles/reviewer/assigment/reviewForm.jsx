@@ -17,7 +17,7 @@ export function ReviewerForm({handleBack, questions}) {
   const handleReviewChange = (questionIndex, answer) => {
     setReview((prevReview) => {
       const newReview = [...prevReview];
-      newReview[questionIndex][getQuestionAnswerKey(newReview[questionIndex])] = answer;
+      newReview[questionIndex]["answer"] = answer;
       return newReview;
     });
   };
@@ -50,14 +50,14 @@ export function ReviewerForm({handleBack, questions}) {
             {question.type_question === "multiple_choice" && question.options && !question.more_than_one_answer_allowed && (
               <SingleChoice
                 options={question.options}
-                value={review[index]["answer"] || ""}
-                onChange={(value) => handleReviewChange(index, value)}
+                value={review[index]["answer"][0] || ""}
+                onChange={(value) => handleReviewChange(index, [value])}
               />
             )}
             {question.type_question === "multiple_choice" && question.options && question.more_than_one_answer_allowed && (
               <MultipleChoice
                 options={question.options}
-                value={review[index]["answers"] || []}
+                value={review[index]["answer"] || []}
                 onChange={(value) => handleReviewChange(index, value)}
               />
             )}
@@ -81,8 +81,4 @@ export function ReviewerForm({handleBack, questions}) {
       </CardFooter>
     </Card>
   );
-}
-
-const getQuestionAnswerKey = (question) => {
-  return question.type_question === "multiple_choice" && question.more_than_one_answer_allowed ? "answers" : "answer"
 }

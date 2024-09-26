@@ -27,7 +27,14 @@ export function useSubmitReview() {
   return useMutation({
     mutationFn: async ({review}) => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      return await apiPostReview(httpClient, eventId, workId, review);
+      const reviewBody = {
+        status: "APPROVED",
+        review: {
+          answers: review
+        }
+      }
+      console.log('BODY', JSON.stringify(reviewBody))
+      return await apiPostReview(httpClient, eventId, workId, reviewBody);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["getMyAssignments", {eventId}]});
