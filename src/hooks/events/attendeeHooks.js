@@ -1,25 +1,31 @@
-import { EVENTS_URL } from "@/lib/Constants";
-import { getEventId, wait } from "@/lib/utils";
-import { HTTPClient } from "@/services/api/HTTPClient";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {EVENTS_URL} from "@/lib/Constants";
+import {getEventId} from "@/lib/utils";
+import {HTTPClient} from "@/services/api/HTTPClient";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {apiGetInscriptions, apiUpdateInscription} from "@/services/api/events/inscriptions/queries.js";
+import {convertInscriptions} from "@/services/api/events/inscriptions/conversor.js";
 
-export function useGetRegisterData(userId) {
+export function useGetInscription() {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getRegisterData", { userId }],
+    queryKey: ["getInscriptions", {eventId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      return mockUserRegistration;
+      const inscriptions = await apiGetInscriptions(httpClient, eventId);
+      return convertInscriptions(inscriptions);
     },
+    onError: (error) => {
+      console.error(error);
+    }
   });
 }
 
-export function useGetPayments(userId) {
+export function useGetPayments() {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getPayments", { userId }],
+    queryKey: ["getPayments", {eventId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       return mockPaymentsList;
@@ -27,18 +33,17 @@ export function useGetPayments(userId) {
   });
 }
 
-export function useChangeRegister() {
+export function useUpdateInscription() {
   const eventId = getEventId();
-
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ userId, newRegisterData }) => {
-      await wait(2);
-      return null;
+    mutationFn: async ({inscriptionId, newInscriptionData}) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      return await apiUpdateInscription(httpClient, eventId, inscriptionId, newInscriptionData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getRegisterData"] });
+      queryClient.invalidateQueries({queryKey: ["getInscriptions", {eventId}]});
     },
   });
 }
@@ -47,21 +52,14 @@ export function useNewPayment() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ userId, paymentData }) => {
+    mutationFn: async ({userId, paymentData}) => {
       return null;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getPayments"] });
+      queryClient.invalidateQueries({queryKey: ["getPayments"]});
     },
   });
 }
-
-const mockUserRegistration = {
-  role: "Asistente",
-  name: "John Doe",
-  affiliation: "FIUBA",
-  file: null,
-};
 
 const mockPaymentsList = [
   {
@@ -71,8 +69,8 @@ const mockPaymentsList = [
     name: "Presentador: descuento de profesores FIUBA",
     amount: 150,
     works: [
-      { id: 1, title: "Advancements in Quantum Computing" },
-      { id: 2, title: "AI in Healthcare: A Comprehensive Review" },
+      {id: 1, title: "Advancements in Quantum Computing"},
+      {id: 2, title: "AI in Healthcare: A Comprehensive Review"},
     ],
   },
   {

@@ -1,30 +1,31 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Upload } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useChangeRegister } from "@/hooks/events/attendeeHooks";
-import { useSelector } from "react-redux";
+import React, {useState} from "react";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
+import {Alert, AlertDescription} from "@/components/ui/alert";
+import {Upload} from "lucide-react";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {useUpdateInscription} from "@/hooks/events/attendeeHooks";
+import {useSelector} from "react-redux";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
+import {INSCRIPTION_ROLES_LABELS} from "@/lib/Constants.js";
 
-export default function RegisterTab({ registerData }) {
+export default function RegisterTab({inscription}) {
+  const {currentUser} = useSelector((state) => state.user);
   const [isEditing, setIsEditing] = useState(false);
-  const [registration, setRegistration] = useState(registerData);
-  const { currentUser } = useSelector((state) => state.user);
+  const [editInscription, setEditInscription] = useState(
+    {
+      affiliation: inscription.affiliation,
+      roles: undefined
+    }
+  );
+
   const {
     mutateAsync: changeRegistration,
     isPending,
     error,
-  } = useChangeRegister();
+  } = useUpdateInscription();
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -35,14 +36,8 @@ export default function RegisterTab({ registerData }) {
   };
 
   const handleSave = async () => {
-    if (!registration.name) {
-      setError("Por favor completar todos los campos.");
-      return;
-    }
-    await changeRegistration({
-      userId: currentUser.id,
-      newRegisterData: registration,
-    });
+    const newInscriptionData = {...editInscription, roles: editInscription.roles.split(',')};
+    await changeRegistration({inscriptionId: inscription.id, newInscriptionData});
     setIsEditing(false);
   };
 
@@ -63,25 +58,19 @@ export default function RegisterTab({ registerData }) {
       <CardContent className="space-y-4">
         {isEditing ? (
           <EditInscription
-            registration={registration}
-            setRegistration={setRegistration}
+            editInscription={editInscription}
+            setEditInscription={setEditInscription}
             error={error}
           />
         ) : (
-          <ViewInscription registration={registration} />
+          <ViewInscription inscription={inscription}/>
         )}
       </CardContent>
     </Card>
   );
 }
 
-function EditInscriptionButton({
-  isEditing,
-  handleEdit,
-  handleCancel,
-  handleSave,
-  isLoading,
-}) {
+function EditInscriptionButton({isEditing, handleEdit, handleCancel, handleSave, isLoading}) {
   if (isEditing) {
     return (
       <div className="flex gap-2">
@@ -104,32 +93,33 @@ function EditInscriptionButton({
   );
 }
 
-function ViewInscription({ registration }) {
+function ViewInscription({inscription}) {
   return (
     <div className="space-y-4">
       <div className="flex gap-2 items-center">
         <span className="font-semibold">
-          Participación elegida: {registration.role}
+          Participación elegida: {inscription.roles.join(', ')}
         </span>
       </div>
       <div className="flex gap-2 items-center">
         <span className="font-semibold">
-          Filiación (opcional): {registration.affiliation || "Sin filiación"}
+          Filiación (opcional): {inscription.affiliation || "Sin filiación"}
         </span>
       </div>
     </div>
   );
 }
 
-function EditInscription({ registration, setRegistration, error }) {
+function EditInscription({editInscription, setEditInscription, error}) {
+  console.log("edit inscription: ", editInscription)
   const handleInputChange = (field, value) => {
-    setRegistration((prev) => ({ ...prev, [field]: value }));
+    setEditInscription((prev) => ({...prev, [field]: value}));
   };
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setRegistration((prev) => ({ ...prev, file }));
+      setEditInscription((prev) => ({...prev, file}));
     }
   };
   return (
@@ -142,20 +132,21 @@ function EditInscription({ registration, setRegistration, error }) {
 
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="role">Participación elegida</Label>
+          <Label htmlFor="roles">Participación elegida</Label>
           <Select
-            value={registration.role}
-            onValueChange={(value) => handleInputChange("role", value)}
+            value={editInscription.roles}
+            onValueChange={(value) => handleInputChange("roles", value)}
           >
-            <SelectTrigger id="role">
-              <SelectValue placeholder="Select role" />
+            <SelectTrigger id="roles">
+              <SelectValue placeholder="Select roles"/>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Asistente">Asistente</SelectItem>
-              <SelectItem value="Autor">Autor</SelectItem>
-              <SelectItem value="Asistente y autor">
-                Asistente y autor
-              </SelectItem>
+              {
+                Object.entries(INSCRIPTION_ROLES_LABELS).map(([key, value]) => (
+                  <SelectItem value={key}>{value}</SelectItem>
+                ))
+              }
+              <SelectItem value={Object.keys(INSCRIPTION_ROLES_LABELS).join(',')}>Asistente y autor</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -164,7 +155,7 @@ function EditInscription({ registration, setRegistration, error }) {
           <Label htmlFor="affiliation">Filiacion (Opcional)</Label>
           <Input
             id="affiliation"
-            value={registration.affiliation}
+            value={editInscription.affiliation}
             onChange={(e) => handleInputChange("affiliation", e.target.value)}
             placeholder="Ingresa tu filiacion"
           />
@@ -180,13 +171,11 @@ function EditInscription({ registration, setRegistration, error }) {
               size="sm"
               onClick={() => document.getElementById("file-upload")?.click()}
             >
-              <Upload className="h-4 w-4 mr-2" />
+              <Upload className="h-4 w-4 mr-2"/>
               Elegir archivo
             </Button>
             <span className="text-sm text-gray-500">
-              {registration.file
-                ? registration.file.name
-                : "Ningun archivo seleccionado"}
+              {editInscription.file ? editInscription.file.name : "Ningun archivo seleccionado"}
             </span>
           </div>
           <input

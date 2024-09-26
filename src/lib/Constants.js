@@ -42,3 +42,8 @@ export const REVIEW_STATUS_LABELS = {
   "APPROVED": "Aprobado",
   "NOT_APPROVED": "Desaprobado"
 }
+
+export const INSCRIPTION_ROLES_LABELS = {
+  "SPEAKER": "Autor",
+  "ATTENDEE": "Asistente"
+}
