@@ -12,6 +12,8 @@ export function ReviewerForm({handleBack, questions}) {
   const [review, setReview] = useState({});
   const {mutateAsync: submitReview, isPending} = useSubmitReview();
 
+  console.log("review", JSON.stringify(review));
+
   const handleReviewChange = (field, value) => {
     setReview((prev) => ({...prev, [field]: value}));
   };
@@ -75,4 +77,14 @@ export function ReviewerForm({handleBack, questions}) {
       </CardFooter>
     </Card>
   );
+}
+
+const initReview = (questions) => {
+  return questions.map((question, index) => (
+    return {
+      ...question,
+      question.type_question === "multiple_choice" && question.more_than_one_answer_allowed ? {"answers": undefined} : {"answer": undefined},
+    }
+  ))
+
 }

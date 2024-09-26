@@ -46,7 +46,7 @@ export function useAddReviewer() {
       return null;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getReviewsForAssignment"]});
+      queryClient.invalidateQueries({queryKey: ["getReviewsForWork", {workId}]});
     },
   });
 }
