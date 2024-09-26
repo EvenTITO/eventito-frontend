@@ -4,7 +4,7 @@ import {HTTPClient} from "@/services/api/HTTPClient";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {apiGetReviewersForWork, apiGetReviewsForWork, apiGetWorksByTrack} from "@/services/api/works/queries";
 import {convertReviewers, convertReviews, convertWorks} from "@/services/api/works/conversor";
-import {apiPutReviewDeadline} from "@/services/api/events/reviewer/queries.js";
+import {apiPutReviewDeadline, apiPostAddReviewer} from "@/services/api/events/reviewer/queries";
 import {format} from "date-fns";
 
 export function useGetWorksByTrack(track) {
@@ -51,7 +51,7 @@ export function useGetReviewersForWork() {
   });
 }
 
-
+// Lucas!
 export function useAddReviewer() {
   const workId = getWorkId();
   const eventId = getEventId();
@@ -60,12 +60,22 @@ export function useAddReviewer() {
 
   return useMutation({
     mutationFn: async ({email, deadline}) => {
-      return null;
-    },
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const review_deadline = format(new Date(deadline), "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+
+      const reviewer = {
+        review_deadline: review_deadline,
+        work_id: workId,
+        email: email
+      }
+      const reviewers = { reviewers: [reviewer] }
+
+      return await apiPostAddReviewer(httpClient, eventId, reviewers)
+      },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getReviewsForWork", {workId}]});
+      queryClient.invalidateQueries({queryKey: ["getReviewsForWork", {workId}]})
     },
-  });
+  })
 }
 
 export function useSubmitChairReview() {
