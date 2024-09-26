@@ -1,5 +1,5 @@
 import { EVENTS_URL } from "@/lib/Constants";
-import { getEventId, getWorkId } from "@/lib/utils";
+import { getEventId, getWorkId, wait } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGetWorksByTrack, apiGetReviewsForWork, apiGetReviewersForWork } from "@/services/api/works/queries";
@@ -62,6 +62,23 @@ export function useAddReviewer() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["getReviewsForWork", {workId}]});
+    },
+  });
+}
+
+export function useSubmitChairReview() {
+  const workId = getWorkId();
+  const eventId = getEventId();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ status, deadlineDate }) => {
+      await wait(2);
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getReviewsForAssignment"] });
     },
   });
 }
