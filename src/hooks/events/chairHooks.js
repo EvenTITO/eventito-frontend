@@ -2,14 +2,14 @@ import { EVENTS_URL } from "@/lib/Constants";
 import { getEventId, getWorkId, wait } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGetWorksByTrack } from "@/services/api/works/queries";
-import { convertWorks } from "@/services/api/works/conversor";
+import { apiGetWorksByTrack, apiGetReviewsForWork, apiGetReviewersForWork } from "@/services/api/works/queries";
+import { convertWorks, convertReviews, convertReviewers } from "@/services/api/works/conversor";
 
 export function useGetWorksByTrack(track) {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getWorksByTrack", { eventId, track }],
+    queryKey: ["getWorksByTrack", {eventId, track}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const works = await apiGetWorksByTrack(httpClient, eventId, track);
@@ -21,18 +21,34 @@ export function useGetWorksByTrack(track) {
   });
 }
 
-export function useGetReviewsForAssignment() {
+export function useGetReviewsForWork() {
   const workId = getWorkId();
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getReviewsForAssignment", { workId }],
+    queryKey: ["getReviewsForWork", {workId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      return reviews;
+      const workReviews = await apiGetReviewsForWork(httpClient, eventId, workId);
+      return convertReviews(workReviews);
     },
   });
 }
+
+export function useGetReviewersForWork() {
+  const workId = getWorkId();
+  const eventId = getEventId();
+
+  return useQuery({
+    queryKey: ["getReviewersForWork", { workId }],
+    queryFn: async () => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const reviewers = await apiGetReviewersForWork(httpClient, eventId, workId);
+      return convertReviewers(reviewers)
+    },
+  });
+}
+
 
 export function useAddReviewer() {
   const workId = getWorkId();
@@ -41,11 +57,11 @@ export function useAddReviewer() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ email, deadline }) => {
+    mutationFn: async ({email, deadline}) => {
       return null;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getReviewsForAssignment"] });
+      queryClient.invalidateQueries({queryKey: ["getReviewsForWork", {workId}]});
     },
   });
 }
@@ -66,47 +82,3 @@ export function useSubmitChairReview() {
     },
   });
 }
-
-const reviewForm = [
-  {
-    title: "Calificación general",
-    answer: 8,
-  },
-  {
-    title: "Recomendación",
-    answer: "Aceptado",
-  },
-  {
-    title: "Área de mejora",
-    answer: "Ninguna",
-  },
-  {
-    title: "Comentarios a los autores",
-    answer:
-      "Muy buen trabajo general, revisar que todas las imágenes tengan el mismo tamaño para el momento de la presentación.",
-  },
-];
-
-const reviews = [
-  {
-    reviewer: "Gonzalo Sabatino",
-    completed: true,
-    deadlineDate: "2024/09/20",
-    status: "Aceptado",
-    reviewForm: reviewForm,
-  },
-  {
-    reviewer: "Fernando Sinisi",
-    completed: true,
-    deadlineDate: "2024/09/20",
-    status: "A revisión",
-    reviewForm: reviewForm,
-  },
-  {
-    reviewer: "Lucas Verón",
-    completed: false,
-    deadlineDate: "2024/09/20",
-    status: null,
-    reviewForm: null,
-  },
-];

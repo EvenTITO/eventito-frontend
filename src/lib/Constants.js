@@ -37,3 +37,8 @@ export const REGISTRATION_ROLES = [
     description: "Asistir a charlas y presentar trabajos",
   },
 ];
+
+export const REVIEW_STATUS_LABELS = {
+  "APPROVED": "Aprobado",
+  "NOT_APPROVED": "Desaprobado"
+}

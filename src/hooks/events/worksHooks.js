@@ -1,9 +1,9 @@
-import { EVENTS_URL } from "@/lib/Constants";
-import { getEventId, getWorkId } from "@/lib/utils";
-import { HTTPClient } from "@/services/api/HTTPClient";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { apiGetWorkById, apiGetWorkDownloadURL } from "@/services/api/works/queries"
-import { convertWork } from "@/services/api/works/conversor"
+import {EVENTS_URL} from "@/lib/Constants";
+import {getEventId, getWorkId} from "@/lib/utils";
+import {HTTPClient} from "@/services/api/HTTPClient";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {apiGetSubmissionsForWork, apiGetWorkById, apiGetWorkDownloadURL} from "@/services/api/works/queries"
+import {convertWork} from "@/services/api/works/conversor"
 
 
 export function useGetWorkById() {
@@ -11,11 +11,12 @@ export function useGetWorkById() {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getWorkById", { workId }],
+    queryKey: ["getWorkById", {workId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const work = await apiGetWorkById(httpClient, eventId, workId);
-      return convertWork(work);
+      const submissions = await apiGetSubmissionsForWork(httpClient, eventId, workId);
+      return convertWork(work, submissions);
     },
   });
 }
