@@ -19,10 +19,13 @@ import {
 } from "./_components/Animation";
 import ContainerOrganizationPage from "./_components/ContainerOrganizationPage";
 import ImageHeader from "./_components/ImageHeader";
+import ButtonWithLoading from "@/components/ButtonWithLoading";
+import { useEditEvent } from "@/hooks/manage/generalHooks";
 
 export default function Page({ eventInfo }) {
   const [event, setEvent] = useState(eventInfo);
   const [isEditing, setIsEditing] = useState(false);
+  const { mutateAsync: submitEditEvent, isPending, error } = useEditEvent();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,6 +42,7 @@ export default function Page({ eventInfo }) {
   };
 
   const handleSave = async () => {
+    await submitEditEvent({ eventData: event });
     setIsEditing(false);
   };
 
@@ -201,9 +205,13 @@ export default function Page({ eventInfo }) {
 
         {isEditing && (
           <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4 flex justify-end">
-            <Button onClick={handleSave} size="lg">
+            <ButtonWithLoading
+              onClick={handleSave}
+              className={"size-lg"}
+              isLoading={isPending}
+            >
               Guardar cambios
-            </Button>
+            </ButtonWithLoading>
           </div>
         )}
       </MotionMain>
