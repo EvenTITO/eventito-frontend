@@ -12,8 +12,6 @@ export function ReviewerForm({handleBack, questions}) {
   const [review, setReview] = useState(questions);
   const {mutateAsync: submitReview, isPending} = useSubmitReview();
 
-  console.log("review", JSON.stringify(review));
-
   const handleReviewChange = (questionIndex, answer) => {
     setReview((prevReview) => {
       const newReview = [...prevReview];
@@ -50,7 +48,7 @@ export function ReviewerForm({handleBack, questions}) {
             {question.type_question === "multiple_choice" && question.options && !question.more_than_one_answer_allowed && (
               <SingleChoice
                 options={question.options}
-                value={review[index]["answer"][0] || ""}
+                value={review[index]["answer"]? review[index]["answer"][0] : ""}
                 onChange={(value) => handleReviewChange(index, [value])}
               />
             )}

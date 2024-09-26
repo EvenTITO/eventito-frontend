@@ -12,7 +12,6 @@ export function useGetMyAssignments() {
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const assignments = await apiGetAssignments(httpClient, eventId);
-      console.log(assignments)
       return convertAssignments(assignments);
     },
   });
@@ -33,7 +32,6 @@ export function useSubmitReview() {
           answers: review
         }
       }
-      console.log('BODY', JSON.stringify(reviewBody))
       return await apiPostReview(httpClient, eventId, workId, reviewBody);
     },
     onSuccess: () => {
