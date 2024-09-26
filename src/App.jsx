@@ -1,7 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import RoutesAuth from "./pages2/auth/routes";
 import RoutesHome from "./pages2/home/routes";
-import RoutesManage from "./pages2/manage/routes";
 import RoutesParticipants from "./pages2/participants/routes";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "@firebase/auth";
@@ -12,6 +11,7 @@ import { Toaster } from "./components/ui/toaster";
 import RoutesAdmin from "./pages2/admin/routes";
 import RoutesEvents from "./pages/(events-manage)/events/routes";
 import RouteViewEvent from "./pages/(events-manage)/view/routes";
+import RoutesOrganization from "./pages/(events-manage)/manage/routes";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -39,7 +39,7 @@ function App() {
       <RoutesAdmin />
       <RoutesEvents />
       <RouteViewEvent />
-      <RoutesManage />
+      <RoutesOrganization />
       <RoutesParticipants />
     </BrowserRouter>
   );
