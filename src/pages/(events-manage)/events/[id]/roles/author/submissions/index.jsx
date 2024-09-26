@@ -4,6 +4,7 @@ import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import Content from "./Content";
 import Members from "../_components/Members";
 import GoBackLink from "@/pages/(events-manage)/_components/GoBackLink";
+import SubmissionInfo from "./_components/SubmissionInfo";
 
 export default function ViewSubmissionPage() {
   return (
@@ -12,6 +13,10 @@ export default function ViewSubmissionPage() {
       <TitlePage title={submissionData.title} />
       <LineTabs
         tabs={[
+          {
+            label: "Datos de entrega",
+            component: <SubmissionInfo submissionData={submissionData} />,
+          },
           {
             label: "Contenido",
             component: <Content submissionData={submissionData} />,
@@ -56,5 +61,8 @@ const submissionData = {
     },
   ],
   track: "Quimica",
-  keywords: "Hola",
+  keywords: ["IA", "Python"],
+  deadline_date: "2024-09-26T23:43:00.573Z",
+  creation_date: "2024-09-26T23:43:00.573Z",
+  last_update: "2024-09-26T23:43:00.573Z",
 };
