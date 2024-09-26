@@ -1,18 +1,19 @@
-import { ArrowLeft } from "lucide-react";
+import {ArrowLeft} from "lucide-react";
 import LineTabs from "@/components/LineTabs";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
-import { useNavigator } from "@/lib/navigation";
-import { DetailsTab } from "./details";
+import {useNavigator} from "@/lib/navigation";
+import {DetailsTab} from "./details";
 import Reviews from "./reviews";
 import StatusSelector from "./_components/StatusSelector";
-import { useGetWorkDownloadURL } from "@/hooks/events/worksHooks";
-import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
-import { useSubmitChairReview } from "@/hooks/events/chairHooks";
+import {useGetWorkDownloadURL} from "@/hooks/events/worksHooks";
+import {useToast} from "@/hooks/use-toast";
+import {useEffect} from "react";
+import {useSubmitChairReview, useUpdateReviewDeadlineForReviewer} from "@/hooks/events/chairHooks";
 
-export default function Page({ selectedWork, reviews, reviewers}) {
+export default function Page({selectedWork, reviews, reviewers}) {
   const navigator = useNavigator("/works");
+  const {toast} = useToast();
   const {
     data: fileData,
     mutate: downloadWorkFile,
@@ -21,7 +22,7 @@ export default function Page({ selectedWork, reviews, reviewers}) {
     isSuccess,
   } = useGetWorkDownloadURL();
   const chairReview = useSubmitChairReview();
-  const { toast } = useToast();
+  const updateReviewDeadlineForReviewer = useUpdateReviewDeadlineForReviewer();
 
   useEffect(() => {
     if (isError) {
@@ -51,7 +52,7 @@ export default function Page({ selectedWork, reviews, reviewers}) {
         onClick={handleBack}
         className="inline-flex items-center text-sm font-medium text-blue-600 hover:underline mb-6"
       >
-        <ArrowLeft className="mr-2 h-4 w-4" /> Volver a tracks
+        <ArrowLeft className="mr-2 h-4 w-4"/> Volver a tracks
       </a>
       <TitlePage
         title={selectedWork.title}
@@ -80,7 +81,11 @@ export default function Page({ selectedWork, reviews, reviewers}) {
             },
             {
               label: "Revisiones",
-              component: <Reviews reviews={reviews} reviewers={reviewers} />,
+              component: <Reviews
+                reviews={reviews}
+                reviewers={reviewers}
+                updateReviewDeadline={updateReviewDeadlineForReviewer.mutate}
+              />,
             },
           ]}
         />

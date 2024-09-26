@@ -13,14 +13,14 @@ import TableCursorRow from "@/components/TableCursorRow";
 import TableContent from "@/components/TableContent";
 import {REVIEW_STATUS_LABELS} from "@/lib/Constants.js";
 
-export default function ReviewsTable({reviews, reviewers, onUpdateReview}) {
+export default function ReviewsTable({reviews, reviewers, updateReviewDeadline}) {
   const [selectedReview, setSelectedReview] = useState(null);
   const [selectedReviewer, setSelectedReviewer] = useState(null);
   const [newDeadline, setNewDeadline] = useState(null);
 
-  const handleUpdateDeadline = () => {
+  const handleUpdateDeadline = async () => {
     if (selectedReviewer && newDeadline) {
-      onUpdateReview(selectedReviewer.id, {deadlineDate: newDeadline});
+      await updateReviewDeadline({reviewerId: selectedReviewer.id, deadline: newDeadline});
       setSelectedReviewer(null);
       setNewDeadline(null);
     }
@@ -53,7 +53,13 @@ export default function ReviewsTable({reviews, reviewers, onUpdateReview}) {
             {selectedReview?.reviewForm.map((item, index) => (
               <div key={index}>
                 <h3 className="font-semibold">{item.question}</h3>
-                <p>{item.answer}</p>
+                {
+                  item.type_question === "multiple_choice"
+                  && item.options
+                  && item.more_than_one_answer_allowed
+                    ? item.answer.map(a => (<p>{a}</p>))
+                    : (<p>{item.answer}</p>)
+                }
               </div>
             ))}
           </div>
@@ -80,7 +86,7 @@ export default function ReviewsTable({reviews, reviewers, onUpdateReview}) {
               </label>
               <p>
                 {selectedReviewer &&
-                  format(new Date(selectedReviewer.deadlineDate), "long")}
+                  format(new Date(selectedReviewer.deadline), "long")}
               </p>
             </div>
             <div>
@@ -140,17 +146,17 @@ function CompletedReviews({reviews, setSelectedReview}) {
         </TableHeaderTitle>
         <TableBody>
           {reviews.map((review, index) =>
-              <TableCursorRow
-                key={index}
-                onClick={() => setSelectedReview(review)}
-              >
-                <TableCell>{review.reviewer}</TableCell>
-                <TableCell>{review.submissionNumber + 1}</TableCell>
-                <TableCell>{REVIEW_STATUS_LABELS[review.status]}</TableCell>
-                <TableCell>
-                  {format(new Date(review.creationDate), "long")}
-                </TableCell>
-              </TableCursorRow>
+            <TableCursorRow
+              key={index}
+              onClick={() => setSelectedReview(review)}
+            >
+              <TableCell>{review.reviewer}</TableCell>
+              <TableCell>{review.submissionNumber + 1}</TableCell>
+              <TableCell>{REVIEW_STATUS_LABELS[review.status]}</TableCell>
+              <TableCell>
+                {format(new Date(review.creationDate), "long")}
+              </TableCell>
+            </TableCursorRow>
           )}
         </TableBody>
       </Table>
@@ -159,7 +165,6 @@ function CompletedReviews({reviews, setSelectedReview}) {
 }
 
 function AllReviewers({reviewers, setSelectedReviewer}) {
-  console.log('revieeeres', JSON.stringify(reviewers))
   return (
     <Card>
       <CardHeader>
