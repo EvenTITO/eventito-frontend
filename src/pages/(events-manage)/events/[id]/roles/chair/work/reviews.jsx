@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AddReviewerDialog from "./_components/AddReviewerDialog";
 import ReviewsTable from "./_components/ReviewsTable";
 
-export default function Reviews({ reviews, reviewers}) {
+export default function Reviews({ reviews, reviewers, updateReviewDeadline}) {
   return (
     <Card>
       <CardHeader>
@@ -12,7 +12,7 @@ export default function Reviews({ reviews, reviewers}) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <ReviewsTable reviews={reviews || []} reviewers={reviewers || []}/>
+        <ReviewsTable reviews={reviews || []} reviewers={reviewers || []} updateReviewDeadline={updateReviewDeadline}/>
       </CardContent>
     </Card>
   );

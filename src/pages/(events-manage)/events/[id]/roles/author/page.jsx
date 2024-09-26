@@ -12,7 +12,7 @@ import {
 import { format } from "@formkit/tempo";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { WORKS_STATUS_LABELS } from "@/lib/Constants"
+import { WORKS_STATUS_LABELS } from "@/lib/Constants";
 
 export default function Page({ works }) {
   const navigator = useNavigator();
