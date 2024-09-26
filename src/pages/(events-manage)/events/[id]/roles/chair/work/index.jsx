@@ -1,6 +1,6 @@
 import FetchStatus from "@/components/FetchStatus";
 import Page from "./page";
-import {useGetReviewsForWork, useGetReviewersForWork} from "@/hooks/events/chairHooks";
+import {useGetReviewersForWork, useGetReviewsForWork} from "@/hooks/events/chairHooks";
 import {useGetWorkById} from "@/hooks/events/worksHooks";
 
 export default function ChairWorkPage() {
@@ -27,13 +27,12 @@ const getReviewsData = (work, reviews) => {
     return;
   }
   const sortedSubmissions = work.submissions.toSorted((a, b) => a.creation_date - b.creation_date)
-  const reviewsWithSubmissionNumber = reviews.map((r) => {
+  return reviews.map((r) => {
     return {
       ...r,
       submissionNumber: sortedSubmissions.findIndex((s) => s.id === r.submissionId)
     }
   });
-  return reviewsWithSubmissionNumber;
 }
 
 const getReviewersData = (work, reviews, reviewers) => {

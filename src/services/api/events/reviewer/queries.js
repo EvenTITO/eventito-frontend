@@ -5,3 +5,7 @@ export const apiGetAssignments = async (httpClient, eventId) => {
 export const apiPostReview = async (httpClient, eventId, workId, body) => {
   return (await httpClient.post(`/${eventId}/works/${workId}/reviews`, body));
 };
+
+export const apiPutReviewDeadline = async (httpClient, eventId, body) => {
+  return (await httpClient.put(`/${eventId}/reviewers`, body));
+};
