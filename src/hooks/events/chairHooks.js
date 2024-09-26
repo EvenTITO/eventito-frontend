@@ -1,9 +1,9 @@
-import {EVENTS_URL} from "@/lib/Constants";
-import {getEventId, getWorkId} from "@/lib/utils";
-import {HTTPClient} from "@/services/api/HTTPClient";
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {apiGetReviewsForWork, apiGetWorksByTrack} from "@/services/api/works/queries";
-import {convertReviews, convertWorks} from "@/services/api/works/conversor";
+import { EVENTS_URL } from "@/lib/Constants";
+import { getEventId, getWorkId } from "@/lib/utils";
+import { HTTPClient } from "@/services/api/HTTPClient";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { apiGetWorksByTrack, apiGetReviewsForWork, apiGetReviewersForWork } from "@/services/api/works/queries";
+import { convertWorks, convertReviews, convertReviewers } from "@/services/api/works/conversor";
 
 export function useGetWorksByTrack(track) {
   const eventId = getEventId();
@@ -35,6 +35,21 @@ export function useGetReviewsForWork() {
   });
 }
 
+export function useGetReviewersForWork() {
+  const workId = getWorkId();
+  const eventId = getEventId();
+
+  return useQuery({
+    queryKey: ["getReviewersForWork", { workId }],
+    queryFn: async () => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const reviewers = await apiGetReviewersForWork(httpClient, eventId, workId);
+      return convertReviewers(reviewers)
+    },
+  });
+}
+
+
 export function useAddReviewer() {
   const workId = getWorkId();
   const eventId = getEventId();
@@ -50,3 +65,78 @@ export function useAddReviewer() {
     },
   });
 }
+
+function getReviewersPending(reviews, reviewers) {
+  const reviews_emails = reviews != undefined && reviews.data != undefined ? reviews.data.map(r => r.email) : [];
+  const reviewers_pending = reviewers != undefined && reviewers.data != undefined ? reviewers.data.filter(r => !reviews_emails.includes(r.email)) : [];
+  return reviewers_pending.map(rp => rp.email)
+}
+
+function convertReview(review) {
+  return {
+    reviewer: review.reviewer.name + " " + review.reviewer.lastname,
+    email: review.reviewer.email,
+    completed: true,
+    creationDate: review.creation_date,
+    status: review.status,
+    reviewForm: review.review.answers
+  }
+}
+
+export function getReviewersWithStatus(reviews, reviewers) {
+  const reviewers_email_pending = getReviewersPending(reviews, reviewers)
+  if(reviewers != undefined && reviewers.data != undefined){
+    reviewers.data.forEach(r => {
+      if(reviewers_email_pending.includes(r.email)){
+        r['completed'] = false
+      } else {
+        r['completed'] = true
+      }
+    });
+  }
+  return reviewers
+}
+
+const reviewForm = [
+  {
+    title: "Calificación general",
+    answer: 8,
+  },
+  {
+    title: "Recomendación",
+    answer: "Aceptado",
+  },
+  {
+    title: "Área de mejora",
+    answer: "Ninguna",
+  },
+  {
+    title: "Comentarios a los autores",
+    answer:
+      "Muy buen trabajo general, revisar que todas las imágenes tengan el mismo tamaño para el momento de la presentación.",
+  },
+];
+
+const reviews = [
+  {
+    reviewer: "Gonzalo Sabatino",
+    completed: true,
+    deadlineDate: "2024/09/20",
+    status: "Aceptado",
+    reviewForm: reviewForm,
+  },
+  {
+    reviewer: "Fernando Sinisi",
+    completed: true,
+    deadlineDate: "2024/09/20",
+    status: "A revisión",
+    reviewForm: reviewForm,
+  },
+  {
+    reviewer: "Lucas Verón",
+    completed: false,
+    deadlineDate: "2024/09/20",
+    status: null,
+    reviewForm: null,
+  },
+];

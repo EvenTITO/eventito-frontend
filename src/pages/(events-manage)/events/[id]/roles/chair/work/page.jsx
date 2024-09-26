@@ -10,7 +10,7 @@ import { useGetWorkDownloadURL } from "@/hooks/events/worksHooks";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 
-export default function Page({ selectedWork, reviews }) {
+export default function Page({ selectedWork, reviews, reviewers}) {
   const navigator = useNavigator("/works");
   const {
     data: fileData,
@@ -68,7 +68,7 @@ export default function Page({ selectedWork, reviews }) {
             },
             {
               label: "Revisiones",
-              component: <Reviews reviews={reviews} />,
+              component: <Reviews reviews={reviews} reviewers={reviewers} />,
             },
           ]}
         />

@@ -13,7 +13,7 @@ import TableCursorRow from "@/components/TableCursorRow";
 import TableContent from "@/components/TableContent";
 import {REVIEW_STATUS_LABELS} from "@/lib/Constants.js";
 
-export default function ReviewsTable({reviews, onUpdateReview}) {
+export default function ReviewsTable({reviews, reviewers, onUpdateReview}) {
   const [selectedReview, setSelectedReview] = useState(null);
   const [selectedReviewer, setSelectedReviewer] = useState(null);
   const [newDeadline, setNewDeadline] = useState(null);
@@ -36,7 +36,7 @@ export default function ReviewsTable({reviews, onUpdateReview}) {
       </div>
       <div className="w-1/3">
         <AllReviewers
-          reviews={reviews}
+          reviewers={reviewers || []}
           setSelectedReviewer={setSelectedReviewer}
         />
       </div>
@@ -158,7 +158,7 @@ function CompletedReviews({reviews, setSelectedReview}) {
   );
 }
 
-function AllReviewers({reviews, setSelectedReviewer}) {
+function AllReviewers({reviewers, setSelectedReviewer}) {
   return (
     <Card>
       <CardHeader>
@@ -166,7 +166,7 @@ function AllReviewers({reviews, setSelectedReviewer}) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {reviews.map((review, index) => (
+          {reviewers.map((review, index) => (
             <div
               key={index}
               className="flex items-center space-x-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md transition-colors"
@@ -181,7 +181,7 @@ function AllReviewers({reviews, setSelectedReviewer}) {
               <div className="flex-grow">
                 <p className="text-sm font-medium">{review.reviewer}</p>
                 <p className="text-sm text-muted-foreground">
-                  Fecha límite: {format(new Date(review.creationDate), "long")}
+                  Fecha límite: {format(new Date(review.deadline), "long")}
                 </p>
               </div>
               <div

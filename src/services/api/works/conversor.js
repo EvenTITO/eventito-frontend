@@ -38,9 +38,42 @@ export function convertReviews(reviews) {
 function convertReview(review) {
   return {
     reviewer: review.reviewer.name + " " + review.reviewer.lastname,
+    email: review.reviewer.email,
     completed: true,
     creationDate: review.creation_date,
     status: review.status,
     reviewForm: review.review.answers
   }
 }
+
+export function convertReviewers(reviewers) {
+  return reviewers.map(convertReviewer)
+}
+
+function convertReviewer(reviewer) {
+  return {
+    reviewer: reviewer.user.name + " " + reviewer.user.lastname,
+    email: reviewer.user.email,
+    deadline: reviewer.works[0].review_deadline
+  }
+}
+
+const reviewForm = [
+  {
+    title: "Calificación general",
+    answer: 8,
+  },
+  {
+    title: "Recomendación",
+    answer: "Aceptado",
+  },
+  {
+    title: "Área de mejora",
+    answer: "Ninguna",
+  },
+  {
+    title: "Comentarios a los autores",
+    answer:
+        "Muy buen trabajo general, revisar que todas las imágenes tengan el mismo tamaño para el momento de la presentación.",
+  },
+];
