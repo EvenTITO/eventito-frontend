@@ -4,7 +4,6 @@ export function convertInscriptions(inscriptions) {
   return inscriptions === undefined || inscriptions.length === 0 ? undefined: convertInscription(inscriptions[0]);
 }
 
-
 function convertInscription(inscription) {
   console.log("inscription back: ", inscription)
   return {
@@ -13,10 +12,3 @@ function convertInscription(inscription) {
     affiliation: inscription.affiliation
   }
 }
-
-const mockUserRegistration = {
-  role: "Asistente",
-  name: "John Doe",
-  affiliation: "FIUBA",
-  file: null,
-};
