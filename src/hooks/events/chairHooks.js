@@ -65,24 +65,3 @@ export function useAddReviewer() {
     },
   });
 }
-
-function getReviewersPending(reviews, reviewers) {
-  const reviews_emails = reviews != undefined && reviews.data != undefined ? reviews.data.map(r => r.email) : [];
-  const reviewers_pending = reviewers != undefined && reviewers.data != undefined ? reviewers.data.filter(r => !reviews_emails.includes(r.email)) : [];
-  return reviewers_pending.map(rp => rp.email)
-}
-
-
-export function getReviewersWithStatus(reviews, reviewers) {
-  const reviewers_email_pending = getReviewersPending(reviews, reviewers)
-  if(reviewers != undefined && reviewers.data != undefined){
-    reviewers.data.forEach(r => {
-      if(reviewers_email_pending.includes(r.email)){
-        r['completed'] = false
-      } else {
-        r['completed'] = true
-      }
-    });
-  }
-  return reviewers
-}

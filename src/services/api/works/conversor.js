@@ -54,6 +54,7 @@ export function convertReviewers(reviewers) {
 
 function convertReviewer(reviewer) {
   return {
+    id: reviewer.user_id,
     reviewer: reviewer.user.name + " " + reviewer.user.lastname,
     email: reviewer.user.email,
     deadline: reviewer.works[0].review_deadline

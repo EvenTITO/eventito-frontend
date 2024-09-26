@@ -1,17 +1,17 @@
 import FetchStatus from "@/components/FetchStatus";
 import Page from "./page";
-import {useGetReviewsForWork, useGetReviewersForWork, getReviewersWithStatus} from "@/hooks/events/chairHooks";
+import {useGetReviewsForWork, useGetReviewersForWork} from "@/hooks/events/chairHooks";
 import {useGetWorkById} from "@/hooks/events/worksHooks";
 
 export default function ChairWorkPage() {
   const workInfo = useGetWorkById();
   const reviews = useGetReviewsForWork();
   const reviewers = useGetReviewersForWork();
-  const reviewersWithStatus = getReviewersWithStatus(reviews, reviewers);
   const reviewsWithSubmissionNumber = getReviewsData(workInfo.data, reviews.data);
-
+  const reviewersWithStatus = getReviewersData(workInfo.data, reviews.data, reviewers.data);
+  
   const component = (
-    <Page selectedWork={workInfo.data} reviews={reviewsWithSubmissionNumber} reviewersWithStatus={reviewersWithStatus.data}/>
+    <Page selectedWork={workInfo.data} reviews={reviewsWithSubmissionNumber} reviewers={reviewersWithStatus}/>
   );
   return (
     <FetchStatus
@@ -34,4 +34,17 @@ const getReviewsData = (work, reviews) => {
     }
   });
   return reviewsWithSubmissionNumber;
+}
+
+const getReviewersData = (work, reviews, reviewers) => {
+  if (work === undefined || reviews === undefined || reviewers === undefined) {
+    return;
+  }
+  const lastSubmissionId = work.lastSubmission.id;
+  return reviewers.map(reviewer => {
+    return {
+      ...reviewer,
+      reviewAlreadySubmitted: reviews.some((r) => r.submissionId === lastSubmissionId && r.reviewerId === reviewer.id)
+    }
+  });
 }
