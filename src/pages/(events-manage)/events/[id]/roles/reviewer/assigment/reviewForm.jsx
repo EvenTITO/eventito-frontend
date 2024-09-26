@@ -1,37 +1,30 @@
-import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import {useState} from "react";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from "@/components/ui/card";
+import {Label} from "@/components/ui/label";
 import Rating from "./_components/Rating";
 import SingleChoice from "./_components/SingleChoice";
 import MultipleChoice from "./_components/MultipleChoice";
 import TextInput from "./_components/TextInput";
-import { useSubmitReview } from "@/hooks/events/reviewerHooks";
+import {useSubmitReview} from "@/hooks/events/reviewerHooks";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 
-export function ReviewerForm({ handleBack, questions }) {
+export function ReviewerForm({handleBack, questions}) {
   const [review, setReview] = useState({});
-  const { mutateAsync: submitReview, isPending } = useSubmitReview();
+  const {mutateAsync: submitReview, isPending} = useSubmitReview();
 
   const handleReviewChange = (field, value) => {
-    setReview((prev) => ({ ...prev, [field]: value }));
+    setReview((prev) => ({...prev, [field]: value}));
   };
 
   const handleSubmitReview = async () => {
-    await submitReview({ review });
+    await submitReview({review});
     handleBack();
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Formulario de reivisión</CardTitle>
+        <CardTitle>Formulario de revisión</CardTitle>
         <CardDescription>
           Para terminar con la revisión, deben completarse las siguientes
           preguntas.
@@ -40,33 +33,32 @@ export function ReviewerForm({ handleBack, questions }) {
       <CardContent className="space-y-6">
         {questions.map((question, index) => (
           <div key={index} className="space-y-2">
-            <Label className="text-lg font-semibold">{question.title}</Label>
-            <p className="text-sm text-gray-600 mb-2">{question.description}</p>
-            {question.type === "rating" && (
+            <Label className="text-lg font-semibold">{question.question}</Label>
+            {question.type_question === "rating" && (
               <Rating
-                value={review[question.title] || 0}
-                onChange={(value) => handleReviewChange(question.title, value)}
-                max={question.maxValue}
+                value={review[question.question] || 0}
+                onChange={(value) => handleReviewChange(question.question, value)}
+                max={question.max_value}
               />
             )}
-            {question.type === "singleChoice" && question.options && (
+            {question.type_question === "multiple_choice" && question.options && !question.more_than_one_answer_allowed && (
               <SingleChoice
                 options={question.options}
-                value={review[question.title] || ""}
-                onChange={(value) => handleReviewChange(question.title, value)}
+                value={review[question.question] || ""}
+                onChange={(value) => handleReviewChange(question.question, value)}
               />
             )}
-            {question.type === "multipleChoice" && question.options && (
+            {question.type_question === "multiple_choice" && question.options && question.more_than_one_answer_allowed && (
               <MultipleChoice
                 options={question.options}
-                value={review[question.title] || []}
-                onChange={(value) => handleReviewChange(question.title, value)}
+                value={review[question.question] || []}
+                onChange={(value) => handleReviewChange(question.question, value)}
               />
             )}
-            {question.type === "text" && (
+            {question.type_question === "simple_question" && (
               <TextInput
-                value={review[question.title] || ""}
-                onChange={(value) => handleReviewChange(question.title, value)}
+                value={review[question.question] || ""}
+                onChange={(value) => handleReviewChange(question.question, value)}
                 placeholder="Enter your response here"
               />
             )}
