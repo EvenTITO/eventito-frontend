@@ -72,16 +72,6 @@ function getReviewersPending(reviews, reviewers) {
   return reviewers_pending.map(rp => rp.email)
 }
 
-function convertReview(review) {
-  return {
-    reviewer: review.reviewer.name + " " + review.reviewer.lastname,
-    email: review.reviewer.email,
-    completed: true,
-    creationDate: review.creation_date,
-    status: review.status,
-    reviewForm: review.review.answers
-  }
-}
 
 export function getReviewersWithStatus(reviews, reviewers) {
   const reviewers_email_pending = getReviewersPending(reviews, reviewers)
@@ -96,47 +86,3 @@ export function getReviewersWithStatus(reviews, reviewers) {
   }
   return reviewers
 }
-
-const reviewForm = [
-  {
-    title: "Calificación general",
-    answer: 8,
-  },
-  {
-    title: "Recomendación",
-    answer: "Aceptado",
-  },
-  {
-    title: "Área de mejora",
-    answer: "Ninguna",
-  },
-  {
-    title: "Comentarios a los autores",
-    answer:
-      "Muy buen trabajo general, revisar que todas las imágenes tengan el mismo tamaño para el momento de la presentación.",
-  },
-];
-
-const reviews = [
-  {
-    reviewer: "Gonzalo Sabatino",
-    completed: true,
-    deadlineDate: "2024/09/20",
-    status: "Aceptado",
-    reviewForm: reviewForm,
-  },
-  {
-    reviewer: "Fernando Sinisi",
-    completed: true,
-    deadlineDate: "2024/09/20",
-    status: "A revisión",
-    reviewForm: reviewForm,
-  },
-  {
-    reviewer: "Lucas Verón",
-    completed: false,
-    deadlineDate: "2024/09/20",
-    status: null,
-    reviewForm: null,
-  },
-];

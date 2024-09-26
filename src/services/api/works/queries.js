@@ -13,7 +13,7 @@ export const apiGetWorkById = async (httpClient, eventId, workId) => {
   return (await httpClient.get(`/${eventId}/works/${workId}`)).data;
 };
 
-export const apiGetSubmissionForWork = async (httpClient, eventId, workId) => {
+export const apiGetSubmissionsForWork = async (httpClient, eventId, workId) => {
   return (await httpClient.get(`/${eventId}/works/${workId}/submissions`)).data;
 };
 

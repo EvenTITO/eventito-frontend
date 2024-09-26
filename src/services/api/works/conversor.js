@@ -42,6 +42,8 @@ function convertReview(review) {
     completed: true,
     creationDate: review.creation_date,
     status: review.status,
+    submissionId: review.submission_id,
+    reviewerId: review.reviewer_id,
     reviewForm: review.review.answers
   }
 }
@@ -57,23 +59,3 @@ function convertReviewer(reviewer) {
     deadline: reviewer.works[0].review_deadline
   }
 }
-
-const reviewForm = [
-  {
-    title: "Calificación general",
-    answer: 8,
-  },
-  {
-    title: "Recomendación",
-    answer: "Aceptado",
-  },
-  {
-    title: "Área de mejora",
-    answer: "Ninguna",
-  },
-  {
-    title: "Comentarios a los autores",
-    answer:
-        "Muy buen trabajo general, revisar que todas las imágenes tengan el mismo tamaño para el momento de la presentación.",
-  },
-];
