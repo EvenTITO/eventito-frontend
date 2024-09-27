@@ -109,7 +109,7 @@ const submissionData = {
       affiliation: "FIUBA",
     },
   ],
-  track: "Quimica",
+  track: "track1",
   keywords: ["IA", "Python"],
   deadline_date: "2024-09-26T23:43:00.573Z",
   creation_date: "2024-09-26T23:43:00.573Z",

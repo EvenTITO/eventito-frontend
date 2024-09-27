@@ -20,6 +20,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useEditSubmission } from "@/hooks/events/authorHooks";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
+import { useGetEvent } from "@/hooks/events/useEventState";
 
 export default function EditableSubmission({ submissionData }) {
   const [title, setTitle] = useState(submissionData.title);
@@ -30,6 +31,7 @@ export default function EditableSubmission({ submissionData }) {
   const [fileName, setFileName] = useState(submissionData.pdfFileName);
 
   const { mutateAsync: editSubmission, isPending, error } = useEditSubmission();
+  const { data: eventData } = useGetEvent();
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -75,12 +77,16 @@ export default function EditableSubmission({ submissionData }) {
               <Label htmlFor="track">Track</Label>
               <Select value={track} onValueChange={setTrack}>
                 <SelectTrigger id="track">
-                  <SelectValue placeholder="Seleccionar un track" />
+                  <SelectValue placeholder="Seleccionar un track">
+                    {track || "Seleccionar un track"}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="IA">IA</SelectItem>
-                  <SelectItem value="Química">Química</SelectItem>
-                  <SelectItem value="Python">Python</SelectItem>
+                  {eventData?.tracks.map((trackItem) => (
+                    <SelectItem key={trackItem} value={trackItem}>
+                      {trackItem}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
