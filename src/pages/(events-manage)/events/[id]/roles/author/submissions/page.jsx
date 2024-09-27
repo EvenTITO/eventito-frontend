@@ -8,12 +8,12 @@ import Content from "./_components/Content";
 export default function Page({ submissionData }) {
   return (
     <ContainerPage>
-      <GoBackLink to={"/submissions"} text={"Volver a mis entregas"} />
+      <GoBackLink to={"/submissions"} text={"Volver a mis trabajos"} />
       <TitlePage title={submissionData.title} />
       <LineTabs
         tabs={[
           {
-            label: "Información de entrega",
+            label: "Información de presentación",
             component: <SubmissionInfo submissionData={submissionData} />,
           },
           {

@@ -5,7 +5,7 @@ import WorksTable from "./_components/WorksTable";
 import TableContent from "@/components/TableContent";
 import NewSubmissionButton from "./_components/NewSubmissionButton";
 
-export default function Page({ works }) {
+export default function Page({ works, eventData }) {
   const navigator = useNavigator();
 
   const handleRowClick = (work) => {
@@ -16,10 +16,10 @@ export default function Page({ works }) {
   return (
     <ContainerPage>
       <TitlePage
-        title={"Entregas de presentaciones"}
+        title={`Trabajos presentados en ${eventData?.title}`}
         rightComponent={<NewSubmissionButton />}
       />
-      <TableContent title="Entregas a revisar">
+      <TableContent title="Mis entregas">
         <WorksTable works={works} handleRowClick={handleRowClick} />
       </TableContent>
     </ContainerPage>
