@@ -1,20 +1,11 @@
 import { useNavigator } from "@/lib/navigation";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { format } from "@formkit/tempo";
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { WORKS_STATUS_LABELS } from "@/lib/Constants"
+import WorksTable from "./_components/WorksTable";
+import TableContent from "@/components/TableContent";
+import NewSubmissionButton from "./_components/NewSubmissionButton";
 
-export default function Page({ works }) {
+export default function Page({ works, eventData }) {
   const navigator = useNavigator();
 
   const handleRowClick = (work) => {
@@ -25,49 +16,12 @@ export default function Page({ works }) {
   return (
     <ContainerPage>
       <TitlePage
-        title={"Entregas de presentaciones"}
+        title={`Trabajos presentados en ${eventData?.title}`}
         rightComponent={<NewSubmissionButton />}
       />
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Título</TableHead>
-            <TableHead>Autores</TableHead>
-            <TableHead>Fecha límite</TableHead>
-            <TableHead>Track</TableHead>
-            <TableHead>Estado</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {works.map((work) => (
-            <TableRow
-              key={work.id}
-              onClick={() => handleRowClick(work)}
-              className="cursor-pointer hover:bg-muted/50"
-            >
-              <TableCell className="font-medium">{work.title}</TableCell>
-              <TableCell>{work.authors.length}</TableCell>
-              <TableCell>{format(work.deadlineDate, "long")}</TableCell>
-              <TableCell>{work.track}</TableCell>
-              <TableCell>{WORKS_STATUS_LABELS[work.status]}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <TableContent title="Mis entregas">
+        <WorksTable works={works} handleRowClick={handleRowClick} />
+      </TableContent>
     </ContainerPage>
-  );
-}
-
-function NewSubmissionButton() {
-  const navigator = useNavigator();
-
-  function handleNewSubmission() {
-    navigator.foward("new-submission");
-  }
-
-  return (
-    <Button onClick={handleNewSubmission}>
-      <Plus className="mr-2 h-4 w-4" /> Nueva entrega
-    </Button>
   );
 }

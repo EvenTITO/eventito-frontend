@@ -3,8 +3,6 @@ import { useNavigator } from "@/lib/navigation";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import TrackSelector from "./_components/TrackSelector";
-import ChairTable from "./_components/ChairTable";
-import TableContent from "@/components/TableContent";
 import Stats from "./_components/Stats";
 import Insights from "./_components/Insights";
 import Tables from "./_components/Tables";

@@ -18,14 +18,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useEditSubmission } from "@/hooks/events/authorHooks";
+import ButtonWithLoading from "@/components/ButtonWithLoading";
+import { useGetEvent } from "@/hooks/events/useEventState";
 
-export default function Content({ submissionData, onSubmit }) {
+export default function EditableSubmission({ submissionData }) {
   const [title, setTitle] = useState(submissionData.title);
   const [track, setTrack] = useState(submissionData.track);
   const [keywords, setKeywords] = useState(submissionData.keywords);
   const [abstract, setAbstract] = useState(submissionData.abstract);
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState(submissionData.pdfFileName);
+
+  const { mutateAsync: editSubmission, isPending, error } = useEditSubmission();
+  const { data: eventData } = useGetEvent();
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -34,14 +40,16 @@ export default function Content({ submissionData, onSubmit }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit({
-      title,
-      track,
-      keywords,
-      abstract,
-      pdfFileName: fileName,
+    await editSubmission({
+      submissionData: {
+        title,
+        track,
+        keywords,
+        abstract,
+        pdfFileName: fileName,
+      },
     });
   };
 
@@ -69,12 +77,16 @@ export default function Content({ submissionData, onSubmit }) {
               <Label htmlFor="track">Track</Label>
               <Select value={track} onValueChange={setTrack}>
                 <SelectTrigger id="track">
-                  <SelectValue placeholder="Seleccionar un track" />
+                  <SelectValue placeholder="Seleccionar un track">
+                    {track || "Seleccionar un track"}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="IA">IA</SelectItem>
-                  <SelectItem value="Química">Química</SelectItem>
-                  <SelectItem value="Python">Python</SelectItem>
+                  {eventData?.tracks.map((trackItem) => (
+                    <SelectItem key={trackItem} value={trackItem}>
+                      {trackItem}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -99,7 +111,7 @@ export default function Content({ submissionData, onSubmit }) {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="pdf">Cargar PDF</Label>
+            <Label htmlFor="pdf">PDF</Label>
             <div className="flex items-center space-x-2">
               <Input
                 id="pdf"
@@ -119,9 +131,13 @@ export default function Content({ submissionData, onSubmit }) {
               </Button>
             </div>
           </div>
-          <Button type="submit" className="w-full">
+          <ButtonWithLoading
+            type="submit"
+            className="w-full"
+            isLoading={isPending}
+          >
             Guardar cambios
-          </Button>
+          </ButtonWithLoading>
         </form>
       </CardContent>
     </Card>

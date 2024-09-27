@@ -1,25 +1,32 @@
-import { EVENTS_URL } from "@/lib/Constants";
-import { getEventId, wait } from "@/lib/utils";
-import { HTTPClient } from "@/services/api/HTTPClient";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {EVENTS_URL} from "@/lib/Constants";
+import {getEventId} from "@/lib/utils";
+import {HTTPClient} from "@/services/api/HTTPClient";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {apiGetMyInscriptions, apiUpdateInscription, apiSubmitInscription} from "@/services/api/events/inscriptions/queries.js";
+import {convertInscriptions} from "@/services/api/events/inscriptions/conversor.js";
+import {uploadFile} from "@/services/api/storage/queries.js";
 
-export function useGetRegisterData(userId) {
+export function useGetMyInscription() {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getRegisterData", { userId }],
+    queryKey: ["getMyInscriptions", {eventId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      return mockUserRegistration;
+      const myInscriptions = await apiGetMyInscriptions(httpClient, eventId);
+      return convertInscriptions(myInscriptions);
     },
+    onError: (error) => {
+      console.error(error);
+    }
   });
 }
 
-export function useGetPayments(userId) {
+export function useGetPayments() {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getPayments", { userId }],
+    queryKey: ["getPayments", {eventId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       return mockPaymentsList;
@@ -27,18 +34,41 @@ export function useGetPayments(userId) {
   });
 }
 
-export function useChangeRegister() {
+export function useSubmitInscription() {
   const eventId = getEventId();
-
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ userId, newRegisterData }) => {
-      await wait(2);
-      return null;
+    mutationFn: async ({inscriptionData}) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const res = await apiSubmitInscription(httpClient, eventId, inscriptionData);
+      await uploadFile(res.data.upload_url, inscriptionData.file);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getRegisterData"] });
+      queryClient.invalidateQueries({queryKey: ["getMyInscriptions", {eventId}]});
+    },
+    onError: (e) => {
+      console.error(JSON.stringify(e))
+    },
+  });
+}
+
+
+export function useUpdateInscription() {
+  const eventId = getEventId();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({inscriptionId, newInscriptionData}) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const res = await apiUpdateInscription(httpClient, eventId, inscriptionId, newInscriptionData);
+      await uploadFile(res.data.upload_url, newInscriptionData.file);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["getMyInscriptions", {eventId}]});
+    },
+    onError: (e) => {
+      console.error(JSON.stringify(e))
     },
   });
 }
@@ -47,21 +77,14 @@ export function useNewPayment() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ userId, paymentData }) => {
+    mutationFn: async ({userId, paymentData}) => {
       return null;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getPayments"] });
+      queryClient.invalidateQueries({queryKey: ["getPayments"]});
     },
   });
 }
-
-const mockUserRegistration = {
-  role: "Asistente",
-  name: "John Doe",
-  affiliation: "FIUBA",
-  file: null,
-};
 
 const mockPaymentsList = [
   {
@@ -71,8 +94,8 @@ const mockPaymentsList = [
     name: "Presentador: descuento de profesores FIUBA",
     amount: 150,
     works: [
-      { id: 1, title: "Advancements in Quantum Computing" },
-      { id: 2, title: "AI in Healthcare: A Comprehensive Review" },
+      {id: 1, title: "Advancements in Quantum Computing"},
+      {id: 2, title: "AI in Healthcare: A Comprehensive Review"},
     ],
   },
   {

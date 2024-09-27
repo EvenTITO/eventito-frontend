@@ -22,17 +22,17 @@ export const WORKS_STATUS_LABELS = {
 
 export const REGISTRATION_ROLES = [
   {
-    id: "attendee",
+    id: "ATTENDEE",
     title: "Asistente",
     description: "Asistir al evento para escuchar charlas",
   },
   {
-    id: "author",
+    id: "SPEAKER",
     title: "Autor",
     description: "Presentar uno o más trabajos en el evento",
   },
   {
-    id: "attendee-author",
+    id: "ATTENDEE,SPEAKER",
     title: "Asistente y autor",
     description: "Asistir a charlas y presentar trabajos",
   },
@@ -40,5 +40,17 @@ export const REGISTRATION_ROLES = [
 
 export const REVIEW_STATUS_LABELS = {
   "APPROVED": "Aprobado",
-  "NOT_APPROVED": "Desaprobado"
+  "NOT_APPROVED": "Desaprobado",
+  "RE_SUBMIT": "A revisar"
+}
+
+export const REVIEW_STATUS_LABELS_REVERSE = {
+  "Aprobado": "APPROVED",
+  "Desaprobado": "NOT_APPROVED",
+  "A revisar": "RE_SUBMIT"
+}
+
+export const INSCRIPTION_ROLES_LABELS = {
+  "SPEAKER": "Autor",
+  "ATTENDEE": "Asistente"
 }

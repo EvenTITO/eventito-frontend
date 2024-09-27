@@ -1,4 +1,6 @@
-export function convertEventData(data) {
+import {convertReviewSkeletonQuestions} from "@/services/api/events/reviewer/conversor"
+
+export function convertEventsData(data) {
   return data.map(convertEventItem);
 }
 
@@ -47,4 +49,12 @@ export function convertMyEventsData(data) {
     status: event.status,
     tracks: event.tracks,
   }));
+}
+
+
+export function convertEventFullData(data) {
+  return {
+    ...data,
+    review_skeleton: {questions: convertReviewSkeletonQuestions(data.review_skeleton.questions)}
+  }
 }

@@ -7,7 +7,7 @@ export default function TableContent({ title, children, headerColor }) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <Card>
+    <Card className="mt-4">
       <CardHeader
         className={cn(
           "cursor-pointer border-b border-gray-200 p-4",
