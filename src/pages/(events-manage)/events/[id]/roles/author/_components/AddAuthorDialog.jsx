@@ -10,23 +10,29 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import ButtonWithLoading from "@/components/ButtonWithLoading";
+import { useAddAuthorToWork } from "@/hooks/events/authorHooks";
 
-export default function AddAuthorDialog({ newAuthor }) {
+export default function AddAuthorDialog() {
   const [email, setEmail] = useState("");
   const [affiliation, setAffiliation] = useState("");
   const [isSpeaker, setIsSpeaker] = useState(false);
   const [notifyAuthor, setNotifyAuthor] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const handleSubmit = (e) => {
+  const { mutateAsync: addAuthor, isPending, error } = useAddAuthorToWork();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (email) {
-      newAuthor({
-        email,
-        username: "usuario",
-        affiliation,
-        isSpeaker,
-        notifyAuthor,
+      await addAuthor({
+        authorData: {
+          email,
+          full_name: "usuario",
+          affiliation,
+          isSpeaker,
+          notifyAuthor,
+        },
       });
       setEmail("");
       setAffiliation("");
@@ -39,7 +45,7 @@ export default function AddAuthorDialog({ newAuthor }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Agregar autor</Button>
+        <Button variant="outline">Agregar autor</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -84,9 +90,13 @@ export default function AddAuthorDialog({ newAuthor }) {
             </div>
           </div>
           <div className="w-full flex justify-end">
-            <Button type="submit" disabled={!email}>
+            <ButtonWithLoading
+              type="submit"
+              disabled={!email}
+              isLoading={isPending}
+            >
               Agregar autor
-            </Button>
+            </ButtonWithLoading>
           </div>
         </form>
       </DialogContent>
