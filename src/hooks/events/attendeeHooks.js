@@ -8,39 +8,24 @@ import {
   apiSubmitInscription,
   apiUpdateInscription
 } from "@/services/api/events/inscriptions/queries.js";
-import {convertInscriptions, convertPayments} from "@/services/api/events/inscriptions/conversor.js";
+import {convertInscription} from "@/services/api/events/inscriptions/conversor.js";
 import {uploadFile} from "@/services/api/storage/queries.js";
 
 export function useGetMyInscription() {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getMyInscriptions", {eventId}],
+    queryKey: ["getMyInscription", {eventId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      const myInscriptions = await apiGetMyInscriptions(httpClient, eventId);
-      console.log("myInscriptions", myInscriptions)
-      const payments = await apiGetInscriptionPayments(httpClient, eventId, myInscriptions[0].id);
-      return convertInscriptions(myInscriptions, payments);
+      const inscription = await apiGetMyInscriptions(httpClient, eventId);
+      console.log("myInscription:", inscription)
+      const payments = await apiGetInscriptionPayments(httpClient, eventId, inscription.id);
+      console.log("payments:", payments)
+      return convertInscription(inscription, payments);
     },
     onError: (error) => {
-      console.error(error);
-    }
-  });
-}
-
-export function useGetInscriptionPayments(inscriptionId) {
-  const eventId = getEventId();
-
-  return useQuery({
-    queryKey: ["getInscriptionPayments", {eventId, inscriptionId}],
-    queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL);
-      const payments = await apiGetInscriptionPayments(httpClient, eventId, inscriptionId);
-      return convertPayments(payments)
-    },
-    onError: (error) => {
-      console.error(error);
+      console.error("error:", error);
     }
   });
 }
@@ -56,7 +41,7 @@ export function useSubmitInscription() {
       await uploadFile(res.data.upload_url, inscriptionData.file);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getMyInscriptions", {eventId}]});
+      queryClient.invalidateQueries({queryKey: ["getMyInscription", {eventId}]});
     },
     onError: (e) => {
       console.error(JSON.stringify(e))
@@ -76,7 +61,7 @@ export function useUpdateInscription() {
       await uploadFile(res.data.upload_url, newInscriptionData.file);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getMyInscriptions", {eventId}]});
+      queryClient.invalidateQueries({queryKey: ["getMyInscription", {eventId}]});
     },
     onError: (e) => {
       console.error(JSON.stringify(e))
@@ -92,7 +77,7 @@ export function useNewPayment() {
       return null;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getInscriptionPayments"]});
+      queryClient.invalidateQueries({queryKey: ["getMyInscription"]});
     },
   });
 }

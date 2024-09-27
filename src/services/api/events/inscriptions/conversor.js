@@ -1,19 +1,17 @@
-export function convertInscriptions(inscriptions, payments) {
-  return inscriptions === undefined || inscriptions.length === 0 ? undefined: convertInscription(inscriptions[0], payments);
-}
-
-function convertInscription(inscription, payments) {
-  return {
-    id: inscription.id,
-    roles: inscription.roles,
-    affiliation: inscription.affiliation,
-    payments: payments === undefined ? [] : convertPayments(payments)
-  }
+export function convertInscription(inscription, payments) {
+  return inscription === undefined
+    ? undefined
+    : {
+      id: inscription.id,
+      roles: inscription.roles,
+      affiliation: inscription.affiliation,
+      payments: convertPayments(payments)
+    }
 }
 
 export function convertPayments(payments) {
   return payments === undefined || payments.length === 0
-    ? undefined
+    ? []
     : payments.map(convertPayment);
 }
 

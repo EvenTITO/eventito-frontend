@@ -1,5 +1,5 @@
 export const apiGetMyInscriptions = async (httpClient, eventId) => {
-  return (await httpClient.get(`/${eventId}/inscriptions/my-inscriptions`)).data;
+  return (await httpClient.get(`/${eventId}/inscriptions/my-inscription`)).data;
 };
 
 export const apiUpdateInscription = async (httpClient, eventId, inscriptionId, body) => {
