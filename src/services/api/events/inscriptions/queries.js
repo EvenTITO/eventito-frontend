@@ -13,3 +13,7 @@ export const apiGetInscriptionPayments = async (httpClient, eventId, inscription
 export const apiSubmitInscription = async (httpClient, eventId, body) => {
   return (await httpClient.post(`/${eventId}/inscriptions`, body));
 };
+
+export const apiPutInscriptionPayment = async (httpClient, eventId, inscriptionId, body) => {
+  return (await httpClient.put(`/${eventId}/inscriptions/${inscriptionId}/pay`, body));
+};

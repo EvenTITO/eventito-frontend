@@ -4,7 +4,7 @@ import {HTTPClient} from "@/services/api/HTTPClient";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {
   apiGetInscriptionPayments,
-  apiGetMyInscriptions,
+  apiGetMyInscriptions, apiPutInscriptionPayment,
   apiSubmitInscription,
   apiUpdateInscription
 } from "@/services/api/events/inscriptions/queries.js";
@@ -19,13 +19,11 @@ export function useGetMyInscription() {
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const inscription = await apiGetMyInscriptions(httpClient, eventId);
-      console.log("myInscription:", inscription)
       const payments = await apiGetInscriptionPayments(httpClient, eventId, inscription.id);
-      console.log("payments:", payments)
       return convertInscription(inscription, payments);
     },
     onError: (error) => {
-      console.error("error:", error);
+      console.error(JSON.stringify(e))
     }
   });
 }
@@ -70,36 +68,20 @@ export function useUpdateInscription() {
 }
 
 export function useNewPayment() {
+  const eventId = getEventId();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({userId, paymentData}) => {
-      return null;
+    mutationFn: async ({inscriptionId, paymentData}) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const res = await apiPutInscriptionPayment(httpClient, eventId, inscriptionId, paymentData);
+      await uploadFile(res.data.upload_url, paymentData.file);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getMyInscription"]});
+      queryClient.invalidateQueries({queryKey: ["getMyInscription", {eventId}]});
     },
+    onError: (e) => {
+      console.error(JSON.stringify(e))
+    }
   });
 }
-
-const mockPaymentsList = [
-  {
-    id: 1,
-    date: new Date(2023, 5, 15),
-    status: "Confirmado",
-    name: "Presentador: descuento de profesores FIUBA",
-    amount: 150,
-    works: [
-      {id: 1, title: "Advancements in Quantum Computing"},
-      {id: 2, title: "AI in Healthcare: A Comprehensive Review"},
-    ],
-  },
-  {
-    id: 2,
-    date: new Date(2023, 5, 20),
-    status: "Pendiente",
-    name: "Asistente: descuento de profesores FIUBA",
-    amount: 0,
-    works: [],
-  },
-];

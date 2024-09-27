@@ -4,7 +4,7 @@ import FetchStatus from "@/components/FetchStatus";
 
 export default function AttendeePage() {
   const {data: inscription, isPending, error} = useGetMyInscription();
-  console.log(inscription)
+
   const component = (<Page inscription={inscription}/>);
 
   return (

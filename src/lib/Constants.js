@@ -54,3 +54,10 @@ export const INSCRIPTION_ROLES_LABELS = {
   "SPEAKER": "Autor",
   "ATTENDEE": "Asistente"
 }
+
+export const PAYMENT_STATUS_LABELS = {
+  "APPROVED": "Aprobado",
+  "REJECTED": "Rechazado",
+  "UNCOMPLETED": "Insuficiente",
+  "PENDING_APPROVAL": "Pendiente de revisión"
+}

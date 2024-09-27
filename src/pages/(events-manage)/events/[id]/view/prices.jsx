@@ -13,7 +13,6 @@ import { Link, useParams } from "react-router-dom";
 
 export function RegistrationTab({ event }) {
   const { id: eventId } = useParams();
-  console.log("pricing", event.pricing);
 
   return (
     <Card>

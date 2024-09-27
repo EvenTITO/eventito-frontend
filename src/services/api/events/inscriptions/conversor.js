@@ -20,6 +20,7 @@ function convertPayment(payment) {
     id: payment.id,
     name: payment.fare_name,
     status: payment.status,
+    date: payment.creation_date,
     works: payment.works,
   }
 }
