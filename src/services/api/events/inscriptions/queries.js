@@ -9,3 +9,7 @@ export const apiUpdateInscription = async (httpClient, eventId, inscriptionId, b
 export const apiGetInscriptionPayments = async (httpClient, eventId, inscriptionId) => {
   return (await httpClient.get(`/${eventId}/inscriptions/${inscriptionId}/payments`)).data;
 };
+
+export const apiSubmitInscription = async (httpClient, eventId, body) => {
+  return (await httpClient.post(`/${eventId}/inscriptions`, body));
+};

@@ -5,11 +5,11 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {
   apiGetInscriptionPayments,
   apiGetMyInscriptions,
+  apiSubmitInscription,
   apiUpdateInscription
 } from "@/services/api/events/inscriptions/queries.js";
 import {convertInscriptions, convertPayments} from "@/services/api/events/inscriptions/conversor.js";
 import {uploadFile} from "@/services/api/storage/queries.js";
-import {apiGetSubmissionsForWork} from "@/services/api/works/queries.js";
 
 export function useGetMyInscription() {
   const eventId = getEventId();
@@ -19,7 +19,7 @@ export function useGetMyInscription() {
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const myInscriptions = await apiGetMyInscriptions(httpClient, eventId);
-      console.log("myInscriptions",myInscriptions)
+      console.log("myInscriptions", myInscriptions)
       const payments = await apiGetInscriptionPayments(httpClient, eventId, myInscriptions[0].id);
       return convertInscriptions(myInscriptions, payments);
     },
@@ -44,6 +44,26 @@ export function useGetInscriptionPayments(inscriptionId) {
     }
   });
 }
+
+export function useSubmitInscription() {
+  const eventId = getEventId();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({inscriptionData}) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const res = await apiSubmitInscription(httpClient, eventId, inscriptionData);
+      await uploadFile(res.data.upload_url, inscriptionData.file);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["getMyInscriptions", {eventId}]});
+    },
+    onError: (e) => {
+      console.error(JSON.stringify(e))
+    },
+  });
+}
+
 
 export function useUpdateInscription() {
   const eventId = getEventId();
