@@ -9,3 +9,8 @@ export const apiPostReview = async (httpClient, eventId, workId, body) => {
 export const apiPutReviewDeadline = async (httpClient, eventId, body) => {
   return (await httpClient.put(`/${eventId}/reviewers`, body));
 };
+
+export const apiPostAddReviewer = async (httpClient, eventId, body) => {
+  return (await httpClient.post(`/${eventId}/reviewers`, body));
+};
+
