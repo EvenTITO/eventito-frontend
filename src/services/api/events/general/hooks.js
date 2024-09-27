@@ -9,7 +9,7 @@ import {
   apiGetMyEvents,
   apiPostCreateEvent,
 } from "./queries";
-import { convertEventData, convertMyEventsData } from "./conversor";
+import { convertEventsData, convertMyEventsData } from "./conversor";
 import { EVENTS_URL } from "@/lib/Constants";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { constructCreateEventBody } from "./constructors";
@@ -20,7 +20,7 @@ export function getPublicEvents() {
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const eventData = await apiGetAllEvents(httpClient);
-      return convertEventData(eventData);
+      return convertEventsData(eventData);
     },
   });
 }
@@ -38,7 +38,7 @@ export function getMyEvents() {
 
 export function getEvent(eventId) {
   return useQuery({
-    queryKey: ["getMyEvents"],
+    queryKey: ["getEvent", {eventId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const eventData = await apiGetEventById(httpClient, eventId);
