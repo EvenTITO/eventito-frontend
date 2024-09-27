@@ -3,9 +3,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import StatCard from "./StatCard";
 import AddAuthorDialog from "../../_components/AddAuthorDialog";
+import { onSubmissionEditDay } from "./utils";
 
 export default function SubmissionInfo({ submissionData }) {
-  const canModify = new Date(submissionData.deadline_date) >= new Date();
+  const isEditable = onSubmissionEditDay(submissionData);
 
   return (
     <div className="space-y-8">
@@ -17,12 +18,18 @@ export default function SubmissionInfo({ submissionData }) {
         />
         <StatCard
           title="En fecha de edición"
-          value={canModify ? "Sí" : "No"}
+          value={isEditable ? "Sí" : "No"}
           icon="FileText"
         />
         <StatCard
-          title="Última actualización"
-          value={new Date(submissionData.last_update).toLocaleDateString()}
+          title={
+            isEditable ? "Fecha límite de entrega" : "Última actualización"
+          }
+          value={
+            isEditable
+              ? new Date(submissionData.deadline_date).toLocaleDateString()
+              : new Date(submissionData.last_update).toLocaleDateString()
+          }
           icon="ClockIcon"
         />
       </div>

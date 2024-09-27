@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-export default function Content({ submissionData, onSubmit }) {
+export default function EditableSubmission({ submissionData, onSubmit }) {
   const [title, setTitle] = useState(submissionData.title);
   const [track, setTrack] = useState(submissionData.track);
   const [keywords, setKeywords] = useState(submissionData.keywords);
@@ -99,7 +99,7 @@ export default function Content({ submissionData, onSubmit }) {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="pdf">Cargar PDF</Label>
+            <Label htmlFor="pdf">PDF</Label>
             <div className="flex items-center space-x-2">
               <Input
                 id="pdf"
