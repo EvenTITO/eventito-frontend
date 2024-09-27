@@ -6,7 +6,7 @@ import {apiGetMyInscriptions, apiUpdateInscription} from "@/services/api/events/
 import {convertInscriptions} from "@/services/api/events/inscriptions/conversor.js";
 import {uploadFile} from "@/services/api/storage/queries.js";
 
-export function useGetInscription() {
+export function useGetMyInscription() {
   const eventId = getEventId();
 
   return useQuery({

@@ -1,9 +1,9 @@
-import {useGetInscription, useGetPayments} from "@/hooks/events/attendeeHooks";
+import {useGetMyInscription, useGetPayments} from "@/hooks/events/attendeeHooks";
 import Page from "./page";
 import FetchStatus from "@/components/FetchStatus";
 
 export default function AttendeePage() {
-  const inscription = useGetInscription();
+  const inscription = useGetMyInscription();
   const payments = useGetPayments();
 
   const component = (
