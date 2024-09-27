@@ -1,7 +1,7 @@
 import { EVENTS_URL } from "@/lib/Constants";
-import { getEventId } from "@/lib/utils";
+import { getEventId, getWorkId, wait } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useGetMyWorks() {
   const eventId = getEventId();
@@ -17,12 +17,33 @@ export function useGetMyWorks() {
 
 export function useGetMySubmission() {
   const eventId = getEventId();
+  const workId = getWorkId();
+
   return useQuery({
-    queryKey: ["getMySubmission", { eventId }],
+    queryKey: ["getMySubmission", { workId }],
     queryFn: async () => {
       // TODO (gsabatino9): necesitan userId?
       const httpClient = new HTTPClient(EVENTS_URL);
       return submissionData;
+    },
+  });
+}
+
+export function useEditSubmission() {
+  const eventId = getEventId();
+  const workId = getWorkId();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ submissionData }) => {
+      await wait(2);
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getMySubmission"],
+      });
     },
   });
 }

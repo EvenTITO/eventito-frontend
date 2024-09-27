@@ -18,14 +18,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useEditSubmission } from "@/hooks/events/authorHooks";
+import ButtonWithLoading from "@/components/ButtonWithLoading";
 
-export default function EditableSubmission({ submissionData, onSubmit }) {
+export default function EditableSubmission({ submissionData }) {
   const [title, setTitle] = useState(submissionData.title);
   const [track, setTrack] = useState(submissionData.track);
   const [keywords, setKeywords] = useState(submissionData.keywords);
   const [abstract, setAbstract] = useState(submissionData.abstract);
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState(submissionData.pdfFileName);
+
+  const { mutateAsync: editSubmission, isPending, error } = useEditSubmission();
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -34,14 +38,16 @@ export default function EditableSubmission({ submissionData, onSubmit }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit({
-      title,
-      track,
-      keywords,
-      abstract,
-      pdfFileName: fileName,
+    await editSubmission({
+      submissionData: {
+        title,
+        track,
+        keywords,
+        abstract,
+        pdfFileName: fileName,
+      },
     });
   };
 
@@ -119,9 +125,13 @@ export default function EditableSubmission({ submissionData, onSubmit }) {
               </Button>
             </div>
           </div>
-          <Button type="submit" className="w-full">
+          <ButtonWithLoading
+            type="submit"
+            className="w-full"
+            isLoading={isPending}
+          >
             Guardar cambios
-          </Button>
+          </ButtonWithLoading>
         </form>
       </CardContent>
     </Card>
