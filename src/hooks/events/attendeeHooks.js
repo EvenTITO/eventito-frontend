@@ -2,9 +2,14 @@ import {EVENTS_URL} from "@/lib/Constants";
 import {getEventId} from "@/lib/utils";
 import {HTTPClient} from "@/services/api/HTTPClient";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {apiGetMyInscriptions, apiUpdateInscription} from "@/services/api/events/inscriptions/queries.js";
-import {convertInscriptions} from "@/services/api/events/inscriptions/conversor.js";
+import {
+  apiGetInscriptionPayments,
+  apiGetMyInscriptions,
+  apiUpdateInscription
+} from "@/services/api/events/inscriptions/queries.js";
+import {convertInscriptions, convertPayments} from "@/services/api/events/inscriptions/conversor.js";
 import {uploadFile} from "@/services/api/storage/queries.js";
+import {apiGetSubmissionsForWork} from "@/services/api/works/queries.js";
 
 export function useGetMyInscription() {
   const eventId = getEventId();
@@ -14,7 +19,9 @@ export function useGetMyInscription() {
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const myInscriptions = await apiGetMyInscriptions(httpClient, eventId);
-      return convertInscriptions(myInscriptions);
+      console.log("myInscriptions",myInscriptions)
+      const payments = await apiGetInscriptionPayments(httpClient, eventId, myInscriptions[0].id);
+      return convertInscriptions(myInscriptions, payments);
     },
     onError: (error) => {
       console.error(error);
@@ -22,15 +29,19 @@ export function useGetMyInscription() {
   });
 }
 
-export function useGetPayments() {
+export function useGetInscriptionPayments(inscriptionId) {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getPayments", {eventId}],
+    queryKey: ["getInscriptionPayments", {eventId, inscriptionId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      return mockPaymentsList;
+      const payments = await apiGetInscriptionPayments(httpClient, eventId, inscriptionId);
+      return convertPayments(payments)
     },
+    onError: (error) => {
+      console.error(error);
+    }
   });
 }
 
@@ -61,7 +72,7 @@ export function useNewPayment() {
       return null;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getPayments"]});
+      queryClient.invalidateQueries({queryKey: ["getInscriptionPayments"]});
     },
   });
 }

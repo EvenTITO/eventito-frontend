@@ -47,7 +47,7 @@ export default function TestPage() {
                 Eventos, charlas y conferencias
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-600 md:text-xl">
-                Buscá, elegí y particiá de cualquier evento académico!
+                Buscá, elegí y participá de cualquier evento académico!
               </p>
             </div>
             <Button className="bg-gradient-to-r from-[#1919ac] to-[#121383] text-white hover:from-[#121383] hover:to-[#0c0b59]">
