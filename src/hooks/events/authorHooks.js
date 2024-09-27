@@ -48,6 +48,25 @@ export function useEditSubmission() {
   });
 }
 
+export function useAddAuthorToWork() {
+  const eventId = getEventId();
+  const workId = getWorkId();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ authorData }) => {
+      await wait(2);
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getMySubmission"],
+      });
+    },
+  });
+}
+
 const mockedWorks = [
   {
     id: 1,

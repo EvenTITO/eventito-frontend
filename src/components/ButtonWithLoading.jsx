@@ -8,12 +8,13 @@ export default function ButtonWithLoading({
   type,
   text,
   children,
+  disabled,
 }) {
   return (
     <Button
       onClick={onClick}
       className={className}
-      disabled={isLoading}
+      disabled={disabled || isLoading}
       type={type}
     >
       {isLoading ? (
