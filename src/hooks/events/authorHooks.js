@@ -1,15 +1,28 @@
 import { EVENTS_URL } from "@/lib/Constants";
-import { getEventId, getWorkId, wait } from "@/lib/utils";
+import { getEventId } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export function useGetMyWorks() {
   const eventId = getEventId();
   return useQuery({
     queryKey: ["getMyWorks", { eventId }],
     queryFn: async () => {
+      // TODO (gsabatino9): necesitan userId?
       const httpClient = new HTTPClient(EVENTS_URL);
       return mockedWorks;
+    },
+  });
+}
+
+export function useGetMySubmission() {
+  const eventId = getEventId();
+  return useQuery({
+    queryKey: ["getMySubmission", { eventId }],
+    queryFn: async () => {
+      // TODO (gsabatino9): necesitan userId?
+      const httpClient = new HTTPClient(EVENTS_URL);
+      return submissionData;
     },
   });
 }
@@ -45,3 +58,40 @@ const mockedWorks = [
     pdfLink: "https://example.com/quantum-computing-new-era.pdf",
   },
 ];
+
+const submissionData = {
+  title: "Trabajo de quimica",
+  abstract: "Trabajo abstract",
+  authors: [
+    {
+      full_name: "Gonzalo Sabatino",
+      email: "gsabatino@fi.uba.ar",
+      is_speaker: false,
+      affiliation: "FIUBA",
+    },
+    {
+      full_name: "Lucas Veron",
+      email: "lveron@fi.uba.ar",
+      is_speaker: false,
+      affiliation: "FIUBA",
+    },
+    {
+      full_name: "Fernando Sinisi",
+      email: "fsinisi@fi.uba.ar",
+      is_speaker: true,
+      affiliation: "FIUBA",
+    },
+    {
+      full_name: "Mateo Capon",
+      email: "mcapon@fi.uba.ar",
+      is_speaker: false,
+      affiliation: "FIUBA",
+    },
+  ],
+  track: "Quimica",
+  keywords: ["IA", "Python"],
+  deadline_date: "2024-09-26T23:43:00.573Z",
+  creation_date: "2024-09-26T23:43:00.573Z",
+  last_update: "2024-09-26T23:43:00.573Z",
+  status: "Entregado",
+};
