@@ -2,7 +2,7 @@ import {EVENTS_URL} from "@/lib/Constants";
 import {getEventId} from "@/lib/utils";
 import {HTTPClient} from "@/services/api/HTTPClient";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {apiGetInscriptions, apiUpdateInscription} from "@/services/api/events/inscriptions/queries.js";
+import {apiGetMyInscriptions, apiUpdateInscription} from "@/services/api/events/inscriptions/queries.js";
 import {convertInscriptions} from "@/services/api/events/inscriptions/conversor.js";
 import {uploadFile} from "@/services/api/storage/queries.js";
 
@@ -10,11 +10,11 @@ export function useGetInscription() {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getInscriptions", {eventId}],
+    queryKey: ["getMyInscriptions", {eventId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      const inscriptions = await apiGetInscriptions(httpClient, eventId);
-      return convertInscriptions(inscriptions);
+      const myInscriptions = await apiGetMyInscriptions(httpClient, eventId);
+      return convertInscriptions(myInscriptions);
     },
     onError: (error) => {
       console.error(error);
@@ -45,7 +45,7 @@ export function useUpdateInscription() {
       await uploadFile(res.data.upload_url, newInscriptionData.file);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getInscriptions", {eventId}]});
+      queryClient.invalidateQueries({queryKey: ["getMyInscriptions", {eventId}]});
     },
     onError: (e) => {
       console.error(JSON.stringify(e))

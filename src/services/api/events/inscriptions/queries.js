@@ -1,4 +1,4 @@
-export const apiGetInscriptions = async (httpClient, eventId) => {
+export const apiGetMyInscriptions = async (httpClient, eventId) => {
   return (await httpClient.get(`/${eventId}/inscriptions/my-inscriptions`)).data;
 };
 
