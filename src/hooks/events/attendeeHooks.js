@@ -2,12 +2,9 @@ import {EVENTS_URL} from "@/lib/Constants";
 import {getEventId} from "@/lib/utils";
 import {HTTPClient} from "@/services/api/HTTPClient";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {
-  apiGetInscriptions,
-  apiPutAffiliationFile,
-  apiUpdateInscription
-} from "@/services/api/events/inscriptions/queries.js";
+import {apiGetInscriptions, apiUpdateInscription} from "@/services/api/events/inscriptions/queries.js";
 import {convertInscriptions} from "@/services/api/events/inscriptions/conversor.js";
+import {uploadFile} from "@/services/api/storage/queries.js";
 
 export function useGetInscription() {
   const eventId = getEventId();
@@ -44,10 +41,14 @@ export function useUpdateInscription() {
   return useMutation({
     mutationFn: async ({inscriptionId, newInscriptionData}) => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      return await apiUpdateInscription(httpClient, eventId, inscriptionId, newInscriptionData);
+      const res = await apiUpdateInscription(httpClient, eventId, inscriptionId, newInscriptionData);
+      await uploadFile(res.data.upload_url, newInscriptionData.file);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["getInscriptions", {eventId}]});
+    },
+    onError: (e) => {
+      console.error(JSON.stringify(e))
     },
   });
 }
@@ -61,24 +62,6 @@ export function useNewPayment() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["getPayments"]});
-    },
-  });
-}
-
-export function usePutAffiliationFile() {
-  return useMutation({
-    mutationFn: async ({uploadUrl, file}) => {
-      const headers = {
-        'Content-Type': 'application/octet-stream',
-        'X-Goog-Content-Length-Range': `1,${uploadUrl.max_upload_size_mb * 1000000}`,
-      }
-      return await apiPutAffiliationFile(uploadUrl.upload_url, headers, file);
-    },
-    onSuccess: () => {
-      console.log("Subio el archivo de afiliación correctamente.")
-    },
-    onError: () => {
-      console.log("Fallo al intentar subir el archivo de afiliación")
     },
   });
 }

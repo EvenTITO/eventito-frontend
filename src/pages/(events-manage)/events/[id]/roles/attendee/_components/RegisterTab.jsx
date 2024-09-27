@@ -6,7 +6,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/
 import {Alert, AlertDescription} from "@/components/ui/alert";
 import {Upload} from "lucide-react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {usePutAffiliationFile, useUpdateInscription} from "@/hooks/events/attendeeHooks";
+import {useUpdateInscription} from "@/hooks/events/attendeeHooks";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 import {INSCRIPTION_ROLES_LABELS} from "@/lib/Constants.js";
 
@@ -24,7 +24,6 @@ export default function RegisterTab({inscription}) {
     isPending,
     error,
   } = useUpdateInscription();
-  const {mutateAsync: putAffiliationFile} = usePutAffiliationFile();
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -42,10 +41,7 @@ export default function RegisterTab({inscription}) {
       newInscriptionData.affiliation = editInscription.affiliation;
       newInscriptionData.file = editInscription.file;
     }
-    const res = await changeRegistration({inscriptionId: inscription.id, newInscriptionData});
-    if (res.data.upload_url) {
-      await putAffiliationFile({uploadUrl: res.data.upload_url, file: editInscription.file});
-    }
+    await changeRegistration({inscriptionId: inscription.id, newInscriptionData});
     setIsEditing(false);
     setEditInscription({affiliation: inscription.affiliation, roles: undefined})
   };
