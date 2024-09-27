@@ -6,7 +6,6 @@ import PaymentsTab from "./_components/PaymentsTab";
 
 export default function Page({ inscription, payments }) {
   const [error, setError] = useState("");
-  console.log("inscription front", inscription)
   return (
     <ContainerPage>
       <TitlePage title={"Mi inscripción"} />

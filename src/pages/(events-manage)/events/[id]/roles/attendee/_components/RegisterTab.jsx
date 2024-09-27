@@ -6,13 +6,11 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/
 import {Alert, AlertDescription} from "@/components/ui/alert";
 import {Upload} from "lucide-react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {useUpdateInscription} from "@/hooks/events/attendeeHooks";
-import {useSelector} from "react-redux";
+import {usePutAffiliationFile, useUpdateInscription} from "@/hooks/events/attendeeHooks";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 import {INSCRIPTION_ROLES_LABELS} from "@/lib/Constants.js";
 
 export default function RegisterTab({inscription}) {
-  const {currentUser} = useSelector((state) => state.user);
   const [isEditing, setIsEditing] = useState(false);
   const [editInscription, setEditInscription] = useState(
     {
@@ -26,6 +24,7 @@ export default function RegisterTab({inscription}) {
     isPending,
     error,
   } = useUpdateInscription();
+  const {mutateAsync: putAffiliationFile} = usePutAffiliationFile();
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -36,9 +35,19 @@ export default function RegisterTab({inscription}) {
   };
 
   const handleSave = async () => {
-    const newInscriptionData = {...editInscription, roles: editInscription.roles.split(',')};
-    await changeRegistration({inscriptionId: inscription.id, newInscriptionData});
+    const newInscriptionData = {
+      roles: editInscription.roles ? editInscription.roles.split(',') : inscription.roles
+    };
+    if (editInscription.affiliation) {
+      newInscriptionData.affiliation = editInscription.affiliation;
+      newInscriptionData.file = editInscription.file;
+    }
+    const res = await changeRegistration({inscriptionId: inscription.id, newInscriptionData});
+    if (res.data.upload_url) {
+      await putAffiliationFile({uploadUrl: res.data.upload_url, file: editInscription.file});
+    }
     setIsEditing(false);
+    setEditInscription({affiliation: inscription.affiliation, roles: undefined})
   };
 
   return (
@@ -98,7 +107,7 @@ function ViewInscription({inscription}) {
     <div className="space-y-4">
       <div className="flex gap-2 items-center">
         <span className="font-semibold">
-          Participación elegida: {inscription.roles.join(', ')}
+          Participación elegida: {inscription.roles.map(role => INSCRIPTION_ROLES_LABELS[role]).join(', ')}
         </span>
       </div>
       <div className="flex gap-2 items-center">
@@ -111,7 +120,6 @@ function ViewInscription({inscription}) {
 }
 
 function EditInscription({editInscription, setEditInscription, error}) {
-  console.log("edit inscription: ", editInscription)
   const handleInputChange = (field, value) => {
     setEditInscription((prev) => ({...prev, [field]: value}));
   };

@@ -2,7 +2,11 @@ import {EVENTS_URL} from "@/lib/Constants";
 import {getEventId} from "@/lib/utils";
 import {HTTPClient} from "@/services/api/HTTPClient";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {apiGetInscriptions, apiUpdateInscription} from "@/services/api/events/inscriptions/queries.js";
+import {
+  apiGetInscriptions,
+  apiPutAffiliationFile,
+  apiUpdateInscription
+} from "@/services/api/events/inscriptions/queries.js";
 import {convertInscriptions} from "@/services/api/events/inscriptions/conversor.js";
 
 export function useGetInscription() {
@@ -57,6 +61,24 @@ export function useNewPayment() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["getPayments"]});
+    },
+  });
+}
+
+export function usePutAffiliationFile() {
+  return useMutation({
+    mutationFn: async ({uploadUrl, file}) => {
+      const headers = {
+        'Content-Type': 'application/octet-stream',
+        'X-Goog-Content-Length-Range': `1,${uploadUrl.max_upload_size_mb * 1000000}`,
+      }
+      return await apiPutAffiliationFile(uploadUrl.upload_url, headers, file);
+    },
+    onSuccess: () => {
+      console.log("Subio el archivo de afiliación correctamente.")
+    },
+    onError: () => {
+      console.log("Fallo al intentar subir el archivo de afiliación")
     },
   });
 }
