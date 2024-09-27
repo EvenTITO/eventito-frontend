@@ -39,7 +39,7 @@ export default function AddAuthorDialog({ newAuthor }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Agregar autor</Button>
+        <Button variant="outline">Agregar autor</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

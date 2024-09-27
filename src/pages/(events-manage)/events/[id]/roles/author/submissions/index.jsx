@@ -2,7 +2,6 @@ import LineTabs from "@/components/LineTabs";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import Content from "./Content";
-import Members from "../_components/Members";
 import GoBackLink from "@/pages/(events-manage)/_components/GoBackLink";
 import SubmissionInfo from "./_components/SubmissionInfo";
 
@@ -20,10 +19,6 @@ export default function ViewSubmissionPage() {
           {
             label: "Contenido",
             component: <Content submissionData={submissionData} />,
-          },
-          {
-            label: "Miembros",
-            component: <Members authorList={submissionData.authors} />,
           },
         ]}
       />

@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { FileTextIcon } from "lucide-react";
 import StatCard from "./StatCard";
+import AddAuthorDialog from "../../_components/AddAuthorDialog";
 
 export default function SubmissionInfo({ submissionData }) {
   const canModify = new Date(submissionData.deadline_date) >= new Date();
@@ -16,7 +16,7 @@ export default function SubmissionInfo({ submissionData }) {
           icon="CheckCircle"
         />
         <StatCard
-          title="Modificable"
+          title="Editable"
           value={canModify ? "Sí" : "No"}
           icon="FileText"
         />
@@ -29,7 +29,10 @@ export default function SubmissionInfo({ submissionData }) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center">Autores</CardTitle>
+          <CardTitle className="flex items-center justify-between">
+            <span>Autores</span>
+            <AddAuthorDialog />
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
