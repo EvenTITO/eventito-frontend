@@ -41,7 +41,6 @@ export function useSubmitInscription() {
   return useMutation({
     mutationFn: async ({inscriptionData}) => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      console.log('inscription:', inscriptionData)
       const res = await apiSubmitInscription(httpClient, eventId, inscriptionData);
       await uploadFile(res.data.upload_url, inscriptionData.file);
     },
