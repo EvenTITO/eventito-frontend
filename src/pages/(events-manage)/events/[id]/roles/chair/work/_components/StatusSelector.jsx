@@ -27,13 +27,10 @@ import {
 } from "@/components/ui/popover";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 
-import { WORKS_STATUS_LABELS } from "@/lib/Constants"
+import { WORKS_STATUS_PUBLISH } from "@/lib/Constants"
+import { keyValueToValueLabel } from "@/lib/utils";
 
-const statuses = [
-  { value: "APPROVED", label: "Aceptado" },
-  { value: "RE_SUBMIT", label: "En revisión" },
-  { value: "REJECTED", label: "Rechazado" },
-];
+const statuses = keyValueToValueLabel(WORKS_STATUS_PUBLISH)
 
 export default function StatusSelector({
   submitChairReview,
@@ -72,8 +69,8 @@ export default function StatusSelector({
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar estado" />
               </SelectTrigger>
-              <SelectContent>
-                {statuses.map((status) => (
+              <SelectContent>{
+                statuses.map((status) => (
                   <SelectItem key={status.value} value={status.value}>
                     {status.label}
                   </SelectItem>
