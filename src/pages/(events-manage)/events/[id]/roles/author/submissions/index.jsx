@@ -36,27 +36,27 @@ const submissionData = {
   abstract: "Trabajo abstract",
   authors: [
     {
-      username: "Gonzalo Sabatino",
+      full_name: "Gonzalo Sabatino",
       email: "gsabatino@fi.uba.ar",
-      isSpeaker: false,
+      is_speaker: false,
       affiliation: "FIUBA",
     },
     {
-      username: "Lucas Veron",
+      full_name: "Lucas Veron",
       email: "lveron@fi.uba.ar",
-      isSpeaker: false,
+      is_speaker: false,
       affiliation: "FIUBA",
     },
     {
-      username: "Fernando Sinisi",
+      full_name: "Fernando Sinisi",
       email: "fsinisi@fi.uba.ar",
-      isSpeaker: true,
+      is_speaker: true,
       affiliation: "FIUBA",
     },
     {
-      username: "Mateo Capon",
+      full_name: "Mateo Capon",
       email: "mcapon@fi.uba.ar",
-      isSpeaker: false,
+      is_speaker: false,
       affiliation: "FIUBA",
     },
   ],
@@ -65,4 +65,5 @@ const submissionData = {
   deadline_date: "2024-09-26T23:43:00.573Z",
   creation_date: "2024-09-26T23:43:00.573Z",
   last_update: "2024-09-26T23:43:00.573Z",
+  status: "Entregado",
 };
