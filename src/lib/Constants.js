@@ -22,17 +22,17 @@ export const WORKS_STATUS_LABELS = {
 
 export const REGISTRATION_ROLES = [
   {
-    id: "attendee",
+    id: "ATTENDEE",
     title: "Asistente",
     description: "Asistir al evento para escuchar charlas",
   },
   {
-    id: "author",
+    id: "SPEAKER",
     title: "Autor",
     description: "Presentar uno o más trabajos en el evento",
   },
   {
-    id: "attendee-author",
+    id: "ATTENDEE,SPEAKER",
     title: "Asistente y autor",
     description: "Asistir a charlas y presentar trabajos",
   },
