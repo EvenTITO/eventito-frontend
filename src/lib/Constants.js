@@ -49,3 +49,8 @@ export const REVIEW_STATUS_LABELS_REVERSE = {
   "Desaprobado": "NOT_APPROVED",
   "A revisar": "RE_SUBMIT"
 }
+
+export const INSCRIPTION_ROLES_LABELS = {
+  "SPEAKER": "Autor",
+  "ATTENDEE": "Asistente"
+}

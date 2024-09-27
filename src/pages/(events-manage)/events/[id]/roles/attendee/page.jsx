@@ -4,14 +4,13 @@ import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import RegisterTab from "./_components/RegisterTab";
 import PaymentsTab from "./_components/PaymentsTab";
 
-export default function Page({ registerData, payments }) {
+export default function Page({ inscription, payments }) {
   const [error, setError] = useState("");
-
   return (
     <ContainerPage>
       <TitlePage title={"Mi inscripción"} />
       <div className="flex flex-col gap-6">
-        <RegisterTab error={error} registerData={registerData} />
+        <RegisterTab error={error} inscription={inscription} />
         <PaymentsTab payments={payments} />
       </div>
     </ContainerPage>
