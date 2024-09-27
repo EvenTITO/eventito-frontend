@@ -1,7 +1,7 @@
 import LineTabs from "@/components/LineTabs";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
-import Content from "./Content";
+import Content from "./_components/Content";
 import GoBackLink from "@/pages/(events-manage)/_components/GoBackLink";
 import SubmissionInfo from "./_components/SubmissionInfo";
 
@@ -13,7 +13,7 @@ export default function Page({ submissionData }) {
       <LineTabs
         tabs={[
           {
-            label: "Datos de entrega",
+            label: "Información de entrega",
             component: <SubmissionInfo submissionData={submissionData} />,
           },
           {

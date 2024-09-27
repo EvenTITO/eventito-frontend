@@ -16,7 +16,7 @@ export default function SubmissionInfo({ submissionData }) {
           icon="CheckCircle"
         />
         <StatCard
-          title="Editable"
+          title="En fecha de edición"
           value={canModify ? "Sí" : "No"}
           icon="FileText"
         />
