@@ -51,7 +51,6 @@ export function useGetReviewersForWork() {
   });
 }
 
-// Lucas!
 export function useAddReviewer() {
   const workId = getWorkId();
   const eventId = getEventId();
@@ -73,7 +72,7 @@ export function useAddReviewer() {
       return await apiPostAddReviewer(httpClient, eventId, reviewers)
       },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getReviewsForWork", {workId}]})
+      queryClient.invalidateQueries({queryKey: ["getReviewersForWork", {workId}]})
     },
   })
 }
