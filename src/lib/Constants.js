@@ -40,5 +40,12 @@ export const REGISTRATION_ROLES = [
 
 export const REVIEW_STATUS_LABELS = {
   "APPROVED": "Aprobado",
-  "NOT_APPROVED": "Desaprobado"
+  "NOT_APPROVED": "Desaprobado",
+  "RE_SUBMIT": "A revisar"
+}
+
+export const REVIEW_STATUS_LABELS_REVERSE = {
+  "Aprobado": "APPROVED",
+  "Desaprobado": "NOT_APPROVED",
+  "A revisar": "RE_SUBMIT"
 }

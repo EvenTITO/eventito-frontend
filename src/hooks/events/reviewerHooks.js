@@ -3,7 +3,7 @@ import {getEventId, getWorkId, wait} from "@/lib/utils";
 import {HTTPClient} from "@/services/api/HTTPClient";
 import {apiGetAssignments, apiPostReview} from "@/services/api/events/reviewer/queries";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {convertAssignments} from "@/services/api/events/reviewer/conversor.js";
+import {convertAssignments, convertReviewToReviewBody} from "@/services/api/events/reviewer/conversor.js";
 
 export function useGetMyAssignments() {
   const eventId = getEventId();
@@ -26,12 +26,7 @@ export function useSubmitReview() {
   return useMutation({
     mutationFn: async ({review}) => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      const reviewBody = {
-        status: "APPROVED",
-        review: {
-          answers: review
-        }
-      }
+      const reviewBody = convertReviewToReviewBody(review);
       return await apiPostReview(httpClient, eventId, workId, reviewBody);
     },
     onSuccess: () => {
