@@ -2,7 +2,7 @@ import {EVENTS_URL} from "@/lib/Constants";
 import {getEventId} from "@/lib/utils";
 import {HTTPClient} from "@/services/api/HTTPClient";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {apiGetMyInscriptions, apiUpdateInscription} from "@/services/api/events/inscriptions/queries.js";
+import {apiGetMyInscriptions, apiUpdateInscription, apiSubmitInscription} from "@/services/api/events/inscriptions/queries.js";
 import {convertInscriptions} from "@/services/api/events/inscriptions/conversor.js";
 import {uploadFile} from "@/services/api/storage/queries.js";
 
@@ -33,6 +33,27 @@ export function useGetPayments() {
     },
   });
 }
+
+export function useSubmitInscription() {
+  const eventId = getEventId();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({inscriptionData}) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      console.log('inscription:', inscriptionData)
+      const res = await apiSubmitInscription(httpClient, eventId, inscriptionData);
+      await uploadFile(res.data.upload_url, inscriptionData.file);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["getMyInscriptions", {eventId}]});
+    },
+    onError: (e) => {
+      console.error(JSON.stringify(e))
+    },
+  });
+}
+
 
 export function useUpdateInscription() {
   const eventId = getEventId();

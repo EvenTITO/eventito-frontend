@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Upload } from "lucide-react";
 import { MotionDiv } from "../../_components/Animation";
-import { useSubmitRegistration } from "@/hooks/events/registrationHooks";
+import { useSubmitInscription } from "@/hooks/events/attendeeHooks";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 import { REGISTRATION_ROLES } from "@/lib/Constants";
 
@@ -35,7 +35,7 @@ export default function RegistrationForm() {
     mutateAsync: submitRegistration,
     isPending,
     error: submitError,
-  } = useSubmitRegistration();
+  } = useSubmitInscription();
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -44,7 +44,13 @@ export default function RegistrationForm() {
   };
 
   const onSubmit = async (data) => {
-    await submitRegistration({ registrationData: data });
+    const inscriptionData = {
+      ...data,
+      file: file,
+      roles: data.role.split(',')
+    }
+
+    await submitRegistration({ inscriptionData });
   };
 
   return (
