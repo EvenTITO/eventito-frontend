@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Label } from "@/components/ui/label";
-import { addAbstract } from "@/state/events/newSubmissionSlice";
+import { addAbstract } from "@/state/events/newWorkSlice";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function FormContentData() {
@@ -10,6 +10,7 @@ export default function FormContentData() {
   function changeAbstract(newAbstract) {
     setAbstract(newAbstract);
     dispatch(addAbstract(newAbstract));
+    console.log('new abstract', newAbstract);
   }
 
   return (

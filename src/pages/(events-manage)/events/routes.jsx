@@ -8,7 +8,7 @@ import AssignmentPage from "./[id]/roles/reviewer/assigment";
 import ChairWorkPage from "./[id]/roles/chair/work";
 import AttendeePage from "./[id]/roles/attendee";
 import NewPaymentPage from "./[id]/roles/attendee/new-payment";
-import NewSubmissionPage from "./[id]/roles/author/new-submission";
+import NewSubmissionPage from "./[id]/roles/author/new-work";
 import ViewWorkPage from "./[id]/roles/author/works";
 
 export default function RoutesEvents() {
@@ -45,7 +45,7 @@ export default function RoutesEvents() {
         element={<NewPaymentPage />}
       />
       <Route
-        path="/events/:id/roles/author/new-submission"
+        path="/events/:id/roles/author/new-work"
         element={<NewSubmissionPage />}
       />
     </Routes>

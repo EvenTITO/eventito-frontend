@@ -2,10 +2,12 @@ import { EVENTS_URL } from "@/lib/Constants";
 import { getEventId, getWorkId, wait } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGetMyWorks, apiPutWork, apiGetSubmissionUploadUrl } from "@/services/api/works/queries";
+import { apiGetMyWorks, apiPutWork, apiGetSubmissionUploadUrl, apiPostWork } from "@/services/api/works/queries";
 import { convertMyWorks } from "@/services/api/works/conversor";
 import { getWorkById } from "@/hooks/events/worksHooks"
 import { uploadFile } from "@/services/api/storage/queries"
+import { getInscriptionWithPayments } from "@/hooks/events/attendeeHooks"
+
 
 export function useGetMyWorks() {
   const eventId = getEventId();
@@ -19,15 +21,36 @@ export function useGetMyWorks() {
   });
 }
 
-export function useNewSubmission() {
+export function useNewWork() {
   const eventId = getEventId();
 
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({ workData }) => {
-      await wait(2);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const inscription = await queryClient.ensureQueryData({
+        queryKey: ["getMyInscription", {eventId}],
+        queryFn: async () => await getInscriptionWithPayments(eventId)
+      })
+
+      console.log('new work', workData);
+      const work = {
+        ...workData,
+        keywords: workData.keywords.split(','),
+        authors: [
+          {
+            full_name: "TODO",
+            membership: inscription.affiliation,
+            mail: "TODO@mail.com",
+            notify_updates: true,
+            is_speaker: true,
+            is_main: true
+          }
+        ]
+      }
+      console.log('creando', work)
+      await apiPostWork(httpClient, eventId, work);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

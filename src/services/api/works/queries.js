@@ -31,6 +31,10 @@ export const apiGetMyWorks = async (httpClient, eventId) => {
   return (await httpClient.get(`/${eventId}/works/my-works`)).data;
 };
 
+export const apiPostWork = async (httpClient, eventId, work) => {
+  return (await httpClient.post(`/${eventId}/works`, work)).data;
+};
+
 export const apiPutWork = async (httpClient, eventId, workId, workUpdate) => {
   return (await httpClient.put(`/${eventId}/works/${workId}`, workUpdate)).data;
 };

@@ -10,7 +10,7 @@ export default function NewSubmissionButton() {
   const deadlineSubmissions = getDeadlineSubmissions(eventData)?.date;
 
   function handleNewSubmission() {
-    navigator.foward("new-submission");
+    navigator.foward("new-work");
   }
 
   if (!dateIsValid(deadlineSubmissions)) {

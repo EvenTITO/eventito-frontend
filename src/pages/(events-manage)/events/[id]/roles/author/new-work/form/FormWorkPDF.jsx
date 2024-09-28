@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addPdfFile } from "@/state/events/newSubmissionSlice";
+import { addPdfFile } from "@/state/events/newWorkSlice";
 import { Label } from "@/components/ui/label";
 import { Upload } from "lucide-react";
 
