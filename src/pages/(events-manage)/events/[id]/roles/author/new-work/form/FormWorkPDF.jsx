@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Upload } from "lucide-react";
 
 export default function FormWorkPDF() {
-  const { pdfFile } = useSelector((state) => state.newSubmission);
+  const { pdfFile } = useSelector((state) => state.newWork);
   const [pdf, setPdf] = useState(pdfFile);
   const dispatch = useDispatch();
 
@@ -36,6 +36,7 @@ export default function FormWorkPDF() {
             id="file-upload"
             name="file-upload"
             type="file"
+            accept=".pdf"
             className="sr-only"
             onChange={changeFile}
           />

@@ -13,7 +13,6 @@ export function getEventsWaitingApproval() {
       const httpClient = new HTTPClient(EVENTS_URL);
       // TODO: add offset & limit.
       const eventData = await apiGetAllEventsWaitingApproval(httpClient);
-      console.log(`eventdata: ${JSON.stringify(eventData)}`);
       return convertEventsWaitingApproval(eventData);
     },
   });

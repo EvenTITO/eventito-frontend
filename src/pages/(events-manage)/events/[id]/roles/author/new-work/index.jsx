@@ -15,8 +15,9 @@ export default function Page() {
   const { mutateAsync: newWork, isPending, error } = useNewWork();
 
   const { title, keywords, track, abstract, pdfFile } = useSelector(
-    (state) => state.newSubmission,
+    (state) => state.newWork,
   );
+
   const booleanForSteps = [title && keywords && track, abstract, pdfFile];
   const stepsComponents = [
     <FormWorkData tracks={eventData.tracks || []} />,
