@@ -61,3 +61,18 @@ function convertReviewer(reviewer) {
     deadline: reviewer.works[0].review_deadline
   }
 }
+
+function convertMyWork(myWork) {
+  return {
+    id: myWork.id,
+    title: myWork.title,
+    authors: myWork.authors,
+    status: myWork.state,
+    track: myWork.track,
+    abstract: myWork.abstract
+  }
+}
+
+export function convertMyWorks(myWorks) {
+  return myWorks.map(convertMyWork)
+}
