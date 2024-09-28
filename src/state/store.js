@@ -3,6 +3,7 @@ import userReducer from "./user/userSlice";
 import eventReducer from "./events/eventSlice";
 import createEventReducer from "./events/createEventSlice";
 import newPaymentReducer from "./events/newPaymentSlice";
+import newSubmissionReducer from "./events/newSubmissionSlice";
 import userEventReducer from "./events/userEventSlice";
 import authReducer from "./auth/authSlice";
 import { persistReducer, persistStore } from "redux-persist";
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   createEvent: createEventReducer,
   newPayment: newPaymentReducer,
+  newSubmission: newSubmissionReducer,
 });
 
 const persistConfig = {

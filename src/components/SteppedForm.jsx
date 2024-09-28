@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import ButtonWithLoading from "./ButtonWithLoading";
 
 export default function SteppedForm({
   title,
   onSave,
   onCancel,
   booleanForSteps,
-  stepsComponents
+  stepsComponents,
+  isSavePending,
 }) {
   const [step, setStep] = useState(0);
   const [error, setError] = useState("");
@@ -60,6 +62,7 @@ export default function SteppedForm({
         amountSteps={stepsComponents.length - 1}
         handleNext={handleNext}
         handleSubmit={handleSubmit}
+        isSavePending={isSavePending}
       />
     </FormContainer>
   );
@@ -94,6 +97,7 @@ function FormBottom({
   amountSteps,
   handleNext,
   handleSubmit,
+  isSavePending,
 }) {
   return (
     <div
@@ -115,7 +119,9 @@ function FormBottom({
         {step < amountSteps ? (
           <Button onClick={handleNext}>Siguiente</Button>
         ) : (
-          <Button onClick={handleSubmit}>Finalizar</Button>
+          <ButtonWithLoading onClick={handleSubmit} isLoading={isSavePending}>
+            Finalizar
+          </ButtonWithLoading>
         )}
       </div>
     </div>
