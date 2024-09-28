@@ -46,6 +46,8 @@ function QuestionCard({ question, onUpdate, onDelete }) {
         `Option ${editingQuestion.options.length + 1}`,
       ],
     });
+    setEditingOptionIndex(editingQuestion.options.length);
+    setIsEditDialogOpen(true);
   };
 
   return (
