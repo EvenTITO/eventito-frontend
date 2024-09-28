@@ -32,7 +32,6 @@ export default function Page() {
       abstract,
       pdfFile
     };
-    console.log('el work ess:', workData);
     await newWork({
       workData
     });
