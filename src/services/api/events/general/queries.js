@@ -17,3 +17,7 @@ export const apiGetAllEvents = async (httpClient) => {
 export const apiPostCreateEvent = async (httpClient, body) => {
   return (await httpClient.post("", body));
 };
+
+export const apiUpdateGeneralEvent = async (httpClient, eventId, body) => {
+  return (await httpClient.put(`/${eventId}/configuration/general`, body));
+};
