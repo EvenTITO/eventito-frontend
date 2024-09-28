@@ -6,7 +6,6 @@ export const apiGetWorksByTrack = async (httpClient, eventId, track, limit=100, 
   })).data;
 };
 
-
 export const apiGetWorkById = async (httpClient, eventId, workId) => {
   return (await httpClient.get(`/${eventId}/works/${workId}`)).data;
 };
@@ -29,6 +28,10 @@ export const apiGetReviewersForWork = async (httpClient, eventId, workId) => {
 
 export const apiGetMyWorks = async (httpClient, eventId) => {
   return (await httpClient.get(`/${eventId}/works/my-works`)).data;
+};
+
+export const apiPostWork = async (httpClient, eventId, work) => {
+  return (await httpClient.post(`/${eventId}/works`, work)).data;
 };
 
 export const apiPutWork = async (httpClient, eventId, workId, workUpdate) => {

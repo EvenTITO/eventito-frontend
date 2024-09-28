@@ -108,7 +108,7 @@ export function useNewPayment() {
   });
 }
 
-async function getInscriptionWithPayments(eventId) {
+export async function getInscriptionWithPayments(eventId) {
   const httpClient = new HTTPClient(EVENTS_URL);
   const inscription = await apiGetMyInscriptions(httpClient, eventId);
   const payments = await apiGetInscriptionPayments(

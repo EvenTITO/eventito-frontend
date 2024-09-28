@@ -8,8 +8,8 @@ const initialState = {
   pdfFile: null,
 };
 
-const newSubmissionSlice = createSlice({
-  name: "newSubmission",
+const newWorkSlice = createSlice({
+  name: "newWork",
   initialState,
   reducers: {
     addTitle: (state, action) => {
@@ -44,6 +44,6 @@ export const {
   addAbstract,
   addPdfFile,
   reset,
-} = newSubmissionSlice.actions;
+} = newWorkSlice.actions;
 
-export default newSubmissionSlice.reducer;
+export default newWorkSlice.reducer;
