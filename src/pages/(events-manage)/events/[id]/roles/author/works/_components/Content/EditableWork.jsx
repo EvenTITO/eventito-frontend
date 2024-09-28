@@ -25,7 +25,7 @@ import { useGetEvent } from "@/hooks/events/useEventState";
 export default function EditableWork({ workData }) {
   const [title, setTitle] = useState(workData.title);
   const [track, setTrack] = useState(workData.track);
-  const [keywords, setKeywords] = useState(workData.keywords);
+  const [keywords, setKeywords] = useState(workData.keywords?.join(','));
   const [abstract, setAbstract] = useState(workData.abstract);
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState(workData.pdfFileName);

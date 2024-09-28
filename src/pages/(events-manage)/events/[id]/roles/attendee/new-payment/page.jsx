@@ -11,7 +11,7 @@ export default function Page({ eventData, works }) {
   const navigator = useNavigator("/new-payment");
   const dispatch = useDispatch();
   const { mutateAsync: newPayment, isPending, error } = useNewPayment();
-  const { pricing, paymentPDF, affiliationPDF, worksIds } = useSelector(
+  const { pricing, paymentPDF, worksIds } = useSelector(
     (state) => state.newPayment,
   );
 
