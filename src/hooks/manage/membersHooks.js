@@ -5,9 +5,11 @@ import { HTTPClient } from "@/services/api/HTTPClient";
 import {
   apiGetEventMembers,
   apiPutMemberRole,
+  apiPostMember,
+  apiDeleteMember
 } from "@/services/api/events/members/queries";
 import { convertEventMembers } from "@/services/api/events/members/conversor";
-import { apiPostMember } from "@/services/api/events/members/queries"
+
 
 export function useAddMember() {
   const eventId = getEventId();
@@ -56,6 +58,22 @@ export function useUpdateMemberRole() {
       }
       const httpClient = new HTTPClient(EVENTS_URL);
       return await apiPutMemberRole(httpClient, userId, roles, eventId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getEventMembers"] });
+    },
+  });
+}
+
+
+export function useDeleteMember() {
+  const eventId = getEventId();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ userId }) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      return await apiDeleteMember(httpClient, eventId, userId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["getEventMembers"] });
