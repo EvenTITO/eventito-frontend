@@ -21,7 +21,7 @@ export default function Page({selectedWork, reviews, reviewers}) {
     isPending,
     isSuccess,
   } = useGetWorkDownloadURL();
-  const chairReview = useSubmitChairReview();
+  const chairReview = useSubmitChairReview(reviews);
   const updateReviewDeadlineForReviewer = useUpdateReviewDeadlineForReviewer();
 
   useEffect(() => {
