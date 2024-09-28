@@ -9,7 +9,7 @@ export default function Page({ works, eventData }) {
   const navigator = useNavigator();
 
   const handleRowClick = (work) => {
-    const path = `submissions/${work.id}`;
+    const path = `works/${work.id}`;
     navigator.foward(path);
   };
 

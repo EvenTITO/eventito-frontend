@@ -3,17 +3,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import StatCard from "./StatCard";
 import AddAuthorDialog from "../../_components/AddAuthorDialog";
-import { onSubmissionEditDay } from "./utils";
+import { onWorkEditDay } from "./utils";
+import {WORKS_STATUS_LABELS} from "@/lib/Constants.js";
 
-export default function SubmissionInfo({ submissionData }) {
-  const isEditable = onSubmissionEditDay(submissionData);
-
+export default function WorkInfo({ workData }) {
+  const isEditable = onWorkEditDay(workData);
   return (
     <div className="space-y-8">
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard
           title="Estado"
-          value={submissionData.status}
+          value={WORKS_STATUS_LABELS[workData.status]}
           icon="CheckCircle"
         />
         <StatCard
@@ -27,8 +27,8 @@ export default function SubmissionInfo({ submissionData }) {
           }
           value={
             isEditable
-              ? new Date(submissionData.deadline_date).toLocaleDateString()
-              : new Date(submissionData.last_update).toLocaleDateString()
+              ? new Date(workData.deadlineDate).toLocaleDateString()
+              : new Date(workData.lastUpdate).toLocaleDateString()
           }
           icon="ClockIcon"
         />
@@ -43,7 +43,7 @@ export default function SubmissionInfo({ submissionData }) {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {submissionData.authors.map((author, index) => (
+            {workData.authors.map((author, index) => (
               <div
                 key={index}
                 className="flex items-center space-x-4 p-2 rounded-md transition-colors hover:bg-accent"

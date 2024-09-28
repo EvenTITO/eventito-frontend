@@ -11,7 +11,6 @@ export function getDeadlineSubmissions(eventData) {
 }
 
 export function dateIsValid(minDate = null, maxDate = null) {
-  // TODO (gsabatino9): terminar de validar esto
   let valid = true;
   const now = new Date();
 
@@ -26,6 +25,5 @@ export function dateIsValid(minDate = null, maxDate = null) {
       valid = false;
     }
   }
-
   return valid;
 }

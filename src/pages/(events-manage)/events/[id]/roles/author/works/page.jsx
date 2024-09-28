@@ -2,23 +2,23 @@ import LineTabs from "@/components/LineTabs";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import GoBackLink from "@/pages/(events-manage)/_components/GoBackLink";
-import SubmissionInfo from "./_components/SubmissionInfo";
+import WorkInfo from "./_components/WorkInfo.jsx";
 import Content from "./_components/Content";
 
-export default function Page({ submissionData }) {
+export default function Page({ workData }) {
   return (
     <ContainerPage>
-      <GoBackLink to={"/submissions"} text={"Volver a mis trabajos"} />
-      <TitlePage title={submissionData.title} />
+      <GoBackLink to={"/works"} text={"Volver a mis trabajos"} />
+      <TitlePage title={workData.title} />
       <LineTabs
         tabs={[
           {
             label: "Información de presentación",
-            component: <SubmissionInfo submissionData={submissionData} />,
+            component: <WorkInfo workData={workData} />,
           },
           {
             label: "Contenido",
-            component: <Content submissionData={submissionData} />,
+            component: <Content submissionData={workData} />,
           },
         ]}
       />
