@@ -16,10 +16,7 @@ export default function RoutesEvents() {
     <Routes>
       <Route path="/events" element={<LayoutEvents />}>
         <Route path="/events/:id/view" element={<EventViewPage />} />
-        <Route
-          path="/events/:id/view/general"
-          element={<EventViewPage />}
-        />
+        <Route path="/events/:id/view/general" element={<EventViewPage />} />
         <Route path="/events/:id/roles/attendee" element={<AttendeePage />} />
 
         <Route path="/events/:id/roles/author" element={<AuthorPage />} />
@@ -38,10 +35,6 @@ export default function RoutesEvents() {
 
         <Route path="/events/:id/roles/author" element={<AuthorPage />} />
         <Route
-          path="/events/:id/roles/author/new-submission"
-          element={<NewSubmissionPage />}
-        />
-        <Route
           path="/events/:id/roles/author/submissions/:workId"
           element={<ViewSubmissionPage />}
         />
@@ -50,6 +43,10 @@ export default function RoutesEvents() {
       <Route
         path="/events/:id/roles/attendee/new-payment"
         element={<NewPaymentPage />}
+      />
+      <Route
+        path="/events/:id/roles/author/new-submission"
+        element={<NewSubmissionPage />}
       />
     </Routes>
   );

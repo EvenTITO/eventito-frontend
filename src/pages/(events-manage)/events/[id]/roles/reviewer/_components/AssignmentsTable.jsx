@@ -26,7 +26,6 @@ export default function AssignmentsTable({ assignments, handleRowClick }) {
           <TableCursorRow
             key={assignment.id}
             onClick={() => handleRowClick(assignment)}
-            className="cursor-pointer hover:bg-muted/50"
           >
             <TableCell className="font-medium">{assignment.title}</TableCell>
             <TableCell>{assignment.authorCount}</TableCell>
