@@ -16,17 +16,19 @@ export function useGetWorkById() {
 
   return useQuery({
     queryKey: ["getWorkById", { workId }],
-    queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL);
-      const work = await apiGetWorkById(httpClient, eventId, workId);
-      const submissions = await apiGetSubmissionsForWork(
-        httpClient,
-        eventId,
-        workId,
-      );
-      return convertWork(work, submissions);
-    },
+    queryFn: async () => await getWorkById(eventId, workId),
   });
+}
+
+export const getWorkById = async (eventId, workId) => {
+  const httpClient = new HTTPClient(EVENTS_URL);
+  const work = await apiGetWorkById(httpClient, eventId, workId);
+  const submissions = await apiGetSubmissionsForWork(
+    httpClient,
+    eventId,
+    workId,
+    );
+  return convertWork(work, submissions);
 }
 
 export function useGetWorkDownloadURL() {

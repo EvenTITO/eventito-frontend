@@ -2,8 +2,9 @@ import { EVENTS_URL } from "@/lib/Constants";
 import { getEventId, getWorkId, wait } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGetMyWorks } from "@/services/api/works/queries";
+import { apiGetMyWorks, apiPutWork } from "@/services/api/works/queries";
 import { convertMyWorks } from "@/services/api/works/conversor";
+import { getWorkById } from "@/hooks/events/worksHooks"
 
 export function useGetMyWorks() {
   const eventId = getEventId();
@@ -43,13 +44,25 @@ export function useEditSubmission() {
 
   return useMutation({
     mutationFn: async ({ submissionData }) => {
-      await wait(2);
-      return null;
+      console.log(`submissionData: ${JSON.stringify(submissionData)}`)
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const work = await queryClient.ensureQueryData({queryKey: ["getWorkById", { workId }], queryFn: async () => await getWorkById(eventId, workId)})
+      
+      const workUpdate = {
+        ...submissionData,
+        keywords: submissionData.keywords.split(','),
+        authors: work.authors
+      }
+
+      await apiPutWork(httpClient, eventId, workId, workUpdate)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getMySubmission"],
-      });
+        queryKey: ["getMyWorks"],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ["getWorkById", { workId }],
+      })
     },
   });
 }
