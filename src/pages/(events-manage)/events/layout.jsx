@@ -6,12 +6,11 @@ import { useGetEvent } from "@/hooks/events/useEventState";
 import { useEffect } from "react";
 import { useNavigator } from "@/lib/navigation";
 import { getEventId } from "@/lib/utils";
+import EventSidebar from "./_components/Sidebar";
 
 export default function LayoutEvents() {
   const { data: eventData, isPending } = useGetEvent();
 
-  // TODO: verificar si el id del evento es el mismo en el que estoy parado.
-  // Si no lo es => actualizarlo forzosamente.
   const layoutComponent = (
     <Layout
       eventTitle={eventData?.title || ""}
@@ -42,7 +41,7 @@ function Layout({ eventTitle, roles }) {
       <Header headerTitle={eventTitle} />
 
       <div className="flex flex-1 pt-16">
-        <Sidebar isSidebarOpen={true} roles={roles} />
+        <EventSidebar roles={roles} />
         <main className="flex-1 p-4 md:ml-64 pt-4 overflow-auto">
           <Outlet />
         </main>

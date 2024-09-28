@@ -36,7 +36,7 @@ export function useGetMembers() {
   });
 }
 
-export function updateMemberRole() {
+export function useUpdateMemberRole() {
   const eventId = getEventId();
   const queryClient = useQueryClient();
 
