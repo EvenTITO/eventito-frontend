@@ -9,7 +9,7 @@ import FormContentData from "./form/FormContentData";
 import FormWorkPDF from "./form/FormWorkPDF";
 
 export default function Page() {
-  const navigator = useNavigator("new-work");
+  const navigator = useNavigator("/new-work");
   const dispatch = useDispatch();
   const { data: eventData } = useGetEvent();
   const { mutateAsync: newWork, isPending, error } = useNewWork();

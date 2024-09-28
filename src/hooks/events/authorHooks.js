@@ -33,8 +33,6 @@ export function useNewWork() {
         queryKey: ["getMyInscription", {eventId}],
         queryFn: async () => await getInscriptionWithPayments(eventId)
       })
-
-      console.log('new work', workData);
       const work = {
         ...workData,
         keywords: workData.keywords.split(','),
