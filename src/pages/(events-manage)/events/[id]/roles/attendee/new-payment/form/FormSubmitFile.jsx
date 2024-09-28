@@ -36,13 +36,6 @@ export default function FormSubmitPayment() {
         changeFile={changePayment}
         pdf={paymentPDFFile}
       />
-      {pricing.need_verification ? (
-        <PDFOption
-          title={"Cargar comprobante de filiacion"}
-          changeFile={changeAffiliation}
-          pdf={affiliationPDFFile}
-        />
-      ) : null}
     </div>
   );
 }

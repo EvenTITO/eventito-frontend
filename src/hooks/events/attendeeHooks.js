@@ -1,7 +1,7 @@
-import { EVENTS_URL } from "@/lib/Constants";
-import { getEventId, getInscriptionId } from "@/lib/utils";
-import { HTTPClient } from "@/services/api/HTTPClient";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {EVENTS_URL} from "@/lib/Constants";
+import {getEventId, getInscriptionId} from "@/lib/utils";
+import {HTTPClient} from "@/services/api/HTTPClient";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {
   apiGetInscriptionPayments,
   apiGetMyInscriptions,
@@ -9,25 +9,16 @@ import {
   apiSubmitInscription,
   apiUpdateInscription,
 } from "@/services/api/events/inscriptions/queries.js";
-import { convertInscription } from "@/services/api/events/inscriptions/conversor.js";
-import { uploadFile } from "@/services/api/storage/queries.js";
+import {convertInscription} from "@/services/api/events/inscriptions/conversor.js";
+import {uploadFile} from "@/services/api/storage/queries.js";
 
 export function useGetMyInscription() {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getMyInscription", { eventId }],
-    queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL);
-      const inscription = await apiGetMyInscriptions(httpClient, eventId);
-      const payments = await apiGetInscriptionPayments(
-        httpClient,
-        eventId,
-        inscription.id,
-      );
-      return convertInscription(inscription, payments);
-    },
-    onError: (error) => {
+    queryKey: ["getMyInscription", {eventId}],
+    queryFn: async () => await getInscriptionWithPayments(eventId),
+    onError: (e) => {
       console.error(JSON.stringify(e));
     },
   });
@@ -38,7 +29,7 @@ export function useSubmitInscription() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ inscriptionData }) => {
+    mutationFn: async ({inscriptionData}) => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const res = await apiSubmitInscription(
         httpClient,
@@ -49,7 +40,7 @@ export function useSubmitInscription() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getMyInscription", { eventId }],
+        queryKey: ["getMyInscription", {eventId}],
       });
     },
     onError: (e) => {
@@ -63,7 +54,7 @@ export function useUpdateInscription() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ inscriptionId, newInscriptionData }) => {
+    mutationFn: async ({inscriptionId, newInscriptionData}) => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const res = await apiUpdateInscription(
         httpClient,
@@ -75,7 +66,7 @@ export function useUpdateInscription() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getMyInscription", { eventId }],
+        queryKey: ["getMyInscription", {eventId}],
       });
     },
     onError: (e) => {
@@ -86,27 +77,44 @@ export function useUpdateInscription() {
 
 export function useNewPayment() {
   const eventId = getEventId();
-  const inscriptionId = getInscriptionId();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ paymentData }) => {
+    mutationFn: async ({paymentData}) => {
       const httpClient = new HTTPClient(EVENTS_URL);
+      const inscription = await queryClient.ensureQueryData({
+        queryKey: ["getMyInscription", {eventId}],
+        queryFn: async () => await getInscriptionWithPayments(eventId)
+      })
+      console.log(paymentData)
+      console.log(inscription)
       const res = await apiPutInscriptionPayment(
         httpClient,
         eventId,
-        inscriptionId,
+        inscription.id,
         paymentData,
       );
       await uploadFile(res.data.upload_url, paymentData.file);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getMyInscription", { eventId }],
+        queryKey: ["getMyInscription", {eventId}],
       });
     },
-    onError: (e) => {
-      console.error(JSON.stringify(e));
-    },
+    onError:
+      (e) => {
+        console.error(JSON.stringify(e));
+      },
   });
+}
+
+async function getInscriptionWithPayments(eventId) {
+  const httpClient = new HTTPClient(EVENTS_URL);
+  const inscription = await apiGetMyInscriptions(httpClient, eventId);
+  const payments = await apiGetInscriptionPayments(
+    httpClient,
+    eventId,
+    inscription.id,
+  );
+  return convertInscription(inscription, payments);
 }
