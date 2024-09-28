@@ -14,3 +14,6 @@ export const apiPostAddReviewer = async (httpClient, eventId, body) => {
   return (await httpClient.post(`/${eventId}/reviewers`, body));
 };
 
+export const apiPostReviewsPublish = async (httpClient, eventId, workId, body) => {
+  return (await httpClient.post(`/${eventId}/works/${workId}/reviews/publish`, body));
+};

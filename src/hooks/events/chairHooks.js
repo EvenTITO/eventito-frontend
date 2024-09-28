@@ -4,7 +4,7 @@ import {HTTPClient} from "@/services/api/HTTPClient";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {apiGetReviewersForWork, apiGetReviewsForWork, apiGetWorksByTrack} from "@/services/api/works/queries";
 import {convertReviewers, convertReviews, convertWorks} from "@/services/api/works/conversor";
-import {apiPutReviewDeadline, apiPostAddReviewer} from "@/services/api/events/reviewer/queries";
+import {apiPutReviewDeadline, apiPostAddReviewer, apiPostReviewsPublish} from "@/services/api/events/reviewer/queries";
 import {format} from "date-fns";
 
 export function useGetWorksByTrack(track) {
@@ -77,7 +77,8 @@ export function useAddReviewer() {
   })
 }
 
-export function useSubmitChairReview() {
+export function useSubmitChairReview(reviews) {
+  const reviewsIds = reviews != undefined ? reviews.map(r => r.reviewId) : []
   const workId = getWorkId();
   const eventId = getEventId();
 
@@ -85,12 +86,28 @@ export function useSubmitChairReview() {
 
   return useMutation({
     mutationFn: async ({status, deadlineDate}) => {
-      await wait(2);
-      return null;
+      console.log(`status: ${status}`)
+
+      const httpClient = new HTTPClient(EVENTS_URL);
+
+      let reviewsToPublish = {
+        reviews_to_publish: reviewsIds,
+        new_work_status: status,
+      }
+      if(deadlineDate != undefined){
+        const formattedDatetime = format(new Date(deadlineDate), "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+        reviewsToPublish.resend_deadline = formattedDatetime
+      }
+      return await apiPostReviewsPublish(httpClient, eventId, workId, reviewsToPublish)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["getReviewsForWork", {workId}]});
     },
+    onError: (error) => {
+      const errorDesc = `Ups!! Hubo 1 Er0rr!\nError description: ${error}\nError Detail: ${error.response.data.detail}`
+      console.error(errorDesc);
+      alert(errorDesc)
+    }
   });
 }
 

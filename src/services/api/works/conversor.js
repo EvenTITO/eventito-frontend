@@ -44,7 +44,8 @@ function convertReview(review) {
     status: review.status,
     submissionId: review.submission_id,
     reviewerId: review.reviewer_id,
-    reviewForm: review.review.answers
+    reviewForm: review.review.answers,
+    reviewId: review.id
   }
 }
 

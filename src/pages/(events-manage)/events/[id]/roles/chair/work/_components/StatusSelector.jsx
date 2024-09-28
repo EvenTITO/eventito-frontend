@@ -27,11 +27,10 @@ import {
 } from "@/components/ui/popover";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 
-const statuses = [
-  { value: "aceptado", label: "Aceptado" },
-  { value: "en-revision", label: "En revisión" },
-  { value: "rechazado", label: "Rechazado" },
-];
+import { WORKS_STATUS_PUBLISH } from "@/lib/Constants"
+import { keyValueToValueLabel } from "@/lib/utils";
+
+const statuses = keyValueToValueLabel(WORKS_STATUS_PUBLISH)
 
 export default function StatusSelector({
   submitChairReview,
@@ -44,7 +43,7 @@ export default function StatusSelector({
 
   const handleStatusChange = (value) => {
     setSelectedStatus(value);
-    if (value !== "en-revision") {
+    if (value !== "RE_SUBMIT") {
       setDate(null);
     }
   };
@@ -70,8 +69,8 @@ export default function StatusSelector({
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar estado" />
               </SelectTrigger>
-              <SelectContent>
-                {statuses.map((status) => (
+              <SelectContent>{
+                statuses.map((status) => (
                   <SelectItem key={status.value} value={status.value}>
                     {status.label}
                   </SelectItem>
@@ -79,7 +78,7 @@ export default function StatusSelector({
               </SelectContent>
             </Select>
           </div>
-          {selectedStatus === "en-revision" && (
+          {selectedStatus === "RE_SUBMIT" && (
             <div className="grid gap-2">
               <Popover>
                 <PopoverTrigger asChild>

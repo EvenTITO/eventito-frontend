@@ -34,3 +34,8 @@ export function getWorkId() {
 export async function wait(secs) {
   return new Promise((resolve) => setTimeout(resolve, secs * 1000));
 }
+
+export function keyValueToValueLabel(obj){
+  return Object.entries(obj).map(([value, label]) => {
+    return { value, label };
+})}

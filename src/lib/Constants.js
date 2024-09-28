@@ -13,6 +13,12 @@ export const CHAIR_ROLE = "CHAIR";
 export const REVIEWER_ROLE = "REVIEWER";
 export const AUTHOR_ROLE = "AUTHOR";
 
+export const WORKS_STATUS_PUBLISH = {
+  "APPROVED": "Aceptado",
+  "RE_SUBMIT": "En revisión",
+  "REJECTED": "Rechazado"
+}
+
 export const WORKS_STATUS_LABELS = {
   APPROVED: "Aprobado",
   REJECTED: "Rechazado",
