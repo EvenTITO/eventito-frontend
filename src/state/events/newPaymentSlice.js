@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   pricing: null,
-  pdfFile: null,
+  paymentPDF: null,
+  affiliationPDF: null,
 };
 
 const newPaymentSlice = createSlice({
@@ -13,16 +14,20 @@ const newPaymentSlice = createSlice({
       state.pricing = action.payload;
     },
     addPdfPayment: (state, action) => {
-      state.pdfFile = action.payload;
+      state.paymentPDF = action.payload;
+    },
+    addPdfAffiliation: (state, action) => {
+      state.affiliationPDF = action.payload;
     },
     reset: (state) => {
       state.pricing = initialState.pricing;
-      state.pdfFile = initialState.pdfFile;
+      state.paymentPDF = initialState.paymentPDF;
+      state.affiliationPDF = initialState.affiliationPDF;
     },
   },
 });
 
-export const { addPaymentChoice, addPdfPayment, reset } =
+export const { addPaymentChoice, addPdfPayment, addPdfAffiliation, reset } =
   newPaymentSlice.actions;
 
 export default newPaymentSlice.reducer;

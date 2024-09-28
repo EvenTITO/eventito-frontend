@@ -1,15 +1,15 @@
-import {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {addPaymentChoice} from "@/state/events/newPaymentSlice";
-import {cn} from "@/lib/utils";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addPaymentChoice } from "@/state/events/newPaymentSlice";
+import { cn } from "@/lib/utils";
 
-export default function FormSelectPayment({eventPricing}) {
-  const {pricing} = useSelector((state) => state.newPayment);
+export default function FormSelectPayment({ eventPricing }) {
+  const { pricing } = useSelector((state) => state.newPayment);
   const [price, setPrice] = useState(pricing);
   const dispatch = useDispatch();
 
   function changePrice(fareName) {
-    setPrice(fareName);
+    setPrice(fareName.name);
     dispatch(addPaymentChoice(fareName));
   }
 
@@ -26,7 +26,7 @@ export default function FormSelectPayment({eventPricing}) {
                 ? "border-primary bg-primary/10"
                 : "border-gray-200 hover:border-primary",
             )}
-            onClick={() => changePrice(fareOption.name)}
+            onClick={() => changePrice(fareOption)}
           >
             <div className="flex items-center space-x-2">
               <div
