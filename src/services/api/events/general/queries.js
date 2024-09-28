@@ -21,3 +21,7 @@ export const apiPostCreateEvent = async (httpClient, body) => {
 export const apiUpdateGeneralEvent = async (httpClient, eventId, body) => {
   return (await httpClient.put(`/${eventId}/configuration/general`, body));
 };
+
+export const apiGetUploadEventImageUrl = async (httpClient, eventId, imageName) => {
+  return (await httpClient.get(`/${eventId}/upload_url/${imageName}`)).data;
+};

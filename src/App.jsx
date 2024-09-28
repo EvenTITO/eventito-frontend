@@ -1,7 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import RoutesAuth from "./pages2/auth/routes";
 import RoutesHome from "./pages2/home/routes";
-import RoutesParticipants from "./pages2/participants/routes";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "@firebase/auth";
 import { auth } from "@/services/firebase/firebaseAuth.js";
@@ -40,7 +39,6 @@ function App() {
       <RoutesEvents />
       <RouteViewEvent />
       <RoutesOrganization />
-      <RoutesParticipants />
     </BrowserRouter>
   );
 }
