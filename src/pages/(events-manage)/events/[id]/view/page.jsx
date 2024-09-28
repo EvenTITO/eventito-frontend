@@ -34,8 +34,7 @@ export default function Page({ eventInfo }) {
               {eventInfo.media.find((item) => item.name === "banner_image") && (
                 <img
                   src={
-                    eventInfo.media.find((item) => item.name === "banner_image")
-                      .url
+                    eventInfo.media.find((item) => item.name === "banner_image").url
                   }
                   width={1200}
                   height={400}
@@ -93,12 +92,9 @@ export default function Page({ eventInfo }) {
                 {eventInfo.media.find((item) => item.name === "main_image") && (
                   <img
                     src={
-                      eventInfo.media.find((item) => item.name === "main_image")
-                        .url
+                      eventInfo.media.find((item) => item.name === "main_image").url
                     }
                     alt="Event Main Image"
-                    width={800}
-                    height={600}
                     className="w-full h-auto object-cover rounded-lg mt-4"
                   />
                 )}

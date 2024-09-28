@@ -5,9 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Upload } from "lucide-react";
 
 export default function FormSubmitPayment() {
-  const { pricing, paymentPDF, affiliationPDF } = useSelector((state) => state.newPayment);
+  const { pricing, paymentPDF } = useSelector((state) => state.newPayment);
   const [paymentPDFFile, setPaymentPDFFile] = useState(paymentPDF);
-  const [affiliationPDFFile, setAfiliationPDFFile] = useState(affiliationPDF);
 
   const dispatch = useDispatch();
 
@@ -15,13 +14,6 @@ export default function FormSubmitPayment() {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setPaymentPDFFile(file);
-      dispatch(addPdfPayment(file));
-    }
-  }
-  function changeAffiliation(e) {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setAfiliationPDFFile(file);
       dispatch(addPdfPayment(file));
     }
   }

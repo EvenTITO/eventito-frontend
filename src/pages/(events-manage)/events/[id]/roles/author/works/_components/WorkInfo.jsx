@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import StatCard from "./StatCard";
 import AddAuthorDialog from "../../_components/AddAuthorDialog";
 import { onWorkEditDay } from "./utils";
-import {WORKS_STATUS_LABELS} from "@/lib/Constants.js";
+import { WORKS_STATUS_LABELS } from "@/lib/Constants.js";
 
 export default function WorkInfo({ workData }) {
   const isEditable = onWorkEditDay(workData);
