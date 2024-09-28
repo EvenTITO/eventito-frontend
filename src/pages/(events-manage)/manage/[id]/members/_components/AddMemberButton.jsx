@@ -9,8 +9,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 import { useAddMember } from "@/hooks/manage/membersHooks";
+import {
+  CHAIR_ROLE,
+  EVENT_ROLES_LABELS,
+  ORGANIZER_ROLE,
+} from "@/lib/Constants";
 
 export default function AddMemberButton() {
   const [email, setEmail] = useState("");
@@ -23,7 +35,7 @@ export default function AddMemberButton() {
     e.preventDefault();
     if (email && role) {
       await addMember({
-        newMemberEmail: member,
+        newMemberEmail: email,
         newMemberRole: role,
       });
       setEmail("");
@@ -52,13 +64,29 @@ export default function AddMemberButton() {
               required
             />
           </div>
+          <div>
+            <Label htmlFor="role">Rol del miembro</Label>
+            <Select value={role} onValueChange={setRole} required>
+              <SelectTrigger id="role">
+                <SelectValue placeholder="Selecciona un rol" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={CHAIR_ROLE}>
+                  {EVENT_ROLES_LABELS[CHAIR_ROLE]}
+                </SelectItem>
+                <SelectItem value={ORGANIZER_ROLE}>
+                  {EVENT_ROLES_LABELS[ORGANIZER_ROLE]}
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <div className="w-full flex justify-end">
             <ButtonWithLoading
               type="submit"
-              disabled={!email}
+              disabled={!email || !role}
               isLoading={isPending}
             >
-              Agregar autor
+              Agregar miembro
             </ButtonWithLoading>
           </div>
         </form>
