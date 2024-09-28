@@ -1,9 +1,9 @@
-import { onSubmissionEditDay } from "../utils";
+import { onWorkEditDay } from "../utils";
 import EditableSubmission from "./EditableSubmission";
 import ReadonlySubmission from "./ViewOnlySubmission";
 
 export default function Content({ submissionData }) {
-  const isEditable = onSubmissionEditDay(submissionData);
+  const isEditable = onWorkEditDay(submissionData);
 
   return isEditable ? (
     <EditableSubmission submissionData={submissionData} />

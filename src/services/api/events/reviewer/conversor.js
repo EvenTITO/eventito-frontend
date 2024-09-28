@@ -21,7 +21,7 @@ function convertAssignment(assignment) {
     submitter: getMainAuthorFullName(assignment.work),
     maxReviewDate: new Date(assignment.review_deadline),
     track: assignment.work.track,
-    authors: assignment.work.authors.map((a) => a.full_name),
+    authors: assignment.work.authors,
     abstract: assignment.work.abstract
   }
 }

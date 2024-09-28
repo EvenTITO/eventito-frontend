@@ -21,7 +21,7 @@ export function DetailsTab({ selectedWork: work, getFileData, isPending }) {
         <div className="flex items-center space-x-2">
           <Users className="h-5 w-5 text-muted-foreground" />
           <span className="font-semibold">Autores:&nbsp;</span>
-          {work.authors.join(", ")}
+          {work.authors.map(a => a.full_name).join(", ")}
         </div>
         <div className="flex items-center space-x-2">
           <BookOpen className="h-5 w-5 text-muted-foreground" />
