@@ -57,7 +57,7 @@ function QuestionCard({ question, onUpdate, onDelete }) {
         <div className="font-semibold text-lg flex-grow">{question.title}</div>
         <div className="flex items-center">
           <Button
-            variant="ghost"
+            variant="table"
             size="sm"
             onClick={() => {
               setEditingOptionIndex(null);
@@ -66,7 +66,7 @@ function QuestionCard({ question, onUpdate, onDelete }) {
           >
             <Pencil className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="sm" onClick={onDelete}>
+          <Button variant="table" size="sm" onClick={onDelete}>
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
@@ -97,14 +97,14 @@ function QuestionCard({ question, onUpdate, onDelete }) {
               <div className="w-6 h-6 rounded-full border border-gray-300 mr-2"></div>
               <div className="flex-grow">{option}</div>
               <Button
-                variant="ghost"
+                variant="table"
                 size="sm"
                 onClick={() => handleEditOption(index)}
               >
                 <Pencil className="h-4 w-4" />
               </Button>
               <Button
-                variant="ghost"
+                variant="table"
                 size="sm"
                 onClick={() => {
                   const newOptions = question.options.filter(
