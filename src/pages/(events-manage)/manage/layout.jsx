@@ -6,6 +6,7 @@ import {useGetEvent} from "@/hooks/events/useEventState";
 import {useEffect} from "react";
 import {useNavigator} from "@/lib/navigation";
 import {getEventId} from "@/lib/utils";
+import {ORGANIZER_ROLE} from "@/lib/Constants.js";
 
 export default function LayoutOrganization() {
   const {data: eventData, isPending} = useGetEvent();
@@ -33,7 +34,7 @@ function Layout({eventTitle, roles}) {
     if (
       !roles ||
       roles.length === 0 ||
-      roles.filter((r) => r === "ORGANIZER").length === 0
+      roles.filter((r) => r === ORGANIZER_ROLE).length === 0
     ) {
       console.log(roles);
       navigator.to(`/view/events/${eventId}`);

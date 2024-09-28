@@ -160,7 +160,7 @@ export default function Page({ eventInfo }) {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-2">
                     <Users className="h-5 w-5" />
-                    <span>Organizador por: {eventInfo.organized_by}</span>
+                    <span>Organizado por: {eventInfo.organized_by}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Mail className="h-5 w-5" />

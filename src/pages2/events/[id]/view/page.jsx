@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { CalendarDays, MapPin, Tag, FileText, Users, Clock, Mail } from "lucide-react"
 import { RegistrationTab } from "./prices"
+import {ORGANIZER_ROLE} from "@/lib/Constants.js";
 
 export default function EventViewPage() {
   const [activeTab, setActiveTab] = useState("overview")
@@ -131,7 +132,7 @@ export default function EventViewPage() {
                 <div className="space-y-4">
                   <div className="flex items-center space-x-2">
                     <Users className="h-5 w-5" />
-                    <span>Organizador por: {event.organized_by}</span>
+                    <span>Organizado por: {event.organized_by}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Mail className="h-5 w-5" />
@@ -192,7 +193,7 @@ Este año, PyCon 2024 Argentina se llevará a cabo en la vibrante ciudad de Buen
       time: null
     }
   ],
-  roles: ["ORGANIZER"],
+  roles: [ORGANIZER_ROLE],
   status: "CREATED",
   tracks: ["track1", "track2", "track3", "track4", "track5", "track6"],
   pricing: [

@@ -1,32 +1,15 @@
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
-import { Link, useParams } from "react-router-dom";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Upload } from "lucide-react";
-
-const roles = [
-  {
-    id: "attendee",
-    title: "Asistente",
-    description: "Asistir al evento para escuchar charlas",
-  },
-  {
-    id: "author",
-    title: "Autor",
-    description: "Presentar uno o más trabajos en el evento",
-  },
-  {
-    id: "attendee-author",
-    title: "Asistente y autor",
-    description: "Asistir a charlas y presentar trabajos",
-  },
-];
+import {useEffect, useState} from "react";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {cn} from "@/lib/utils";
+import {Link, useParams} from "react-router-dom";
+import {Alert, AlertDescription} from "@/components/ui/alert";
+import {Upload} from "lucide-react";
+import {REGISTRATION_ROLES} from "@/lib/Constants.js";
 
 export default function EventRegistrationPage() {
-  const { id } = useParams();
+  const {id} = useParams();
 
   const [role, setRole] = useState("");
   const [affiliation, setAffiliation] = useState("");
@@ -56,7 +39,7 @@ export default function EventRegistrationPage() {
       return;
     }
 
-    console.log({ role, affiliation, file });
+    console.log({role, affiliation, file});
   };
 
   const handleFileChange = (e) => {
@@ -84,7 +67,7 @@ export default function EventRegistrationPage() {
                 Seleccionar tu actividad en el evento
               </h2>
               <div className="grid gap-4 sm:grid-cols-2">
-                {roles.map((roleOption) => (
+                {REGISTRATION_ROLES.map((roleOption) => (
                   <div
                     key={roleOption.id}
                     className={cn(
@@ -135,7 +118,7 @@ export default function EventRegistrationPage() {
                       htmlFor="file-upload"
                       className="cursor-pointer bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                     >
-                      <Upload className="h-4 w-4 inline-block mr-2" />
+                      <Upload className="h-4 w-4 inline-block mr-2"/>
                       Seleccionar archivo
                     </label>
                     <input

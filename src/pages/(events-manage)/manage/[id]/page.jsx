@@ -92,7 +92,7 @@ export default function Page({ eventInfo }) {
               ) : (
                 <span>
                   <span className="text-muted-foreground">
-                    Organizador por:
+                    Organizado por:
                   </span>{" "}
                   {event.organized_by}
                 </span>

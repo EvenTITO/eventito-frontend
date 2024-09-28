@@ -1,24 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import {Button} from "@/components/ui/button";
+import {ScrollArea} from "@/components/ui/scroll-area";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger,} from "@/components/ui/accordion";
+import {BriefcaseBusiness, Calendar, ClipboardPenLine, FileCheck, FileStack, Info, Settings,} from "lucide-react";
+import {useNavigate, useParams} from "react-router-dom";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
-  BriefcaseBusiness,
-  Calendar,
-  ClipboardPenLine,
-  FileCheck,
-  FileStack,
-  Info,
-  Settings,
-} from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+  ATTENDEE_ROLE,
+  CHAIR_ROLE,
+  EVENT_ROLES_LABELS,
+  ORGANIZER_ROLE,
+  REVIEWER_ROLE,
+  SPEAKER_ROLE
+} from "@/lib/Constants.js";
 
-export default function Component({ isSidebarOpen = true, roles = [] }) {
-  const { id } = useParams();
+export default function Component({isSidebarOpen = true, roles = []}) {
+  const {id} = useParams();
   const navigate = useNavigate();
 
   const filteredItemList = itemList.filter((parent) =>
@@ -86,15 +81,15 @@ const itemList = [
     children: [
       {
         label: "Información",
-        icon: <Info className={classNameIcons} />,
+        icon: <Info className={classNameIcons}/>,
         to: "view/general",
-        requiredRoles: ["ORGANIZER", "CHAIR", "REVIEWER", "ATTENDEE", "AUTHOR"],
+        requiredRoles: Object.keys(EVENT_ROLES_LABELS),
       },
       {
         label: "Calendario",
-        icon: <Calendar className={classNameIcons} />,
+        icon: <Calendar className={classNameIcons}/>,
         to: "view/calendar",
-        requiredRoles: ["ORGANIZER", "CHAIR", "REVIEWER", "ATTENDEE", "AUTHOR"],
+        requiredRoles: Object.keys(EVENT_ROLES_LABELS),
       },
     ],
   },
@@ -103,21 +98,21 @@ const itemList = [
     children: [
       {
         label: "Inscripcion",
-        icon: <ClipboardPenLine className={classNameIcons} />,
+        icon: <ClipboardPenLine className={classNameIcons}/>,
         to: "roles/attendee",
-        requiredRoles: ["ATTENDEE", "AUTHOR"],
+        requiredRoles: [ATTENDEE_ROLE, SPEAKER_ROLE],
       },
       {
         label: "Entregas",
-        icon: <BriefcaseBusiness className={classNameIcons} />,
+        icon: <BriefcaseBusiness className={classNameIcons}/>,
         to: "roles/author",
-        requiredRoles: ["AUTHOR"],
+        requiredRoles: [SPEAKER_ROLE],
       },
       {
         label: "Asignaciones de revision",
-        icon: <FileCheck className={classNameIcons} />,
+        icon: <FileCheck className={classNameIcons}/>,
         to: "roles/reviewer",
-        requiredRoles: ["REVIEWER"],
+        requiredRoles: [REVIEWER_ROLE],
       },
     ],
   },
@@ -126,15 +121,15 @@ const itemList = [
     children: [
       {
         label: "Tracks",
-        icon: <FileStack className={classNameIcons} />,
+        icon: <FileStack className={classNameIcons}/>,
         to: "roles/chair",
-        requiredRoles: ["ORGANIZER", "CHAIR"],
+        requiredRoles: [ORGANIZER_ROLE, CHAIR_ROLE],
       },
       {
         label: "Panel de organizador",
-        icon: <Settings className={classNameIcons} />,
+        icon: <Settings className={classNameIcons}/>,
         to: "members",
-        requiredRoles: ["ORGANIZER"],
+        requiredRoles: [ORGANIZER_ROLE],
         absolute: true,
       },
     ],

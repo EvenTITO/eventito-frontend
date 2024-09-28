@@ -1,37 +1,14 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { PlusIcon } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import React, {useState} from "react";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table";
+import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger,} from "@/components/ui/sheet";
+import {PlusIcon} from "lucide-react";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger,} from "@/components/ui/accordion";
+import {ATTENDEE_ROLE, EVENT_ROLES_LABELS, SPEAKER_ROLE} from "@/lib/Constants.js";
 
 export default function PricesPage() {
   const [prices, setPrices] = useState([
@@ -41,7 +18,7 @@ export default function PricesPage() {
       description: "Tarifa con descuento por registro antes del 20/09",
       amount: 50,
       isFree: false,
-      role: "attendee",
+      role: ATTENDEE_ROLE,
       deadline: "2023-09-20",
     },
     {
@@ -50,7 +27,7 @@ export default function PricesPage() {
       description: "Tarifa regular como asistente",
       amount: 100,
       isFree: false,
-      role: "attendee",
+      role: ATTENDEE_ROLE,
     },
     {
       id: 3,
@@ -58,7 +35,7 @@ export default function PricesPage() {
       description: "Tarifa con descuento por estudiante de FIUBA",
       amount: 0,
       isFree: true,
-      role: "attendee",
+      role: ATTENDEE_ROLE,
     },
     {
       id: 4,
@@ -66,7 +43,7 @@ export default function PricesPage() {
       description: "Tarifa para autores que envían antes del 15/08",
       amount: 75,
       isFree: false,
-      role: "author",
+      role: SPEAKER_ROLE,
       deadline: "2023-08-15",
     },
   ]);
@@ -77,27 +54,27 @@ export default function PricesPage() {
     description: "",
     amount: 0,
     isFree: false,
-    role: "attendee",
+    role: ATTENDEE_ROLE,
   });
-  const [activeTab, setActiveTab] = useState("attendee");
+  const [activeTab, setActiveTab] = useState(ATTENDEE_ROLE);
 
   const handleAddOrUpdatePrice = (e) => {
     e.preventDefault();
     if (editingPrice) {
       setPrices(
         prices.map((p) =>
-          p.id === editingPrice.id ? { ...editingPrice, ...newPrice } : p,
+          p.id === editingPrice.id ? {...editingPrice, ...newPrice} : p,
         ),
       );
     } else {
-      setPrices([...prices, { id: prices.length + 1, ...newPrice }]);
+      setPrices([...prices, {id: prices.length + 1, ...newPrice}]);
     }
     setNewPrice({
       name: "",
       description: "",
       amount: 0,
       isFree: false,
-      role: "attendee",
+      role: ATTENDEE_ROLE,
     });
     setEditingPrice(null);
     setIsOpen(false);
@@ -110,7 +87,7 @@ export default function PricesPage() {
   };
 
   const filteredPrices = prices.filter(
-    (price) => price.role === activeTab || price.role === "both",
+    (price) => price.role === activeTab || price.role === "BOTH",
   );
 
   return (
@@ -121,8 +98,8 @@ export default function PricesPage() {
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex">
             {[
-              { key: "attendee", label: "Tarifas de asistente" },
-              { key: "author", label: "Tarifas de autor" },
+              {key: ATTENDEE_ROLE, label: "Tarifas de asistente"},
+              {key: SPEAKER_ROLE, label: "Tarifas de autor"},
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -145,7 +122,7 @@ export default function PricesPage() {
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button>
-              <PlusIcon className="mr-2 h-4 w-4" />
+              <PlusIcon className="mr-2 h-4 w-4"/>
               Nueva tarifa
             </Button>
           </SheetTrigger>
@@ -166,7 +143,7 @@ export default function PricesPage() {
                         id="priceName"
                         value={newPrice.name}
                         onChange={(e) =>
-                          setNewPrice({ ...newPrice, name: e.target.value })
+                          setNewPrice({...newPrice, name: e.target.value})
                         }
                         placeholder="Ingresar título"
                         required
@@ -234,16 +211,16 @@ export default function PricesPage() {
                       <Select
                         value={newPrice.role}
                         onValueChange={(value) =>
-                          setNewPrice({ ...newPrice, role: value })
+                          setNewPrice({...newPrice, role: value})
                         }
                       >
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Seleccionar rol" />
+                          <SelectValue placeholder="Seleccionar rol"/>
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="attendee">Asistente</SelectItem>
-                          <SelectItem value="author">Autor</SelectItem>
-                          <SelectItem value="both">Ambos</SelectItem>
+                          <SelectItem value={ATTENDEE_ROLE}>{EVENT_ROLES_LABELS[ATTENDEE_ROLE]}</SelectItem>
+                          <SelectItem value={SPEAKER_ROLE}>{EVENT_ROLES_LABELS[SPEAKER_ROLE]}</SelectItem>
+                          <SelectItem value="BOTH">Ambos roles</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -254,7 +231,7 @@ export default function PricesPage() {
                         type="date"
                         value={newPrice.deadline || ""}
                         onChange={(e) =>
-                          setNewPrice({ ...newPrice, deadline: e.target.value })
+                          setNewPrice({...newPrice, deadline: e.target.value})
                         }
                       />
                     </div>
