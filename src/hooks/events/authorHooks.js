@@ -1,11 +1,14 @@
 import { EVENTS_URL } from "@/lib/Constants";
 import { getEventId, getWorkId, wait } from "@/lib/utils";
+import { useSelector } from "react-redux";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGetMyWorks, apiPutWork, apiGetSubmissionUploadUrl } from "@/services/api/works/queries";
+import { apiGetMyWorks, apiPutWork, apiGetSubmissionUploadUrl, apiPostWork } from "@/services/api/works/queries";
 import { convertMyWorks } from "@/services/api/works/conversor";
 import { getWorkById } from "@/hooks/events/worksHooks"
 import { uploadFile } from "@/services/api/storage/queries"
+import { getInscriptionWithPayments } from "@/hooks/events/attendeeHooks"
+
 
 export function useGetMyWorks() {
   const eventId = getEventId();
@@ -19,15 +22,36 @@ export function useGetMyWorks() {
   });
 }
 
-export function useNewSubmission() {
+export function useNewWork() {
   const eventId = getEventId();
-
+  const { currentUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({ workData }) => {
-      await wait(2);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const inscription = await queryClient.ensureQueryData({
+        queryKey: ["getMyInscription", {eventId}],
+        queryFn: async () => await getInscriptionWithPayments(eventId)
+      })
+      const work = {
+        abstract: workData.abstract,
+        title: workData.title,
+        track: workData.track,
+        keywords: workData.keywords.split(','),
+        authors: [
+          {
+            full_name: currentUser.fullname,
+            membership: inscription.affiliation,
+            mail: currentUser.email,
+            notify_updates: true,
+            is_speaker: true,
+            is_main: true
+          }
+        ]
+      }
+      const workId = await apiPostWork(httpClient, eventId, work);
+      await uploadSubmissionFile(eventId, workId, workData.pdfFile);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -38,11 +62,13 @@ export function useNewSubmission() {
 }
 
 async function uploadSubmissionFile(eventId, workId, file) {
-  if(file){
-    const httpClient = new HTTPClient(EVENTS_URL)
-    const updloadUrl = await apiGetSubmissionUploadUrl(httpClient, eventId, workId)
-    await uploadFile(updloadUrl.upload_url, file)
+  if (!file) {
+    console.log('No submission file given');
+    return;
   }
+  const httpClient = new HTTPClient(EVENTS_URL);
+  const updloadUrl = await apiGetSubmissionUploadUrl(httpClient, eventId, workId);
+  await uploadFile(updloadUrl.upload_url, file);
 }
 
 export function useEditWork() {

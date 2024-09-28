@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Label } from "@/components/ui/label";
-import { addAbstract } from "@/state/events/newSubmissionSlice";
+import { addAbstract } from "@/state/events/newWorkSlice";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function FormContentData() {

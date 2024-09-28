@@ -1,22 +1,23 @@
 import { useNavigator } from "@/lib/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { reset } from "@/state/events/newSubmissionSlice";
+import { reset } from "@/state/events/newWorkSlice";
 import SteppedForm from "@/components/SteppedForm";
 import FormWorkData from "./form/FormWorkData";
 import { useGetEvent } from "@/hooks/events/useEventState";
-import { useNewSubmission } from "@/hooks/events/authorHooks";
+import { useNewWork } from "@/hooks/events/authorHooks";
 import FormContentData from "./form/FormContentData";
 import FormWorkPDF from "./form/FormWorkPDF";
 
 export default function Page() {
-  const navigator = useNavigator("/new-submission");
+  const navigator = useNavigator("/new-work");
   const dispatch = useDispatch();
   const { data: eventData } = useGetEvent();
-  const { mutateAsync: newSubmission, isPending, error } = useNewSubmission();
+  const { mutateAsync: newWork, isPending, error } = useNewWork();
 
   const { title, keywords, track, abstract, pdfFile } = useSelector(
-    (state) => state.newSubmission,
+    (state) => state.newWork,
   );
+
   const booleanForSteps = [title && keywords && track, abstract, pdfFile];
   const stepsComponents = [
     <FormWorkData tracks={eventData.tracks || []} />,
@@ -25,12 +26,15 @@ export default function Page() {
   ];
 
   async function onSave() {
-    await newSubmission({
-      workData: {
-        title,
-        keywords,
-        track,
-      },
+    const workData = {
+      title,
+      keywords,
+      track,
+      abstract,
+      pdfFile
+    };
+    await newWork({
+      workData
     });
     dispatch(reset());
     navigator.back();

@@ -1,50 +1,51 @@
-import { useState } from "react";
-import { format } from "date-fns";
-import { CalendarDays, MapPin, Users, Edit2, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  MotionDiv,
-  MotionH1,
-  MotionH2,
-  MotionMain,
-  MotionP,
-} from "./_components/Animation";
+import {useState} from "react";
+import {format} from "date-fns";
+import {CalendarDays, Clock, Edit2, MapPin, Users} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
+import {Calendar} from "@/components/ui/calendar";
+import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover";
+import {MotionDiv, MotionH1, MotionH2, MotionMain, MotionP,} from "./_components/Animation";
 import ContainerOrganizationPage from "./_components/ContainerOrganizationPage";
 import ImageHeader from "./_components/ImageHeader";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
-import { useEditEvent } from "@/hooks/manage/generalHooks";
+import {useEditEvent, useUploadEventImage} from "@/hooks/manage/generalHooks";
 
-export default function Page({ eventInfo }) {
+export default function Page({eventInfo}) {
   const [event, setEvent] = useState(eventInfo);
   const [isEditing, setIsEditing] = useState(false);
-  const { mutateAsync: submitEditEvent, isPending, error } = useEditEvent();
+  const {mutateAsync: submitEditEvent, isPending, error} = useEditEvent();
+  const {mutateAsync: uploadEventImage} = useUploadEventImage();
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEvent((prev) => ({ ...prev, [name]: value }));
+    const {name, value} = e.target;
+    setEvent((prev) => ({...prev, [name]: value}));
   };
 
   const handleDateChange = (index, field, value) => {
     setEvent((prev) => ({
       ...prev,
       dates: prev.dates.map((date, i) =>
-        i === index ? { ...date, [field]: value } : date,
+        i === index ? {...date, [field]: value} : date,
       ),
     }));
   };
 
   const handleSave = async () => {
-    await submitEditEvent({ eventData: event });
+    await submitEditEvent({eventData: event});
     setIsEditing(false);
   };
+
+  //TODO @gonzasabation con esta funcion subis cualquier imagen del evento
+  // parametrizar para elegir cual de las 3 imagenes subir (banner_image, main_image, brochure)
+  const uploadFile = async (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      await uploadEventImage({imageName: "banner_image", image: file})
+    }
+  };
+
 
   return (
     <ContainerOrganizationPage>
@@ -70,7 +71,7 @@ export default function Page({ eventInfo }) {
               onClick={() => setIsEditing(true)}
               className="text-muted-foreground hover:text-foreground"
             >
-              <Edit2 className="h-4 w-4 mr-2" />
+              <Edit2 className="h-4 w-4 mr-2"/>
               Editar
             </Button>
           )}
@@ -79,7 +80,7 @@ export default function Page({ eventInfo }) {
         <MotionDiv className="space-y-4 mb-12">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-sm">
             <div className="flex items-center">
-              <Users className="h-5 w-5 mr-2 text-muted-foreground" />
+              <Users className="h-5 w-5 mr-2 text-muted-foreground"/>
               {isEditing ? (
                 <div className="flex items-center">
                   <Input
@@ -99,7 +100,7 @@ export default function Page({ eventInfo }) {
               )}
             </div>
             <div className="flex items-center">
-              <MapPin className="h-5 w-5 mr-2 text-muted-foreground flex-shrink-0" />
+              <MapPin className="h-5 w-5 mr-2 text-muted-foreground flex-shrink-0"/>
               {isEditing ? (
                 <div className="flex items-center flex-grow">
                   <Input
@@ -128,7 +129,7 @@ export default function Page({ eventInfo }) {
                 className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0"
               >
                 <div className="flex items-center space-x-4">
-                  <CalendarDays className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                  <CalendarDays className="h-5 w-5 text-muted-foreground flex-shrink-0"/>
                   <div>
                     <p className="font-medium">{date.description}</p>
                     {isEditing ? (
@@ -139,7 +140,7 @@ export default function Page({ eventInfo }) {
                               variant="outline"
                               className="w-[240px] justify-start text-left font-normal"
                             >
-                              <CalendarDays className="mr-2 h-4 w-4" />
+                              <CalendarDays className="mr-2 h-4 w-4"/>
                               {date.date
                                 ? format(new Date(date.date), "PPP")
                                 : "Pick a date"}
@@ -179,7 +180,7 @@ export default function Page({ eventInfo }) {
                   </div>
                 </div>
                 {!isEditing && (
-                  <Clock className="h-5 w-5 text-muted-foreground" />
+                  <Clock className="h-5 w-5 text-muted-foreground"/>
                 )}
               </div>
             ))}

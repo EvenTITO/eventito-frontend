@@ -13,7 +13,7 @@ import {
   addKeywords,
   addTitle,
   addTrack,
-} from "@/state/events/newSubmissionSlice";
+} from "@/state/events/newWorkSlice";
 
 export default function FormWorkData({ tracks }) {
   const dispatch = useDispatch();

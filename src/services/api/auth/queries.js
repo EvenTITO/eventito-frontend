@@ -59,7 +59,11 @@ export const completeRegister = async (userData) => {
 
 export const getUser = async (userId) => {
 	try {
-		return await apiGetUser(userId);
+		const user = await apiGetUser(userId);
+		return {
+			...user,
+			fullname: user.name + " " + user.lastname
+		}
 	} catch (exception) {
 		exception.idUser = userId;
 		exception.source = 'API';

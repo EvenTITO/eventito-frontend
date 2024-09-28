@@ -86,8 +86,6 @@ export function useNewPayment() {
         queryKey: ["getMyInscription", {eventId}],
         queryFn: async () => await getInscriptionWithPayments(eventId)
       })
-      console.log(paymentData)
-      console.log(inscription)
       const res = await apiPutInscriptionPayment(
         httpClient,
         eventId,
@@ -108,7 +106,7 @@ export function useNewPayment() {
   });
 }
 
-async function getInscriptionWithPayments(eventId) {
+export async function getInscriptionWithPayments(eventId) {
   const httpClient = new HTTPClient(EVENTS_URL);
   const inscription = await apiGetMyInscriptions(httpClient, eventId);
   const payments = await apiGetInscriptionPayments(

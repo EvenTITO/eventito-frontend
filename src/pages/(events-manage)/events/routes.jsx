@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import LayoutEvents from "./layout";
 import EventViewPage from "./[id]/view";
 import ChairPage from "./[id]/roles/chair";
@@ -8,45 +8,45 @@ import AssignmentPage from "./[id]/roles/reviewer/assigment";
 import ChairWorkPage from "./[id]/roles/chair/work";
 import AttendeePage from "./[id]/roles/attendee";
 import NewPaymentPage from "./[id]/roles/attendee/new-payment";
-import NewSubmissionPage from "./[id]/roles/author/new-submission";
+import NewWorkPage from "./[id]/roles/author/new-work";
 import ViewWorkPage from "./[id]/roles/author/works";
 
 export default function RoutesEvents() {
   return (
     <Routes>
-      <Route path="/events" element={<LayoutEvents />}>
-        <Route path="/events/:id/view" element={<EventViewPage />} />
-        <Route path="/events/:id/view/general" element={<EventViewPage />} />
-        <Route path="/events/:id/roles/attendee" element={<AttendeePage />} />
+      <Route path="/events" element={<LayoutEvents/>}>
+        <Route path="/events/:id/view" element={<EventViewPage/>}/>
+        <Route path="/events/:id/view/general" element={<EventViewPage/>}/>
+        <Route path="/events/:id/roles/attendee" element={<AttendeePage/>}/>
 
-        <Route path="/events/:id/roles/author" element={<AuthorPage />} />
+        <Route path="/events/:id/roles/author" element={<AuthorPage/>}/>
 
-        <Route path="/events/:id/roles/chair" element={<ChairPage />} />
+        <Route path="/events/:id/roles/chair" element={<ChairPage/>}/>
         <Route
           path="/events/:id/roles/chair/works/:workId"
-          element={<ChairWorkPage />}
+          element={<ChairWorkPage/>}
         />
 
-        <Route path="/events/:id/roles/reviewer" element={<ReviewerPage />} />
+        <Route path="/events/:id/roles/reviewer" element={<ReviewerPage/>}/>
         <Route
           path="/events/:id/roles/reviewer/assignments/:workId"
-          element={<AssignmentPage />}
+          element={<AssignmentPage/>}
         />
 
-        <Route path="/events/:id/roles/author" element={<AuthorPage />} />
+        <Route path="/events/:id/roles/author" element={<AuthorPage/>}/>
         <Route
           path="/events/:id/roles/author/works/:workId"
-          element={<ViewWorkPage />}
+          element={<ViewWorkPage/>}
         />
       </Route>
 
       <Route
         path="/events/:id/roles/attendee/new-payment"
-        element={<NewPaymentPage />}
+        element={<NewPaymentPage/>}
       />
       <Route
-        path="/events/:id/roles/author/new-submission"
-        element={<NewSubmissionPage />}
+        path="/events/:id/roles/author/new-work"
+        element={<NewWorkPage/>}
       />
     </Routes>
   );
