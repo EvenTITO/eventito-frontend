@@ -8,6 +8,15 @@ export function useAddQuestion() {
 
   return useMutation({
     mutationFn: async ({ newQuestion, reviewSkeleton }) => {
+      // Datos que dejo con ESTOS MISMOS NOMBRES EN SUS VALORES:
+      //
+      // newQuestion:
+      //  - questionType: rating, multiple_choice, simple_question
+      //  - moreThanOneAnswerAllowed: true o false
+      //  - options: opcion única || lista de opciones
+      //
+      // Si hacen un set por reviewSkeleton + newQuestion con name,
+      // llamo a esta función para modificar. En ese caso le ponemos useAddOrModifyQuestion
       await wait(2);
       return null;
     },
