@@ -19,6 +19,7 @@ export function convertWork(work, submissions = undefined) {
     published: work.state !== "SUBMITTED",
     submissions: submissions,
     lastSubmission: submissions ? submissions.toSorted((a, b) => a.creation_date - b.creation_date)[0] : null,
+    keywords: work.keywords
   }
 }
 

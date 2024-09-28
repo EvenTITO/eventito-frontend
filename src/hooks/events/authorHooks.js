@@ -25,7 +25,7 @@ export function useNewSubmission() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ submissionData }) => {
+    mutationFn: async ({ workData }) => {
       await wait(2);
       return null;
     },
@@ -45,40 +45,35 @@ async function uploadSubmissionFile(eventId, workId, file) {
   }
 }
 
-export function useEditSubmission() {
+export function useEditWork() {
   const eventId = getEventId();
   const workId = getWorkId();
 
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ submissionData }) => {
-      console.log(`submissionData: ${JSON.stringify(submissionData)}`)
+    mutationFn: async ({ workData }) => {
       const httpClient = new HTTPClient(EVENTS_URL)
       const work = await queryClient.ensureQueryData(
         {queryKey: ["getWorkById", { workId }],
           queryFn: async () => await getWorkById(eventId, workId)})
       
       const workUpdate = {
-        ...submissionData,
-        keywords: work.keywords !== undefined ? submissionData.keywords.split(','): [],
+        ...workData,
+        keywords: work.keywords !== undefined ? workData.keywords.split(','): [],
         authors: work.authors
       }
       await apiPutWork(httpClient, eventId, workId, workUpdate)
 
-      await uploadSubmissionFile(eventId, workId, submissionData.file)
+      await uploadSubmissionFile(eventId, workId, workData.file)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["getMyWorks"],
-      })
       queryClient.invalidateQueries({
         queryKey: ["getWorkById", { workId }],
       })
     },
   });
 }
-
 export function useAddAuthorToWork() {
   const eventId = getEventId();
   const workId = getWorkId();
@@ -87,12 +82,28 @@ export function useAddAuthorToWork() {
 
   return useMutation({
     mutationFn: async ({ authorData }) => {
-      await wait(2);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const work = await queryClient.ensureQueryData(
+        {queryKey: ["getWorkById", { workId }],
+          queryFn: async () => await getWorkById(eventId, workId)})
+      
+      const workUpdate = {
+        ...work,
+        authors: [...work.authors, 
+          {full_name: authorData.full_name,
+            membership: authorData.affiliation,
+            mail: authorData.email,
+            notify_updates: authorData.notifyAuthor,
+            is_speaker: authorData.isSpeaker,
+            is_main: false
+          }]
+      }
+      await apiPutWork(httpClient, eventId, workId, workUpdate)
+
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getMySubmission"],
+        queryKey: ["getWorkById", { workId }],
       });
     },
   });

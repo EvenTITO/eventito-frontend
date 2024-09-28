@@ -26,7 +26,7 @@ export default function Page() {
 
   async function onSave() {
     await newSubmission({
-      submissionData: {
+      workData: {
         title,
         keywords,
         track,
