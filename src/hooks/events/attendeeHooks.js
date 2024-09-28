@@ -2,35 +2,29 @@ import {EVENTS_URL} from "@/lib/Constants";
 import {getEventId} from "@/lib/utils";
 import {HTTPClient} from "@/services/api/HTTPClient";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {apiGetMyInscriptions, apiUpdateInscription, apiSubmitInscription} from "@/services/api/events/inscriptions/queries.js";
-import {convertInscriptions} from "@/services/api/events/inscriptions/conversor.js";
+import {
+  apiGetInscriptionPayments,
+  apiGetMyInscriptions, apiPutInscriptionPayment,
+  apiSubmitInscription,
+  apiUpdateInscription
+} from "@/services/api/events/inscriptions/queries.js";
+import {convertInscription} from "@/services/api/events/inscriptions/conversor.js";
 import {uploadFile} from "@/services/api/storage/queries.js";
 
 export function useGetMyInscription() {
   const eventId = getEventId();
 
   return useQuery({
-    queryKey: ["getMyInscriptions", {eventId}],
+    queryKey: ["getMyInscription", {eventId}],
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      const myInscriptions = await apiGetMyInscriptions(httpClient, eventId);
-      return convertInscriptions(myInscriptions);
+      const inscription = await apiGetMyInscriptions(httpClient, eventId);
+      const payments = await apiGetInscriptionPayments(httpClient, eventId, inscription.id);
+      return convertInscription(inscription, payments);
     },
     onError: (error) => {
-      console.error(error);
+      console.error(JSON.stringify(e))
     }
-  });
-}
-
-export function useGetPayments() {
-  const eventId = getEventId();
-
-  return useQuery({
-    queryKey: ["getPayments", {eventId}],
-    queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL);
-      return mockPaymentsList;
-    },
   });
 }
 
@@ -45,7 +39,7 @@ export function useSubmitInscription() {
       await uploadFile(res.data.upload_url, inscriptionData.file);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getMyInscriptions", {eventId}]});
+      queryClient.invalidateQueries({queryKey: ["getMyInscription", {eventId}]});
     },
     onError: (e) => {
       console.error(JSON.stringify(e))
@@ -65,7 +59,7 @@ export function useUpdateInscription() {
       await uploadFile(res.data.upload_url, newInscriptionData.file);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getMyInscriptions", {eventId}]});
+      queryClient.invalidateQueries({queryKey: ["getMyInscription", {eventId}]});
     },
     onError: (e) => {
       console.error(JSON.stringify(e))
@@ -74,36 +68,20 @@ export function useUpdateInscription() {
 }
 
 export function useNewPayment() {
+  const eventId = getEventId();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({userId, paymentData}) => {
-      return null;
+    mutationFn: async ({inscriptionId, paymentData}) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const res = await apiPutInscriptionPayment(httpClient, eventId, inscriptionId, paymentData);
+      await uploadFile(res.data.upload_url, paymentData.file);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["getPayments"]});
+      queryClient.invalidateQueries({queryKey: ["getMyInscription", {eventId}]});
     },
+    onError: (e) => {
+      console.error(JSON.stringify(e))
+    }
   });
 }
-
-const mockPaymentsList = [
-  {
-    id: 1,
-    date: new Date(2023, 5, 15),
-    status: "Confirmado",
-    name: "Presentador: descuento de profesores FIUBA",
-    amount: 150,
-    works: [
-      {id: 1, title: "Advancements in Quantum Computing"},
-      {id: 2, title: "AI in Healthcare: A Comprehensive Review"},
-    ],
-  },
-  {
-    id: 2,
-    date: new Date(2023, 5, 20),
-    status: "Pendiente",
-    name: "Asistente: descuento de profesores FIUBA",
-    amount: 0,
-    works: [],
-  },
-];

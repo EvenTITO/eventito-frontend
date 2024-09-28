@@ -13,6 +13,12 @@ class Navigator {
     this.to(relativePath);
   }
 
+  fowardWithState(path, state) {
+    const fixedPath = path[0] === "/" ? path.slice(1) : path;
+    const relativePath = `${this.location.pathname}/${fixedPath}`;
+    this.navigate(relativePath, state);
+  }
+
   back() {
     const path = this.location.pathname.split(this.startRoute)[0];
     this.to(path);

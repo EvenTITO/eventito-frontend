@@ -17,8 +17,8 @@ export function useGetWorksByTrack(track) {
       const works = await apiGetWorksByTrack(httpClient, eventId, track);
       return convertWorks(works);
     },
-    onError: (error) => {
-      console.error(error);
+    onError: (e) => {
+      console.error(JSON.stringify(e))
     },
   });
 }

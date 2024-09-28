@@ -1,20 +1,17 @@
-import {useGetMyInscription, useGetPayments} from "@/hooks/events/attendeeHooks";
+import {useGetMyInscription} from "@/hooks/events/attendeeHooks";
 import Page from "./page";
 import FetchStatus from "@/components/FetchStatus";
 
 export default function AttendeePage() {
-  const inscription = useGetMyInscription();
-  const payments = useGetPayments();
+  const {data: inscription, isPending, error} = useGetMyInscription();
 
-  const component = (
-    <Page inscription={inscription.data} payments={payments.data}/>
-  );
+  const component = (<Page inscription={inscription}/>);
 
   return (
     <FetchStatus
       component={component}
-      isPending={inscription.isPending || payments.isPending}
-      error={inscription.error || payments.error}
+      isPending={isPending}
+      error={error}
     />
   );
 }

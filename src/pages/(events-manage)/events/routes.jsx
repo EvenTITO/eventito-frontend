@@ -7,7 +7,7 @@ import AuthorPage from "./[id]/roles/author";
 import AssignmentPage from "./[id]/roles/reviewer/assigment";
 import ChairWorkPage from "./[id]/roles/chair/work";
 import AttendeePage from "./[id]/roles/attendee";
-import NewPaymentPage from "./[id]/roles/attendee/new-payment/page";
+import NewPaymentPage from "./[id]/roles/attendee/new-payment";
 import NewSubmissionPage from "./[id]/roles/author/new-submission";
 import ViewSubmissionPage from "./[id]/roles/author/submissions";
 

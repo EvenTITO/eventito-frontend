@@ -39,7 +39,7 @@ const getReviewersData = (work, reviews, reviewers) => {
   if (work === undefined || reviews === undefined || reviewers === undefined) {
     return;
   }
-  const lastSubmissionId = work.lastSubmission.id;
+  const lastSubmissionId = work.lastSubmission ? work.lastSubmission.id : undefined;
   return reviewers.map(reviewer => {
     return {
       ...reviewer,

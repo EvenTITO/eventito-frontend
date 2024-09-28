@@ -39,7 +39,7 @@ function HomeMain({events}) {
                 Eventos, charlas y conferencias
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-700 md:text-xl relative">
-                Buscá, elegí y particiá de cualquier evento académico!
+                Buscá, elegí y participá de cualquier evento académico!
               </p>
             </div>
           </div>
