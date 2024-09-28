@@ -2,9 +2,10 @@ import { EVENTS_URL } from "@/lib/Constants";
 import { getEventId, getWorkId, wait } from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiGetMyWorks, apiPutWork } from "@/services/api/works/queries";
+import { apiGetMyWorks, apiPutWork, apiGetSubmissionUploadUrl } from "@/services/api/works/queries";
 import { convertMyWorks } from "@/services/api/works/conversor";
 import { getWorkById } from "@/hooks/events/worksHooks"
+import { uploadFile } from "@/services/api/storage/queries"
 
 export function useGetMyWorks() {
   const eventId = getEventId();
@@ -36,6 +37,14 @@ export function useNewSubmission() {
   });
 }
 
+async function uploadSubmissionFile(eventId, workId, file) {
+  if(file){
+    const httpClient = new HTTPClient(EVENTS_URL)
+    const updloadUrl = await apiGetSubmissionUploadUrl(httpClient, eventId, workId)
+    await uploadFile(updloadUrl.upload_url, file)
+  }
+}
+
 export function useEditSubmission() {
   const eventId = getEventId();
   const workId = getWorkId();
@@ -46,15 +55,18 @@ export function useEditSubmission() {
     mutationFn: async ({ submissionData }) => {
       console.log(`submissionData: ${JSON.stringify(submissionData)}`)
       const httpClient = new HTTPClient(EVENTS_URL)
-      const work = await queryClient.ensureQueryData({queryKey: ["getWorkById", { workId }], queryFn: async () => await getWorkById(eventId, workId)})
+      const work = await queryClient.ensureQueryData(
+        {queryKey: ["getWorkById", { workId }],
+          queryFn: async () => await getWorkById(eventId, workId)})
       
       const workUpdate = {
         ...submissionData,
-        keywords: submissionData.keywords.split(','),
+        keywords: work.keywords !== undefined ? submissionData.keywords.split(','): [],
         authors: work.authors
       }
-
       await apiPutWork(httpClient, eventId, workId, workUpdate)
+
+      await uploadSubmissionFile(eventId, workId, submissionData.file)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

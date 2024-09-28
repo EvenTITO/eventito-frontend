@@ -48,7 +48,7 @@ export default function EditableSubmission({ submissionData }) {
         track,
         keywords,
         abstract,
-        pdfFileName: fileName,
+        file,
       },
     });
   };
