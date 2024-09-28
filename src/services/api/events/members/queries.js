@@ -11,3 +11,7 @@ export const apiPutMemberRole = async (httpClient, userId, roles, eventId) => {
     roles: roles,
   });
 };
+
+export const apiPostMember = async (httpClient, eventId, body) => {
+  return await httpClient.post(`/${eventId}/members`, body);
+};

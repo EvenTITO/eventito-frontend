@@ -7,6 +7,7 @@ import {
   apiPutMemberRole,
 } from "@/services/api/events/members/queries";
 import { convertEventMembers } from "@/services/api/events/members/conversor";
+import { apiPostMember } from "@/services/api/events/members/queries"
 
 export function useAddMember() {
   const eventId = getEventId();
@@ -14,12 +15,19 @@ export function useAddMember() {
 
   return useMutation({
     mutationFn: async ({ newMemberEmail, newMemberRole }) => {
-      await wait(2);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const body = {
+        email: newMemberEmail,
+        role: newMemberRole
+      };
+      await apiPostMember(httpClient, eventId, body);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["getEventMembers"] });
     },
+    onError: (error) => {
+      console.error(JSON.stringify(error));
+    }
   });
 }
 
