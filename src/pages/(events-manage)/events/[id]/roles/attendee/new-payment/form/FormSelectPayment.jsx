@@ -8,7 +8,6 @@ export default function FormSelectPayment({ eventPricing }) {
   const [price, setPrice] = useState(pricing);
   const dispatch = useDispatch();
 
-  console.log(eventPricing)
   function changePrice(fareName) {
     setPrice(fareName.name);
     dispatch(addPaymentChoice(fareName.name));
