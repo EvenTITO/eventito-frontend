@@ -1,5 +1,6 @@
 import { EVENTS_URL } from "@/lib/Constants";
 import { getEventId, getWorkId, wait } from "@/lib/utils";
+import { useSelector } from "react-redux";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiGetMyWorks, apiPutWork, apiGetSubmissionUploadUrl, apiPostWork } from "@/services/api/works/queries";
@@ -23,7 +24,7 @@ export function useGetMyWorks() {
 
 export function useNewWork() {
   const eventId = getEventId();
-
+  const { currentUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -34,21 +35,23 @@ export function useNewWork() {
         queryFn: async () => await getInscriptionWithPayments(eventId)
       })
       const work = {
-        ...workData,
+        abstract: workData.abstract,
+        title: workData.title,
+        track: workData.track,
         keywords: workData.keywords.split(','),
         authors: [
           {
-            full_name: "TODO",
+            full_name: currentUser.fullname,
             membership: inscription.affiliation,
-            mail: "TODO@mail.com",
+            mail: currentUser.email,
             notify_updates: true,
             is_speaker: true,
             is_main: true
           }
         ]
       }
-      console.log('creando', work)
-      await apiPostWork(httpClient, eventId, work);
+      const workId = await apiPostWork(httpClient, eventId, work);
+      await uploadSubmissionFile(eventId, workId, workData.file);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

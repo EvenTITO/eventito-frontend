@@ -10,7 +10,6 @@ export default function FormContentData() {
   function changeAbstract(newAbstract) {
     setAbstract(newAbstract);
     dispatch(addAbstract(newAbstract));
-    console.log('new abstract', newAbstract);
   }
 
   return (
