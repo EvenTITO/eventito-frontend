@@ -5,6 +5,8 @@ import SteppedForm from "@/components/SteppedForm";
 import FormWorkData from "./form/FormWorkData";
 import { useGetEvent } from "@/hooks/events/useEventState";
 import { useNewSubmission } from "@/hooks/events/authorHooks";
+import FormContentData from "./form/FormContentData";
+import FormWorkPDF from "./form/FormWorkPDF";
 
 export default function Page() {
   const navigator = useNavigator("/new-submission");
@@ -12,11 +14,15 @@ export default function Page() {
   const { data: eventData } = useGetEvent();
   const { mutateAsync: newSubmission, isPending, error } = useNewSubmission();
 
-  const { title, keywords, track } = useSelector(
+  const { title, keywords, track, abstract, pdfFile } = useSelector(
     (state) => state.newSubmission,
   );
-  const booleanForSteps = [title && keywords && track];
-  const stepsComponents = [<FormWorkData tracks={eventData.tracks || []} />];
+  const booleanForSteps = [title && keywords && track, abstract, pdfFile];
+  const stepsComponents = [
+    <FormWorkData tracks={eventData.tracks || []} />,
+    <FormContentData />,
+    <FormWorkPDF />,
+  ];
 
   async function onSave() {
     await newSubmission({
