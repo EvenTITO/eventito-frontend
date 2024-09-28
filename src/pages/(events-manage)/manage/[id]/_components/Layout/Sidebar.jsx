@@ -1,6 +1,13 @@
 import { ORGANIZER_ROLE } from "@/lib/Constants";
 import SideBar from "@/pages/(events-manage)/_components/Sidebar";
-import { DollarSign, FilePenLine, Settings, Table, Users } from "lucide-react";
+import {
+  BookOpenCheck,
+  DollarSign,
+  FilePenLine,
+  Settings,
+  Table,
+  Users,
+} from "lucide-react";
 
 export default function OrganizationSidebar() {
   return (
@@ -45,6 +52,17 @@ const itemList = [
         label: "Tarifas",
         icon: <DollarSign className={classNameIcons} />,
         to: "pricing",
+        requiredRoles: [ORGANIZER_ROLE],
+      },
+    ],
+  },
+  {
+    label: "Datos del evento",
+    children: [
+      {
+        label: "inscripciones",
+        icon: <BookOpenCheck className={classNameIcons} />,
+        to: "inscriptions",
         requiredRoles: [ORGANIZER_ROLE],
       },
     ],
