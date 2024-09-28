@@ -1,4 +1,4 @@
-import { RoleImportance } from "@/services/api/events/members/common";
+import {RoleImportance} from "@/lib/Constants.js";
 
 export function convertEventMembers(members) {
   return members.map(convertMemberData);
