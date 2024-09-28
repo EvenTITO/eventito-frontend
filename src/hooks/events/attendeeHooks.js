@@ -86,8 +86,6 @@ export function useNewPayment() {
         queryKey: ["getMyInscription", {eventId}],
         queryFn: async () => await getInscriptionWithPayments(eventId)
       })
-      console.log(paymentData)
-      console.log(inscription)
       const res = await apiPutInscriptionPayment(
         httpClient,
         eventId,
