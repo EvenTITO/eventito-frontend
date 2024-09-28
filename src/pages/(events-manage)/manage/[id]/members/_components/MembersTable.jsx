@@ -13,20 +13,37 @@ import {
   EVENT_ROLES_LABELS,
 } from "@/lib/Constants";
 import { LoaderSpinner } from "@/components/Loader";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 export default function MembersTable({ members, onRoleChange, isPending }) {
+  const [filter, setFilter] = useState(null);
+
+  const filteredMembers = filter
+    ? members.filter((member) => member.role === filter)
+    : members;
+
+  const title = filter
+    ? `Listado de miembros por rol: ${EVENT_ROLES_LABELS[filter]}`
+    : "Listado de miembros";
+
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Listado de miembros</CardTitle>
+        <div className="flex justify-between">
+          <CardTitle>{title}</CardTitle>
+          <RoleFilter currentFilter={filter} onFilterChange={setFilter} />
+        </div>
       </CardHeader>
       <CardContent>
         {isPending ? (
           <MembersPending />
         ) : (
           <div className="grid gap-6 md:grid-cols-2">
-            {members.map((member, index) => (
+            {filteredMembers.map((member, index) => (
               <Member
+                key={member.email}
                 member={member}
                 index={index}
                 onRoleChange={onRoleChange}
@@ -36,6 +53,39 @@ export default function MembersTable({ members, onRoleChange, isPending }) {
         )}
       </CardContent>
     </Card>
+  );
+}
+
+function RoleFilter({ currentFilter, onFilterChange }) {
+  return (
+    <div className="flex items-center space-x-2">
+      <Select
+        value={currentFilter || ""}
+        onValueChange={(value) => onFilterChange(value)}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Filtrar por rol" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value={CHAIR_ROLE}>
+            {EVENT_ROLES_LABELS[CHAIR_ROLE]}
+          </SelectItem>
+          <SelectItem value={ORGANIZER_ROLE}>
+            {EVENT_ROLES_LABELS[ORGANIZER_ROLE]}
+          </SelectItem>
+        </SelectContent>
+      </Select>
+      {currentFilter && (
+        <Button
+          variant="table"
+          size="icon"
+          onClick={() => onFilterChange(null)}
+        >
+          <X className="h-4 w-4" />
+          <span className="sr-only">Limpiar filtro</span>
+        </Button>
+      )}
+    </div>
   );
 }
 
@@ -80,7 +130,7 @@ function Member({ member, index, onRoleChange }) {
 
 function MembersPending() {
   return (
-    <div className="w-full items-center">
+    <div className="w-full flex justify-center items-center">
       <LoaderSpinner size={32} />
     </div>
   );
