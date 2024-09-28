@@ -6,24 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  BriefcaseBusiness,
-  Calendar,
-  ClipboardPenLine,
-  FileCheck,
-  FileStack,
-  Info,
-  Settings,
-} from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  ATTENDEE_ROLE,
-  CHAIR_ROLE,
-  EVENT_ROLES_LABELS,
-  ORGANIZER_ROLE,
-  REVIEWER_ROLE,
-  SPEAKER_ROLE,
-} from "@/lib/Constants.js";
 
 export default function SideBar({
   itemList,
@@ -70,7 +53,7 @@ export default function SideBar({
                         variant="ghost"
                         className="w-full justify-start pl-6 hover:bg-[#e8e9ef]"
                         onClick={() =>
-                          child.absolute
+                          child.isOrganizerRoute
                             ? navigate(`/manage/${id}/${child.to}`)
                             : navigate(`/events/${id}/${child.to}`)
                         }

@@ -76,9 +76,9 @@ const itemList = [
       {
         label: "Panel de organizador",
         icon: <Settings className={classNameIcons} />,
-        to: "members",
+        to: "general",
         requiredRoles: [ORGANIZER_ROLE],
-        absolute: true,
+        isOrganizerRoute: true,
       },
     ],
   },
