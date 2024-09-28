@@ -12,7 +12,9 @@ export function useEditEvent() {
       return null;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getEventById"] });
+      queryClient.invalidateQueries({
+        queryKey: ["getEventById", { eventId }],
+      });
     },
   });
 }
