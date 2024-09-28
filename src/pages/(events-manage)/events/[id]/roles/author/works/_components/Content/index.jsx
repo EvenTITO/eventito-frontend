@@ -1,13 +1,13 @@
 import { onWorkEditDay } from "../utils";
-import EditableSubmission from "./EditableSubmission";
+import EditableWork from "./EditableWork";
 import ReadonlySubmission from "./ViewOnlySubmission";
 
-export default function Content({ submissionData }) {
-  const isEditable = onWorkEditDay(submissionData);
+export default function Content({ workData }) {
+  const isEditable = onWorkEditDay(workData);
 
   return isEditable ? (
-    <EditableSubmission submissionData={submissionData} />
+    <EditableWork workData={workData} />
   ) : (
-    <ReadonlySubmission submissionData={submissionData} />
+    <ReadonlySubmission workData={workData} />
   );
 }

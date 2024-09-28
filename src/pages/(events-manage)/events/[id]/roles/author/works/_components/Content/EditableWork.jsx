@@ -18,19 +18,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useEditSubmission } from "@/hooks/events/authorHooks";
+import { useEditWork } from "@/hooks/events/authorHooks";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 import { useGetEvent } from "@/hooks/events/useEventState";
 
-export default function EditableSubmission({ submissionData }) {
-  const [title, setTitle] = useState(submissionData.title);
-  const [track, setTrack] = useState(submissionData.track);
-  const [keywords, setKeywords] = useState(submissionData.keywords);
-  const [abstract, setAbstract] = useState(submissionData.abstract);
+export default function EditableWork({ workData }) {
+  const [title, setTitle] = useState(workData.title);
+  const [track, setTrack] = useState(workData.track);
+  const [keywords, setKeywords] = useState(workData.keywords);
+  const [abstract, setAbstract] = useState(workData.abstract);
   const [file, setFile] = useState(null);
-  const [fileName, setFileName] = useState(submissionData.pdfFileName);
+  const [fileName, setFileName] = useState(workData.pdfFileName);
 
-  const { mutateAsync: editSubmission, isPending, error } = useEditSubmission();
+  const { mutateAsync: editSubmission, isPending, error } = useEditWork();
   const { data: eventData } = useGetEvent();
 
   const handleFileChange = (e) => {
@@ -43,12 +43,12 @@ export default function EditableSubmission({ submissionData }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await editSubmission({
-      submissionData: {
+      workData: {
         title,
         track,
         keywords,
         abstract,
-        pdfFileName: fileName,
+        file,
       },
     });
   };

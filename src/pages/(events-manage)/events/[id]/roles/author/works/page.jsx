@@ -18,7 +18,7 @@ export default function Page({ workData }) {
           },
           {
             label: "Contenido",
-            component: <Content submissionData={workData} />,
+            component: <Content workData={workData} />,
           },
         ]}
       />

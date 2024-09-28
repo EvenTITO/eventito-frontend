@@ -30,3 +30,11 @@ export const apiGetReviewersForWork = async (httpClient, eventId, workId) => {
 export const apiGetMyWorks = async (httpClient, eventId) => {
   return (await httpClient.get(`/${eventId}/works/my-works`)).data;
 };
+
+export const apiPutWork = async (httpClient, eventId, workId, workUpdate) => {
+  return (await httpClient.put(`/${eventId}/works/${workId}`, workUpdate)).data;
+};
+
+export const apiGetSubmissionUploadUrl = async (httpClient, eventId, workId) => {
+  return (await httpClient.put(`/${eventId}/works/${workId}/submissions/submit`)).data;
+};

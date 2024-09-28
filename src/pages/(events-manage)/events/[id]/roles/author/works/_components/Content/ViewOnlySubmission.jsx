@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 
-export default function ViewOnlySubmission({ submissionData }) {
-  const { title, track, keywords, abstract, pdfFileName } = submissionData;
+export default function ViewOnlySubmission({ workData }) {
+  const { title, track, keywords, abstract, pdfFileName } = workData;
 
   return (
     <Card>
