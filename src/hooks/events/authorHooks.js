@@ -51,7 +51,7 @@ export function useNewWork() {
         ]
       }
       const workId = await apiPostWork(httpClient, eventId, work);
-      await uploadSubmissionFile(eventId, workId, workData.file);
+      await uploadSubmissionFile(eventId, workId, workData.pdfFile);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -62,11 +62,13 @@ export function useNewWork() {
 }
 
 async function uploadSubmissionFile(eventId, workId, file) {
-  if(file){
-    const httpClient = new HTTPClient(EVENTS_URL)
-    const updloadUrl = await apiGetSubmissionUploadUrl(httpClient, eventId, workId)
-    await uploadFile(updloadUrl.upload_url, file)
+  if (!file) {
+    console.log('No submission file given');
+    return;
   }
+  const httpClient = new HTTPClient(EVENTS_URL);
+  const updloadUrl = await apiGetSubmissionUploadUrl(httpClient, eventId, workId);
+  await uploadFile(updloadUrl.upload_url, file);
 }
 
 export function useEditWork() {
