@@ -5,7 +5,6 @@ import { useNewPayment } from "@/hooks/events/attendeeHooks";
 import FormSelectPayment from "./form/FormSelectPayment";
 import FormSubmitPayment from "./form/FormSubmitFile";
 import SteppedForm from "@/components/SteppedForm";
-import { useEffect } from "react";
 import FormSelectWorks from "./form/FormSelectWorks";
 
 export default function Page({ eventData, works }) {
@@ -15,15 +14,23 @@ export default function Page({ eventData, works }) {
   const { pricing, paymentPDF, affiliationPDF, worksIds } = useSelector(
     (state) => state.newPayment,
   );
-  const booleanForSteps = [pricing, true, paymentPDF];
-  const stepsComponents = [
+
+  let booleanForSteps = [pricing, true, paymentPDF];
+  let stepsComponents = [
     <FormSelectPayment eventPricing={eventData.pricing} />,
     <FormSelectWorks works={works} />,
     <FormSubmitPayment />,
   ];
 
+  if (!works || works.length === 0) {
+    booleanForSteps = [pricing, paymentPDF];
+    stepsComponents = [
+      <FormSelectPayment eventPricing={eventData.pricing} />,
+      <FormSubmitPayment />,
+    ];
+  }
+
   async function onSave() {
-    console.log("works ids", worksIds);
     await newPayment({
       paymentData: { fare_name: pricing, file: paymentPDF, works: worksIds },
     });
