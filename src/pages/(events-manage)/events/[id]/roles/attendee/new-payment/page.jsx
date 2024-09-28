@@ -6,28 +6,26 @@ import FormSelectPayment from "./form/FormSelectPayment";
 import FormSubmitPayment from "./form/FormSubmitFile";
 import SteppedForm from "@/components/SteppedForm";
 import { useEffect } from "react";
+import FormSelectWorks from "./form/FormSelectWorks";
 
 export default function Page({ eventData, works }) {
   const navigator = useNavigator("/new-payment");
   const dispatch = useDispatch();
   const { mutateAsync: newPayment, isPending, error } = useNewPayment();
-  const { pricing, paymentPDF, affiliationPDF } = useSelector(
+  const { pricing, paymentPDF, affiliationPDF, worksIds } = useSelector(
     (state) => state.newPayment,
   );
-  const booleanForSteps = [pricing, paymentPDF];
+  const booleanForSteps = [pricing, true, paymentPDF];
   const stepsComponents = [
     <FormSelectPayment eventPricing={eventData.pricing} />,
+    <FormSelectWorks works={works} />,
     <FormSubmitPayment />,
   ];
 
-  useEffect(() => {
-    console.log(works);
-  }, []);
-
   async function onSave() {
+    console.log("works ids", worksIds);
     await newPayment({
-      // como le paso el affiliationPDF
-      paymentData: { fare_name: pricing, file: paymentPDF, works: [] },
+      paymentData: { fare_name: pricing, file: paymentPDF, works: worksIds },
     });
     dispatch(reset());
     navigator.back();
