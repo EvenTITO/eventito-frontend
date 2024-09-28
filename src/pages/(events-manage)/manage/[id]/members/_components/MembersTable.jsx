@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DeleteButton } from "@/components/ui/deleteButton"
 import {
   ORGANIZER_ROLE,
   CHAIR_ROLE,
@@ -17,7 +18,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 
-export default function MembersTable({ members, onRoleChange, isPending }) {
+export default function MembersTable({ members, onRoleChange, isPending, onDeleteMember }) {
   const [filter, setFilter] = useState(null);
 
   const filteredMembers = filter
@@ -47,6 +48,7 @@ export default function MembersTable({ members, onRoleChange, isPending }) {
                 member={member}
                 index={index}
                 onRoleChange={onRoleChange}
+                onDeleteMember={onDeleteMember}
               />
             ))}
           </div>
@@ -89,7 +91,7 @@ function RoleFilter({ currentFilter, onFilterChange }) {
   );
 }
 
-function Member({ member, index, onRoleChange }) {
+function Member({ member, index, onRoleChange, onDeleteMember }) {
   return (
     <Card key={index} className="overflow-hidden">
       <CardContent className="p-4">
@@ -122,6 +124,7 @@ function Member({ member, index, onRoleChange }) {
               </SelectItem>
             </SelectContent>
           </Select>
+          <DeleteButton onClick={() => onDeleteMember(member)} />
         </div>
       </CardContent>
     </Card>

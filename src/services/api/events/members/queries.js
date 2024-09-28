@@ -17,5 +17,5 @@ export const apiPostMember = async (httpClient, eventId, body) => {
 };
 
 export const apiDeleteMember = async (httpClient, eventId, userId) => {
-  return await httpClient.delete(`/${eventId}/members/${userId}`, body);
+  return await httpClient.delete(`/${eventId}/members/${userId}`);
 };
