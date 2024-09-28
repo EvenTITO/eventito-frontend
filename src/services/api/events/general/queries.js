@@ -21,3 +21,7 @@ export const apiPostCreateEvent = async (httpClient, body) => {
 export const apiGetUploadEventImageUrl = async (httpClient, eventId, imageName) => {
   return (await httpClient.get(`/${eventId}/upload_url/${imageName}`)).data;
 };
+
+export const apiUpdateEventDates = async (httpClient, eventId, dates) => {
+  return (await httpClient.put(`/${eventId}/configuration/dates`), dates).data;
+};

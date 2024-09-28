@@ -1,5 +1,9 @@
 import { getEventId, wait } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getEventById } from "@/hooks/events/useEventState"
+import {HTTPClient} from "@/services/api/HTTPClient.js";
+import { apiUpdateEventDates } from "@/services/api/events/general/queries"
+
 
 export function useAddQuestion() {
   const eventId = getEventId();
@@ -36,10 +40,23 @@ export function useAddOrChangeDeadlineSubmissionDate() {
 
   return useMutation({
     mutationFn: async ({ newDate }) => {
-      // Aclaracion: new date es solo la fecha: el contexto ya les dice
-      // que es la de submission date
-      await wait(2);
-      return null;
+      const event = await queryClient.ensureQueryData({
+        queryKey: ["getEventById", {eventId}],
+        queryFn: async () => await getEventById(eventId),
+      });
+      const httpClient = new HTTPClient(EVENTS_URL);
+      let newDates = event.dates.slice();
+      const submissionDateIndex = event.dates.findIndex(date => date.name === "SUBMISSION_DEADLINE_DATE");
+      // Assuming newDate is of type Date.
+      // Extract the date (in the format "YYYY-MM-DD")
+      const date = newDate.toISOString().split('T')[0];
+
+      // Extract the time (in the format "HH:MM")
+      const time = newDate.toTimeString().split(' ')[0].slice(0, 5);
+
+      newDates[submissionDateIndex].date = date;
+      newDates[submissionDateIndex].time = time;
+      await apiUpdateEventDates(httpClient, eventId, { dates: newDates });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
