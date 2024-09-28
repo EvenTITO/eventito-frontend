@@ -14,10 +14,11 @@ export function useEditEvent() {
   return useMutation({
     mutationFn: async ({ eventData }) => {
       const httpClient = new HTTPClient(EVENTS_URL)
-      const updateEvent = {
+      let updateEvent = {
         ...eventData
       }
-      const r = await apiUpdateGeneralEvent(httpClient, eventId, updateEvent)
+      delete updateEvent.title
+      await apiUpdateGeneralEvent(httpClient, eventId, updateEvent)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
