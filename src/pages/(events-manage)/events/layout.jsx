@@ -40,7 +40,7 @@ function Layout({ eventTitle, roles }) {
 
   return (
     <div className="flex flex-col h-screen bg-background">
-      <Header toggleSidebar={false} headerTitle={eventTitle} />
+      <Header headerTitle={eventTitle} />
 
       <div className="flex flex-1 pt-16">
         <Sidebar isSidebarOpen={true} roles={roles} />

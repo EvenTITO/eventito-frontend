@@ -1,14 +1,14 @@
-import { Outlet } from "react-router-dom";
+import {Outlet} from "react-router-dom";
 import Header from "../_components/Header";
 import Sidebar from "../_components/Sidebar";
 import FetchStatus from "@/components/FetchStatus";
-import { useGetEvent } from "@/hooks/events/useEventState";
-import { useEffect } from "react";
-import { useNavigator } from "@/lib/navigation";
-import { getEventId } from "@/lib/utils";
+import {useGetEvent} from "@/hooks/events/useEventState";
+import {useEffect} from "react";
+import {useNavigator} from "@/lib/navigation";
+import {getEventId} from "@/lib/utils";
 
 export default function LayoutOrganization() {
-  const { data: eventData, isPending } = useGetEvent();
+  const {data: eventData, isPending} = useGetEvent();
 
   const layoutComponent = (
     <Layout
@@ -25,7 +25,7 @@ export default function LayoutOrganization() {
   );
 }
 
-function Layout({ eventTitle, roles }) {
+function Layout({eventTitle, roles}) {
   const eventId = getEventId();
   const navigator = useNavigator();
 
@@ -42,12 +42,12 @@ function Layout({ eventTitle, roles }) {
 
   return (
     <div className="flex flex-col h-screen bg-background">
-      <Header toggleSidebar={false} headerTitle={eventTitle} />
+      <Header headerTitle={eventTitle}/>
 
       <div className="flex flex-1 pt-16">
-        <Sidebar isSidebarOpen={true} roles={roles} />
+        <Sidebar isSidebarOpen={true} roles={roles}/>
         <main className="flex-1 p-4 md:ml-64 pt-4 overflow-auto">
-          <Outlet />
+          <Outlet/>
         </main>
       </div>
     </div>

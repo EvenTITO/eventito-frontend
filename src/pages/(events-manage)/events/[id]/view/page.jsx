@@ -12,7 +12,6 @@ import { RegistrationTab } from "./prices";
 
 export default function Page({ eventInfo }) {
   const [activeTab, setActiveTab] = useState("overview");
-  console.log(eventInfo);
 
   return (
     <div className="min-h-screen bg-background">

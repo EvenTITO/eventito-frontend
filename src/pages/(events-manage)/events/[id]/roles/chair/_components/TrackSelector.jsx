@@ -26,8 +26,8 @@ export default function TrackSelector({
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Elección de track</SelectLabel>
-            {tracks.map((track) => (
-              <SelectItem value={track}>{track}</SelectItem>
+            {tracks.map((track, index) => (
+              <SelectItem key={index} value={track}>{track}</SelectItem>
             ))}
           </SelectGroup>
         </SelectContent>

@@ -1,10 +1,10 @@
 import {EVENTS_URL} from "@/lib/Constants";
-import {getEventId, getWorkId, wait} from "@/lib/utils";
+import {getEventId, getWorkId} from "@/lib/utils";
 import {HTTPClient} from "@/services/api/HTTPClient";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {apiGetReviewersForWork, apiGetReviewsForWork, apiGetWorksByTrack} from "@/services/api/works/queries";
 import {convertReviewers, convertReviews, convertWorks} from "@/services/api/works/conversor";
-import {apiPutReviewDeadline, apiPostAddReviewer, apiPostReviewsPublish} from "@/services/api/events/reviewer/queries";
+import {apiPostAddReviewer, apiPostReviewsPublish, apiPutReviewDeadline} from "@/services/api/events/reviewer/queries";
 import {format} from "date-fns";
 
 export function useGetWorksByTrack(track) {
@@ -86,17 +86,13 @@ export function useSubmitChairReview(reviews) {
 
   return useMutation({
     mutationFn: async ({status, deadlineDate}) => {
-      console.log(`status: ${status}`)
-
       const httpClient = new HTTPClient(EVENTS_URL);
-
       let reviewsToPublish = {
         reviews_to_publish: reviewsIds,
         new_work_status: status,
       }
-      if(deadlineDate != undefined){
-        const formattedDatetime = format(new Date(deadlineDate), "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
-        reviewsToPublish.resend_deadline = formattedDatetime
+      if(deadlineDate !== undefined){
+        reviewsToPublish.resend_deadline = format(new Date(deadlineDate), "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
       }
       return await apiPostReviewsPublish(httpClient, eventId, workId, reviewsToPublish)
     },
