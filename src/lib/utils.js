@@ -25,6 +25,12 @@ export function getEventId() {
   return eventId;
 }
 
+export function getInscriptionId() {
+  const {inscriptionId} = useParams();
+
+  return inscriptionId;
+}
+
 export function getWorkId() {
   const { workId } = useParams();
 

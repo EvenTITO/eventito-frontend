@@ -5,8 +5,9 @@ import { useNewPayment } from "@/hooks/events/attendeeHooks";
 import FormSelectPayment from "./form/FormSelectPayment";
 import FormSubmitPayment from "./form/FormSubmitFile";
 import SteppedForm from "@/components/SteppedForm";
+import { useEffect } from "react";
 
-export default function Page({ eventData, inscriptionId }) {
+export default function Page({ eventData, works }) {
   const navigator = useNavigator("/new-payment");
   const dispatch = useDispatch();
   const { mutateAsync: newPayment, isPending, error } = useNewPayment();
@@ -19,9 +20,12 @@ export default function Page({ eventData, inscriptionId }) {
     <FormSubmitPayment />,
   ];
 
+  useEffect(() => {
+    console.log(works);
+  }, []);
+
   async function onSave() {
     await newPayment({
-      inscriptionId: inscriptionId,
       // como le paso el affiliationPDF
       paymentData: { fare_name: pricing, file: paymentPDF, works: [] },
     });

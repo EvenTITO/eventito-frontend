@@ -13,7 +13,7 @@ export default function FormContentData() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 min-h-screen">
       <h2 className="text-2xl font-semibold mb-4">Datos de la presentación</h2>
 
       <div className="space-y-2">
