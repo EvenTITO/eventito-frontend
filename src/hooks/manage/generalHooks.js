@@ -1,8 +1,7 @@
-import { getEventId, getWorkId, wait } from "@/lib/utils";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getEventId, wait } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useEditEvent() {
-  const workId = getWorkId();
   const eventId = getEventId();
 
   const queryClient = useQueryClient();
@@ -13,7 +12,9 @@ export function useEditEvent() {
       return null;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getEventById"] });
+      queryClient.invalidateQueries({
+        queryKey: ["getEventById", { eventId }],
+      });
     },
   });
 }
