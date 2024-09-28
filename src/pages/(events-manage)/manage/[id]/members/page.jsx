@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigator } from "@/lib/navigation";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import AddMemberButton from "./_components/AddMemberButton";
@@ -7,7 +6,6 @@ import MembersTable from "./_components/MembersTable";
 import { useUpdateMemberRole } from "@/hooks/manage/membersHooks";
 
 export default function Component({ members }) {
-  const navigator = useNavigator();
   const {
     mutateAsync: updateMemberRole,
     isPending,
