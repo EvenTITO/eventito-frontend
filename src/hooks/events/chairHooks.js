@@ -78,7 +78,7 @@ export function useAddReviewer() {
 }
 
 export function useSubmitChairReview(reviews) {
-  const reviewsIds = reviews != undefined ? reviews.map(r => r.reviewId) : []
+  const reviewsIds = reviews !== undefined ? reviews.map(r => r.reviewId) : []
   const workId = getWorkId();
   const eventId = getEventId();
 

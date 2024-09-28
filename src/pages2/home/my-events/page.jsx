@@ -32,15 +32,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CalendarDays, MapPin, Search, ArrowRight } from "lucide-react";
+import {
+  ATTENDEE_ROLE,
+  CHAIR_ROLE,
+  EVENT_ROLES_LABELS,
+  ORGANIZER_ROLE,
+  REVIEWER_ROLE,
+  SPEAKER_ROLE
+} from "@/lib/Constants.js";
 
 function MyEvents({ events }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedRole, setSelectedRole] = useState("All");
+  const [selectedRole, setSelectedRole] = useState("ALL_ROLES");
 
   const filteredEvents = events.filter(
     (event) =>
       event.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedRole === "All" || event.roles.includes(selectedRole)),
+      (selectedRole === "ALL_ROLES" || event.roles.includes(selectedRole)),
   );
 
   return (
@@ -63,12 +71,12 @@ function MyEvents({ events }) {
               <SelectValue placeholder="Filter by role" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="All">All Roles</SelectItem>
-              <SelectItem value="ORGANIZER">Organizer</SelectItem>
-              <SelectItem value="CHAIR">Chair</SelectItem>
-              <SelectItem value="ASSISTANT">Assistant</SelectItem>
-              <SelectItem value="AUTHOR">Author</SelectItem>
-              <SelectItem value="REVIEWER">Reviewer</SelectItem>
+              <SelectItem value="ALL_ROLES">Todos los roles</SelectItem>
+              <SelectItem value={ORGANIZER_ROLE}>{EVENT_ROLES_LABELS[ORGANIZER_ROLE]}</SelectItem>
+              <SelectItem value={CHAIR_ROLE}>{EVENT_ROLES_LABELS[CHAIR_ROLE]}</SelectItem>
+              <SelectItem value={ATTENDEE_ROLE}>{EVENT_ROLES_LABELS[ATTENDEE_ROLE]}</SelectItem>
+              <SelectItem value={SPEAKER_ROLE}>{EVENT_ROLES_LABELS[SPEAKER_ROLE]}</SelectItem>
+              <SelectItem value={REVIEWER_ROLE}>{EVENT_ROLES_LABELS[REVIEWER_ROLE]}</SelectItem>
             </SelectContent>
           </Select>
           <Link to={"/home/create-event"}>

@@ -28,7 +28,6 @@ export default function LayoutEvents() {
 }
 
 function Layout({ eventTitle, roles }) {
-  const roles2 = ["ORGANIZER", "CHAIR", "REVIEWER", "ATTENDEE", "AUTHOR"];
   const eventId = getEventId();
   const navigator = useNavigator();
 

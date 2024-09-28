@@ -1,8 +1,8 @@
 import * as React from "react";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import {ArrowUpDown, MoreHorizontal} from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import {Button} from "@/components/ui/button";
+import {Checkbox} from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,23 +11,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { changeMemberRole } from "@/services/api/events/members/mockData";
-import { useParams } from "react-router-dom";
-import { EventRole } from "@/services/api/events/members/common";
-import { updateMemberRole } from "@/services/api/events/members/hooks";
+import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
+import {changeMemberRole} from "@/services/api/events/members/mockData";
+import {useParams} from "react-router-dom";
+import {updateMemberRole} from "@/services/api/events/members/hooks";
+import {CHAIR_ROLE, EVENT_ROLES_LABELS, ORGANIZER_ROLE} from "@/lib/Constants.js";
 
 export const columns = [
   {
     id: "select",
-    header: ({ table }) => (
+    header: ({table}) => (
       <Checkbox
         checked={
           table.getIsAllPageRowsSelected() ||
@@ -37,7 +30,7 @@ export const columns = [
         aria-label="Select all"
       />
     ),
-    cell: ({ row }) => (
+    cell: ({row}) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -49,33 +42,33 @@ export const columns = [
   },
   {
     accessorKey: "email",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
         <Button
           variant="table"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="ml-2 h-4 w-4"/>
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({row}) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "username",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
         <Button
           variant="table"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Usuario
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="ml-2 h-4 w-4"/>
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("username")}</div>,
+    cell: ({row}) => <div>{row.getValue("username")}</div>,
   },
   {
     accessorKey: "role",
@@ -84,15 +77,15 @@ export const columns = [
         Rol
       </Button>
     ),
-    cell: ({ row }) => {
+    cell: ({row}) => {
       const [selectedRole, setSelectedRole] = React.useState(
         row.getValue("role"),
       );
-      const { mutate } = updateMemberRole();
-      const { id: eventId } = useParams();
+      const {mutate} = updateMemberRole();
+      const {id: eventId} = useParams();
 
       function onValueChange(newRole) {
-        mutate({ userId: row.original.id, eventId: eventId, newRole: newRole });
+        mutate({userId: row.original.id, eventId: eventId, newRole: newRole});
         changeMemberRole(row.getValue("email"), newRole);
 
         setSelectedRole(newRole);
@@ -107,11 +100,11 @@ export const columns = [
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value={EventRole.ORGANIZER} className="">
-                Organizador
+              <SelectItem value={ORGANIZER_ROLE} className="">
+                {EVENT_ROLES_LABELS[ORGANIZER_ROLE]}
               </SelectItem>
-              <SelectItem value={EventRole.CHAIR} className="">
-                Chair
+              <SelectItem value={CHAIR_ROLE} className="">
+                {EVENT_ROLES_LABELS[CHAIR_ROLE]}
               </SelectItem>
             </SelectGroup>
           </SelectContent>
@@ -122,7 +115,7 @@ export const columns = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
+    cell: ({row}) => {
       const payment = row.original;
 
       return (
@@ -130,7 +123,7 @@ export const columns = [
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreHorizontal className="h-4 w-4"/>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -140,7 +133,7 @@ export const columns = [
             >
               Copy payment ID
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator/>
             <DropdownMenuItem>View customer</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>

@@ -7,16 +7,33 @@ export const FORGOT_PASSWORD_PATH = "/forgot-password";
 export const PRIVATE_POLICY_PATH = "/private-policy";
 export const TERMS_CONDITIONS_PATH = "/terms-and-conditions";
 
-// ROLES CONSTANTS
 export const ORGANIZER_ROLE = "ORGANIZER";
 export const CHAIR_ROLE = "CHAIR";
 export const REVIEWER_ROLE = "REVIEWER";
-export const AUTHOR_ROLE = "AUTHOR";
+export const SPEAKER_ROLE = "SPEAKER";
+export const ATTENDEE_ROLE = "ATTENDEE";
+
+// Roles ordered from the highest permissions to lowest.
+export const RoleImportance = {
+  [ORGANIZER_ROLE]: 1,
+  [CHAIR_ROLE]: 2,
+  [REVIEWER_ROLE]: 3,
+  [SPEAKER_ROLE]: 4,
+  [ATTENDEE_ROLE]: 5
+};
+
+export const EVENT_ROLES_LABELS = {
+  ORGANIZER: "Organizador",
+  CHAIR: "Chair",
+  REVIEWER: "Revisor",
+  SPEAKER: "Autor",
+  ATTENDEE: "Asistente"
+}
 
 export const WORKS_STATUS_PUBLISH = {
-  "APPROVED": "Aceptado",
-  "RE_SUBMIT": "En revisión",
-  "REJECTED": "Rechazado"
+  APPROVED: "Aceptado",
+  RE_SUBMIT: "En revisión",
+  REJECTED: "Rechazado"
 }
 
 export const WORKS_STATUS_LABELS = {
@@ -28,13 +45,13 @@ export const WORKS_STATUS_LABELS = {
 
 export const REGISTRATION_ROLES = [
   {
-    id: "ATTENDEE",
-    title: "Asistente",
+    id: ATTENDEE_ROLE,
+    title: EVENT_ROLES_LABELS[ATTENDEE_ROLE],
     description: "Asistir al evento para escuchar charlas",
   },
   {
-    id: "SPEAKER",
-    title: "Autor",
+    id: SPEAKER_ROLE,
+    title: EVENT_ROLES_LABELS[SPEAKER_ROLE],
     description: "Presentar uno o más trabajos en el evento",
   },
   {
@@ -45,9 +62,9 @@ export const REGISTRATION_ROLES = [
 ];
 
 export const REVIEW_STATUS_LABELS = {
-  "APPROVED": "Aprobado",
-  "NOT_APPROVED": "Desaprobado",
-  "RE_SUBMIT": "A revisar"
+  APPROVED: "Aprobado",
+  NOT_APPROVED: "Desaprobado",
+  RE_SUBMIT: "A revisar"
 }
 
 export const REVIEW_STATUS_LABELS_REVERSE = {
@@ -57,13 +74,13 @@ export const REVIEW_STATUS_LABELS_REVERSE = {
 }
 
 export const INSCRIPTION_ROLES_LABELS = {
-  "SPEAKER": "Autor",
-  "ATTENDEE": "Asistente"
+  SPEAKER: "Autor",
+  ATTENDEE: "Asistente"
 }
 
 export const PAYMENT_STATUS_LABELS = {
-  "APPROVED": "Aprobado",
-  "REJECTED": "Rechazado",
-  "UNCOMPLETED": "Insuficiente",
-  "PENDING_APPROVAL": "Pendiente de revisión"
+  APPROVED: "Aprobado",
+  REJECTED: "Rechazado",
+  UNCOMPLETED: "Insuficiente",
+  PENDING_APPROVAL: "Pendiente de revisión"
 }
