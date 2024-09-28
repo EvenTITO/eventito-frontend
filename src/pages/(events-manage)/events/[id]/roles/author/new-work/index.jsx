@@ -17,6 +17,7 @@ export default function Page() {
   const { title, keywords, track, abstract, pdfFile } = useSelector(
     (state) => state.newWork,
   );
+
   const booleanForSteps = [title && keywords && track, abstract, pdfFile];
   const stepsComponents = [
     <FormWorkData tracks={eventData.tracks || []} />,

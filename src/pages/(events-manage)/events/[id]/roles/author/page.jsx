@@ -3,7 +3,7 @@ import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import WorksTable from "./_components/WorksTable";
 import TableContent from "@/components/TableContent";
-import NewSubmissionButton from "./_components/NewSubmissionButton";
+import NewWorkButton from "./_components/NewWorkButton.jsx";
 
 export default function Page({ works, eventData }) {
   const navigator = useNavigator();
@@ -17,7 +17,7 @@ export default function Page({ works, eventData }) {
     <ContainerPage>
       <TitlePage
         title={`Trabajos presentados en ${eventData?.title}`}
-        rightComponent={<NewSubmissionButton />}
+        rightComponent={<NewWorkButton />}
       />
       <TableContent title="Mis entregas">
         <WorksTable works={works} handleRowClick={handleRowClick} />
