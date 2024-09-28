@@ -17,7 +17,6 @@ export function useEditEvent() {
       let updateEvent = {
         ...eventData
       }
-      delete updateEvent.title
       await apiUpdateGeneralEvent(httpClient, eventId, updateEvent)
     },
     onSuccess: () => {

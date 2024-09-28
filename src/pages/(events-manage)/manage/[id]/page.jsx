@@ -33,7 +33,9 @@ export default function Page({eventInfo}) {
   };
 
   const handleSave = async () => {
-    await submitEditEvent({eventData: event});
+    let eventCopy = JSON.parse(JSON.stringify(event));
+    delete eventCopy.title
+    await submitEditEvent({eventData: eventCopy});
     setIsEditing(false);
   };
 
