@@ -1,4 +1,5 @@
 import {convertReviewSkeletonQuestions} from "@/services/api/events/reviewer/conversor"
+import {format} from "date-fns";
 
 export function convertEventsData(data) {
   return data.map(convertEventItem);
@@ -57,4 +58,47 @@ export function convertEventFullData(data) {
     ...data,
     review_skeleton: {questions: convertReviewSkeletonQuestions(data.review_skeleton.questions)}
   }
+}
+
+export function convertUpdatePricing(actualPricing, newFare) {
+  const newPricing = actualPricing.map(fare => {
+    if (fare.name === newFare.name) {
+      return {
+        name: newFare.name ? newFare.name : fare.name,
+        description: newFare.description ? newFare.description : fare.description,
+        value: newFare.value ? newFare.value : fare.value,
+        need_verification: newFare.needVerification ? newFare.needVerification : fare.need_verification,
+        roles: newFare.roles ? newFare.roles : fare.roles,
+        currency: newFare.currency ? newFare.currency : fare.currency,
+        related_date: newFare.relatedDate ? newFare.relatedDate : fare.related_date,
+      }
+    }
+    return fare;
+  })
+  return {pricing: newPricing}
+}
+
+export function convertNewPricing(actualPricing, newFare) {
+  const updateFare = {
+    name: newFare.name,
+    description: newFare.description,
+    value: newFare.value,
+    need_verification: newFare.needVerification,
+    roles: newFare.roles,
+    related_date: newFare.relatedDate,
+    currency: "ARS"
+  }
+  return {pricing: [...actualPricing, updateFare]}
+}
+
+export function convertNewDates(actualDates, newDate) {
+  const updateDate = {
+    name: newDate.name,
+    label: newDate.name,
+    description: newDate.description,
+    is_mandatory: false,
+    date: format(newDate.date, 'yyyy-MM-dd'),
+    time: format(newDate.date, 'HH:mm:ss'),
+  }
+  return {dates: [...actualDates, updateDate]}
 }
