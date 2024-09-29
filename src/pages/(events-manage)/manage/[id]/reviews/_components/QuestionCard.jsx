@@ -51,11 +51,22 @@ export default function QuestionCard({
     setIsEditDialogOpen(true);
   };
 
+  let title = question.question;
+  title +=
+    question.type_question === "multiple_choice"
+      ? question.more_than_one_answer_allowed
+        ? " (múltiples opciones)"
+        : " (opción única)"
+      : "";
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4 relative">
       <div className="flex items-center mb-2">
         <div className="font-semibold text-lg flex-grow">
-          {question.question}
+          {title}{" "}
+          {question.is_mandatory ? (
+            <span className="text-red-600">*</span>
+          ) : null}
         </div>
         <div className="flex items-center">
           <Button
