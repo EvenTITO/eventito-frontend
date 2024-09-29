@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import PricesTable from "./_components/PricesTable";
@@ -35,13 +34,13 @@ export default function Page({ prices, dates }) {
         eventDates: dates,
       });
       toast({
-        title: "Price Added",
-        description: `${newPrice.name} has been added to the price list.`,
+        title: "Tarifa agregada",
+        description: `${newPrice.name} agregada con éxito.`,
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to add price. Please try again.",
+        description: "Error al agregar la tarifa. Intente nuevamente.",
         variant: "destructive",
       });
     }
@@ -55,13 +54,13 @@ export default function Page({ prices, dates }) {
         eventDates: dates,
       });
       toast({
-        title: "Price Updated",
-        description: `${updatedPrice.name} has been updated.`,
+        title: "Tarifa actualizada",
+        description: `${updatedPrice.name} fue actualizada con éxito.`,
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to update price. Please try again.",
+        description: "Error al actualizar la tarifa. Intente nuevamente.",
         variant: "destructive",
       });
     }
@@ -74,13 +73,13 @@ export default function Page({ prices, dates }) {
         eventPricing: prices,
       });
       toast({
-        title: "Price Removed",
-        description: "The price has been removed from the list.",
+        title: "Tarifa eliminada",
+        description: "La tarifa fue eliminada con éxito.",
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to delete price. Please try again.",
+        description: "Error al eliminar la tarifa. Intente nuevamente.",
         variant: "destructive",
       });
     }

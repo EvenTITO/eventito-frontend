@@ -60,15 +60,15 @@ function PriceItem({
               <strong>Roles:</strong>{" "}
               {price.roles.length > 0
                 ? price.roles.join(", ")
-                : "No specific roles"}
+                : "Sin roles especificados"}
             </p>
             <p>
-              <strong>Verification Required:</strong>{" "}
-              {price.need_verification ? "Yes" : "No"}
+              <strong>Requiere verificación:</strong>{" "}
+              {price.need_verification ? "Sí" : "No"}
             </p>
             <p>
-              <strong>Related Date:</strong>{" "}
-              {price.related_date || "Not specified"}
+              <strong>Fecha límite:</strong>{" "}
+              {price.related_date || "Sin fecha límite"}
             </p>
           </div>
           <div className="space-x-2">
