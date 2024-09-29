@@ -4,21 +4,23 @@ import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import QuestionsList from "./_components/QuestionsList";
 import AddQuestion from "./_components/AddQuestion";
 import AddQuestionDetails from "./_components/AddQuestionDetails";
+import { useAddQuestion } from "@/hooks/manage/reviewsHooks";
 
-export default function Page() {
-  const [questions, setQuestions] = useState([]);
+export default function Page({ reviewSkeleton }) {
+  const [questions, setQuestions] = useState(reviewSkeleton);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [newQuestionType, setNewQuestionType] = useState(null);
   const [newQuestion, setNewQuestion] = useState(null);
+
+  const { mutateAsync: addNewQuestion, isPending, error } = useAddQuestion();
 
   const handleAddQuestion = (type) => {
     setNewQuestionType(type);
     setNewQuestion({
       id: Date.now().toString(),
       type,
-      title: "",
-      description: "",
+      question: "",
       max_value: type === "rating" ? 5 : undefined,
       options: type === "multiple_choice" ? ["Opción"] : undefined,
       more_than_one_answer_allowed:

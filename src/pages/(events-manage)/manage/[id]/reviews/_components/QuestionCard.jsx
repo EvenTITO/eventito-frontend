@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { PlusIcon, Pencil, Trash2, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,10 +40,7 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
   const handleAddOption = () => {
     setEditingQuestion({
       ...editingQuestion,
-      options: [
-        ...editingQuestion.options,
-        `Option ${editingQuestion.options.length + 1}`,
-      ],
+      options: [...editingQuestion.options, "Nueva opción"],
     });
     setEditingOptionIndex(editingQuestion.options.length);
     setIsEditDialogOpen(true);
@@ -52,7 +49,9 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4 relative">
       <div className="flex items-center mb-2">
-        <div className="font-semibold text-lg flex-grow">{question.title}</div>
+        <div className="font-semibold text-lg flex-grow">
+          {question.question}
+        </div>
         <div className="flex items-center">
           <Button
             variant="table"
@@ -69,7 +68,7 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
           </Button>
         </div>
       </div>
-      {question.type === "simple_question" && (
+      {question.type_question === "simple_question" && (
         <Textarea
           value={question.description || ""}
           readOnly
@@ -77,7 +76,7 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
           placeholder="Ingresar respuesta"
         />
       )}
-      {question.type === "rating" && (
+      {question.type_question === "rating" && (
         <div className="flex items-center mt-2">
           <Slider
             defaultValue={[0]}
@@ -88,7 +87,7 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
           <span className="ml-2">/ {question.max_value || 5}</span>
         </div>
       )}
-      {question.type === "multiple_choice" && (
+      {question.type_question === "multiple_choice" && (
         <div className="mt-2 mx-4">
           {question.options?.map((option, index) => (
             <div key={index} className="flex items-center mb-2 relative">
@@ -137,21 +136,21 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
           <div className="space-y-4">
             {editingOptionIndex === null ? (
               <div>
-                <Label htmlFor="title">Title</Label>
+                <Label htmlFor="question">Título de pregunta</Label>
                 <Input
-                  id="title"
-                  value={editingQuestion.title}
+                  id="question"
+                  value={editingQuestion.question}
                   onChange={(e) =>
                     setEditingQuestion({
                       ...editingQuestion,
-                      title: e.target.value,
+                      question: e.target.value,
                     })
                   }
                 />
               </div>
             ) : (
               <div>
-                <Label htmlFor="option">Option</Label>
+                <Label htmlFor="option">Nombre de la opción</Label>
                 <Input
                   id="option"
                   value={editingQuestion.options[editingOptionIndex]}
@@ -160,9 +159,9 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
               </div>
             )}
             {editingOptionIndex === null &&
-              editingQuestion.type === "simple_question" && (
+              editingQuestion.type_question === "simple_question" && (
                 <div>
-                  <Label htmlFor="description">Description</Label>
+                  <Label htmlFor="description">Descripción</Label>
                   <Textarea
                     id="description"
                     value={editingQuestion.description || ""}
@@ -176,9 +175,9 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
                 </div>
               )}
             {editingOptionIndex === null &&
-              editingQuestion.type === "rating" && (
+              editingQuestion.type_question === "rating" && (
                 <div>
-                  <Label htmlFor="max-value">Max Value</Label>
+                  <Label htmlFor="max-value">Máxima calificación</Label>
                   <Input
                     id="max-value"
                     type="number"
