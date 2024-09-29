@@ -43,8 +43,6 @@ export function useDeleteQuestion() {
       const newQuestions = reviewSkeleton.questions.filter(
         (q) => q.question !== questionToDelete.question,
       );
-      console.log(questionToDelete, newQuestions);
-
       const newReviewSkeleton = convertReviewSkeleton(newQuestions);
       await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton);
     },
@@ -52,9 +50,6 @@ export function useDeleteQuestion() {
       queryClient.invalidateQueries({
         queryKey: ["getEventById", { eventId }],
       });
-    },
-    onError: (e) => {
-      console.log(e);
     },
   });
 }
@@ -65,15 +60,12 @@ export function useUpdateQuestion() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ updatedQuestion, reviewSkeleton, index }) => {
+    mutationFn: async ({ updatedQuestion, reviewSkeleton }) => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      const idx = updatedQuestion.index;
-      let originQuestions = JSON.parse(
-        JSON.stringify(reviewSkeleton.questions),
+      const newQuestions = reviewSkeleton.questions.map((q, index) =>
+        index === updatedQuestion.index ? updatedQuestion : q,
       );
-
-      originQuestions[idx] = updatedQuestion;
-      const newReviewSkeleton = convertReviewSkeleton(originQuestions);
+      const newReviewSkeleton = convertReviewSkeleton(newQuestions);
 
       await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton);
     },

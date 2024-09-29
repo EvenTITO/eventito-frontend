@@ -18,14 +18,14 @@ export default function QuestionCard({
   question,
   onUpdate,
   onDelete,
-  isPending
+  isPending,
 }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState(question);
   const [editingOptionIndex, setEditingOptionIndex] = useState(null);
 
   const handleSaveEdit = async () => {
-    await onUpdate({ ...editingQuestion, index: questionIndex });
+    await onUpdate({ updatedQuestion: editingQuestion, index: questionIndex });
     setIsEditDialogOpen(false);
     setEditingOptionIndex(null);
   };

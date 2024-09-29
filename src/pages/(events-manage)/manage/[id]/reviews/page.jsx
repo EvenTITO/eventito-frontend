@@ -47,11 +47,11 @@ export default function Page({ reviewSkeleton }) {
     setNewQuestionType(null);
   };
 
-  const handleUpdateQuestion = async (updatedQuestion, index) => {
+  const handleUpdateQuestion = async ({ updatedQuestion, index }) => {
+    console.log("question to send", updatedQuestion, index);
     await updateQuestion.mutateAsync({
-      updatedQuestion: updatedQuestion,
+      updatedQuestion: { ...updatedQuestion, index: index },
       reviewSkeleton: { questions: questions },
-      questionIndex: index,
     });
     setQuestions(
       questions.map((q, index) =>
