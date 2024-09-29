@@ -1,13 +1,12 @@
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import ButtonWithLoading from "@/components/ButtonWithLoading";
 
 export default function AddQuestionDetails({
   isDetailsDialogOpen,
@@ -16,6 +15,7 @@ export default function AddQuestionDetails({
   setNewQuestion,
   newQuestionType,
   handleSaveNewQuestion,
+  isPending,
 }) {
   return (
     <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
@@ -51,7 +51,12 @@ export default function AddQuestionDetails({
             </div>
           )}
         </div>
-        <Button onClick={handleSaveNewQuestion}>Guardar</Button>
+        <ButtonWithLoading
+          onClick={handleSaveNewQuestion}
+          isLoading={isPending}
+        >
+          Guardar
+        </ButtonWithLoading>
       </DialogContent>
     </Dialog>
   );

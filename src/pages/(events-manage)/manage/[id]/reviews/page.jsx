@@ -74,6 +74,7 @@ export default function Page({ reviewSkeleton }) {
         setNewQuestion={setNewQuestion}
         newQuestionType={newQuestionType}
         handleSaveNewQuestion={handleSaveNewQuestion}
+        isPending={addQuestion.isPending}
       />
     </ContainerPage>
   );
