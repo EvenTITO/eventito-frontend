@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlusIcon, Pencil, Trash2, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -121,7 +121,7 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
             onClick={handleAddOption}
             className="mt-2"
           >
-            <PlusIcon className="h-4 w-4 mr-2" /> Add Option
+            <PlusIcon className="h-4 w-4 mr-2" /> Agregar opción
           </Button>
         </div>
       )}
