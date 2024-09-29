@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import QuestionsList from "./_components/QuestionsList";
 import AddQuestion from "./_components/AddQuestion";
 import AddQuestionDetails from "./_components/AddQuestionDetails";
-import {
-  useAddQuestion,
-  useDeleteQuestion,
-  useUpdateQuestion,
-} from "@/hooks/manage/reviewsHooks";
+import {useAddQuestion, useDeleteQuestion, useUpdateQuestion,} from "@/hooks/manage/reviewsHooks";
 
-export default function Page({ reviewSkeleton }) {
-  const [questions, setQuestions] = useState(reviewSkeleton);
+export default function Page({reviewSkeleton}) {
+  const [questions, setQuestions] = useState(reviewSkeleton.questions || []);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [newQuestionType, setNewQuestionType] = useState(null);
@@ -39,7 +35,7 @@ export default function Page({ reviewSkeleton }) {
     delete newQuestion.id;
     await addQuestion.mutateAsync({
       newQuestion: newQuestion,
-      reviewSkeleton: { questions: questions },
+      reviewSkeleton: {questions: questions},
     });
     setQuestions([...questions, newQuestion]);
     setIsDetailsDialogOpen(false);
@@ -47,11 +43,10 @@ export default function Page({ reviewSkeleton }) {
     setNewQuestionType(null);
   };
 
-  const handleUpdateQuestion = async ({ updatedQuestion, index }) => {
-    console.log("question to send", updatedQuestion, index);
+  const handleUpdateQuestion = async ({updatedQuestion, index}) => {
     await updateQuestion.mutateAsync({
-      updatedQuestion: { ...updatedQuestion, index: index },
-      reviewSkeleton: { questions: questions },
+      updatedQuestion: {...updatedQuestion, index: index},
+      reviewSkeleton: {questions: questions},
     });
     setQuestions(
       questions.map((q, index) =>
@@ -63,17 +58,18 @@ export default function Page({ reviewSkeleton }) {
   const handleDeleteQuestion = async (question) => {
     await deleteQuestion.mutateAsync({
       questionToDelete: question,
-      reviewSkeleton: { questions: questions },
+      reviewSkeleton: {questions: questions},
     });
     setQuestions(questions.filter((q) => q.question !== question.question));
   };
 
   return (
     <ContainerPage>
-      <TitlePage title={"Configuración de formulario de revisión"} />
+      <TitlePage title={"Configuración de formulario de revisión"}/>
 
       <QuestionsList
         questions={questions}
+        recommendation={reviewSkeleton.recommendation}
         handleUpdateQuestion={handleUpdateQuestion}
         handleDeleteQuestion={handleDeleteQuestion}
         isPending={

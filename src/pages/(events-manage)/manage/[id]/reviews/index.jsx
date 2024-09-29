@@ -6,7 +6,7 @@ export default function ReviewsConfigPage() {
   const { data: eventData, isPending, error } = useGetEvent();
 
   const component = (
-    <Page reviewSkeleton={eventData.review_skeleton.questions || []} />
+    <Page reviewSkeleton={eventData.review_skeleton || {}} />
   );
   return (
     <FetchStatus component={component} isPending={isPending} error={error} />

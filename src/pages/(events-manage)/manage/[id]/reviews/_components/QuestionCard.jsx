@@ -1,31 +1,30 @@
-import { useState } from "react";
-import { PlusIcon, Pencil, Trash2, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Slider } from "@/components/ui/slider";
+import {useState} from "react";
+import {ChevronRight, Pencil, PlusIcon, Trash2} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Textarea} from "@/components/ui/textarea";
+import {Dialog, DialogContent, DialogHeader, DialogTitle,} from "@/components/ui/dialog";
+import {Slider} from "@/components/ui/slider";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 
-export default function QuestionCard({
-  questionIndex,
-  question,
-  onUpdate,
-  onDelete,
-  isPending,
-}) {
+export default function QuestionCard(
+  {
+    questionIndex,
+    question,
+    onUpdate,
+    onDelete,
+    isPending,
+    canBeEdited,
+    canBeDeleted,
+  }
+) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState(question);
   const [editingOptionIndex, setEditingOptionIndex] = useState(null);
 
   const handleSaveEdit = async () => {
-    await onUpdate({ updatedQuestion: editingQuestion, index: questionIndex });
+    await onUpdate({updatedQuestion: editingQuestion, index: questionIndex});
     setIsEditDialogOpen(false);
     setEditingOptionIndex(null);
   };
@@ -70,12 +69,10 @@ export default function QuestionCard({
       <div className="flex items-center mb-2">
         <div className="font-semibold text-lg flex-grow">
           {title}{" "}
-          {question.is_mandatory ? (
-            <span className="text-red-600">*</span>
-          ) : null}
+          {question.is_mandatory ? (<span className="text-red-600">*</span>) : null}
         </div>
         <div className="flex items-center">
-          <Button
+          {canBeEdited && (<Button
             variant="table"
             size="sm"
             onClick={() => {
@@ -83,11 +80,11 @@ export default function QuestionCard({
               setIsEditDialogOpen(true);
             }}
           >
-            <Pencil className="h-4 w-4" />
-          </Button>
-          <Button variant="table" size="sm" onClick={handleDelete}>
-            <Trash2 className="h-4 w-4" />
-          </Button>
+            <Pencil className="h-4 w-4"/>
+          </Button>)}
+          {canBeDeleted && (<Button variant="table" size="sm" onClick={handleDelete}>
+            <Trash2 className="h-4 w-4"/>
+          </Button>)}
         </div>
       </div>
       {question.type_question === "simple_question" && (
@@ -113,37 +110,37 @@ export default function QuestionCard({
         <div className="mt-2 mx-4">
           {question.options?.map((option, index) => (
             <div key={index} className="flex items-center mb-2 relative">
-              <ChevronRight className="w-4 h-4  mr-2" />
+              <ChevronRight className="w-4 h-4  mr-2"/>
               <div className="flex-grow">{option}</div>
-              <Button
+              {canBeEdited && (<Button
                 variant="table"
                 size="sm"
                 onClick={() => handleEditOption(index)}
               >
-                <Pencil className="h-4 w-4" />
-              </Button>
-              <Button
+                <Pencil className="h-4 w-4"/>
+              </Button>)}
+              {canBeDeleted && (<Button
                 variant="table"
                 size="sm"
                 onClick={() => {
                   const newOptions = question.options.filter(
                     (_, i) => i !== index,
                   );
-                  onUpdate({ ...question, options: newOptions });
+                  onUpdate({...question, options: newOptions});
                 }}
               >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+                <Trash2 className="h-4 w-4"/>
+              </Button>)}
             </div>
           ))}
-          <Button
+          {canBeEdited && (<Button
             variant="outline"
             size="sm"
             onClick={handleAddOption}
             className="mt-2"
           >
-            <PlusIcon className="h-4 w-4 mr-2" /> Agregar opción
-          </Button>
+            <PlusIcon className="h-4 w-4 mr-2"/> Agregar opción
+          </Button>)}
         </div>
       )}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>

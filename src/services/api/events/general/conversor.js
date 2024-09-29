@@ -1,4 +1,3 @@
-import {convertReviewSkeletonQuestions} from "@/services/api/events/reviewer/conversor"
 import {format} from "date-fns";
 
 export function convertEventsData(data) {
@@ -50,13 +49,6 @@ export function convertMyEventsData(data) {
     status: event.status,
     tracks: event.tracks,
   }));
-}
-
-export function convertEventFullData(data) {
-  return {
-    ...data,
-    review_skeleton: {questions: convertReviewSkeletonQuestions(data.review_skeleton.questions)}
-  }
 }
 
 export function convertReviewSkeleton(newQuestions) {

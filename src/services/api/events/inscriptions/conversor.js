@@ -5,6 +5,9 @@ export function convertInscription(inscription, payments) {
       id: inscription.id,
       roles: inscription.roles,
       affiliation: inscription.affiliation,
+      userId:inscription.user_id,
+      userName: inscription.user.fullname,
+      userEmail: inscription.user.email,
       payments: convertPayments(payments)
     }
 }
