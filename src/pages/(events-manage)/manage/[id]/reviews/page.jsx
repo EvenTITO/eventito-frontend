@@ -15,16 +15,16 @@ export default function Page({ reviewSkeleton }) {
 
   const { mutateAsync: addNewQuestion, isPending, error } = useAddQuestion();
 
-  const handleAddQuestion = (type) => {
-    setNewQuestionType(type);
+  const handleAddQuestion = (type_question) => {
+    setNewQuestionType(type_question);
     setNewQuestion({
       id: Date.now().toString(),
-      type,
+      type_question,
       question: "",
-      max_value: type === "rating" ? 5 : undefined,
-      options: type === "multiple_choice" ? ["Opción"] : undefined,
+      max_value: type_question === "rating" ? 5 : undefined,
+      options: type_question === "multiple_choice" ? ["Opción"] : undefined,
       more_than_one_answer_allowed:
-        type === "multiple_choice" ? false : undefined,
+        type_question === "multiple_choice" ? false : undefined,
     });
     setIsAddDialogOpen(false);
     setIsDetailsDialogOpen(true);
@@ -39,12 +39,14 @@ export default function Page({ reviewSkeleton }) {
 
   const handleUpdateQuestion = (updatedQuestion) => {
     setQuestions(
-      questions.map((q) => (q.id === updatedQuestion.id ? updatedQuestion : q)),
+      questions.map((q) =>
+        q.question === updatedQuestion.question ? updatedQuestion : q,
+      ),
     );
   };
 
-  const handleDeleteQuestion = (id) => {
-    setQuestions(questions.filter((q) => q.id !== id));
+  const handleDeleteQuestion = (question) => {
+    setQuestions(questions.filter((q) => q.question !== question.question));
   };
 
   return (

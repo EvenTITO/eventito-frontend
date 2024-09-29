@@ -12,7 +12,7 @@ export default function QuestionsList({
           key={question.id}
           question={question}
           onUpdate={handleUpdateQuestion}
-          onDelete={() => handleDeleteQuestion(question.id)}
+          onDelete={handleDeleteQuestion}
         />
       ))}
     </div>

@@ -63,7 +63,7 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
           >
             <Pencil className="h-4 w-4" />
           </Button>
-          <Button variant="table" size="sm" onClick={onDelete}>
+          <Button variant="table" size="sm" onClick={() => onDelete(question)}>
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
