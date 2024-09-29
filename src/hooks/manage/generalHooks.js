@@ -21,7 +21,7 @@ export function useEditEvent() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventById", {eventId}],
+        queryKey: ["getEventById", { eventId }],
       });
     },
   });
@@ -32,10 +32,11 @@ export function useUploadEventImage() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({imageName, image}) => await uploadEventImage(eventId, imageName, image),
+    mutationFn: async ({ imageName, image }) =>
+      await uploadEventImage(eventId, imageName, image),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventById", {eventId}],
+        queryKey: ["getEventById", { eventId }],
       });
     },
   });
@@ -43,9 +44,13 @@ export function useUploadEventImage() {
 
 async function uploadEventImage(eventId, imageName, image) {
   if (image) {
-    const httpClient = new HTTPClient(EVENTS_URL)
-    const uploadUrl = await apiGetUploadEventImageUrl(httpClient, eventId, imageName)
-    console.log(uploadUrl)
-    await uploadFile(uploadUrl, image)
+    const httpClient = new HTTPClient(EVENTS_URL);
+    const uploadUrl = await apiGetUploadEventImageUrl(
+      httpClient,
+      eventId,
+      imageName,
+    );
+    console.log(uploadUrl);
+    await uploadFile(uploadUrl, image);
   }
 }
