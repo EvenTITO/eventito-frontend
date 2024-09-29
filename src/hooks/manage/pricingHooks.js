@@ -43,16 +43,24 @@ export function useAddOrModifyFareInEventPricing() {
 }
 
 export function useDeletePayment() {
-  const queryClient = useQueryClient();
+  const eventId = getEventId()
+  const {data: event} = useGetEvent(eventId)
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async ({paymentName}) => {
-      await wait(2);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const pricing = event.pricing
+
+      const updatedPricing = pricing.filter(
+        (p) => p.name !== paymentName,
+      )
+
+      return await apiUpdatePricingEvent(httpClient, eventId, updatedPricing) 
     }, onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["getEventById", {eventId}],
-      });
+      })
     },
   });
 }
