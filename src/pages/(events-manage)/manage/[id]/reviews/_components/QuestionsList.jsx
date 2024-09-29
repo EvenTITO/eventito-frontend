@@ -4,6 +4,7 @@ export default function QuestionsList({
   questions,
   handleUpdateQuestion,
   handleDeleteQuestion,
+  isPending,
 }) {
   return (
     <div className="space-y-4">
@@ -14,6 +15,7 @@ export default function QuestionsList({
           question={question}
           onUpdate={handleUpdateQuestion}
           onDelete={handleDeleteQuestion}
+          isPending={isPending}
         />
       ))}
     </div>
