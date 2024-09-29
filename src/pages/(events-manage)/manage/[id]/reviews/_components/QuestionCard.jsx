@@ -11,19 +11,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Slider } from "@/components/ui/slider";
+import ButtonWithLoading from "@/components/ButtonWithLoading";
 
 export default function QuestionCard({
   question,
   onUpdate,
   onDelete,
   questionIndex,
+  isPending
 }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState(question);
   const [editingOptionIndex, setEditingOptionIndex] = useState(null);
 
-  const handleSaveEdit = () => {
-    onUpdate({ ...editingQuestion, index: questionIndex });
+  const handleSaveEdit = async () => {
+    await onUpdate({ ...editingQuestion, index: questionIndex });
     setIsEditDialogOpen(false);
     setEditingOptionIndex(null);
   };
@@ -40,6 +42,10 @@ export default function QuestionCard({
       ...editingQuestion,
       options: newOptions,
     });
+  };
+
+  const handleDelete = async () => {
+    await onDelete(question);
   };
 
   const handleAddOption = () => {
@@ -79,7 +85,7 @@ export default function QuestionCard({
           >
             <Pencil className="h-4 w-4" />
           </Button>
-          <Button variant="table" size="sm" onClick={() => onDelete(question)}>
+          <Button variant="table" size="sm" onClick={handleDelete}>
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
@@ -208,7 +214,9 @@ export default function QuestionCard({
                 </div>
               )}
           </div>
-          <Button onClick={handleSaveEdit}>Save Changes</Button>
+          <ButtonWithLoading onClick={handleSaveEdit} isLoading={isPending}>
+            Guardar
+          </ButtonWithLoading>
         </DialogContent>
       </Dialog>
     </div>

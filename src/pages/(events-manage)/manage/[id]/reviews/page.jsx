@@ -9,7 +9,6 @@ import {
   useDeleteQuestion,
   useUpdateQuestion,
 } from "@/hooks/manage/reviewsHooks";
-import { constructQuestion } from "./_components/utils";
 
 export default function Page({ reviewSkeleton }) {
   const [questions, setQuestions] = useState(reviewSkeleton);
@@ -22,7 +21,7 @@ export default function Page({ reviewSkeleton }) {
   const updateQuestion = useUpdateQuestion();
   const deleteQuestion = useDeleteQuestion();
 
-  const handleAddQuestion = (type_question) => {
+  const handleAddQuestion = (type_question, more_than_one_answer_allowed) => {
     setNewQuestionType(type_question);
     setNewQuestion({
       id: Date.now().toString(),
@@ -30,16 +29,16 @@ export default function Page({ reviewSkeleton }) {
       question: "",
       max_value: type_question === "rating" ? 5 : undefined,
       options: type_question === "multiple_choice" ? ["Opción"] : undefined,
-      more_than_one_answer_allowed:
-        type_question === "multiple_choice" ? false : undefined,
+      more_than_one_answer_allowed,
     });
     setIsAddDialogOpen(false);
     setIsDetailsDialogOpen(true);
   };
 
   const handleSaveNewQuestion = async () => {
+    delete newQuestion.id
     await addQuestion.mutateAsync({
-      newQuestion: constructQuestion(newQuestion),
+      newQuestion: newQuestion,
       reviewSkeleton: { questions: questions },
     });
     setQuestions([...questions, newQuestion]);
@@ -50,7 +49,7 @@ export default function Page({ reviewSkeleton }) {
 
   const handleUpdateQuestion = async (updatedQuestion) => {
     await updateQuestion.mutateAsync({
-      updatedQuestion: constructQuestion(updatedQuestion),
+      updatedQuestion: updatedQuestion,
       reviewSkeleton: { questions: questions },
     });
     setQuestions(
@@ -62,7 +61,7 @@ export default function Page({ reviewSkeleton }) {
 
   const handleDeleteQuestion = async (question) => {
     await deleteQuestion.mutateAsync({
-      questionToDelete: question.question,
+      questionToDelete: question,
       reviewSkeleton: { questions: questions },
     });
     setQuestions(questions.filter((q) => q.question !== question.question));
@@ -76,6 +75,11 @@ export default function Page({ reviewSkeleton }) {
         questions={questions}
         handleUpdateQuestion={handleUpdateQuestion}
         handleDeleteQuestion={handleDeleteQuestion}
+        isPending={
+          addQuestion.isPending ||
+          updateQuestion.isPending ||
+          deleteQuestion.isPending
+        }
       />
       <AddQuestion
         isAddDialogOpen={isAddDialogOpen}
