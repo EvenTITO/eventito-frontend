@@ -1,10 +1,4 @@
-import {
-  ChevronRight,
-  ChevronDown,
-  X,
-  Shield,
-  Calendar,
-} from "lucide-react";
+import { ChevronRight, ChevronDown, X, Shield, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PriceDialog from "./PriceDialog";
 
@@ -85,7 +79,7 @@ function PriceItem({
               onClick={() => onDeletePrice(price.name)}
             >
               <X className="h-4 w-4 mr-2" />
-              Remove
+              Borrar
             </Button>
           </div>
         </div>

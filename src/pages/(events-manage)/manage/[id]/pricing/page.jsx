@@ -51,7 +51,7 @@ export default function Page({ prices, dates }) {
     try {
       await addOrModifyFare.mutateAsync({
         newFare: updatedPrice,
-        eventPricing: prices,
+        eventPrices: prices,
         eventDates: dates,
       });
       toast({

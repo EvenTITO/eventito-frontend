@@ -62,7 +62,7 @@ export default function PriceDialog({ price, onSave }) {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Título de tarifa</Label>
             <Input
               id="name"
               name="name"
@@ -72,7 +72,7 @@ export default function PriceDialog({ price, onSave }) {
             />
           </div>
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">Descripción</Label>
             <Input
               id="description"
               name="description"
@@ -82,7 +82,7 @@ export default function PriceDialog({ price, onSave }) {
             />
           </div>
           <div>
-            <Label htmlFor="value">Value</Label>
+            <Label htmlFor="value">Valor de la tarifa</Label>
             <Input
               id="value"
               name="value"
@@ -104,10 +104,10 @@ export default function PriceDialog({ price, onSave }) {
                 }))
               }
             />
-            <Label htmlFor="need_verification">Requires Verification</Label>
+            <Label htmlFor="need_verification">Requiere verificación</Label>
           </div>
           <div>
-            <Label htmlFor="related_date">Related Date (optional)</Label>
+            <Label htmlFor="related_date">Fecha límite (opcional)</Label>
             <Input
               id="related_date"
               name="related_date"
@@ -117,7 +117,7 @@ export default function PriceDialog({ price, onSave }) {
             />
           </div>
           <div>
-            <Label htmlFor="roles">Roles (comma-separated)</Label>
+            <Label htmlFor="roles">Roles (separados por coma)</Label>
             <Input
               id="roles"
               name="roles"
@@ -130,7 +130,7 @@ export default function PriceDialog({ price, onSave }) {
               }
             />
           </div>
-          <Button type="submit">{price ? "Update" : "Add"} Price</Button>
+          <Button type="submit">Continuar</Button>
         </form>
       </DialogContent>
     </Dialog>
