@@ -46,19 +46,17 @@ export default function TracksTable({ initialTracks }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <div className="space-y-2">
-        {tracks.map((track) => (
-          <TrackItem
-            key={track.id}
-            track={track}
-            isExpanded={expandedTracks.has(track.id)}
-            onToggleExpand={() => toggleTrackExpansion(track.id)}
-            onUpdateChair={updateChair}
-            onDeleteChair={deleteChair}
-          />
-        ))}
-      </div>
+    <div className="space-y-2">
+      {tracks.map((track) => (
+        <TrackItem
+          key={track.id}
+          track={track}
+          isExpanded={expandedTracks.has(track.id)}
+          onToggleExpand={() => toggleTrackExpansion(track.id)}
+          onUpdateChair={updateChair}
+          onDeleteChair={deleteChair}
+        />
+      ))}
     </div>
   );
 }
