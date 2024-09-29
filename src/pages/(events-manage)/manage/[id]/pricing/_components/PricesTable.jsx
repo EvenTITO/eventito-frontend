@@ -2,7 +2,6 @@ import {
   ChevronRight,
   ChevronDown,
   X,
-  Edit2,
   Shield,
   Calendar,
 } from "lucide-react";
@@ -20,10 +19,10 @@ export default function PricesTable({
     <div className="space-y-2">
       {prices.map((price) => (
         <PriceItem
-          key={price.id}
+          key={price.name}
           price={price}
-          isExpanded={expandedPrices.has(price.id)}
-          onToggleExpand={() => onToggleExpand(price.id)}
+          isExpanded={expandedPrices.has(price.name)}
+          onToggleExpand={() => onToggleExpand(price.name)}
           onUpdatePrice={onUpdatePrice}
           onDeletePrice={onDeletePrice}
         />
@@ -83,7 +82,7 @@ function PriceItem({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onDeletePrice(price.id)}
+              onClick={() => onDeletePrice(price.name)}
             >
               <X className="h-4 w-4 mr-2" />
               Remove

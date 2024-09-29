@@ -115,9 +115,9 @@ function convertFare(fare) {
     name: fare.name,
     description: fare.description,
     value: fare.value,
-    need_verification: fare.needVerification,
+    need_verification: fare.need_verification,
     roles: fare.roles,
-    related_date: fare.relatedDate,
+    related_date: fare.related_date,
     currency: "ARS"
   }
 }

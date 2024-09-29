@@ -49,7 +49,11 @@ export default function Page({ prices, dates }) {
 
   const handleUpdatePrice = async (updatedPrice) => {
     try {
-      await addOrModifyFare.mutateAsync({ newFare: updatedPrice });
+      await addOrModifyFare.mutateAsync({
+        newFare: updatedPrice,
+        eventPricing: prices,
+        eventDates: dates,
+      });
       toast({
         title: "Price Updated",
         description: `${updatedPrice.name} has been updated.`,
@@ -63,9 +67,12 @@ export default function Page({ prices, dates }) {
     }
   };
 
-  const handleDeletePrice = async (priceId) => {
+  const handleDeletePrice = async (priceName) => {
     try {
-      await deletePayment.mutateAsync({ fareName: priceId });
+      await deletePayment.mutateAsync({
+        fareName: priceName,
+        eventPricing: prices,
+      });
       toast({
         title: "Price Removed",
         description: "The price has been removed from the list.",

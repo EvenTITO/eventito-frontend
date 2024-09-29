@@ -55,15 +55,14 @@ export function useAddOrModifyFareInEventPricing() {
 
 export function useDeletePayment() {
   const eventId = getEventId();
-  const { data: event } = useGetEvent(eventId);
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ fareName }) => {
+    mutationFn: async ({ fareName, eventPricing }) => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      const pricing = event.pricing;
 
-      const updatedFares = pricing.filter((p) => p.name !== fareName);
+      const updatedFares = eventPricing.filter((p) => p.name !== fareName);
+      console.log(fareName, updatedFares)
       const faresConverted = convertFares(updatedFares);
       return await apiUpdatePricingEvent(httpClient, eventId, faresConverted);
     },
