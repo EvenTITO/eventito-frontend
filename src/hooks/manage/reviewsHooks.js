@@ -3,7 +3,7 @@ import {HTTPClient} from "@/services/api/HTTPClient";
 import { getEventId, wait } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiUpdateReviewSkeleton } from "@/services/api/events/general/queries";
-import { convertReviewSkeletonQuestions } from "@/services/api/events/general/conversor";
+import { convertReviewSkeleton } from "@/services/api/events/general/conversor";
 export function useAddQuestion() {
   const eventId = getEventId();
 
@@ -14,7 +14,7 @@ export function useAddQuestion() {
       const httpClient = new HTTPClient(EVENTS_URL)
       
       reviewSkeleton.questions.push(newQuestion)
-      const newReviewSkeleton = convertReviewSkeletonQuestions(reviewSkeleton.questions)
+      const newReviewSkeleton = convertReviewSkeleton(reviewSkeleton.questions)
       
       await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
     },
@@ -36,7 +36,7 @@ export function useDeleteQuestion() {
       const httpClient = new HTTPClient(EVENTS_URL)
 
       const newQuestions = reviewSkeleton.questions.filter((q) => q.question !== questionToDelete);
-      const newReviewSkeleton = convertReviewSkeletonQuestions(newQuestions)
+      const newReviewSkeleton = convertReviewSkeleton(newQuestions)
       await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
     },
     onSuccess: () => {
@@ -56,7 +56,7 @@ export function useUpdateQuestion() {
     mutationFn: async ({ updatedQuestion, reviewSkeleton }) => {
       
       const newQuestions = reviewSkeleton.questions.map((q) => q.question === updatedQuestion.question ? updatedQuestion : q);
-      const newReviewSkeleton = convertReviewSkeletonQuestions(newQuestions)
+      const newReviewSkeleton = convertReviewSkeleton(newQuestions)
 
       await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
     },
