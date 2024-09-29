@@ -58,3 +58,11 @@ export function convertEventFullData(data) {
     review_skeleton: {questions: convertReviewSkeletonQuestions(data.review_skeleton.questions)}
   }
 }
+
+export function convertReviewSkeletonQuestions(newQuestions){
+  return {
+    review_keleton: {
+      questions: newQuestions
+    }
+  }
+}

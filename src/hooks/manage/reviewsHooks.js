@@ -1,6 +1,9 @@
+import {EVENTS_URL} from "@/lib/Constants";
+import {HTTPClient} from "@/services/api/HTTPClient";
 import { getEventId, wait } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
+import { apiUpdateReviewSkeleton } from "@/services/api/events/general/queries";
+import { convertReviewSkeletonQuestions } from "@/services/api/events/general/conversor";
 export function useAddQuestion() {
   const eventId = getEventId();
 
@@ -8,17 +11,12 @@ export function useAddQuestion() {
 
   return useMutation({
     mutationFn: async ({ newQuestion, reviewSkeleton }) => {
-      // Datos que dejo con ESTOS MISMOS NOMBRES EN SUS VALORES:
-      //
-      // newQuestion:
-      //  - questionType: rating, multiple_choice, simple_question
-      //  - moreThanOneAnswerAllowed: true o false
-      //  - options: opcion única || lista de opciones
-      //
-      // Si hacen un set por reviewSkeleton + newQuestion con name,
-      // llamo a esta función para modificar. En ese caso le ponemos useAddOrModifyQuestion
-      await wait(2);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL)
+      
+      reviewSkeleton.questions.push(newQuestion)
+      const newReviewSkeleton = convertReviewSkeletonQuestions(reviewSkeleton.questions)
+      
+      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -35,13 +33,11 @@ export function useDeleteQuestion() {
 
   return useMutation({
     mutationFn: async ({ questionToDelete, reviewSkeleton }) => {
-      // en este caso voy a pasar: el question.question
-      // deberías hacer algo como:
-      //
-      // reviewSkeleton.questions.filter((q) => q.question !== questionToDelete);
-      // y publicar eso
-      await wait(2);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL)
+
+      const newQuestions = reviewSkeleton.questions.filter((q) => q.question !== questionToDelete);
+      const newReviewSkeleton = convertReviewSkeletonQuestions(newQuestions)
+      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -58,13 +54,11 @@ export function useUpdateQuestion() {
 
   return useMutation({
     mutationFn: async ({ updatedQuestion, reviewSkeleton }) => {
-      // en este caso voy a pasar: el question
-      // deberías hacer algo como:
-      //
-      // reviewSkeleton.questions.map((q) => q.question === updatedQuestion.question ? updatedQuestion : q);
-      // y publicar eso
-      await wait(2);
-      return null;
+      
+      const newQuestions = reviewSkeleton.questions.map((q) => q.question === updatedQuestion.question ? updatedQuestion : q);
+      const newReviewSkeleton = convertReviewSkeletonQuestions(newQuestions)
+
+      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
