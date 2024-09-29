@@ -22,10 +22,6 @@ export default function TracksConfigPage() {
     enabled: !!tracksSettled && !!chairsSettled,
   });
 
-  if (chairsData.data) {
-    console.log("Chairs data", chairsData.data);
-  }
-
   const component = (
     <Page
       tracks={unifyEventTracksWithChairs(

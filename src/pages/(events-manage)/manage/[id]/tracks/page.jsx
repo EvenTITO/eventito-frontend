@@ -20,19 +20,19 @@ export default function Page({ tracks, chairs }) {
     return chairs.filter((chair) => chair.email === email)[0]?.userId;
   }
 
-  async function onDelete(track, email) {
+  async function onDelete(track, email, refetch = true) {
     const userId = getUserIdByEmail(email);
     await deleteChairOfTrack.mutateAsync({ track: track, userId: userId });
   }
 
-  async function onAdd(track, email) {
+  async function onAdd(track, email, refetch = true) {
     const userId = getUserIdByEmail(email);
     await addChairToTrack.mutateAsync({ track: track, userId: userId });
   }
 
   async function onUpdate(track, newEmail, oldEmail) {
-    await onDelete(track, oldEmail);
-    await onAdd(track, newEmail);
+    await onDelete(track, oldEmail, false);
+    await onAdd(track, newEmail, false);
   }
 
   return (

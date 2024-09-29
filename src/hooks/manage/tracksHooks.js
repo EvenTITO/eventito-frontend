@@ -13,6 +13,23 @@ import {
   apiUpdateChairTracks,
 } from "@/services/api/events/chair/queries.js";
 
+export function useAddTrack() {
+  const eventId = getEventId();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ track }) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getEventById", { eventId }],
+      });
+    },
+  });
+}
+
 export function useGetEventChair(userId) {
   const eventId = getEventId();
   return useQuery({
@@ -57,6 +74,8 @@ export function useGetEventChairsByTracks() {
   });
 }
 
+// ... previous imports and hooks remain the same
+
 export function useAddChairToTrack() {
   const eventId = getEventId();
   const queryClient = useQueryClient();
@@ -93,6 +112,7 @@ export function useAddChairToTrack() {
 export function useDeleteChairOfTrack() {
   const eventId = getEventId();
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ track, userId }) => {
       const httpClient = new HTTPClient(EVENTS_URL);
@@ -115,29 +135,8 @@ export function useDeleteChairOfTrack() {
       queryClient.invalidateQueries({
         queryKey: ["getEventChairsByTracks", { eventId }],
       });
-    },
-  });
-}
-
-export function useChangeChairOfTrack() {
-  const addChairToTrack = useAddChairToTrack();
-  const deleteChairOfTrack = useDeleteChairOfTrack();
-  return useMutation({
-    mutationFn: async ({ track, fromUserId, toUserId }) => {
-      await deleteChairOfTrack.mutateAsync({ track, userId: fromUserId });
-      await addChairToTrack.mutateAsync({ track, userId: toUserId });
-    },
-    onSuccess: () => {
-      const eventId = getEventId();
-      const queryClient = useQueryClient();
       queryClient.invalidateQueries({
-        queryKey: ["getEventChairs", { eventId }],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["getEventChairsByTrack", { eventId }],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["getEventChairsByTracks", { eventId }],
+        queryKey: ["getEventById", { eventId }],
       });
     },
   });
