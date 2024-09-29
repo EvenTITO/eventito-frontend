@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PlusIcon, Pencil, Trash2, GripVertical } from "lucide-react";
+import { PlusIcon, Pencil, Trash2, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -92,7 +92,7 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
         <div className="mt-2 mx-4">
           {question.options?.map((option, index) => (
             <div key={index} className="flex items-center mb-2 relative">
-              <div className="w-6 h-6 rounded-full border border-gray-300 mr-2"></div>
+              <ChevronRight className="w-4 h-4  mr-2" />
               <div className="flex-grow">{option}</div>
               <Button
                 variant="table"
@@ -129,7 +129,9 @@ export default function QuestionCard({ question, onUpdate, onDelete }) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {editingOptionIndex !== null ? "Edit Option" : "Edit Question"}
+              {editingOptionIndex !== null
+                ? "Editar opción"
+                : "Editar pregunta"}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
