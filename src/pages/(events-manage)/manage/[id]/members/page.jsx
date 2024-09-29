@@ -1,9 +1,11 @@
-import React from "react";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import AddMemberButton from "./_components/AddMemberButton";
 import MembersTable from "./_components/MembersTable";
-import { useUpdateMemberRole, useDeleteMember } from "@/hooks/manage/membersHooks";
+import {
+  useUpdateMemberRole,
+  useDeleteMember,
+} from "@/hooks/manage/membersHooks";
 
 export default function Page({ members }) {
   const {
@@ -30,7 +32,6 @@ export default function Page({ members }) {
       userId: member.id,
     });
   }
-
 
   return (
     <ContainerPage>

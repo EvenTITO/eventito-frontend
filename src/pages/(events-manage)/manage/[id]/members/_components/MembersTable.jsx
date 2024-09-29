@@ -41,7 +41,7 @@ export default function MembersTable({ members, onRoleChange, isPending, onDelet
         {isPending ? (
           <MembersPending />
         ) : (
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6">
             {filteredMembers.map((member, index) => (
               <Member
                 key={member.email}
@@ -112,7 +112,7 @@ function Member({ member, index, onRoleChange, onDeleteMember }) {
             value={member.role}
             onValueChange={(newRole) => onRoleChange(member, newRole)}
           >
-            <SelectTrigger className="w-auto">
+            <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Seleccionar rol" />
             </SelectTrigger>
             <SelectContent>
