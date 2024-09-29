@@ -11,18 +11,25 @@ import { Label } from "@/components/ui/label";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 
 export default function ChairDialog({
-  trackId,
+  track,
   initialEmail = "",
   onUpdateChair,
+  onAddChair,
   triggerButton,
+  isPending,
 }) {
   const [email, setEmail] = useState(initialEmail);
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (email) {
-      onUpdateChair(trackId, email);
+      if (initialEmail) {
+        await onUpdateChair(track, email, initialEmail);
+      } else {
+        console.log("en fn", track, email);
+        await onAddChair(track, email);
+      }
       setIsOpen(false);
     }
   };
@@ -48,7 +55,7 @@ export default function ChairDialog({
             <ButtonWithLoading
               type="submit"
               disabled={!email}
-            //isLoading={isPending}
+              isLoading={isPending}
             >
               Continuar
             </ButtonWithLoading>

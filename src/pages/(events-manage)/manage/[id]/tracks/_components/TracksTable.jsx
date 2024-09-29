@@ -2,10 +2,15 @@ import { useState } from "react";
 import { ChevronRight, ChevronDown, Plus, X, Edit2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { toast } from "@/hooks/use-toast";
 import ChairDialog from "./ChairDialog";
 
-export default function TracksTable({ initialTracks }) {
+export default function TracksTable({
+  initialTracks,
+  onAdd,
+  onUpdate,
+  onDelete,
+  isPending,
+}) {
   const [tracks, setTracks] = useState(initialTracks);
   const [expandedTracks, setExpandedTracks] = useState(new Set());
 
@@ -21,29 +26,17 @@ export default function TracksTable({ initialTracks }) {
     });
   };
 
-  const updateChair = (trackId, newEmail) => {
-    setTracks((prev) =>
-      prev.map((track) =>
-        track.id === trackId ? { ...track, mail: newEmail } : track,
-      ),
-    );
-    toast({
-      title: "Chair Updated",
-      description: `Chair for track ${tracks.find((t) => t.id === trackId)?.track} has been updated.`,
-    });
-  };
+  async function updateChair(track, newEmail, oldEmail) {
+    await onUpdate(track, newEmail, oldEmail);
+  }
 
-  const deleteChair = (trackId) => {
-    setTracks((prev) =>
-      prev.map((track) =>
-        track.id === trackId ? { ...track, mail: undefined } : track,
-      ),
-    );
-    toast({
-      title: "Chair Removed",
-      description: `Chair for track ${tracks.find((t) => t.id === trackId)?.track} has been removed.`,
-    });
-  };
+  async function deleteChair(track, email) {
+    await onDelete(track, email);
+  }
+
+  async function addChair(track, newEmail) {
+    await onAdd(track, newEmail);
+  }
 
   return (
     <div className="space-y-2">
@@ -55,6 +48,8 @@ export default function TracksTable({ initialTracks }) {
           onToggleExpand={() => toggleTrackExpansion(track.id)}
           onUpdateChair={updateChair}
           onDeleteChair={deleteChair}
+          onAddChair={addChair}
+          isPending={isPending}
         />
       ))}
     </div>
@@ -67,6 +62,8 @@ function TrackItem({
   onToggleExpand,
   onUpdateChair,
   onDeleteChair,
+  onAddChair,
+  isPending,
 }) {
   return (
     <div className="border border-gray-200 rounded-lg overflow-hidden">
@@ -96,9 +93,10 @@ function TrackItem({
               </div>
               <div className="space-x-2">
                 <ChairDialog
-                  trackId={track.id}
+                  track={track.track}
                   initialEmail={track.mail}
                   onUpdateChair={onUpdateChair}
+                  isPending={isPending}
                   triggerButton={
                     <Button size="sm" variant="outline">
                       <Edit2 className="h-4 w-4 mr-2" />
@@ -109,7 +107,7 @@ function TrackItem({
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => onDeleteChair(track.id)}
+                  onClick={() => onDeleteChair(track.track, track.mail)}
                 >
                   <X className="h-4 w-4 mr-2" />
                   Borrar
@@ -118,8 +116,9 @@ function TrackItem({
             </div>
           ) : (
             <ChairDialog
-              trackId={track.id}
-              onUpdateChair={onUpdateChair}
+              track={track.track}
+              onAddChair={onAddChair}
+              isPending={isPending}
               triggerButton={
                 <Button size="sm" variant="outline">
                   <Plus className="h-4 w-4 mr-2" />
