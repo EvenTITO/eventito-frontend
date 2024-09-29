@@ -28,6 +28,52 @@ export function useAddQuestion() {
   });
 }
 
+export function useDeleteQuestion() {
+  const eventId = getEventId();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ questionToDelete, reviewSkeleton }) => {
+      // en este caso voy a pasar: el question.question
+      // deberías hacer algo como:
+      //
+      // reviewSkeleton.questions.filter((q) => q.question !== questionToDelete);
+      // y publicar eso
+      await wait(2);
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getEventById", { eventId }],
+      });
+    },
+  });
+}
+
+export function useUpdateQuestion() {
+  const eventId = getEventId();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ updatedQuestion, reviewSkeleton }) => {
+      // en este caso voy a pasar: el question
+      // deberías hacer algo como:
+      //
+      // reviewSkeleton.questions.map((q) => q.question === updatedQuestion.question ? updatedQuestion : q);
+      // y publicar eso
+      await wait(2);
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getEventById", { eventId }],
+      });
+    },
+  });
+}
+
 export function useAddOrChangeDeadlineSubmissionDate() {
   // Si quieren las dividimos en dos
 

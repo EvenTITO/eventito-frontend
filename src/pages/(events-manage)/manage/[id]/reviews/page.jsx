@@ -4,7 +4,12 @@ import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import QuestionsList from "./_components/QuestionsList";
 import AddQuestion from "./_components/AddQuestion";
 import AddQuestionDetails from "./_components/AddQuestionDetails";
-import { useAddQuestion } from "@/hooks/manage/reviewsHooks";
+import {
+  useAddQuestion,
+  useDeleteQuestion,
+  useUpdateQuestion,
+} from "@/hooks/manage/reviewsHooks";
+import { constructQuestion } from "./_components/utils";
 
 export default function Page({ reviewSkeleton }) {
   const [questions, setQuestions] = useState(reviewSkeleton);
@@ -14,6 +19,8 @@ export default function Page({ reviewSkeleton }) {
   const [newQuestion, setNewQuestion] = useState(null);
 
   const addQuestion = useAddQuestion();
+  const updateQuestion = useUpdateQuestion();
+  const deleteQuestion = useDeleteQuestion();
 
   const handleAddQuestion = (type_question) => {
     setNewQuestionType(type_question);
@@ -32,7 +39,7 @@ export default function Page({ reviewSkeleton }) {
 
   const handleSaveNewQuestion = async () => {
     await addQuestion.mutateAsync({
-      newQuestion: newQuestion,
+      newQuestion: constructQuestion(newQuestion),
       reviewSkeleton: { questions: questions },
     });
     setQuestions([...questions, newQuestion]);
@@ -41,7 +48,11 @@ export default function Page({ reviewSkeleton }) {
     setNewQuestionType(null);
   };
 
-  const handleUpdateQuestion = (updatedQuestion) => {
+  const handleUpdateQuestion = async (updatedQuestion) => {
+    await updateQuestion.mutateAsync({
+      updatedQuestion: constructQuestion(updatedQuestion),
+      reviewSkeleton: { questions: questions },
+    });
     setQuestions(
       questions.map((q, index) =>
         index === updatedQuestion.index ? updatedQuestion : q,
@@ -49,7 +60,11 @@ export default function Page({ reviewSkeleton }) {
     );
   };
 
-  const handleDeleteQuestion = (question) => {
+  const handleDeleteQuestion = async (question) => {
+    await deleteQuestion.mutateAsync({
+      questionToDelete: question.question,
+      reviewSkeleton: { questions: questions },
+    });
     setQuestions(questions.filter((q) => q.question !== question.question));
   };
 
@@ -74,7 +89,11 @@ export default function Page({ reviewSkeleton }) {
         setNewQuestion={setNewQuestion}
         newQuestionType={newQuestionType}
         handleSaveNewQuestion={handleSaveNewQuestion}
-        isPending={addQuestion.isPending}
+        isPending={
+          addQuestion.isPending ||
+          updateQuestion.isPending ||
+          deleteQuestion.isPending
+        }
       />
     </ContainerPage>
   );
