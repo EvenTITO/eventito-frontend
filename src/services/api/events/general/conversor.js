@@ -51,7 +51,6 @@ export function convertMyEventsData(data) {
   }));
 }
 
-
 export function convertEventFullData(data) {
   return {
     ...data,
@@ -59,9 +58,9 @@ export function convertEventFullData(data) {
   }
 }
 
-export function convertReviewSkeletonQuestions(newQuestions){
+export function convertReviewSkeleton(newQuestions){
   return {
-    review_keleton: {
+    review_skeleton: {
       questions: newQuestions
     }
   }

@@ -27,5 +27,5 @@ export const apiGetUploadEventImageUrl = async (httpClient, eventId, imageName) 
 };
 
 export const apiUpdateReviewSkeleton = async (httpClient, eventId, body) => {
-  return (await httpClient.put(`/${eventId}/configuration/review_skeleton`, body));
+  return (await httpClient.put(`/${eventId}/configuration/review-skeleton`, body));
 };

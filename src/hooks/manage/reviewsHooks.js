@@ -5,16 +5,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiUpdateReviewSkeleton } from "@/services/api/events/general/queries";
 import { convertReviewSkeleton } from "@/services/api/events/general/conversor";
 export function useAddQuestion() {
-  const eventId = getEventId();
+  const eventId = getEventId()
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async ({ newQuestion, reviewSkeleton }) => {
       const httpClient = new HTTPClient(EVENTS_URL)
       
-      reviewSkeleton.questions.push(newQuestion)
-      const newReviewSkeleton = convertReviewSkeleton(reviewSkeleton.questions)
+      const originQuestions = JSON.parse(JSON.stringify(reviewSkeleton.questions));
+
+      originQuestions.push(newQuestion)
+      const newReviewSkeleton = convertReviewSkeleton(originQuestions)
       
       await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
     },
@@ -27,16 +29,17 @@ export function useAddQuestion() {
 }
 
 export function useDeleteQuestion() {
-  const eventId = getEventId();
+  const eventId = getEventId()
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ questionToDelete, reviewSkeleton }) => {
+    mutationFn: async ({ idx, questionToDelete, reviewSkeleton }) => {
       const httpClient = new HTTPClient(EVENTS_URL)
 
-      const newQuestions = reviewSkeleton.questions.filter((q) => q.question !== questionToDelete);
-      const newReviewSkeleton = convertReviewSkeleton(newQuestions)
+      const originQuestions = JSON.parse(JSON.stringify(reviewSkeleton.questions));
+      originQuestions.slice(idx-1, 1)
+      const newReviewSkeleton = convertReviewSkeleton(originQuestions)
       await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
     },
     onSuccess: () => {
@@ -48,15 +51,16 @@ export function useDeleteQuestion() {
 }
 
 export function useUpdateQuestion() {
-  const eventId = getEventId();
+  const eventId = getEventId()
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ updatedQuestion, reviewSkeleton }) => {
-      
-      const newQuestions = reviewSkeleton.questions.map((q) => q.question === updatedQuestion.question ? updatedQuestion : q);
-      const newReviewSkeleton = convertReviewSkeleton(newQuestions)
+    mutationFn: async ({ idx, updatedQuestion, reviewSkeleton }) => {
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const originQuestions = JSON.parse(JSON.stringify(reviewSkeleton.questions));
+      originQuestions[idx] = updatedQuestion
+      const newReviewSkeleton = convertReviewSkeleton(originQuestions)
 
       await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
     },
