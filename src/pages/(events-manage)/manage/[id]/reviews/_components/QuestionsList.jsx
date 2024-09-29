@@ -7,9 +7,10 @@ export default function QuestionsList({
 }) {
   return (
     <div className="space-y-4">
-      {questions.map((question) => (
+      {questions.map((question, index) => (
         <QuestionCard
-          key={question.id}
+          key={index}
+          questionIndex={index}
           question={question}
           onUpdate={handleUpdateQuestion}
           onDelete={handleDeleteQuestion}

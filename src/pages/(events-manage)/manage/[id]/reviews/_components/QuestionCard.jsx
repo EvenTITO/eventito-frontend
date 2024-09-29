@@ -12,13 +12,18 @@ import {
 } from "@/components/ui/dialog";
 import { Slider } from "@/components/ui/slider";
 
-export default function QuestionCard({ question, onUpdate, onDelete }) {
+export default function QuestionCard({
+  question,
+  onUpdate,
+  onDelete,
+  questionIndex,
+}) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState(question);
   const [editingOptionIndex, setEditingOptionIndex] = useState(null);
 
   const handleSaveEdit = () => {
-    onUpdate(editingQuestion);
+    onUpdate({ ...editingQuestion, index: questionIndex });
     setIsEditDialogOpen(false);
     setEditingOptionIndex(null);
   };

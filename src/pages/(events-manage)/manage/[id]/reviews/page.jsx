@@ -39,8 +39,8 @@ export default function Page({ reviewSkeleton }) {
 
   const handleUpdateQuestion = (updatedQuestion) => {
     setQuestions(
-      questions.map((q) =>
-        q.question === updatedQuestion.question ? updatedQuestion : q,
+      questions.map((q, index) =>
+        index === updatedQuestion.index ? updatedQuestion : q,
       ),
     );
   };
