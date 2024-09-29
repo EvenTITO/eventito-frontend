@@ -16,8 +16,14 @@ export default function AddQuestion({
   const questionItems = [
     { label: "Pregunta a desarrollar", type_question: "simple_question" },
     { label: "Calificación", type_question: "rating" },
-    { label: "Múltiple choice (opción única)", type_question: "multiple_choice" },
-    { label: "Múltiple choice (múltiples opciones)", type_question: "multiple_choice" },
+    {
+      label: "Múltiple choice (opción única)",
+      type_question: "multiple_choice",
+    },
+    {
+      label: "Múltiple choice (múltiples opciones)",
+      type_question: "multiple_choice",
+    },
   ];
 
   return (
@@ -36,7 +42,9 @@ export default function AddQuestion({
             <Button
               key={index}
               variant="outline"
-              onClick={() => handleAddQuestion(question.type_question)}
+              onClick={() =>
+                handleAddQuestion(question.type_question)
+              }
             >
               {question.label}
             </Button>

@@ -28,27 +28,12 @@ export default function AddQuestionDetails({
             <Label htmlFor="new-title">Título</Label>
             <Input
               id="new-title"
-              value={newQuestion?.title || ""}
+              value={newQuestion?.question || ""}
               onChange={(e) =>
-                setNewQuestion({ ...newQuestion, title: e.target.value })
+                setNewQuestion({ ...newQuestion, question: e.target.value })
               }
             />
           </div>
-          {newQuestionType === "simple_question" && (
-            <div>
-              <Label htmlFor="new-description">Descripción</Label>
-              <Textarea
-                id="new-description"
-                value={newQuestion?.description || ""}
-                onChange={(e) =>
-                  setNewQuestion({
-                    ...newQuestion,
-                    description: e.target.value,
-                  })
-                }
-              />
-            </div>
-          )}
           {newQuestionType === "rating" && (
             <div>
               <Label htmlFor="new-max-value">Máximo valor</Label>

@@ -13,7 +13,7 @@ export default function Page({ reviewSkeleton }) {
   const [newQuestionType, setNewQuestionType] = useState(null);
   const [newQuestion, setNewQuestion] = useState(null);
 
-  const { mutateAsync: addNewQuestion, isPending, error } = useAddQuestion();
+  const addQuestion = useAddQuestion();
 
   const handleAddQuestion = (type_question) => {
     setNewQuestionType(type_question);
@@ -30,7 +30,11 @@ export default function Page({ reviewSkeleton }) {
     setIsDetailsDialogOpen(true);
   };
 
-  const handleSaveNewQuestion = () => {
+  const handleSaveNewQuestion = async () => {
+    await addQuestion.mutateAsync({
+      newQuestion: newQuestion,
+      reviewSkeleton: { questions: questions },
+    });
     setQuestions([...questions, newQuestion]);
     setIsDetailsDialogOpen(false);
     setNewQuestion(null);
