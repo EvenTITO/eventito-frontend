@@ -67,8 +67,8 @@ async function uploadSubmissionFile(eventId, workId, file) {
     return;
   }
   const httpClient = new HTTPClient(EVENTS_URL);
-  const updloadUrl = await apiGetSubmissionUploadUrl(httpClient, eventId, workId);
-  await uploadFile(updloadUrl.upload_url, file);
+  const uploadUrl = await apiGetSubmissionUploadUrl(httpClient, eventId, workId);
+  await uploadFile(uploadUrl.upload_url, file);
 }
 
 export function useEditWork() {

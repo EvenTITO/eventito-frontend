@@ -36,4 +36,9 @@ export class HTTPClient {
     });
     return response;
   }
+
+  async delete(url, config = { fowardError: true }) {
+    const headers = this.createHeaders();
+    return await this.axiosInstance.delete(url, headers);
+  }
 }

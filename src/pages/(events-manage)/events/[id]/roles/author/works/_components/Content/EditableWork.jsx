@@ -10,28 +10,18 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useEditWork } from "@/hooks/events/authorHooks";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
-import { useGetEvent } from "@/hooks/events/useEventState";
 
 export default function EditableWork({ workData }) {
   const [title, setTitle] = useState(workData.title);
-  const [track, setTrack] = useState(workData.track);
-  const [keywords, setKeywords] = useState(workData.keywords?.join(','));
+  const [keywords, setKeywords] = useState(workData.keywords?.join(","));
   const [abstract, setAbstract] = useState(workData.abstract);
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState(workData.pdfFileName);
 
-  const { mutateAsync: editSubmission, isPending, error } = useEditWork();
-  const { data: eventData } = useGetEvent();
+  const { mutateAsync: editWork, isPending, error } = useEditWork();
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -42,10 +32,9 @@ export default function EditableWork({ workData }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await editSubmission({
+    await editWork({
       workData: {
         title,
-        track,
         keywords,
         abstract,
         file,
@@ -63,7 +52,7 @@ export default function EditableWork({ workData }) {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4">
             <div className="space-y-2">
               <Label htmlFor="title">Título</Label>
               <Input
@@ -72,23 +61,6 @@ export default function EditableWork({ workData }) {
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Ingresar título del trabajo"
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="track">Track</Label>
-              <Select value={track} onValueChange={setTrack}>
-                <SelectTrigger id="track">
-                  <SelectValue placeholder="Seleccionar un track">
-                    {track || "Seleccionar un track"}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {eventData?.tracks.map((trackItem) => (
-                    <SelectItem key={trackItem} value={trackItem}>
-                      {trackItem}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
             </div>
           </div>
           <div className="space-y-2">

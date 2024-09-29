@@ -1,8 +1,11 @@
-import { getEventId, wait } from "@/lib/utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getEventById } from "@/hooks/events/useEventState"
+import {getEventId, wait} from "@/lib/utils";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useGetEvent} from "@/hooks/events/useEventState.js";
 import {HTTPClient} from "@/services/api/HTTPClient.js";
-import { apiUpdateEventDates } from "@/services/api/events/general/queries"
+import {EVENTS_URL} from "@/lib/Constants.js";
+import {apiUpdateDatesEvent} from "@/services/api/events/general/queries.js";
+import {format} from "date-fns";
+import {getEventById} from "@/hooks/events/useEventState"
 
 
 export function useAddQuestion() {
@@ -11,7 +14,7 @@ export function useAddQuestion() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ newQuestion, reviewSkeleton }) => {
+    mutationFn: async ({newQuestion, reviewSkeleton}) => {
       // Datos que dejo con ESTOS MISMOS NOMBRES EN SUS VALORES:
       //
       // newQuestion:
@@ -26,41 +29,91 @@ export function useAddQuestion() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventById", { eventId }],
+        queryKey: ["getEventById", {eventId}],
       });
     },
   });
 }
 
-export function useAddOrChangeDeadlineSubmissionDate() {
-  // Si quieren las dividimos en dos
-
+export function useDeleteQuestion() {
   const eventId = getEventId();
+
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ newDate }) => {
-      const event = await queryClient.ensureQueryData({
-        queryKey: ["getEventById", {eventId}],
-        queryFn: async () => await getEventById(eventId),
-      });
-      const httpClient = new HTTPClient(EVENTS_URL);
-      let newDates = event.dates.slice();
-      const submissionDateIndex = event.dates.findIndex(date => date.name === "SUBMISSION_DEADLINE_DATE");
-      // Assuming newDate is of type Date.
-      // Extract the date (in the format "YYYY-MM-DD")
-      const date = newDate.toISOString().split('T')[0];
-
-      // Extract the time (in the format "HH:MM")
-      const time = newDate.toTimeString().split(' ')[0].slice(0, 5);
-
-      newDates[submissionDateIndex].date = date;
-      newDates[submissionDateIndex].time = time;
-      await apiUpdateEventDates(httpClient, eventId, { dates: newDates });
+    mutationFn: async ({questionToDelete, reviewSkeleton}) => {
+      // en este caso voy a pasar: el question.question
+      // deberías hacer algo como:
+      //
+      // reviewSkeleton.questions.filter((q) => q.question !== questionToDelete);
+      // y publicar eso
+      await wait(2);
+      return null;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventById", { eventId }],
+        queryKey: ["getEventById", {eventId}],
+      });
+    },
+  });
+}
+
+export function useUpdateQuestion() {
+  const eventId = getEventId();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({updatedQuestion, reviewSkeleton}) => {
+      // en este caso voy a pasar: el question
+      // deberías hacer algo como:
+      //
+      // reviewSkeleton.questions.map((q) => q.question === updatedQuestion.question ? updatedQuestion : q);
+      // y publicar eso
+      await wait(2);
+      return null;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getEventById", {eventId}],
+      });
+    },
+  });
+}
+
+export function useEditEventDeadlineSubmissionDate() {
+  const eventId = getEventId();
+  const queryClient = useQueryClient();
+  const useAddOrChangeDate = useEditEventDate("SUBMISSION_DEADLINE_DATE");
+  return useMutation({
+    mutationFn: async ({newDate}) => {
+      await useAddOrChangeDate.mutateAsync({newDate});
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getEventById", {eventId}],
+      });
+    },
+  });
+}
+
+export function useEditEventDate(dateName) {
+  const eventId = getEventId();
+  const {data: event} = useGetEvent(eventId);
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({newDate}) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const newDates = event.dates.slice();
+      const dateIndex = event.dates.findIndex(date => date.name === dateName);
+      newDates[dateIndex].date = format(newDate, 'yyyy-MM-dd');
+      newDates[dateIndex].time = format(newDate, 'HH:mm:ss');
+      return await apiUpdateDatesEvent(httpClient, eventId, {dates: newDates});
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getEventById", {eventId}],
       });
     },
   });

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import {z} from "zod";
 
 const uuidSchema = z.string().uuid();
 
@@ -18,10 +18,18 @@ export const apiPostCreateEvent = async (httpClient, body) => {
   return (await httpClient.post("", body));
 };
 
+export const apiUpdateGeneralEvent = async (httpClient, eventId, body) => {
+  return (await httpClient.put(`/${eventId}/configuration/general`, body));
+};
+
 export const apiGetUploadEventImageUrl = async (httpClient, eventId, imageName) => {
   return (await httpClient.get(`/${eventId}/upload_url/${imageName}`)).data;
 };
 
-export const apiUpdateEventDates = async (httpClient, eventId, dates) => {
-  return (await httpClient.put(`/${eventId}/configuration/dates`), dates).data;
+export const apiUpdatePricingEvent = async (httpClient, eventId, body) => {
+  return (await httpClient.put(`/${eventId}/configuration/pricing`, body));
+};
+
+export const apiUpdateDatesEvent = async (httpClient, eventId, body) => {
+  return (await httpClient.put(`/${eventId}/configuration/dates`, body));
 };
