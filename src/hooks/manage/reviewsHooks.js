@@ -1,5 +1,10 @@
-import { getEventId, wait } from "@/lib/utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {getEventId, wait} from "@/lib/utils";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useGetEvent} from "@/hooks/events/useEventState.js";
+import {HTTPClient} from "@/services/api/HTTPClient.js";
+import {EVENTS_URL} from "@/lib/Constants.js";
+import {apiUpdateDatesEvent} from "@/services/api/events/general/queries.js";
+import {format} from "date-fns";
 
 export function useAddQuestion() {
   const eventId = getEventId();
@@ -7,7 +12,7 @@ export function useAddQuestion() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ newQuestion, reviewSkeleton }) => {
+    mutationFn: async ({newQuestion, reviewSkeleton}) => {
       // Datos que dejo con ESTOS MISMOS NOMBRES EN SUS VALORES:
       //
       // newQuestion:
@@ -22,7 +27,7 @@ export function useAddQuestion() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventById", { eventId }],
+        queryKey: ["getEventById", {eventId}],
       });
     },
   });
@@ -34,7 +39,7 @@ export function useDeleteQuestion() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ questionToDelete, reviewSkeleton }) => {
+    mutationFn: async ({questionToDelete, reviewSkeleton}) => {
       // en este caso voy a pasar: el question.question
       // deberías hacer algo como:
       //
@@ -45,7 +50,7 @@ export function useDeleteQuestion() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventById", { eventId }],
+        queryKey: ["getEventById", {eventId}],
       });
     },
   });
@@ -57,7 +62,7 @@ export function useUpdateQuestion() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ updatedQuestion, reviewSkeleton }) => {
+    mutationFn: async ({updatedQuestion, reviewSkeleton}) => {
       // en este caso voy a pasar: el question
       // deberías hacer algo como:
       //
@@ -68,28 +73,45 @@ export function useUpdateQuestion() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventById", { eventId }],
+        queryKey: ["getEventById", {eventId}],
       });
     },
   });
 }
 
-export function useAddOrChangeDeadlineSubmissionDate() {
-  // Si quieren las dividimos en dos
-
+export function useEditEventDeadlineSubmissionDate() {
   const eventId = getEventId();
   const queryClient = useQueryClient();
-
+  const useAddOrChangeDate = useEditEventDate("SUBMISSION_DEADLINE_DATE");
   return useMutation({
-    mutationFn: async ({ newDate }) => {
-      // Aclaracion: new date es solo la fecha: el contexto ya les dice
-      // que es la de submission date
-      await wait(2);
-      return null;
+    mutationFn: async ({newDate}) => {
+      await useAddOrChangeDate.mutateAsync({newDate});
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventById", { eventId }],
+        queryKey: ["getEventById", {eventId}],
+      });
+    },
+  });
+}
+
+export function useEditEventDate(dateName) {
+  const eventId = getEventId();
+  const {data: event} = useGetEvent(eventId);
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({newDate}) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const newDates = event.dates.slice();
+      const dateIndex = event.dates.findIndex(date => date.name === dateName);
+      newDates[dateIndex].date = format(newDate, 'yyyy-MM-dd');
+      newDates[dateIndex].time = format(newDate, 'HH:mm:ss');
+      return await apiUpdateDatesEvent(httpClient, eventId, {dates: newDates});
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getEventById", {eventId}],
       });
     },
   });
