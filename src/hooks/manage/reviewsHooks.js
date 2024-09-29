@@ -1,27 +1,28 @@
-import {EVENTS_URL} from "@/lib/Constants";
-import {HTTPClient} from "@/services/api/HTTPClient";
+import { EVENTS_URL } from "@/lib/Constants";
+import { HTTPClient } from "@/services/api/HTTPClient";
 import { getEventId, wait } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiUpdateReviewSkeleton, apiUpdateDatesEvent } from "@/services/api/events/general/queries";
+import {
+  apiUpdateReviewSkeleton,
+  apiUpdateDatesEvent,
+} from "@/services/api/events/general/queries";
 import { convertReviewSkeleton } from "@/services/api/events/general/conversor";
 import { useGetEvent } from "@/hooks/events/useEventState";
 import { format } from "date-fns";
 
 export function useAddQuestion() {
-  const eventId = getEventId()
+  const eventId = getEventId();
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({ newQuestion, reviewSkeleton }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      
-      const originQuestions = JSON.parse(JSON.stringify(reviewSkeleton.questions));
+      const httpClient = new HTTPClient(EVENTS_URL);
 
-      originQuestions.push(newQuestion)
-      const newReviewSkeleton = convertReviewSkeleton(originQuestions)
-      
-      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
+      const newQuestions = [...reviewSkeleton.questions, newQuestion];
+      const newReviewSkeleton = convertReviewSkeleton(newQuestions);
+
+      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -32,19 +33,21 @@ export function useAddQuestion() {
 }
 
 export function useDeleteQuestion() {
-  const eventId = getEventId()
+  const eventId = getEventId();
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ questionToDelete, reviewSkeleton, index}) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const idx = index
-      const originQuestions = JSON.parse(JSON.stringify(reviewSkeleton.questions));
+    mutationFn: async ({ questionToDelete, reviewSkeleton, index }) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const idx = index;
+      const originQuestions = JSON.parse(
+        JSON.stringify(reviewSkeleton.questions),
+      );
       const newQuestions = originQuestions.filter((_, idx) => idx !== index);
 
-      const newReviewSkeleton = convertReviewSkeleton(newQuestions)
-      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
+      const newReviewSkeleton = convertReviewSkeleton(newQuestions);
+      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -55,20 +58,22 @@ export function useDeleteQuestion() {
 }
 
 export function useUpdateQuestion() {
-  const eventId = getEventId()
+  const eventId = getEventId();
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ updatedQuestion, reviewSkeleton, index}) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const idx = updatedQuestion.index
-      let originQuestions = JSON.parse(JSON.stringify(reviewSkeleton.questions));
+    mutationFn: async ({ updatedQuestion, reviewSkeleton, index }) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const idx = updatedQuestion.index;
+      let originQuestions = JSON.parse(
+        JSON.stringify(reviewSkeleton.questions),
+      );
 
-      originQuestions[idx] = updatedQuestion
-      const newReviewSkeleton = convertReviewSkeleton(originQuestions)
+      originQuestions[idx] = updatedQuestion;
+      const newReviewSkeleton = convertReviewSkeleton(originQuestions);
 
-      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
+      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
