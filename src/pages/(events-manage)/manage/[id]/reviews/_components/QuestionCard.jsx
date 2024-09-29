@@ -100,7 +100,7 @@ export default function QuestionCard({
             step={1}
             className="flex-grow mx-2"
           />
-          <span className="ml-2">/ {question.max_value || 5}</span>
+          <span className="ml-2"> {question.max_value || 5}</span>
         </div>
       )}
       {question.type_question === "multiple_choice" && (
