@@ -74,6 +74,11 @@ export default function Page({ reviewSkeleton }) {
         questions={questions}
         handleUpdateQuestion={handleUpdateQuestion}
         handleDeleteQuestion={handleDeleteQuestion}
+        isPending={
+          addQuestion.isPending ||
+          updateQuestion.isPending ||
+          deleteQuestion.isPending
+        }
       />
       <AddQuestion
         isAddDialogOpen={isAddDialogOpen}
