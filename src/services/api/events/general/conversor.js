@@ -90,9 +90,9 @@ export function convertNewPricing(actualPricing, newFare) {
     name: newFare.name,
     description: newFare.description,
     value: newFare.value,
-    need_verification: newFare.needVerification,
+    need_verification: newFare.need_verification,
     roles: newFare.roles,
-    related_date: newFare.relatedDate,
+    related_date: newFare.related_date || null,
     currency: "ARS"
   }
   return {pricing: [...actualPricing, updateFare]}

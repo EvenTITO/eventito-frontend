@@ -3,17 +3,20 @@ import { Button } from "@/components/ui/button";
 import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
 import TitlePage from "@/pages/(events-manage)/_components/titlePage";
 import PricesTable from "./_components/PricesTable";
-import { useAddOrModifyFareInEventPricing, useDeletePayment } from "@/hooks/manage/pricingHooks";
+import {
+  useAddOrModifyFareInEventPricing,
+  useDeletePayment,
+} from "@/hooks/manage/pricingHooks";
 import { toast } from "@/hooks/use-toast";
 import PriceDialog from "./_components/PriceDialog";
 
-export default function Page({ prices }) {
+export default function Page({ prices, dates }) {
   const [expandedPrices, setExpandedPrices] = useState(new Set());
   const addOrModifyFare = useAddOrModifyFareInEventPricing();
   const deletePayment = useDeletePayment();
 
   const togglePriceExpansion = (priceId) => {
-    setExpandedPrices(prev => {
+    setExpandedPrices((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(priceId)) {
         newSet.delete(priceId);
@@ -26,7 +29,11 @@ export default function Page({ prices }) {
 
   const handleAddPrice = async (newPrice) => {
     try {
-      await addOrModifyFare.mutateAsync({ newFare: newPrice });
+      await addOrModifyFare.mutateAsync({
+        newFare: newPrice,
+        eventPrices: prices,
+        eventDates: dates,
+      });
       toast({
         title: "Price Added",
         description: `${newPrice.name} has been added to the price list.`,
@@ -76,12 +83,10 @@ export default function Page({ prices }) {
     <ContainerPage>
       <TitlePage
         title={"Tarifas del evento"}
-        rightComponent={
-          <PriceDialog onSave={handleAddPrice} />
-        }
+        rightComponent={<PriceDialog onSave={handleAddPrice} />}
       />
-      <PricesTable 
-        prices={prices} 
+      <PricesTable
+        prices={prices}
         expandedPrices={expandedPrices}
         onToggleExpand={togglePriceExpansion}
         onUpdatePrice={handleUpdatePrice}

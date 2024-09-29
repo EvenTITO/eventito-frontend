@@ -45,18 +45,20 @@ export default function PriceDialog({ price, onSave }) {
         <Button variant="outline">
           {price ? (
             <>
-              <Edit2 className="h-4 w-4 mr-2" /> Edit Price
+              <Edit2 className="h-4 w-4 mr-2" /> Editar tarifa
             </>
           ) : (
             <>
-              <Plus className="h-4 w-4 mr-2" /> Add Price
+              <Plus className="h-4 w-4 mr-2" /> Nueva tarifa
             </>
           )}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{price ? "Edit Price" : "Add New Price"}</DialogTitle>
+          <DialogTitle>
+            {price ? "Editar tarifa" : "Agregar nueva tarifa"}
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
