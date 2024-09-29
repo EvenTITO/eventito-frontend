@@ -17,3 +17,11 @@ export const apiSubmitInscription = async (httpClient, eventId, body) => {
 export const apiPutInscriptionPayment = async (httpClient, eventId, inscriptionId, body) => {
   return (await httpClient.put(`/${eventId}/inscriptions/${inscriptionId}/pay`, body));
 };
+
+export const apiGetInscriptions = async (httpClient, eventId) => {
+  return (await httpClient.get(`/${eventId}/inscriptions`)).data;
+};
+
+export const apiGetPayments = async (httpClient, eventId) => {
+  return (await httpClient.get(`/${eventId}/payments`)).data;
+};
