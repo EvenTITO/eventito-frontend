@@ -36,7 +36,7 @@ export default function Page({ reviewSkeleton }) {
   };
 
   const handleSaveNewQuestion = async () => {
-    delete newQuestion.id
+    delete newQuestion.id;
     await addQuestion.mutateAsync({
       newQuestion: newQuestion,
       reviewSkeleton: { questions: questions },
@@ -51,7 +51,7 @@ export default function Page({ reviewSkeleton }) {
     await updateQuestion.mutateAsync({
       updatedQuestion: updatedQuestion,
       reviewSkeleton: { questions: questions },
-      questionIndex: index
+      questionIndex: index,
     });
     setQuestions(
       questions.map((q, index) =>
@@ -60,11 +60,10 @@ export default function Page({ reviewSkeleton }) {
     );
   };
 
-  const handleDeleteQuestion = async (question, index) => {
+  const handleDeleteQuestion = async (question) => {
     await deleteQuestion.mutateAsync({
       questionToDelete: question,
       reviewSkeleton: { questions: questions },
-      index: index
     });
     setQuestions(questions.filter((q) => q.question !== question.question));
   };

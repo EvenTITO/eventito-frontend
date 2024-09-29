@@ -38,13 +38,12 @@ export function useDeleteQuestion() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ questionToDelete, reviewSkeleton, index }) => {
+    mutationFn: async ({ questionToDelete, reviewSkeleton }) => {
       const httpClient = new HTTPClient(EVENTS_URL);
-      const idx = index;
-      const originQuestions = JSON.parse(
-        JSON.stringify(reviewSkeleton.questions),
+      const newQuestions = reviewSkeleton.questions.filter(
+        (q) => q.question !== questionToDelete.question,
       );
-      const newQuestions = originQuestions.filter((_, idx) => idx !== index);
+      console.log(questionToDelete, newQuestions);
 
       const newReviewSkeleton = convertReviewSkeleton(newQuestions);
       await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton);
@@ -53,6 +52,9 @@ export function useDeleteQuestion() {
       queryClient.invalidateQueries({
         queryKey: ["getEventById", { eventId }],
       });
+    },
+    onError: (e) => {
+      console.log(e);
     },
   });
 }
