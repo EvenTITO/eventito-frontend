@@ -2,6 +2,7 @@ import FetchStatus from "@/components/FetchStatus";
 import Page from "./page";
 import { useGetEventChairsByTracks } from "@/hooks/manage/tracksHooks";
 import { useGetEvent } from "@/hooks/events/useEventState";
+import { unifyEventTracksWithChairs } from "./_components/utils";
 
 export default function TracksConfigPage() {
   const eventData = useGetEvent();
@@ -35,17 +36,4 @@ export default function TracksConfigPage() {
       error={error || eventData.error}
     />
   );
-}
-
-function unifyEventTracksWithChairs(eventTracks, tracksByChair) {
-  eventTracks.forEach((trackName) => {
-    const trackExists = tracksByChair.some(
-      (track) => track.track === trackName,
-    );
-    if (!trackExists) {
-      tracksByChair.push({ track: trackName });
-    }
-  });
-
-  return tracksByChair;
 }
