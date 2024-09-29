@@ -14,8 +14,7 @@ function convertMemberData(data) {
     id: id,
     email: email,
     username: username,
-    role: role,
-    amount: 1, // TODO: I dont know what amount is.
+    role: role
   };
 }
 

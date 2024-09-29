@@ -1,33 +1,81 @@
-import { EVENTS_URL } from "@/lib/Constants";
-import { getEventId, wait } from "@/lib/utils";
-import { HTTPClient } from "@/services/api/HTTPClient";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {EVENTS_URL} from "@/lib/Constants";
+import {getEventId} from "@/lib/utils";
+import {HTTPClient} from "@/services/api/HTTPClient";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {
+  convertEventChair,
+  convertEventChairs,
+  convertEventChairsByTracks
+} from "@/services/api/events/chair/conversor.js";
+import {apiGetEventChair, apiGetEventChairs, apiUpdateChairTracks} from "@/services/api/events/chair/queries.js";
 
-export function useGetChairsByTracks() {
+export function useGetEventChair(userId) {
   const eventId = getEventId();
-
   return useQuery({
-    queryKey: ["getEventChairsByTracks", { eventId }],
+    queryKey: ["getEventChair", {eventId, userId}],
     queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL);
-      return convertEventMembers(eventMembers);
+      const chair = await getEventChair(eventId, userId)
+      return convertEventChair(chair);
+    },
+  });
+}
+
+export function useGetEventChairs() {
+  const eventId = getEventId();
+  return useQuery({
+    queryKey: ["getEventChairs", {eventId}],
+    queryFn: async () => {
+      const chairs = await getEventChairs(eventId);
+      return convertEventChairs(chairs);
+    },
+  });
+}
+
+export function useGetEventChairsByTrack(track) {
+  const eventId = getEventId();
+  return useQuery({
+    queryKey: ["getEventChairsByTrack", {eventId, track}],
+    queryFn: async () => {
+      const chairs = await getEventChairs(eventId);
+      return convertEventChairs(chairs, track);
+    },
+  });
+}
+
+export function useGetEventChairsByTracks() {
+  const eventId = getEventId();
+  return useQuery({
+    queryKey: ["getEventChairsByTracks", {eventId}],
+    queryFn: async () => {
+      const chairs = await getEventChairs(eventId);
+      return convertEventChairsByTracks(chairs);
     },
   });
 }
 
 export function useAddChairToTrack() {
   const eventId = getEventId();
-
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: async ({ track, chairEmail }) => {
-      await wait(2);
-      return null;
+    mutationFn: async ({track, userId}) => {
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const chair = await queryClient.ensureQueryData(
+        {
+          queryKey: ["getEventChair", {eventId, userId}],
+          queryFn: async () => await getEventChair(eventId, userId)
+        })
+      const newTracks = [...chair.tracks, track]
+      return await apiUpdateChairTracks(httpClient, eventId, userId, {tracks: newTracks})
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventChairsByTracks", { eventId }],
+        queryKey: ["getEventChairs", {eventId}],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getEventChairsByTrack", {eventId}],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getEventChairsByTracks", {eventId}],
       });
     },
   });
@@ -35,59 +83,62 @@ export function useAddChairToTrack() {
 
 export function useDeleteChairOfTrack() {
   const eventId = getEventId();
-
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: async ({ track, chairEmail }) => {
-      await wait(2);
-      return null;
+    mutationFn: async ({track, userId}) => {
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const chair = await queryClient.ensureQueryData(
+        {
+          queryKey: ["getEventChair", {eventId, userId}],
+          queryFn: async () => await getEventChair(eventId, userId)
+        })
+      const newTracks = [...chair.tracks.filter(t => t !== track)];
+      return await apiUpdateChairTracks(httpClient, eventId, userId, {tracks: newTracks})
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventChairsByTracks", { eventId }],
+        queryKey: ["getEventChairs", {eventId}],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getEventChairsByTrack", {eventId}],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getEventChairsByTracks", {eventId}],
       });
     },
   });
 }
 
 export function useChangeChairOfTrack() {
-  const eventId = getEventId();
-
-  const queryClient = useQueryClient();
-
+  const addChairToTrack = useAddChairToTrack();
+  const deleteChairOfTrack = useDeleteChairOfTrack();
   return useMutation({
-    mutationFn: async ({ track, newChairEmail }) => {
-      await wait(2);
-      return null;
+    mutationFn: async ({track, fromUserId, toUserId}) => {
+      await deleteChairOfTrack.mutateAsync({track, userId: fromUserId});
+      await addChairToTrack.mutateAsync({track, userId: toUserId});
     },
     onSuccess: () => {
+      const eventId = getEventId();
+      const queryClient = useQueryClient();
       queryClient.invalidateQueries({
-        queryKey: ["getEventChairsByTracks", { eventId }],
+        queryKey: ["getEventChairs", {eventId}],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getEventChairsByTrack", {eventId}],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["getEventChairsByTracks", {eventId}],
       });
     },
   });
 }
 
-const chairsByTracks = [
-  {
-    track: "track 1",
-    chair: "gsabatino@fi.uba.ar",
-  },
-  {
-    track: "track 2",
-    chair: "mcapon@fi.uba.ar",
-  },
-  {
-    track: "track 3",
-    chair: "fsinisi@fi.uba.ar",
-  },
-  {
-    track: "track 4",
-    chair: "lveron@fi.uba.ar",
-  },
-  {
-    track: "track 5",
-    chair: "mcapon@fi.uba.ar",
-  },
-];
+async function getEventChairs(eventId) {
+  const httpClient = new HTTPClient(EVENTS_URL);
+  return await apiGetEventChairs(httpClient, eventId);
+}
+
+async function getEventChair(eventId, userId) {
+  const httpClient = new HTTPClient(EVENTS_URL);
+  return await apiGetEventChair(httpClient, eventId, userId);
+}
