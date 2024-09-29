@@ -136,7 +136,7 @@ export default function Page({ eventInfo }) {
                       <Clock className="h-5 w-5" />
                       <span>
                         {date.label}: {date.date || "A definir"}{" "}
-                        {date.time || ""}
+                        {date.time? date.time.slice(0, 5) + "hs" : ""}
                       </span>
                     </div>
                   ))}
