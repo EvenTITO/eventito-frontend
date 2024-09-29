@@ -24,24 +24,24 @@ export default function TracksTable({ initialTracks }) {
   const updateChair = (trackId, newEmail) => {
     setTracks((prev) =>
       prev.map((track) =>
-        track.id === trackId ? { ...track, chairEmail: newEmail } : track,
+        track.id === trackId ? { ...track, mail: newEmail } : track,
       ),
     );
     toast({
       title: "Chair Updated",
-      description: `Chair for track ${tracks.find((t) => t.id === trackId)?.name} has been updated.`,
+      description: `Chair for track ${tracks.find((t) => t.id === trackId)?.track} has been updated.`,
     });
   };
 
   const deleteChair = (trackId) => {
     setTracks((prev) =>
       prev.map((track) =>
-        track.id === trackId ? { ...track, chairEmail: undefined } : track,
+        track.id === trackId ? { ...track, mail: undefined } : track,
       ),
     );
     toast({
       title: "Chair Removed",
-      description: `Chair for track ${tracks.find((t) => t.id === trackId)?.name} has been removed.`,
+      description: `Chair for track ${tracks.find((t) => t.id === trackId)?.track} has been removed.`,
     });
   };
 
@@ -79,27 +79,25 @@ function TrackItem({
         ) : (
           <ChevronRight className="h-5 w-5 mr-2 text-gray-500" />
         )}
-        <span className="font-medium">{track.name}</span>
+        <span className="font-medium">{track.track}</span>
       </div>
       {isExpanded && (
         <div className="p-4 bg-gray-50">
-          {track.chairEmail ? (
+          {track.mail ? (
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Avatar className="h-8 w-8">
                   <AvatarImage
-                    src={`https://api.dicebear.com/6.x/initials/svg?seed=${track.chairEmail}`}
+                    src={`https://api.dicebear.com/6.x/initials/svg?seed=${track.mail}`}
                   />
-                  <AvatarFallback>
-                    {track.chairEmail[0].toUpperCase()}
-                  </AvatarFallback>
+                  <AvatarFallback>{track.mail[0].toUpperCase()}</AvatarFallback>
                 </Avatar>
-                <span>{track.chairEmail}</span>
+                <span>{track.mail}</span>
               </div>
               <div className="space-x-2">
                 <ChairDialog
                   trackId={track.id}
-                  initialEmail={track.chairEmail}
+                  initialEmail={track.mail}
                   onUpdateChair={onUpdateChair}
                   triggerButton={
                     <Button size="sm" variant="outline">

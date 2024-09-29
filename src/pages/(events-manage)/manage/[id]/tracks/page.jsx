@@ -4,11 +4,10 @@ import AddTrackDialog from "./_components/AddTrackDialog";
 import TracksTable from "./_components/TracksTable";
 
 export default function Page({ tracks }) {
-  const initialTracks = [
-    { id: "1", name: "Track 1", chairEmail: "chair1@example.com" },
-    { id: "2", name: "Track 2", chairEmail: "chair2@example.com" },
-    { id: "3", name: "Track 3" },
-  ];
+  const initialTracks = tracks.map((track, index) => ({
+    ...track,
+    id: index,
+  }));
 
   return (
     <ContainerPage>
