@@ -2,17 +2,12 @@
  *  Custom hooks to consume from the events API
  * */
 
-import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  apiGetAllEvents,
-  apiGetEventById,
-  apiGetMyEvents,
-  apiPostCreateEvent,
-} from "./queries";
-import { convertEventsData, convertMyEventsData } from "./conversor";
-import { EVENTS_URL } from "@/lib/Constants";
-import { HTTPClient } from "@/services/api/HTTPClient";
-import { constructCreateEventBody } from "./constructors";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {apiGetAllEvents, apiGetEventById, apiGetMyEvents, apiPostCreateEvent,} from "./queries";
+import {convertEventsData, convertMyEventsData} from "./conversor";
+import {EVENTS_URL} from "@/lib/Constants";
+import {HTTPClient} from "@/services/api/HTTPClient";
+import {constructCreateEventBody} from "./constructors";
 
 export function getPublicEvents() {
   return useQuery({
@@ -32,17 +27,6 @@ export function getMyEvents() {
       const httpClient = new HTTPClient(EVENTS_URL);
       const eventData = await apiGetMyEvents(httpClient);
       return convertMyEventsData(eventData);
-    },
-  });
-}
-
-export function getEvent(eventId) {
-  return useQuery({
-    queryKey: ["getEvent", {eventId}],
-    queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL);
-      const eventData = await apiGetEventById(httpClient, eventId);
-      return eventData;
     },
   });
 }

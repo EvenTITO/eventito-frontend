@@ -5,8 +5,6 @@ import {HTTPClient} from "@/services/api/HTTPClient.js";
 import {EVENTS_URL} from "@/lib/Constants.js";
 import {apiUpdateDatesEvent} from "@/services/api/events/general/queries.js";
 import {format} from "date-fns";
-import {getEventById} from "@/hooks/events/useEventState"
-
 
 export function useAddQuestion() {
   const eventId = getEventId();
