@@ -4,7 +4,7 @@ import {HTTPClient} from "@/services/api/HTTPClient.js";
 import {EVENTS_URL} from "@/lib/Constants.js";
 import {apiUpdateDatesEvent, apiUpdatePricingEvent} from "@/services/api/events/general/queries.js";
 import {useGetEvent} from "@/hooks/events/useEventState.js";
-import {convertNewDates, convertNewPricing, convertUpdatePricing} from "@/services/api/events/general/conversor.js";
+import {convertNewDates, convertNewPricing, convertUpdatePricing, convertFares } from "@/services/api/events/general/conversor.js";
 
 export function useAddOrModifyFareInEventPricing() {
   const eventId = getEventId();
@@ -48,15 +48,15 @@ export function useDeletePayment() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({paymentName}) => {
+    mutationFn: async ({fareName}) => {
       const httpClient = new HTTPClient(EVENTS_URL)
       const pricing = event.pricing
 
-      const updatedPricing = pricing.filter(
-        (p) => p.name !== paymentName,
+      const updatedFares = pricing.filter(
+        (p) => p.name !== fareName,
       )
-
-      return await apiUpdatePricingEvent(httpClient, eventId, updatedPricing) 
+      const faresConverted = convertFares(updatedFares)
+      return await apiUpdatePricingEvent(httpClient, eventId, faresConverted) 
     }, onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["getEventById", {eventId}],
