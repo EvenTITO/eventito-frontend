@@ -42,8 +42,6 @@ export function useUploadEventImage() {
 }
 
 async function uploadEventImage(eventId, imageName, image) {
-  console.log(imageName)
-  console.log(image)
   if (image) {
     const httpClient = new HTTPClient(EVENTS_URL)
     const uploadUrl = await apiGetUploadEventImageUrl(httpClient, eventId, imageName)
