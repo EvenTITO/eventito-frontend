@@ -123,5 +123,7 @@ function convertFare(fare) {
 }
 
 export function convertFares(fares) {
-  return fares.map(f => convertFare(f))
+  return {
+    pricing: fares.map(f => convertFare(f))
+  }
 }
