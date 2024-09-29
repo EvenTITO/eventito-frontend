@@ -37,13 +37,13 @@ export function useDeleteQuestion() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ questionToDelete, reviewSkeleton }) => {
+    mutationFn: async ({ questionToDelete, reviewSkeleton, index}) => {
       const httpClient = new HTTPClient(EVENTS_URL)
-      const idx = questionToDelete.index
+      const idx = index
       const originQuestions = JSON.parse(JSON.stringify(reviewSkeleton.questions));
-      originQuestions.slice(idx-1, 1)
+      const newQuestions = originQuestions.filter((_, idx) => idx !== index);
 
-      const newReviewSkeleton = convertReviewSkeleton(originQuestions)
+      const newReviewSkeleton = convertReviewSkeleton(newQuestions)
       await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
     },
     onSuccess: () => {
@@ -60,10 +60,10 @@ export function useUpdateQuestion() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ updatedQuestion, reviewSkeleton }) => {
+    mutationFn: async ({ updatedQuestion, reviewSkeleton, index}) => {
       const httpClient = new HTTPClient(EVENTS_URL)
       const idx = updatedQuestion.index
-      const originQuestions = JSON.parse(JSON.stringify(reviewSkeleton.questions));
+      let originQuestions = JSON.parse(JSON.stringify(reviewSkeleton.questions));
 
       originQuestions[idx] = updatedQuestion
       const newReviewSkeleton = convertReviewSkeleton(originQuestions)

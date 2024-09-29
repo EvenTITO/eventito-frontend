@@ -14,10 +14,10 @@ import { Slider } from "@/components/ui/slider";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 
 export default function QuestionCard({
+  questionIndex,
   question,
   onUpdate,
   onDelete,
-  questionIndex,
   isPending
 }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -45,7 +45,7 @@ export default function QuestionCard({
   };
 
   const handleDelete = async () => {
-    await onDelete(question);
+    await onDelete(question, questionIndex);
   };
 
   const handleAddOption = () => {
