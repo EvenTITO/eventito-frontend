@@ -109,3 +109,21 @@ export function convertNewDates(actualDates, newDate) {
   }
   return {dates: [...actualDates, updateDate]}
 }
+
+function convertFare(fare) {
+  return {
+    name: fare.name,
+    description: fare.description,
+    value: fare.value,
+    need_verification: fare.needVerification,
+    roles: fare.roles,
+    related_date: fare.relatedDate,
+    currency: "ARS"
+  }
+}
+
+export function convertFares(fares) {
+  return {
+    pricing: fares.map(f => convertFare(f))
+  }
+}
