@@ -90,9 +90,9 @@ export function convertNewPricing(actualPricing, newFare) {
     name: newFare.name,
     description: newFare.description,
     value: newFare.value,
-    need_verification: newFare.needVerification,
+    need_verification: newFare.need_verification,
     roles: newFare.roles,
-    related_date: newFare.relatedDate,
+    related_date: newFare.related_date || null,
     currency: "ARS"
   }
   return {pricing: [...actualPricing, updateFare]}
@@ -115,9 +115,9 @@ function convertFare(fare) {
     name: fare.name,
     description: fare.description,
     value: fare.value,
-    need_verification: fare.needVerification,
+    need_verification: fare.need_verification,
     roles: fare.roles,
-    related_date: fare.relatedDate,
+    related_date: fare.related_date,
     currency: "ARS"
   }
 }

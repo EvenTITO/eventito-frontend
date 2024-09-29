@@ -4,6 +4,7 @@ import GeneralConfigPage from "./[id]";
 import MembersConfigPage from "./[id]/members";
 import ReviewsConfigPage from "./[id]/reviews";
 import TracksConfigPage from "./[id]/tracks";
+import PricingConfigPage from "./[id]/pricing";
 
 export default function RoutesOrganization() {
   return (
@@ -15,6 +16,7 @@ export default function RoutesOrganization() {
         <Route path="/manage/:id/members" element={<MembersConfigPage />} />
         <Route path="/manage/:id/reviews" element={<ReviewsConfigPage />} />
         <Route path="/manage/:id/tracks" element={<TracksConfigPage />} />
+        <Route path="/manage/:id/pricing" element={<PricingConfigPage />} />
       </Route>
     </Routes>
   );
