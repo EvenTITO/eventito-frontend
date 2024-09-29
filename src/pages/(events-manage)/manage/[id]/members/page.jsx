@@ -5,7 +5,7 @@ import AddMemberButton from "./_components/AddMemberButton";
 import MembersTable from "./_components/MembersTable";
 import { useUpdateMemberRole } from "@/hooks/manage/membersHooks";
 
-export default function Component({ members }) {
+export default function Page({ members }) {
   const {
     mutateAsync: updateMemberRole,
     isPending,
