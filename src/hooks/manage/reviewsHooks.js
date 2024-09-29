@@ -1,9 +1,13 @@
+import { EVENTS_URL } from "@/lib/Constants";
+import { HTTPClient } from "@/services/api/HTTPClient";
 import { getEventId, wait } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useGetEvent } from "@/hooks/events/useEventState.js";
-import { HTTPClient } from "@/services/api/HTTPClient.js";
-import { EVENTS_URL } from "@/lib/Constants.js";
-import { apiUpdateDatesEvent } from "@/services/api/events/general/queries.js";
+import {
+  apiUpdateReviewSkeleton,
+  apiUpdateDatesEvent,
+} from "@/services/api/events/general/queries";
+import { convertReviewSkeleton } from "@/services/api/events/general/conversor";
+import { useGetEvent } from "@/hooks/events/useEventState";
 import { format } from "date-fns";
 
 export function useAddQuestion() {
@@ -13,18 +17,12 @@ export function useAddQuestion() {
 
   return useMutation({
     mutationFn: async ({ newQuestion, reviewSkeleton }) => {
-      // Datos que dejo con ESTOS MISMOS NOMBRES EN SUS VALORES:
-      //
-      // newQuestion:
-      //  - questionType: rating, multiple_choice, simple_question
-      //  - moreThanOneAnswerAllowed: true o false
-      //  - options: opcion única || lista de opciones
-      //
-      // Si hacen un set por reviewSkeleton + newQuestion con name,
-      // llamo a esta función para modificar. En ese caso le ponemos useAddOrModifyQuestion
-      console.log(newQuestion);
-      await wait(1);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL);
+
+      const newQuestions = [...reviewSkeleton.questions, newQuestion];
+      const newReviewSkeleton = convertReviewSkeleton(newQuestions);
+
+      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -41,14 +39,12 @@ export function useDeleteQuestion() {
 
   return useMutation({
     mutationFn: async ({ questionToDelete, reviewSkeleton }) => {
-      // en este caso voy a pasar: el question.question
-      // deberías hacer algo como:
-      //
-      // reviewSkeleton.questions.filter((q) => q.question !== questionToDelete);
-      // y publicar eso
-      console.log(questionToDelete);
-      await wait(1);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const newQuestions = reviewSkeleton.questions.filter(
+        (q) => q.question !== questionToDelete.question,
+      );
+      const newReviewSkeleton = convertReviewSkeleton(newQuestions);
+      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -65,14 +61,13 @@ export function useUpdateQuestion() {
 
   return useMutation({
     mutationFn: async ({ updatedQuestion, reviewSkeleton }) => {
-      // en este caso voy a pasar: el question
-      // deberías hacer algo como:
-      //
-      // reviewSkeleton.questions.map((q) => q.question === updatedQuestion.question ? updatedQuestion : q);
-      // y publicar eso
-      console.log(updatedQuestion);
-      await wait(1);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const newQuestions = reviewSkeleton.questions.map((q, index) =>
+        index === updatedQuestion.index ? updatedQuestion : q,
+      );
+      const newReviewSkeleton = convertReviewSkeleton(newQuestions);
+
+      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
