@@ -14,18 +14,18 @@ import { Slider } from "@/components/ui/slider";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 
 export default function QuestionCard({
+  questionIndex,
   question,
   onUpdate,
   onDelete,
-  questionIndex,
-  isPending
+  isPending,
 }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState(question);
   const [editingOptionIndex, setEditingOptionIndex] = useState(null);
 
   const handleSaveEdit = async () => {
-    await onUpdate({ ...editingQuestion, index: questionIndex });
+    await onUpdate({ updatedQuestion: editingQuestion, index: questionIndex });
     setIsEditDialogOpen(false);
     setEditingOptionIndex(null);
   };
@@ -45,7 +45,7 @@ export default function QuestionCard({
   };
 
   const handleDelete = async () => {
-    await onDelete(question);
+    await onDelete(question, questionIndex);
   };
 
   const handleAddOption = () => {

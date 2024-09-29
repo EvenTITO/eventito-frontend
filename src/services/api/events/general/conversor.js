@@ -52,11 +52,18 @@ export function convertMyEventsData(data) {
   }));
 }
 
-
 export function convertEventFullData(data) {
   return {
     ...data,
     review_skeleton: {questions: convertReviewSkeletonQuestions(data.review_skeleton.questions)}
+  }
+}
+
+export function convertReviewSkeleton(newQuestions) {
+  return {
+    review_skeleton: {
+      questions: newQuestions
+    }
   }
 }
 
