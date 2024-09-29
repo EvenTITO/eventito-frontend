@@ -11,3 +11,11 @@ export const apiPutMemberRole = async (httpClient, userId, roles, eventId) => {
     roles: roles,
   });
 };
+
+export const apiPostMember = async (httpClient, eventId, body) => {
+  return await httpClient.post(`/${eventId}/members`, body);
+};
+
+export const apiDeleteMember = async (httpClient, eventId, userId) => {
+  return await httpClient.delete(`/${eventId}/members/${userId}`);
+};

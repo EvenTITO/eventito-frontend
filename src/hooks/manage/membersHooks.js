@@ -5,8 +5,11 @@ import { HTTPClient } from "@/services/api/HTTPClient";
 import {
   apiGetEventMembers,
   apiPutMemberRole,
+  apiPostMember,
+  apiDeleteMember
 } from "@/services/api/events/members/queries";
 import { convertEventMembers } from "@/services/api/events/members/conversor";
+
 
 export function useAddMember() {
   const eventId = getEventId();
@@ -14,12 +17,19 @@ export function useAddMember() {
 
   return useMutation({
     mutationFn: async ({ newMemberEmail, newMemberRole }) => {
-      await wait(2);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL);
+      const body = {
+        email: newMemberEmail,
+        role: newMemberRole
+      };
+      await apiPostMember(httpClient, eventId, body);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["getEventMembers"] });
     },
+    onError: (error) => {
+      console.error(JSON.stringify(error));
+    }
   });
 }
 
@@ -48,6 +58,22 @@ export function useUpdateMemberRole() {
       }
       const httpClient = new HTTPClient(EVENTS_URL);
       return await apiPutMemberRole(httpClient, userId, roles, eventId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getEventMembers"] });
+    },
+  });
+}
+
+
+export function useDeleteMember() {
+  const eventId = getEventId();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ userId }) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      return await apiDeleteMember(httpClient, eventId, userId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["getEventMembers"] });
