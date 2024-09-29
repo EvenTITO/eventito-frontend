@@ -9,7 +9,7 @@ import {useGetWorkDownloadURL} from "@/hooks/events/worksHooks.js";
 import { useToast } from "@/hooks/use-toast";
 import {DetailsTab} from "./details.jsx";
 
-export default function Page({selectedWork, questions}) {
+export default function Page({selectedWork, reviewForm}) {
   const navigator = useNavigator("/assignments");
   const {
     data: fileData,
@@ -63,7 +63,7 @@ export default function Page({selectedWork, questions}) {
             },
             {
               label: "Formulario",
-              component: <ReviewerForm handleBack={handleBack} questions={questions}/>,
+              component: <ReviewerForm handleBack={handleBack} reviewForm={reviewForm}/>,
             },
           ]}
         />

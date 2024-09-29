@@ -8,7 +8,8 @@ import TextInput from "./_components/TextInput";
 import {useSubmitReview} from "@/hooks/events/reviewerHooks";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
 
-export function ReviewerForm({handleBack, questions}) {
+export function ReviewerForm({handleBack, reviewForm}) {
+  const questions = [...reviewForm.questions, reviewForm.recommendation]
   const [review, setReview] = useState(questions);
   const {mutateAsync: submitReview, isPending} = useSubmitReview();
 
@@ -48,7 +49,7 @@ export function ReviewerForm({handleBack, questions}) {
             {question.type_question === "multiple_choice" && question.options && !question.more_than_one_answer_allowed && (
               <SingleChoice
                 options={question.options}
-                value={review[index]["answer"]? review[index]["answer"][0] : ""}
+                value={review[index]["answer"] ? review[index]["answer"][0] : ""}
                 onChange={(value) => handleReviewChange(index, [value])}
               />
             )}

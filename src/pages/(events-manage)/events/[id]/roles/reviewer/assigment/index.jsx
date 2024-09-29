@@ -8,7 +8,7 @@ export default function AssignmentPage() {
   const { data: eventData } = useGetEvent();
 
   const pageComponent = (
-    <Page selectedWork={selectedWork} questions={eventData.review_skeleton.questions}/>
+    <Page selectedWork={selectedWork} reviewForm={eventData.review_skeleton}/>
   );
   return (
     <FetchStatus

@@ -1,4 +1,4 @@
-import {REVIEW_STATUS_LABELS_REVERSE, REVIEW_STATUS_LABELS} from "@/lib/Constants"
+import {REVIEW_STATUS_LABELS_REVERSE} from "@/lib/Constants"
 
 export function convertAssignments(assignments) {
   return assignments.map((a) => convertAssignment(a));
@@ -34,13 +34,4 @@ export function convertReviewToReviewBody(review) {
       answers: review.slice(0, -1)
     }
   }
-}
-
-export function convertReviewSkeletonQuestions(questions) {
-  return [...questions, {
-    type_question: "multiple_choice",
-    question: "Recomendación",
-    more_than_one_answer_allowed: false,
-    options: Object.values(REVIEW_STATUS_LABELS)
-  }]
 }
