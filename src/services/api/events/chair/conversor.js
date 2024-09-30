@@ -16,9 +16,3 @@ export function convertEventChair(data) {
     tracks:data.tracks
   };
 }
-
-export function convertTracks(tracks) {
-  return {
-    tracks: tracks
-  };
-}
