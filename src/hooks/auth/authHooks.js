@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import {
   login,
@@ -17,10 +17,20 @@ export function useLoginWithEmailAndPassword() {
   return useMutation({
     mutationFn: async ({ email, password }) => {
       const user = await login({ email, password });
-      return user;
+      try {
+        const userLoggedin = await getUser(user.uid);
+        return { user: userLoggedin, isLogged: true };
+      } catch (error) {
+        return { user, isLogged: false };
+      }
     },
     onSuccess: (data) => {
-      dispatch(register({ idUser: data.uid, email: data.email }));
+      if (data.isLogged) {
+        dispatch(clearAuth());
+        dispatch(loginCompleted(data.user));
+      } else {
+        dispatch(register({ idUser: data.user.uid, email: data.user.email }));
+      }
     },
   });
 }
@@ -31,10 +41,20 @@ export function useLoginWithGoogle() {
   return useMutation({
     mutationFn: async () => {
       const user = await loginWithGoogle();
-      return user;
+      try {
+        const userLoggedin = await getUser(user.uid);
+        return { user: userLoggedin, isLogged: true };
+      } catch (error) {
+        return { user, isLogged: false };
+      }
     },
     onSuccess: (data) => {
-      dispatch(register({ idUser: data.uid, email: data.email }));
+      if (data.isLogged) {
+        dispatch(clearAuth());
+        dispatch(loginCompleted(data.user));
+      } else {
+        dispatch(register({ idUser: data.user.uid, email: data.user.email }));
+      }
     },
   });
 }
