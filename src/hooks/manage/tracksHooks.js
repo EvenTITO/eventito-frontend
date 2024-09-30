@@ -1,12 +1,11 @@
-import { EVENTS_URL } from "@/lib/Constants";
-import { getEventId } from "@/lib/utils";
-import { HTTPClient } from "@/services/api/HTTPClient";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {EVENTS_URL} from "@/lib/Constants";
+import {getEventId} from "@/lib/utils";
+import {HTTPClient} from "@/services/api/HTTPClient";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {
   convertEventChair,
   convertEventChairs,
   convertEventChairsByTracks,
-  convertTracks
 } from "@/services/api/events/chair/conversor.js";
 import {
   apiGetEventChair,
@@ -14,31 +13,32 @@ import {
   apiUpdateChairTracks,
   apiUpdateTracks,
 } from "@/services/api/events/chair/queries.js";
-import {useGetEvent} from "@/hooks/events/useEventState.js"; 
 
 export function useAddTrack() {
   const eventId = getEventId();
-  const { data: event } = useGetEvent(eventId);
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ track }) => {
+    mutationFn: async ({eventTracks, track}) => {
       const httpClient = new HTTPClient(EVENTS_URL)
-      const newTracks = [...event.tracks, track]
-      return await apiUpdateTracks(httpClient, eventId, convertTracks(newTracks))
+      const newTracks = [...eventTracks, track]
+      return await apiUpdateTracks(httpClient, eventId, {tracks: newTracks})
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventById", { eventId }],
+        queryKey: ["getEventById", {eventId}],
       });
-    },
+      queryClient.invalidateQueries({
+        queryKey: ["getEventChairs", {eventId}],
+      });
+    }
   });
 }
 
 export function useGetEventChair(userId) {
   const eventId = getEventId();
   return useQuery({
-    queryKey: ["getEventChair", { eventId, userId }],
+    queryKey: ["getEventChair", {eventId, userId}],
     queryFn: async () => {
       const chair = await getEventChair(eventId, userId);
       return convertEventChair(chair);
@@ -49,7 +49,7 @@ export function useGetEventChair(userId) {
 export function useGetEventChairs() {
   const eventId = getEventId();
   return useQuery({
-    queryKey: ["getEventChairs", { eventId }],
+    queryKey: ["getEventChairs", {eventId}],
     queryFn: async () => {
       const chairs = await getEventChairs(eventId);
       return convertEventChairs(chairs);
@@ -60,7 +60,7 @@ export function useGetEventChairs() {
 export function useGetEventChairsByTrack(track) {
   const eventId = getEventId();
   return useQuery({
-    queryKey: ["getEventChairsByTrack", { eventId, track }],
+    queryKey: ["getEventChairsByTrack", {eventId, track}],
     queryFn: async () => {
       const chairs = await getEventChairs(eventId);
       return convertEventChairs(chairs, track);
@@ -71,7 +71,7 @@ export function useGetEventChairsByTrack(track) {
 export function useGetEventChairsByTracks() {
   const eventId = getEventId();
   return useQuery({
-    queryKey: ["getEventChairsByTracks", { eventId }],
+    queryKey: ["getEventChairsByTracks", {eventId}],
     queryFn: async () => {
       const chairs = await getEventChairs(eventId);
       return convertEventChairsByTracks(chairs);
@@ -86,10 +86,10 @@ export function useAddChairToTrack() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ track, userId }) => {
+    mutationFn: async ({track, userId}) => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const chair = await queryClient.ensureQueryData({
-        queryKey: ["getEventChair", { eventId, userId }],
+        queryKey: ["getEventChair", {eventId, userId}],
         queryFn: async () => await getEventChair(eventId, userId),
       });
       const newTracks = [...chair.tracks, track];
@@ -99,16 +99,16 @@ export function useAddChairToTrack() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventChairs", { eventId }],
+        queryKey: ["getEventChairs", {eventId}],
       });
       queryClient.invalidateQueries({
-        queryKey: ["getEventChairsByTrack", { eventId }],
+        queryKey: ["getEventChairsByTrack", {eventId}],
       });
       queryClient.invalidateQueries({
-        queryKey: ["getEventChairsByTracks", { eventId }],
+        queryKey: ["getEventChairsByTracks", {eventId}],
       });
       queryClient.invalidateQueries({
-        queryKey: ["getEventById", { eventId }],
+        queryKey: ["getEventById", {eventId}],
       });
     },
   });
@@ -119,10 +119,10 @@ export function useDeleteChairOfTrack() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ track, userId }) => {
+    mutationFn: async ({track, userId}) => {
       const httpClient = new HTTPClient(EVENTS_URL);
       const chair = await queryClient.ensureQueryData({
-        queryKey: ["getEventChair", { eventId, userId }],
+        queryKey: ["getEventChair", {eventId, userId}],
         queryFn: async () => await getEventChair(eventId, userId),
       });
       const newTracks = [...chair.tracks.filter((t) => t !== track)];
@@ -132,16 +132,16 @@ export function useDeleteChairOfTrack() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getEventChairs", { eventId }],
+        queryKey: ["getEventChairs", {eventId}],
       });
       queryClient.invalidateQueries({
-        queryKey: ["getEventChairsByTrack", { eventId }],
+        queryKey: ["getEventChairsByTrack", {eventId}],
       });
       queryClient.invalidateQueries({
-        queryKey: ["getEventChairsByTracks", { eventId }],
+        queryKey: ["getEventChairsByTracks", {eventId}],
       });
       queryClient.invalidateQueries({
-        queryKey: ["getEventById", { eventId }],
+        queryKey: ["getEventById", {eventId}],
       });
     },
   });

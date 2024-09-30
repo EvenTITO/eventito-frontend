@@ -42,7 +42,6 @@ export function useAddOrModifyFareInEventPricing() {
       } else {
         updatedPricing = convertNewPricing(eventPrices, newFare);
       }
-      console.log(eventId, updatedPricing);
       return await apiUpdatePricingEvent(httpClient, eventId, updatedPricing);
     },
     onSuccess: () => {
