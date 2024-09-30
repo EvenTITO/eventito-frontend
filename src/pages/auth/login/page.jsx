@@ -111,17 +111,6 @@ export default function LoginPage() {
         </div>
       </div>
       <GoogleButton text="Continuar con Google" onClick={onGoogleLogin} />
-      <div className="mt-4 text-center text-sm">
-        ¿No tenés cuenta?{" "}
-        <Link to="/signup" className="text-primary hover:underline">
-          Creá una
-        </Link>
-      </div>
-      <div className="mt-2 text-center text-sm">
-        <Link to="/forgot-password" className="text-primary hover:underline">
-          ¿Olvidaste tu contraseña?
-        </Link>
-      </div>
     </ContainerAuthPage>
   );
 }

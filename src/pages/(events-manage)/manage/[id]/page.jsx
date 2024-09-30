@@ -44,8 +44,8 @@ export default function Page({ eventInfo }) {
 
   const handleSave = async () => {
     let eventCopy = JSON.parse(JSON.stringify(event));
-    delete eventCopy.title
-    await submitEditEvent({eventData: eventCopy});
+    delete eventCopy.title;
+    await submitEditEvent({ eventData: eventCopy });
     setIsEditing(false);
   };
 
@@ -152,7 +152,7 @@ export default function Page({ eventInfo }) {
                               <CalendarDays className="mr-2 h-4 w-4" />
                               {date.date
                                 ? format(new Date(date.date), "PPP")
-                                : "Pick a date"}
+                                : "Seleccionar una fecha"}
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="start">
@@ -183,7 +183,9 @@ export default function Page({ eventInfo }) {
                       </div>
                     ) : (
                       <p className="text-sm text-muted-foreground">
-                        {format(new Date(`${date.date}T${date.time}`), "PPP p")}
+                        {date.date
+                          ? format(new Date(date.date), "PPP")
+                          : "Seleccionar una fecha"}
                       </p>
                     )}
                   </div>

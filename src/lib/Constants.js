@@ -19,7 +19,7 @@ export const RoleImportance = {
   [CHAIR_ROLE]: 2,
   [REVIEWER_ROLE]: 3,
   [SPEAKER_ROLE]: 4,
-  [ATTENDEE_ROLE]: 5
+  [ATTENDEE_ROLE]: 5,
 };
 
 export const EVENT_ROLES_LABELS = {
@@ -27,14 +27,24 @@ export const EVENT_ROLES_LABELS = {
   CHAIR: "Chair",
   REVIEWER: "Revisor",
   SPEAKER: "Autor",
-  ATTENDEE: "Asistente"
-}
+  ATTENDEE: "Asistente",
+};
+
+export const EVENT_STATUS_LABELS = {
+  STARTED: "En progreso",
+  CREATED: "Creado",
+  WAITING_APPROVAL: "Pendiente de aprobación",
+};
+
+export const STARTED_STATUS = "STARTED";
+export const CREATED_STATUS = "CREATED";
+export const WAITING_APPROVAL_STATUS = "WAITING_APPROVAL";
 
 export const WORKS_STATUS_PUBLISH = {
   APPROVED: "Aceptado",
   RE_SUBMIT: "En revisión",
-  REJECTED: "Rechazado"
-}
+  REJECTED: "Rechazado",
+};
 
 export const WORKS_STATUS_LABELS = {
   APPROVED: "Aprobado",
@@ -64,23 +74,23 @@ export const REGISTRATION_ROLES = [
 export const REVIEW_STATUS_LABELS = {
   APPROVED: "Aprobado",
   NOT_APPROVED: "Desaprobado",
-  RE_SUBMIT: "A revisar"
-}
+  RE_SUBMIT: "A revisar",
+};
 
 export const REVIEW_STATUS_LABELS_REVERSE = {
-  "Aprobado": "APPROVED",
-  "Desaprobado": "NOT_APPROVED",
-  "A revisar": "RE_SUBMIT"
-}
+  Aprobado: "APPROVED",
+  Desaprobado: "NOT_APPROVED",
+  "A revisar": "RE_SUBMIT",
+};
 
 export const INSCRIPTION_ROLES_LABELS = {
   SPEAKER: "Autor",
-  ATTENDEE: "Asistente"
-}
+  ATTENDEE: "Asistente",
+};
 
 export const PAYMENT_STATUS_LABELS = {
   APPROVED: "Aprobado",
   REJECTED: "Rechazado",
   UNCOMPLETED: "Insuficiente",
-  PENDING_APPROVAL: "Pendiente de revisión"
-}
+  PENDING_APPROVAL: "Pendiente de revisión",
+};

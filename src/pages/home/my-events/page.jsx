@@ -15,12 +15,7 @@ export default function MyEventsPage() {
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,10 +30,13 @@ import { CalendarDays, MapPin, Search, ArrowRight } from "lucide-react";
 import {
   ATTENDEE_ROLE,
   CHAIR_ROLE,
+  CREATED_STATUS,
   EVENT_ROLES_LABELS,
+  EVENT_STATUS_LABELS,
   ORGANIZER_ROLE,
   REVIEWER_ROLE,
-  SPEAKER_ROLE
+  SPEAKER_ROLE,
+  STARTED_STATUS,
 } from "@/lib/Constants.js";
 
 function MyEvents({ events }) {
@@ -68,21 +66,29 @@ function MyEvents({ events }) {
         <div className="flex items-center space-x-4">
           <Select value={selectedRole} onValueChange={setSelectedRole}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filter by role" />
+              <SelectValue placeholder="Filtrar por role" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="ALL_ROLES">Todos los roles</SelectItem>
-              <SelectItem value={ORGANIZER_ROLE}>{EVENT_ROLES_LABELS[ORGANIZER_ROLE]}</SelectItem>
-              <SelectItem value={CHAIR_ROLE}>{EVENT_ROLES_LABELS[CHAIR_ROLE]}</SelectItem>
-              <SelectItem value={ATTENDEE_ROLE}>{EVENT_ROLES_LABELS[ATTENDEE_ROLE]}</SelectItem>
-              <SelectItem value={SPEAKER_ROLE}>{EVENT_ROLES_LABELS[SPEAKER_ROLE]}</SelectItem>
-              <SelectItem value={REVIEWER_ROLE}>{EVENT_ROLES_LABELS[REVIEWER_ROLE]}</SelectItem>
+              <SelectItem value={ORGANIZER_ROLE}>
+                {EVENT_ROLES_LABELS[ORGANIZER_ROLE]}
+              </SelectItem>
+              <SelectItem value={CHAIR_ROLE}>
+                {EVENT_ROLES_LABELS[CHAIR_ROLE]}
+              </SelectItem>
+              <SelectItem value={ATTENDEE_ROLE}>
+                {EVENT_ROLES_LABELS[ATTENDEE_ROLE]}
+              </SelectItem>
+              <SelectItem value={SPEAKER_ROLE}>
+                {EVENT_ROLES_LABELS[SPEAKER_ROLE]}
+              </SelectItem>
+              <SelectItem value={REVIEWER_ROLE}>
+                {EVENT_ROLES_LABELS[REVIEWER_ROLE]}
+              </SelectItem>
             </SelectContent>
           </Select>
           <Link to={"/home/create-event"}>
-            <Button>
-              Crear nuevo evento
-            </Button>
+            <Button>Crear nuevo evento</Button>
           </Link>
         </div>
       </div>
@@ -93,7 +99,8 @@ function MyEvents({ events }) {
       </div>
       {filteredEvents.length === 0 && (
         <p className="text-center text-gray-500 dark:text-gray-400 mt-8">
-          No events found matching your search and role filter.
+          No hay eventos en los que participes como: asistente, autor, revisor,
+          chair u organizador.
         </p>
       )}
     </div>
@@ -101,22 +108,34 @@ function MyEvents({ events }) {
 }
 
 function EventCard({ event }) {
+  const eventApproved =
+    event.status === CREATED_STATUS || event.status === STARTED_STATUS;
+  function handleNavigation(event) {
+    if (!eventApproved) {
+      event.preventDefault();
+    }
+  }
+
   return (
-    <Link to={`/events/${event.id}/view`} className="block">
+    <Link
+      to={`/manage/${event.id}/`}
+      onClick={handleNavigation}
+      className="block"
+    >
       <Card className="transition-all duration-300 hover:shadow-lg focus-within:shadow-lg group min-h-[250px]">
         <CardHeader>
           <div className="flex justify-between items-start">
             <CardTitle className="mr-2">{event.title}</CardTitle>
-            <Badge variant="secondary" className="uppercase">
-              {event.status}
+            <Badge variant="secondary">
+              {EVENT_STATUS_LABELS[event.status]}
             </Badge>
           </div>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
             {event.roles.map((role, index) => (
-              <Badge key={index} variant="outline" className="uppercase">
-                {role}
+              <Badge key={index} variant="outline">
+                {EVENT_ROLES_LABELS[role]}
               </Badge>
             ))}
           </div>
@@ -130,13 +149,14 @@ function EventCard({ event }) {
             <MapPin className="h-4 w-4" />
             <span>{event.location}</span>
           </div>
-          <div className="mt-4 flex items-center text-sm font-medium text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
-            Ver sitio del evento
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </div>
+          {eventApproved ? (
+            <div className="mt-4 flex items-center text-sm font-medium text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
+              Ver sitio del evento
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </div>
+          ) : null}
         </CardContent>
       </Card>
     </Link>
   );
 }
-
