@@ -5,7 +5,7 @@ export default function ImageHeader({ image }) {
         <img
           src={
             // image.url
-            "https://makepath.com/wp-content/uploads/2022/06/Adventure-Guide-Etsy-Banner-860-%C3%97-520-px.png"
+            "https://cphfcrflaa.cloudimg.io/_bcuimages/academic-conference-primary-132249422941807450.jpg"
           }
           className="w-full h-full object-cover"
         />
