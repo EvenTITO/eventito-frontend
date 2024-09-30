@@ -25,7 +25,6 @@ export function useAddTrack() {
       return await apiUpdateTracks(httpClient, eventId, {tracks: newTracks})
     },
     onSuccess: () => {
-      console.log("entro al onsuccess")
       queryClient.invalidateQueries({
         queryKey: ["getEventById", {eventId}],
       });
