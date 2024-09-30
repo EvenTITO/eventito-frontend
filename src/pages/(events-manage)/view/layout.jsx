@@ -28,8 +28,6 @@ function Layout({ eventTitle }) {
   const tabs = [
     { type: "normal", label: "General", to: `${id}/` },
     { type: "normal", label: "Inscripción", to: `${id}/register` },
-    { type: "normal", label: "Calendario", to: `${id}/calendar` },
-    { type: "normal", label: "Presentaciones", to: `${id}/pressentations` },
   ];
 
   return (
