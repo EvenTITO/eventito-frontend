@@ -13,9 +13,8 @@ export default function Prices({ event }) {
               <CardTitle>{price.name}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold mb-2">
-                {price.currency} {price.description}
-              </p>
+              <p className="text-1xl font-bold mb-2">${price.value}</p>
+              <p className="text-1xl mb-2">{price.description}</p>
               {price.related_date && (
                 <p className="text-sm text-muted-foreground flex items-center">
                   <CalendarIcon className="mr-2 h-4 w-4" />

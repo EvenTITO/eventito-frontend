@@ -1,32 +1,13 @@
 import FetchStatus from "@/components/FetchStatus";
-import { getMyEvents } from "@/services/api/events/general/hooks";
-
-export default function MyEventsPage() {
-  const { isPending, error, data: events } = getMyEvents();
-
-  const component = <MyEvents events={events} />;
-  if (events) {
-    console.log(events);
-  }
-  return (
-    <FetchStatus isPending={isPending} error={error} component={component} />
-  );
-}
-
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { CalendarDays, MapPin, Search, ArrowRight } from "lucide-react";
+import {getMyEvents} from "@/services/api/events/general/hooks";
+import {useState} from "react";
+import {Link} from "react-router-dom";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
+import {ArrowRight, CalendarDays, MapPin, Search} from "lucide-react";
 import {
   ATTENDEE_ROLE,
   CHAIR_ROLE,
@@ -39,7 +20,19 @@ import {
   STARTED_STATUS,
 } from "@/lib/Constants.js";
 
-function MyEvents({ events }) {
+export default function MyEventsPage() {
+  const {isPending, error, data: events} = getMyEvents();
+
+  const component = <MyEvents events={events}/>;
+  if (events) {
+    console.log(events);
+  }
+  return (
+    <FetchStatus isPending={isPending} error={error} component={component}/>
+  );
+}
+
+function MyEvents({events}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState("ALL_ROLES");
 
@@ -52,9 +45,10 @@ function MyEvents({ events }) {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Mis eventos</h1>
-      <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
+      <div
+        className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
         <div className="relative w-full md:w-1/3">
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400" />
+          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"/>
           <Input
             type="text"
             placeholder="Buscar eventos..."
@@ -66,7 +60,7 @@ function MyEvents({ events }) {
         <div className="flex items-center space-x-4">
           <Select value={selectedRole} onValueChange={setSelectedRole}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filtrar por role" />
+              <SelectValue placeholder="Filtrar por role"/>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="ALL_ROLES">Todos los roles</SelectItem>
@@ -94,22 +88,25 @@ function MyEvents({ events }) {
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredEvents.map((event) => (
-          <EventCard event={event} />
+          <EventCard event={event}/>
         ))}
       </div>
       {filteredEvents.length === 0 && (
         <p className="text-center text-gray-500 dark:text-gray-400 mt-8">
-          No hay eventos en los que participes como: asistente, autor, revisor,
-          chair u organizador.
+          {`No hay eventos en los que participes como: 
+          ${Object.entries(EVENT_ROLES_LABELS).filter(([value, label]) => {
+            return "ALL_ROLES" === selectedRole ? true : selectedRole === value
+          }).map(([value, label]) => label).join(", ")}`}
         </p>
       )}
     </div>
   );
 }
 
-function EventCard({ event }) {
+function EventCard({event}) {
   const eventApproved =
     event.status === CREATED_STATUS || event.status === STARTED_STATUS;
+
   function handleNavigation(event) {
     if (!eventApproved) {
       event.preventDefault();
@@ -140,19 +137,20 @@ function EventCard({ event }) {
             ))}
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
-            <CalendarDays className="h-4 w-4" />
+            <CalendarDays className="h-4 w-4"/>
             <span>
               {event.startDate} - {event.endDate}
             </span>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
-            <MapPin className="h-4 w-4" />
+            <MapPin className="h-4 w-4"/>
             <span>{event.location}</span>
           </div>
           {eventApproved ? (
-            <div className="mt-4 flex items-center text-sm font-medium text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
+            <div
+              className="mt-4 flex items-center text-sm font-medium text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
               Ver sitio del evento
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="ml-2 h-4 w-4"/>
             </div>
           ) : null}
         </CardContent>

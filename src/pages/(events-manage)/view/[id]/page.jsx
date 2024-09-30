@@ -22,8 +22,10 @@ export default function Page({ event }) {
           <MotionDiv className="flex flex-wrap gap-4 text-sm text-muted-foreground">
             <div className="flex items-center">
               <Users className="h-4 w-4 mr-2" />
-              <span>Organized by: {event.organized_by}</span>
+              <span>Organizado por: {event.organized_by}</span>
             </div>
+          </MotionDiv>
+          <MotionDiv className="flex flex-wrap gap-4 text-sm text-muted-foreground">
             <div className="flex items-center">
               <MapPin className="h-4 w-4 mr-2" />
               <span>{event.location}</span>
@@ -35,7 +37,8 @@ export default function Page({ event }) {
                 key={index}
                 className="flex items-center text-sm text-muted-foreground"
               >
-                <CalendarDays className="h-4 w-4 mr-2" />
+                <CalendarDays className="h-4 w-4 mr-2"/>
+                <p className="font-medium">{date.description}:&nbsp;&nbsp;</p>
                 <span>
                   {format(new Date(`${date.date}T${date.time}`), {
                     date: "full",

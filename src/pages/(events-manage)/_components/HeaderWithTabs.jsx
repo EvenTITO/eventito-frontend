@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { List, User, ChevronDown, ArrowLeft } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import {List, ChevronDown, ArrowLeft, LogOut} from "lucide-react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,10 +8,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn, getEventId } from "@/lib/utils";
+import {useLogout} from "@/hooks/auth/authHooks.js";
 
 export default function HeaderWithTabs({ toggleSidebar, tabs }) {
   const location = useLocation().pathname;
   const eventId = getEventId();
+  const navigate = useNavigate()
+  const logout = useLogout()
+
+  const handleLogout = async () => {
+    await logout.mutateAsync();
+    console.log("Bye !!")
+    navigate("/")
+  }
 
   return (
     <header className="h-16 bg-[#121827] flex items-center justify-between px-4 fixed top-0 left-0 right-0 z-50 text-white">
@@ -43,8 +52,8 @@ export default function HeaderWithTabs({ toggleSidebar, tabs }) {
         </nav>
       </div>
       <div className="flex items-center space-x-4">
-        <Button variant="ghost" size="icon">
-          <User className="h-5 w-5" />
+        <Button onClick={handleLogout} variant="ghost" size="icon">
+          <LogOut className="h-5 w-5" />
         </Button>
       </div>
     </header>
