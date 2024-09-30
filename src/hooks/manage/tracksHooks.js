@@ -6,21 +6,26 @@ import {
   convertEventChair,
   convertEventChairs,
   convertEventChairsByTracks,
+  convertTracks
 } from "@/services/api/events/chair/conversor.js";
 import {
   apiGetEventChair,
   apiGetEventChairs,
   apiUpdateChairTracks,
+  apiUpdateTracks,
 } from "@/services/api/events/chair/queries.js";
+import {useGetEvent} from "@/hooks/events/useEventState.js"; 
 
 export function useAddTrack() {
   const eventId = getEventId();
+  const { data: event } = useGetEvent(eventId);
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({ track }) => {
-      const httpClient = new HTTPClient(EVENTS_URL);
-      return null;
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const newTracks = [...event.tracks, track]
+      return await apiUpdateTracks(httpClient, eventId, convertTracks(newTracks))
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
