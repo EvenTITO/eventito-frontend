@@ -18,13 +18,21 @@ import {
 import { Label } from "@/components/ui/label";
 import { Search, ChevronRight, Bell, User } from "lucide-react";
 import { useGetEventsWaitingApproval, useUpdateEventStatus } from "@/hooks/admin/adminEventsHooks"
+import { useAdminGetUsers, useAdminUpdateUserRole } from "@/hooks/admin/adminUsersHooks"
 
 export default function AdminPanel() {
-  const { isPending, error, data: eventsWaitingApproval } = useGetEventsWaitingApproval();
+  const { isPending: eventsPending, error: eventsError, data: eventsWaitingApproval } = useGetEventsWaitingApproval();
   const { mutate: updateEventStatus} = useUpdateEventStatus();
+  const { isPending: usersPending, error: usersError, data: users } = useAdminGetUsers();
+  const { mutate: updateUserRole} = useAdminUpdateUserRole();
+  
 
-  if (!isPending) {
+  if (!eventsPending) {
     console.log(`events waiting approval: ${JSON.stringify(eventsWaitingApproval)}`)
+  }
+
+  if (!usersPending) {
+    console.log(`users: ${JSON.stringify(users)}`);
   }
   const [activeTab, setActiveTab] = useState("events");
 
@@ -71,8 +79,6 @@ export default function AdminPanel() {
   const [newStatus, setNewStatus] = useState("");
 
   const handleStatusChange = (id, newStatus) => {
-    updateEventStatus({eventId:"a8f618c7-717d-45a8-92f6-eb74736946bb", newStatus: "CREATED"})
-
     setEvents(
       events.map((event) =>
         event.id === id ? { ...event, status: newStatus } : event,
