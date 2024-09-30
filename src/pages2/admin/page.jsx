@@ -17,10 +17,12 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Search, ChevronRight, Bell, User } from "lucide-react";
-import { getEventsWaitingApproval } from "@/services/api/admin/events/hooks"
+import { useGetEventsWaitingApproval, useUpdateEventStatus } from "@/hooks/admin/adminEventsHooks"
 
 export default function AdminPanel() {
-  const { isPending, error, data: eventsWaitingApproval } = getEventsWaitingApproval();
+  const { isPending, error, data: eventsWaitingApproval } = useGetEventsWaitingApproval();
+  const { mutate: updateEventStatus} = useUpdateEventStatus();
+
   if (!isPending) {
     console.log(`events waiting approval: ${JSON.stringify(eventsWaitingApproval)}`)
   }
@@ -69,6 +71,8 @@ export default function AdminPanel() {
   const [newStatus, setNewStatus] = useState("");
 
   const handleStatusChange = (id, newStatus) => {
+    updateEventStatus({eventId:"a8f618c7-717d-45a8-92f6-eb74736946bb", newStatus: "CREATED"})
+
     setEvents(
       events.map((event) =>
         event.id === id ? { ...event, status: newStatus } : event,

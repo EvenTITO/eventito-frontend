@@ -1,4 +1,4 @@
-import { convertStartDate } from "../../events/general/conversor"
+import { convertStartDate, convertEndDate } from "../../events/general/conversor"
 
 export function convertEventsWaitingApproval(data) {
   return data.map(convertEventItem);
