@@ -16,7 +16,18 @@ export default function ContainerAuthPage({ title, children, isLogin = true }) {
         <p className="text-sm text-muted-foreground">
           ¿No tenés cuenta?{" "}
           <Link to="/signup" className="text-primary hover:underline">
-            Creá una
+            Ir a registro
+          </Link>
+        </p>
+      </CardFooter>
+    );
+  } else {
+    footer = (
+      <CardFooter className="flex justify-center">
+        <p className="text-sm text-muted-foreground">
+          ¿Ya tenés cuenta?{" "}
+          <Link to="/signup" className="text-primary hover:underline">
+            Ir a inicio de sesión
           </Link>
         </p>
       </CardFooter>
