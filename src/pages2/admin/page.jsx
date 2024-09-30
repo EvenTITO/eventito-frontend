@@ -79,8 +79,6 @@ export default function AdminPanel() {
   const [newStatus, setNewStatus] = useState("");
 
   const handleStatusChange = (id, newStatus) => {
-    updateEventStatus({eventId:"a8f618c7-717d-45a8-92f6-eb74736946bb", newStatus: "CREATED"})
-
     setEvents(
       events.map((event) =>
         event.id === id ? { ...event, status: newStatus } : event,
@@ -91,7 +89,6 @@ export default function AdminPanel() {
   };
 
   const handleRoleChange = (id, newRole) => {
-    updateUserRole({userId:'iuaealdasldanfas982983297234', newRole: 'EVENT_CREATOR'});
     setMembers(
       members.map((member) =>
         member.id === id ? { ...member, role: newRole } : member,

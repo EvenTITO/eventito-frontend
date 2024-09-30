@@ -1,5 +1,5 @@
 export const apiGetManyUsers = async (httpClient, offset = 0, limit = 100) => {
-  const response = await httpClient.get("", { offset, limit }, {});
+  const response = await httpClient.get("", { offset, limit });
   return response.data;
 };
 
