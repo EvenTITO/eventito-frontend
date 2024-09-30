@@ -17,6 +17,8 @@ import {
   useLoginWithGoogle,
 } from "@/hooks/auth/authHooks";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
+import ContainerAuthPage from "../_components/ContainerAuthPage";
+import GoogleButton from "../_components/GoogleButton";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -40,97 +42,66 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
-      <header className="mb-8 flex items-center space-x-2">
-        <Logo showName={false} />
-        <span className="text-2xl font-bold text-primary">eventito</span>
-      </header>
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
-            Iniciar sesión
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <div className="relative mt-1">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Ingresá tu email"
-                  className="pl-10"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Contraseña
-              </label>
-              <div className="relative mt-1">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Ingresá tu contraseña"
-                  className="pl-10"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <ButtonWithLoading
-              type="submit"
-              className="w-full"
-              isLoading={loginMutation.isPending}
-            >
-              Continuar
-            </ButtonWithLoading>
-          </form>
-          <div className="relative mt-4">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-muted-foreground">O</span>
-            </div>
-          </div>
-          <Button
-            variant="outline"
-            className="w-full mt-4"
-            onClick={onGoogleLogin}
-            disabled={googleLoginMutation.isPending}
+    <ContainerAuthPage title={"Iniciar sesión"}>
+      <form onSubmit={onSubmit} className="space-y-4">
+        <div>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
           >
-            <GoogleIcon />
-            {googleLoginMutation.isPending
-              ? "Cargando..."
-              : "Continuar con Google"}
-          </Button>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <p className="text-sm text-muted-foreground">
-            ¿No tenés cuenta?{" "}
-            <Link to="/signup" className="text-primary hover:underline">
-              Creá una
-            </Link>
-          </p>
-        </CardFooter>
-      </Card>
-    </div>
+            Email
+          </label>
+          <div className="relative mt-1">
+            <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              id="email"
+              type="email"
+              placeholder="Ingresá tu email"
+              className="pl-10"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Contraseña
+          </label>
+          <div className="relative mt-1">
+            <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              id="password"
+              type="password"
+              placeholder="Ingresá tu contraseña"
+              className="pl-10"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+        </div>
+        <ButtonWithLoading
+          type="submit"
+          className="w-full"
+          isLoading={loginMutation.isPending}
+        >
+          Continuar
+        </ButtonWithLoading>
+      </form>
+      <div className="relative mt-4">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-white px-2 text-muted-foreground">O</span>
+        </div>
+      </div>
+      <GoogleButton text={"Continuar con Google"} onClick={onGoogleLogin} />
+    </ContainerAuthPage>
   );
 }
 
