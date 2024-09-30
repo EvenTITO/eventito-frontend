@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
-import { ChevronDown, User, Settings } from "lucide-react"
+import {ChevronDown, User, Settings, LogOut} from "lucide-react"
 import Logo from "@/components/Logo"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -11,16 +11,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {useSelector} from "react-redux";
+import {ADMIN_EVENTITO_ROLE} from "@/lib/Constants.js";
+import {useLogout} from "@/hooks/auth/authHooks.js";
 
 export default function Header() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [isAdmin, setIsAdmin] = useState(location.pathname.startsWith('/home'))
+  const logout = useLogout()
+  const {currentUser} = useSelector((state) => state.user);
+  const [isAdminPage, setIsAdminPage] = useState(location.pathname.startsWith('/home'))
   const fixedHeader = "fixed top-0 left-0 right-0 z-50"
   const headerStyle = "px-4 lg:px-6 h-14 flex items-center bg-white"
 
   useEffect(() => {
-    setIsAdmin(location.pathname.startsWith('/admin'))
+    setIsAdminPage(location.pathname.startsWith('/admin'))
   }, [location])
 
   const handleModeChange = (value) => {
@@ -31,11 +36,17 @@ export default function Header() {
     }
   }
 
+  const handleLogout = async () => {
+    await logout.mutateAsync();
+    console.log("Bye !!")
+    navigate("/")
+  }
+
   return (
     <header className={cn(fixedHeader, headerStyle)}>
       <div className="flex items-center">
         <Logo showName={false} bgColor="white" />
-        <Select onValueChange={handleModeChange} value={isAdmin ? "admin" : "regular"}>
+        {currentUser.role === ADMIN_EVENTITO_ROLE && (<Select onValueChange={handleModeChange} value={isAdminPage ? "admin" : "regular"}>
           <SelectTrigger className="w-[180px] ml-2 border-none focus:ring-0">
             <SelectValue placeholder="Eventito" />
           </SelectTrigger>
@@ -52,23 +63,23 @@ export default function Header() {
               </span>
             </SelectItem>
           </SelectContent>
-        </Select>
+        </Select>)}
       </div>
       <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
         <Link
           className="text-sm font-medium hover:underline underline-offset-4"
-          to={isAdmin ? "/admin" : "/home"}
+          to={isAdminPage ? "/admin" : "/home"}
         >
-          {isAdmin ? "Panel de Control" : "Inicio"}
+          {isAdminPage ? "Panel de Control" : "Inicio"}
         </Link>
         <Link
           className="text-sm font-medium hover:underline underline-offset-4"
-          to={isAdmin ? "/admin/events" : "/home/my-events"}
+          to={isAdminPage ? "/admin/events" : "/home/my-events"}
         >
-          {isAdmin ? "Gestionar Eventos" : "Mis eventos"}
+          {isAdminPage ? "Gestionar Eventos" : "Mis eventos"}
         </Link>
-        <Button variant="ghost" size="icon">
-          <User className="h-5 w-5" />
+        <Button onClick={handleLogout} variant="ghost" size="icon">
+          <LogOut className="h-5 w-5" />
         </Button>
       </nav>
     </header>

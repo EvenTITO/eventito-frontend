@@ -1,10 +1,20 @@
 import {Button} from "@/components/ui/button";
-import {ArrowLeft, User} from "lucide-react";
-import {Link} from "react-router-dom";
+import {ArrowLeft, LogOut} from "lucide-react";
+import {Link, useNavigate} from "react-router-dom";
+import {useLogout} from "@/hooks/auth/authHooks.js";
 
 export default function Header({headerTitle}) {
+  const navigate = useNavigate()
+  const logout = useLogout()
+
   const title =
     headerTitle.length < 50 ? headerTitle : `${headerTitle.slice(0, 50)}...`;
+
+  const handleLogout = async () => {
+    await logout.mutateAsync();
+    console.log("Bye !!")
+    navigate("/")
+  }
 
   return (
     <header
@@ -15,8 +25,8 @@ export default function Header({headerTitle}) {
         <h1 className="text-lg">{title}</h1>
       </div>
       <div className="flex items-center space-x-4">
-        <Button variant="ghost" size="icon">
-          <User className="h-5 w-5"/>
+        <Button onClick={handleLogout} variant="ghost" size="icon">
+          <LogOut className="h-5 w-5" />
         </Button>
       </div>
     </header>

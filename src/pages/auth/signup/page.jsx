@@ -19,6 +19,7 @@ export default function SignupPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const { currentUser } = useSelector((state) => state.user);
   const { idUser, email: authEmail } = useSelector((state) => state.auth);
+  const validationPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$&])[a-zA-Z0-9!@#$&]{6,15}$/;
 
   const signupMutation = useSignUpWithEmailAndPassword();
   const googleSignupMutation = useSignUpWithGoogle();
@@ -30,11 +31,28 @@ export default function SignupPage() {
       setErrorMessage("Las contraseñas no coinciden");
       return;
     }
+    if (!(validationPasswordRegex.test(password))) {
+      setError(true);
+      setErrorMessage("Contraseña inválida. Debe contener entre 6 y 15 caracteres con al menos un número y un carácter especial (Ejemplo: !,@,#,$ o &).");
+      return;
+    }
     try {
       await signupMutation.mutateAsync({ email, password });
     } catch (error) {
       setError(true);
-      setErrorMessage("Error al crear la cuenta");
+      const errorCode = error.code;
+      switch (errorCode) {
+        case "auth/weak-password":
+          setErrorMessage("Contraseña insegura.")
+          break
+        case "auth/email-already-in-use":
+          setErrorMessage("Ya existe una cuenta vinculada al email ingresado.")
+          break
+        default:
+          console.error(errorCode)
+          setErrorMessage("No pudo crearse la cuenta. Por favor intente más tarde")
+          break;
+      }
     }
   };
 

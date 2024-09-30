@@ -7,6 +7,11 @@ export const FORGOT_PASSWORD_PATH = "/forgot-password";
 export const PRIVATE_POLICY_PATH = "/private-policy";
 export const TERMS_CONDITIONS_PATH = "/terms-and-conditions";
 
+
+export const ADMIN_EVENTITO_ROLE = "ADMIN";
+export const EVENT_CREATOR_EVENTITO_ROLE = "EVENT_CREATOR";
+export const DEFAULT_EVENTITO_ROLE = "DEFAULT";
+
 export const ORGANIZER_ROLE = "ORGANIZER";
 export const CHAIR_ROLE = "CHAIR";
 export const REVIEWER_ROLE = "REVIEWER";
@@ -57,17 +62,17 @@ export const REGISTRATION_ROLES = [
   {
     id: ATTENDEE_ROLE,
     title: EVENT_ROLES_LABELS[ATTENDEE_ROLE],
-    description: "Asistir al evento para escuchar charlas",
+    description: "Asistir al evento",
   },
   {
     id: SPEAKER_ROLE,
     title: EVENT_ROLES_LABELS[SPEAKER_ROLE],
-    description: "Presentar uno o más trabajos en el evento",
+    description: "Presentar trabajos en el evento",
   },
   {
     id: "ATTENDEE,SPEAKER",
     title: "Asistente y autor",
-    description: "Asistir a charlas y presentar trabajos",
+    description: "Asistir y presentar trabajos",
   },
 ];
 
