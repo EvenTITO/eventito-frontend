@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import {
   login,
@@ -6,12 +6,12 @@ import {
   signUp,
   signUpWithGoogle,
   getUser,
+  completeRegister,
 } from "@/services/api/auth/queries";
 import { clearAuth, register } from "@/state/auth/authSlice";
 import { loginCompleted } from "@/state/user/userSlice";
 
 export function useLoginWithEmailAndPassword() {
-  const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
   return useMutation({
@@ -19,17 +19,13 @@ export function useLoginWithEmailAndPassword() {
       const user = await login({ email, password });
       return user;
     },
-    onSuccess: async (data) => {
+    onSuccess: (data) => {
       dispatch(register({ idUser: data.uid, email: data.email }));
-      const userObtained = await getUser(data.uid);
-      dispatch(clearAuth());
-      dispatch(loginCompleted(userObtained));
     },
   });
 }
 
 export function useLoginWithGoogle() {
-  const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
   return useMutation({
@@ -37,17 +33,13 @@ export function useLoginWithGoogle() {
       const user = await loginWithGoogle();
       return user;
     },
-    onSuccess: async (data) => {
+    onSuccess: (data) => {
       dispatch(register({ idUser: data.uid, email: data.email }));
-      const userObtained = await getUser(data.uid);
-      dispatch(clearAuth());
-      dispatch(loginCompleted(userObtained));
     },
   });
 }
 
 export function useSignUpWithEmailAndPassword() {
-  const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
   return useMutation({
@@ -55,17 +47,13 @@ export function useSignUpWithEmailAndPassword() {
       const user = await signUp({ email, password });
       return user;
     },
-    onSuccess: async (data) => {
+    onSuccess: (data) => {
       dispatch(register({ idUser: data.uid, email: data.email }));
-      const userObtained = await getUser(data.uid);
-      dispatch(clearAuth());
-      dispatch(loginCompleted(userObtained));
     },
   });
 }
 
 export function useSignUpWithGoogle() {
-  const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
   return useMutation({
@@ -73,11 +61,24 @@ export function useSignUpWithGoogle() {
       const user = await signUpWithGoogle();
       return user;
     },
-    onSuccess: async (data) => {
+    onSuccess: (data) => {
       dispatch(register({ idUser: data.uid, email: data.email }));
-      const userObtained = await getUser(data.uid);
+    },
+  });
+}
+
+export function useCompleteRegister() {
+  const dispatch = useDispatch();
+
+  return useMutation({
+    mutationFn: async ({ uid, name, lastname, email }) => {
+      await completeRegister({ uid, name, lastname, email });
+      const user = await getUser(uid);
+      return user;
+    },
+    onSuccess: (data) => {
       dispatch(clearAuth());
-      dispatch(loginCompleted(userObtained));
+      dispatch(loginCompleted(data));
     },
   });
 }

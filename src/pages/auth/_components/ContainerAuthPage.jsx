@@ -26,7 +26,7 @@ export default function ContainerAuthPage({ title, children, isLogin = true }) {
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
           ¿Ya tenés cuenta?{" "}
-          <Link to="/signup" className="text-primary hover:underline">
+          <Link to="/login" className="text-primary hover:underline">
             Ir a inicio de sesión
           </Link>
         </p>
@@ -52,7 +52,3 @@ export default function ContainerAuthPage({ title, children, isLogin = true }) {
     </div>
   );
 }
-
-/*
- 
-*/

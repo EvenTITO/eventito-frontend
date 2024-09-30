@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useSelector } from "react-redux";
@@ -15,8 +15,10 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const { currentUser } = useSelector((state) => state.user);
+  const { idUser, email: authEmail } = useSelector((state) => state.auth);
 
   const signupMutation = useSignUpWithEmailAndPassword();
   const googleSignupMutation = useSignUpWithGoogle();
@@ -24,19 +26,33 @@ export default function SignupPage() {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== repeatPassword) {
-      setPasswordError("Las contraseñas no coinciden");
+      setError(true);
+      setErrorMessage("Las contraseñas no coinciden");
       return;
     }
-    setPasswordError("");
-    await signupMutation.mutateAsync({ email, password });
+    try {
+      await signupMutation.mutateAsync({ email, password });
+    } catch (error) {
+      setError(true);
+      setErrorMessage("Error al crear la cuenta");
+    }
   };
 
   const onGoogleSignup = async () => {
-    await googleSignupMutation.mutateAsync();
+    try {
+      await googleSignupMutation.mutateAsync();
+    } catch (error) {
+      setError(true);
+      setErrorMessage("Error al registrarse con Google");
+    }
   };
 
   if (currentUser) {
-    return <Navigate to="/home" />;
+    return <Navigate to="/home" replace />;
+  }
+
+  if (idUser && authEmail) {
+    return <Navigate to="/complete-register" replace />;
   }
 
   return (
@@ -102,9 +118,7 @@ export default function SignupPage() {
             />
           </div>
         </div>
-        {passwordError && (
-          <p className="text-sm text-red-500">{passwordError}</p>
-        )}
+        {error && <p className="text-sm text-red-500">{errorMessage}</p>}
         <ButtonWithLoading
           type="submit"
           className="w-full"
