@@ -41,4 +41,9 @@ export class HTTPClient {
     const headers = this.createHeaders();
     return await this.axiosInstance.delete(url, headers);
   }
+
+  async patch(url, body, config = { fowardError: true }) {
+    const headers = this.createHeaders();
+    return await this.axiosInstance.patch(url, body, headers);
+  }
 }

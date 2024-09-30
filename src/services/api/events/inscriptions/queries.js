@@ -25,3 +25,7 @@ export const apiGetInscriptions = async (httpClient, eventId) => {
 export const apiGetPayments = async (httpClient, eventId) => {
   return (await httpClient.get(`/${eventId}/payments`)).data;
 };
+
+export const apiUpdateInscriptionsStatus = async (httpClient, eventId, inscriptionId, update) => {
+  return (await httpClient.patch(`/${eventId}/inscriptions/${inscriptionId}`, update));
+};
