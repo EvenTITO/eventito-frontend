@@ -30,11 +30,13 @@ import { CalendarDays, MapPin, Search, ArrowRight } from "lucide-react";
 import {
   ATTENDEE_ROLE,
   CHAIR_ROLE,
+  CREATED_STATUS,
   EVENT_ROLES_LABELS,
   EVENT_STATUS_LABELS,
   ORGANIZER_ROLE,
   REVIEWER_ROLE,
   SPEAKER_ROLE,
+  STARTED_STATUS,
 } from "@/lib/Constants.js";
 
 function MyEvents({ events }) {
@@ -106,8 +108,20 @@ function MyEvents({ events }) {
 }
 
 function EventCard({ event }) {
+  const eventApproved =
+    event.status === CREATED_STATUS || event.status === STARTED_STATUS;
+  function handleNavigation(event) {
+    if (!eventApproved) {
+      event.preventDefault();
+    }
+  }
+
   return (
-    <Link to={`/events/${event.id}/view`} className="block">
+    <Link
+      to={`/manage/${event.id}/`}
+      onClick={handleNavigation}
+      className="block"
+    >
       <Card className="transition-all duration-300 hover:shadow-lg focus-within:shadow-lg group min-h-[250px]">
         <CardHeader>
           <div className="flex justify-between items-start">
@@ -135,10 +149,12 @@ function EventCard({ event }) {
             <MapPin className="h-4 w-4" />
             <span>{event.location}</span>
           </div>
-          <div className="mt-4 flex items-center text-sm font-medium text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
-            Ver sitio del evento
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </div>
+          {eventApproved ? (
+            <div className="mt-4 flex items-center text-sm font-medium text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
+              Ver sitio del evento
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </div>
+          ) : null}
         </CardContent>
       </Card>
     </Link>

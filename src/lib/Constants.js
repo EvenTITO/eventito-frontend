@@ -36,6 +36,10 @@ export const EVENT_STATUS_LABELS = {
   WAITING_APPROVAL: "Pendiente de aprobación",
 };
 
+export const STARTED_STATUS = "STARTED";
+export const CREATED_STATUS = "CREATED";
+export const WAITING_APPROVAL_STATUS = "WAITING_APPROVAL";
+
 export const WORKS_STATUS_PUBLISH = {
   APPROVED: "Aceptado",
   RE_SUBMIT: "En revisión",
