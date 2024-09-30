@@ -2,7 +2,7 @@ import {EVENTS_URL} from "@/lib/Constants";
 import {getEventId} from "@/lib/utils";
 import {HTTPClient} from "@/services/api/HTTPClient";
 import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
-import {apiGetInscriptions, apiGetPayments} from "@/services/api/events/inscriptions/queries.js";
+import {apiGetInscriptions, apiGetPayments, apiUpdateInscriptionStatus} from "@/services/api/events/inscriptions/queries.js";
 import {convertInscriptions} from "@/services/api/events/inscriptions/conversor.js";
 
 
