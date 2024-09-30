@@ -8,6 +8,7 @@ export default function ButtonWithLoading({
   type,
   text,
   children,
+  variant,
   disabled,
 }) {
   return (
@@ -15,6 +16,7 @@ export default function ButtonWithLoading({
       onClick={onClick}
       className={className}
       disabled={disabled || isLoading}
+      variant={variant}
       type={type}
     >
       {isLoading ? (
