@@ -30,12 +30,6 @@ function Layout({ eventTitle, roles }) {
   const eventId = getEventId();
   const navigator = useNavigator();
 
-  useEffect(() => {
-    if (!roles || roles.length === 0) {
-      navigator.to(`/view/events/${eventId}`);
-    }
-  }, [roles]);
-
   return (
     <div className="flex flex-col h-screen bg-background">
       <Header headerTitle={eventTitle} />

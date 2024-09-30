@@ -17,3 +17,14 @@ export const apiUpdateChairTracks = async (
     tracksUpdate,
   );
 };
+
+export const apiUpdateTracks = async (
+  httpClient,
+  eventId,
+  tracks  
+) => {
+  return await httpClient.put(
+    `/${eventId}/configuration/general/tracks`,
+    tracks
+  ).data;
+};
