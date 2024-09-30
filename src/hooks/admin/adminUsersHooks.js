@@ -12,7 +12,6 @@ export function useAdminGetUsers() {
     queryFn: async ( {offset = 0, limit = 100}) => {
       const httpClient = new HTTPClient(USERS_URL);
       const users = await apiGetManyUsers(httpClient, offset, limit);
-      console.log(JSON.stringify(users));
       return users;
     },
   });
@@ -33,8 +32,7 @@ export function useAdminUpdateUserRole() {
       });
     },
     onError: (e) => {
-      console.log(e);
-      console.error(JSON.stringify(e));
+      console.error(e);
     },
   });
 }

@@ -91,7 +91,6 @@ export default function AdminPanel() {
   };
 
   const handleRoleChange = (id, newRole) => {
-    console.log('cambio', id, newRole);
     updateUserRole({userId:'iuaealdasldanfas982983297234', newRole: 'EVENT_CREATOR'});
     setMembers(
       members.map((member) =>
