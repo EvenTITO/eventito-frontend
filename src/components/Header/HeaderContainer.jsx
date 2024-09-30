@@ -25,5 +25,3 @@ HeaderContainer.defaultProps = {
 	showBorder: false,
 	headerColor: 'transparent',
 };
-
-;
