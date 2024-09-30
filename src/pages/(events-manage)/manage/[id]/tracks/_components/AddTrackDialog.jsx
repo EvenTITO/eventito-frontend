@@ -10,14 +10,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
+import { useAddTrack } from "@/hooks/manage/tracksHooks";
 
 export default function AddTrackDialog() {
   const [track, setTrack] = useState("");
   const [open, setOpen] = useState(false);
+  const { mutateAsync: addTrack, isPending, error } = useAddTrack();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (track) {
+      await addTrack({
+        track: track
+      });
       setTrack("");
       setOpen(false);
     }
