@@ -22,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { CalendarDays, MapPin, Search, ArrowRight } from "lucide-react";
 
-function HomeMain({events}) {
+function HomeMain({ events }) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredEvents = events.filter((event) =>
@@ -80,7 +80,7 @@ function HomeMain({events}) {
 
 function EventCard({ event }) {
   return (
-    <Link to={`/events/${event.id}/view`} className="block">
+    <Link to={`/view/events/${event.id}/`} className="block">
       <Card className="transition-all duration-300 hover:shadow-lg focus-within:shadow-lg group">
         <CardHeader>
           <CardTitle>{event.title}</CardTitle>

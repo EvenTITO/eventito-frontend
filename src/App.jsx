@@ -1,5 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
-import RoutesHome from "./pages2/home/routes";
+import RoutesHome from "./pages/home/routes";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "@firebase/auth";
 import { auth } from "@/services/firebase/firebaseAuth.js";
