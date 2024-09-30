@@ -1,5 +1,4 @@
 import { Outlet, useParams } from "react-router-dom";
-import Header from "../_components/Header";
 import FetchStatus from "@/components/FetchStatus";
 import { useGetEvent } from "@/hooks/events/useEventState";
 import HeaderWithTabs from "../_components/HeaderWithTabs";

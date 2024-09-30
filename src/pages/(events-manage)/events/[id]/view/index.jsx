@@ -1,20 +1,12 @@
-import Page from "./page";
 import FetchStatus from "@/components/FetchStatus";
 import { useGetEvent } from "@/hooks/events/useEventState";
+import Page from "@/pages/(events-manage)/view/[id]/page";
 
 export default function EventViewPage() {
   const { data: eventInfo, isPending, error } = useGetEvent();
 
-  if (eventInfo) {
-    console.log("eventInfo", eventInfo);
-  }
-
-  const pageComponent = <Page eventInfo={eventInfo} />;
+  const component = <Page event={eventInfo} />;
   return (
-    <FetchStatus
-      isPending={isPending}
-      error={error}
-      component={pageComponent}
-    />
+    <FetchStatus component={component} isPending={isPending} error={error} />
   );
 }
