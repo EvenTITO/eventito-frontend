@@ -19,18 +19,18 @@ export function useGetInscriptions() {
   });
 }
 
-export function useUpdate() {
+export function useUpdateInscriptionStatus() {
   const eventId = getEventId();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({ inscriptionId, newStatus }) => {
-      // NewStatus must be one of: "APPROVED", "REJECTED", "PENDING_APPROVAL".
+      // newStatus must be one of: "APPROVED", "REJECTED", "PENDING_APPROVAL".
       const httpClient = new HTTPClient(EVENTS_URL);
       const update = {
         status: newStatus
       };
-      await apiUpdateInscriptionsStatus(httpClient, eventId, inscriptionId, update);
+      await apiUpdateInscriptionStatus(httpClient, eventId, inscriptionId, update);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
