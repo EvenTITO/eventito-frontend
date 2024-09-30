@@ -18,13 +18,21 @@ import {
 import { Label } from "@/components/ui/label";
 import { Search, ChevronRight, Bell, User } from "lucide-react";
 import { useGetEventsWaitingApproval, useUpdateEventStatus } from "@/hooks/admin/adminEventsHooks"
+import { useAdminGetUsers, useAdminUpdateUserRole } from "@/hooks/admin/adminUsersHooks"
 
 export default function AdminPanel() {
-  const { isPending, error, data: eventsWaitingApproval } = useGetEventsWaitingApproval();
+  const { isPending: eventsPending, error: eventsError, data: eventsWaitingApproval } = useGetEventsWaitingApproval();
   const { mutate: updateEventStatus} = useUpdateEventStatus();
+  const { isPending: usersPending, error: usersError, data: users } = useAdminGetUsers();
+  const { mutate: updateUserRole} = useAdminUpdateUserRole();
+  
 
-  if (!isPending) {
+  if (!eventsPending) {
     console.log(`events waiting approval: ${JSON.stringify(eventsWaitingApproval)}`)
+  }
+
+  if (!usersPending) {
+    console.log(`users: ${JSON.stringify(users)}`);
   }
   const [activeTab, setActiveTab] = useState("events");
 
@@ -83,6 +91,8 @@ export default function AdminPanel() {
   };
 
   const handleRoleChange = (id, newRole) => {
+    console.log('cambio', id, newRole);
+    updateUserRole({userId:'iuaealdasldanfas982983297234', newRole: 'EVENT_CREATOR'});
     setMembers(
       members.map((member) =>
         member.id === id ? { ...member, role: newRole } : member,
