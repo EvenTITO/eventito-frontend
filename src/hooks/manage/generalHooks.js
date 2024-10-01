@@ -3,7 +3,7 @@ import { getEventId, wait} from "@/lib/utils";
 import { HTTPClient } from "@/services/api/HTTPClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadFile } from "@/services/api/storage/queries.js";
-import { apiGetUploadEventImageUrl, apiUpdateGeneralEvent } from "@/services/api/events/general/queries";
+import { apiGetUploadEventImageUrl, apiUpdateGeneralEvent, apiUpdateEventStatus } from "@/services/api/events/general/queries";
 
 export function useEditEvent() {
   const eventId = getEventId();
@@ -42,9 +42,27 @@ export function useUploadEventImage() {
 
 async function uploadEventImage(eventId, imageName, image) {
   if (image) {
-    const httpClient = new HTTPClient(EVENTS_URL)
+    const httpClient = new HTTPClient(EVENTS_URL);
     const uploadUrl = await apiGetUploadEventImageUrl(httpClient, eventId, imageName)
     console.log(uploadUrl)
     await uploadFile(uploadUrl, image)
   }
+}
+
+
+export function useUpdateEventStatus() {
+  const eventId = getEventId();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({newStatus}) => {
+      const httpClient = new HTTPClient(EVENTS_URL);
+      await apiUpdateEventStatus(httpClient, eventId, {status: newStatus});
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["getEventById", {eventId}],
+      });
+    },
+  });
 }
