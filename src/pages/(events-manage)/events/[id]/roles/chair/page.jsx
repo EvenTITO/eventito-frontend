@@ -1,13 +1,13 @@
 import React from 'react'
 import { useNavigator } from '@/lib/navigation'
-import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
-import TitlePage from '@/pages/(events-manage)/_components/titlePage'
+import ContainerPage from '@/pages/_components/Containers/ContainerPage'
 import TrackSelector from './_components/TrackSelector'
 import Stats from './_components/Stats'
 import Insights from './_components/Insights'
 import Tables from './_components/Tables'
+import TitlePage from '@/pages/_components/PageStyles/TitlePage'
 
-export default function Component({
+export default function Page({
   tracks,
   selectedTrack,
   setSelectedTrack,

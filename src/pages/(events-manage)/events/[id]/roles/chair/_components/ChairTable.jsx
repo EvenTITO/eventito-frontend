@@ -1,5 +1,5 @@
-import TableCursorRow from '@/components/TableCursorRow'
-import TableHeaderTitle from '@/components/TableHeaderTitle'
+import TableCursorRow from '@/pages/_components/Wrappers/Tables/TableCursorRow'
+import TableHeaderTitle from '@/pages/_components/Wrappers/Tables/TableHeaderTitle'
 import {
   Table,
   TableBody,

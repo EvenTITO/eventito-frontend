@@ -1,12 +1,4 @@
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import SelectorList from '@/pages/_components/Wrappers/Selector/SelectorList'
 
 export default function TrackSelector({
   tracks,
@@ -16,24 +8,13 @@ export default function TrackSelector({
   return (
     <div className="flex gap-2 items-center">
       <span>Track actual: </span>
-      <Select
+      <SelectorList
         value={selectedTrack}
         onValueChange={(track) => setSelectedTrack(track)}
-      >
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder={selectedTrack} />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Elección de track</SelectLabel>
-            {tracks.map((track, index) => (
-              <SelectItem key={index} value={track}>
-                {track}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+        placeholder={selectedTrack}
+        label={'Elección de track'}
+        items={tracks}
+      />
     </div>
   )
 }
