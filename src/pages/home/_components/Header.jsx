@@ -78,7 +78,7 @@ export default function Header() {
         >
           {isAdminPage ? "Gestionar Eventos" : "Mis eventos"}
         </Link>
-        <Button onClick={handleLogout} variant="ghost" size="icon">
+        <Button onClick={handleLogout} variant="table" size="icon">
           <LogOut className="h-5 w-5" />
         </Button>
       </nav>
