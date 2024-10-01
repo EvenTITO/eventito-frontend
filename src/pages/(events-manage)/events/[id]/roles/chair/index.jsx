@@ -1,7 +1,7 @@
-import { useGetEvent } from '@/hooks/events/useEventState'
-import Page from './page'
-import { useGetWorksByTrack } from '@/hooks/events/chairHooks'
 import { useState } from 'react'
+import { useGetEvent } from '@/hooks/events/useEventState'
+import { useGetWorksByTrack } from '@/hooks/events/chairHooks'
+import Page from './page'
 
 export default function ChairPage() {
   const { data: tracks } = useGetEvent((data) => data.tracks)
