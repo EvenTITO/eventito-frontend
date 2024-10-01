@@ -4,8 +4,8 @@ import { HTTPClient } from '@/services/api/HTTPClient'
 import { apiGetEventById } from '@/services/api/events/general/queries'
 import { useQuery } from '@tanstack/react-query'
 
-export function useGetEvent(id = null) {
-  const eventId = id || getEventId()
+export function useGetEvent(select) {
+  const eventId = getEventId()
 
   return useQuery({
     queryKey: ['getEventById', { eventId }],
@@ -13,5 +13,6 @@ export function useGetEvent(id = null) {
       const httpClient = new HTTPClient(EVENTS_URL)
       return await apiGetEventById(httpClient, eventId)
     },
+    select,
   })
 }

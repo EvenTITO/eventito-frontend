@@ -4,14 +4,14 @@ import { useGetWorksByTrack } from '@/hooks/events/chairHooks'
 import { useState } from 'react'
 
 export default function ChairPage() {
-  const { data: eventData } = useGetEvent()
-  const [selectedTrack, setSelectedTrack] = useState(eventData?.tracks[0] || '')
+  const { data: tracks } = useGetEvent((data) => data.tracks)
+  const [selectedTrack, setSelectedTrack] = useState(tracks[0] || [])
 
   const { data: works, isPending, error } = useGetWorksByTrack(selectedTrack)
 
   return (
     <Page
-      tracks={eventData?.tracks || []}
+      tracks={tracks || []}
       selectedTrack={selectedTrack}
       setSelectedTrack={setSelectedTrack}
       works={works || []}
