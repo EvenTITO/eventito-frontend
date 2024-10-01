@@ -37,3 +37,7 @@ export const apiUpdatePricingEvent = async (httpClient, eventId, body) => {
 export const apiUpdateDatesEvent = async (httpClient, eventId, body) => {
   return (await httpClient.put(`/${eventId}/configuration/dates`, body));
 };
+
+export const apiUpdateEventStatus = async (httpClient, eventId, newStatus) => {
+  return await httpClient.patch(`/${eventId}/status`, newStatus);
+};

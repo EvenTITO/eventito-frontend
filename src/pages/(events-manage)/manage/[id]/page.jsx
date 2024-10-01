@@ -17,16 +17,23 @@ import {
   MotionMain,
   MotionP,
 } from "./_components/Animation";
+import {
+  CREATED_STATUS,
+  STARTED_STATUS
+} from "@/lib/Constants.js";
+import {useToast} from "@/hooks/use-toast";
 import ContainerOrganizationPage from "./_components/ContainerOrganizationPage";
 import ImageHeader from "./_components/ImageHeader";
 import ButtonWithLoading from "@/components/ButtonWithLoading";
-import { useEditEvent, useUploadEventImage } from "@/hooks/manage/generalHooks";
+import { useEditEvent, useUploadEventImage, useUpdateEventStatus } from "@/hooks/manage/generalHooks";
 
 export default function Page({ eventInfo }) {
   const [event, setEvent] = useState(eventInfo);
   const [isEditing, setIsEditing] = useState(false);
   const { mutateAsync: submitEditEvent, isPending, error } = useEditEvent();
   const { mutateAsync: uploadEventImage } = useUploadEventImage();
+  const { mutateAsync: updateEventStatus } = useUpdateEventStatus();
+  const {toast} = useToast();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -57,6 +64,22 @@ export default function Page({ eventInfo }) {
       await uploadEventImage({ imageName: "banner_image", image: file });
     }
   };
+
+  const publishEvent = async () => {
+    const newStatus = STARTED_STATUS;
+    try {
+      await updateEventStatus({newStatus});
+      toast({
+        title: "Publicación exitosa",
+        description: "Publicación realizada satisfactoriamente. Todos los usuarios podrán inscribirse y enviar trabajos a tu evento.",
+      });
+    } catch (error) {
+      toast({
+        title: "Publicación fallida",
+        description: error.response.data.detail,
+      });
+    }
+  }
 
   return (
     <ContainerOrganizationPage>
@@ -226,7 +249,28 @@ export default function Page({ eventInfo }) {
             </ButtonWithLoading>
           </div>
         )}
+        <EventStatus event={event} publishEvent={publishEvent}>
+
+        </EventStatus>
       </MotionMain>
     </ContainerOrganizationPage>
+  );
+}
+
+
+function EventStatus({ event, publishEvent }) {
+  const canPublishEvent = event.status === CREATED_STATUS;
+  return (
+    <>
+      {canPublishEvent && (
+        <Button
+          variant="outline"
+          className="w-[240px] justify-start text-left font-normal"
+          onClick={publishEvent}
+        >
+          Publicar el evento
+        </Button>
+      )}
+    </>
   );
 }
