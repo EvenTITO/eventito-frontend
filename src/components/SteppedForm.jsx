@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import ButtonWithLoading from "./ButtonWithLoading";
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import ButtonWithLoading from './ButtonWithLoading'
 
 export default function SteppedForm({
   title,
@@ -12,29 +12,29 @@ export default function SteppedForm({
   stepsComponents,
   isSavePending,
 }) {
-  const [step, setStep] = useState(0);
-  const [error, setError] = useState("");
+  const [step, setStep] = useState(0)
+  const [error, setError] = useState('')
 
   function stepIsCompleted() {
     if (booleanForSteps[step]) {
-      return true;
+      return true
     } else {
-      setError("Completar los datos para continuar.");
-      return false;
+      setError('Completar los datos para continuar.')
+      return false
     }
   }
 
   function handleNext() {
     if (stepIsCompleted()) {
-      setError("");
-      setStep(step + 1);
+      setError('')
+      setStep(step + 1)
     }
   }
 
   function handleSubmit() {
     if (stepIsCompleted()) {
-      setError("");
-      onSave();
+      setError('')
+      onSave()
     }
   }
 
@@ -65,11 +65,11 @@ export default function SteppedForm({
         isSavePending={isSavePending}
       />
     </FormContainer>
-  );
+  )
 }
 
 function FormContainer({ children }) {
-  return <div className="min-h-screen flex flex-col">{children}</div>;
+  return <div className="min-h-screen flex flex-col">{children}</div>
 }
 
 function FormContent({ children }) {
@@ -77,7 +77,7 @@ function FormContent({ children }) {
     <div className="flex-grow overflow-auto">
       <div className="container mx-auto px-4 py-8 max-w-3xl">{children}</div>
     </div>
-  );
+  )
 }
 
 function FormHeader({ title }) {
@@ -86,7 +86,7 @@ function FormHeader({ title }) {
       <h1 className="text-3xl font-bold mb-4">{title}</h1>
       <div className="h-px w-full bg-gray-200 mb-8 opacity-50"></div>
     </>
-  );
+  )
 }
 
 function FormBottom({
@@ -102,8 +102,8 @@ function FormBottom({
   return (
     <div
       className={cn(
-        "py-4 bg-background",
-        isScrollable ? "fixed bottom-0 left-0 right-0" : "",
+        'py-4 bg-background',
+        isScrollable ? 'fixed bottom-0 left-0 right-0' : ''
       )}
     >
       <div className="container mx-auto px-4 max-w-3xl flex justify-between">
@@ -125,5 +125,5 @@ function FormBottom({
         )}
       </div>
     </div>
-  );
+  )
 }

@@ -6,7 +6,7 @@ import {
   FileStack,
   Info,
   Settings,
-} from "lucide-react";
+} from 'lucide-react'
 import {
   ATTENDEE_ROLE,
   CHAIR_ROLE,
@@ -14,66 +14,66 @@ import {
   ORGANIZER_ROLE,
   REVIEWER_ROLE,
   SPEAKER_ROLE,
-} from "@/lib/Constants.js";
-import SideBar from "../../_components/Sidebar";
+} from '@/lib/Constants.js'
+import SideBar from '../../_components/Sidebar'
 
 export default function EventSidebar({ roles }) {
-  return <SideBar itemList={itemList} isSidebarOpen={true} roles={roles} />;
+  return <SideBar itemList={itemList} isSidebarOpen={true} roles={roles} />
 }
 
-const classNameIcons = "mr-2 h-4 w-4";
+const classNameIcons = 'mr-2 h-4 w-4'
 
 const itemList = [
   {
-    label: "Evento",
+    label: 'Evento',
     children: [
       {
-        label: "Información",
+        label: 'Información',
         icon: <Info className={classNameIcons} />,
-        to: "view/general",
+        to: 'view/general',
         requiredRoles: Object.keys(EVENT_ROLES_LABELS),
       },
     ],
   },
   {
-    label: "Mis actividades",
+    label: 'Mis actividades',
     children: [
       {
-        label: "Inscripcion",
+        label: 'Inscripcion',
         icon: <ClipboardPenLine className={classNameIcons} />,
-        to: "roles/attendee",
+        to: 'roles/attendee',
         requiredRoles: [ATTENDEE_ROLE, SPEAKER_ROLE],
       },
       {
-        label: "Entregas",
+        label: 'Entregas',
         icon: <BriefcaseBusiness className={classNameIcons} />,
-        to: "roles/author",
+        to: 'roles/author',
         requiredRoles: [SPEAKER_ROLE],
       },
       {
-        label: "Asignaciones de revision",
+        label: 'Asignaciones de revision',
         icon: <FileCheck className={classNameIcons} />,
-        to: "roles/reviewer",
+        to: 'roles/reviewer',
         requiredRoles: [REVIEWER_ROLE],
       },
     ],
   },
   {
-    label: "Acciones de miembros",
+    label: 'Acciones de miembros',
     children: [
       {
-        label: "Tracks",
+        label: 'Tracks',
         icon: <FileStack className={classNameIcons} />,
-        to: "roles/chair",
+        to: 'roles/chair',
         requiredRoles: [ORGANIZER_ROLE, CHAIR_ROLE],
       },
       {
-        label: "Panel de organizador",
+        label: 'Panel de organizador',
         icon: <Settings className={classNameIcons} />,
-        to: "general",
+        to: 'general',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
     ],
   },
-];
+]

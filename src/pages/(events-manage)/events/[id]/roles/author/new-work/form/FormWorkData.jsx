@@ -1,37 +1,33 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import {
-  addKeywords,
-  addTitle,
-  addTrack,
-} from "@/state/events/newWorkSlice";
+} from '@/components/ui/select'
+import { addKeywords, addTitle, addTrack } from '@/state/events/newWorkSlice'
 
 export default function FormWorkData({ tracks }) {
-  const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
-  const [keywords, setKeywords] = useState("");
-  const [selectedTrack, setSelectedTrack] = useState("");
+  const dispatch = useDispatch()
+  const [title, setTitle] = useState('')
+  const [keywords, setKeywords] = useState('')
+  const [selectedTrack, setSelectedTrack] = useState('')
 
   function changeTitle(newTitle) {
-    setTitle(newTitle);
-    dispatch(addTitle(newTitle));
+    setTitle(newTitle)
+    dispatch(addTitle(newTitle))
   }
   function changeTrack(newTrack) {
-    setSelectedTrack(newTrack);
-    dispatch(addTrack(newTrack));
+    setSelectedTrack(newTrack)
+    dispatch(addTrack(newTrack))
   }
   function changeKeywords(newKeywords) {
-    setKeywords(newKeywords);
-    dispatch(addKeywords(newKeywords));
+    setKeywords(newKeywords)
+    dispatch(addKeywords(newKeywords))
   }
 
   return (
@@ -74,5 +70,5 @@ export default function FormWorkData({ tracks }) {
         </Select>
       </div>
     </div>
-  );
+  )
 }

@@ -7,13 +7,13 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from "recharts";
+} from 'recharts'
 
 export default function ReviewProgressChart({ works }) {
   const data = [
-    { name: "Pending", value: works.filter((work) => !work.published).length },
-    { name: "Reviewed", value: works.filter((work) => work.published).length },
-  ];
+    { name: 'Pending', value: works.filter((work) => !work.published).length },
+    { name: 'Reviewed', value: works.filter((work) => work.published).length },
+  ]
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -26,5 +26,5 @@ export default function ReviewProgressChart({ works }) {
         <Bar dataKey="value" fill="#8884d8" />
       </BarChart>
     </ResponsiveContainer>
-  );
+  )
 }

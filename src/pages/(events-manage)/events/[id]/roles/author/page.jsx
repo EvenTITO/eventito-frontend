@@ -1,17 +1,17 @@
-import { useNavigator } from "@/lib/navigation";
-import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
-import TitlePage from "@/pages/(events-manage)/_components/titlePage";
-import WorksTable from "./_components/WorksTable";
-import TableContent from "@/components/TableContent";
-import NewWorkButton from "./_components/NewWorkButton.jsx";
+import { useNavigator } from '@/lib/navigation'
+import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
+import TitlePage from '@/pages/(events-manage)/_components/titlePage'
+import WorksTable from './_components/WorksTable'
+import TableContent from '@/components/TableContent'
+import NewWorkButton from './_components/NewWorkButton.jsx'
 
 export default function Page({ works, eventData }) {
-  const navigator = useNavigator();
+  const navigator = useNavigator()
 
   const handleRowClick = (work) => {
-    const path = `works/${work.id}`;
-    navigator.foward(path);
-  };
+    const path = `works/${work.id}`
+    navigator.foward(path)
+  }
 
   return (
     <ContainerPage>
@@ -23,5 +23,5 @@ export default function Page({ works, eventData }) {
         <WorksTable works={works} handleRowClick={handleRowClick} />
       </TableContent>
     </ContainerPage>
-  );
+  )
 }

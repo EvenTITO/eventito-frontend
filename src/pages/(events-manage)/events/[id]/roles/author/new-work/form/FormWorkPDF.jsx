@@ -1,19 +1,19 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addPdfFile } from "@/state/events/newWorkSlice";
-import { Label } from "@/components/ui/label";
-import { Upload } from "lucide-react";
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addPdfFile } from '@/state/events/newWorkSlice'
+import { Label } from '@/components/ui/label'
+import { Upload } from 'lucide-react'
 
 export default function FormWorkPDF() {
-  const { pdfFile } = useSelector((state) => state.newWork);
-  const [pdf, setPdf] = useState(pdfFile);
-  const dispatch = useDispatch();
+  const { pdfFile } = useSelector((state) => state.newWork)
+  const [pdf, setPdf] = useState(pdfFile)
+  const dispatch = useDispatch()
 
   function changeFile(e) {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setPdf(file);
-      dispatch(addPdfFile(file));
+      const file = e.target.files[0]
+      setPdf(file)
+      dispatch(addPdfFile(file))
     }
   }
 
@@ -41,10 +41,10 @@ export default function FormWorkPDF() {
             onChange={changeFile}
           />
           <span className="ml-3 text-sm text-gray-500">
-            {pdf ? pdf.name : "Ningún archivo seleccionado"}
+            {pdf ? pdf.name : 'Ningún archivo seleccionado'}
           </span>
         </div>
       </div>
     </div>
-  );
+  )
 }

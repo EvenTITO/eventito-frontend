@@ -1,4 +1,4 @@
-import ButtonWithLoading from "@/components/ButtonWithLoading";
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
 export default function GoogleButton({ text, onClick }) {
   return (
@@ -10,7 +10,7 @@ export default function GoogleButton({ text, onClick }) {
       <GoogleIcon />
       {text}
     </ButtonWithLoading>
-  );
+  )
 }
 
 function GoogleIcon() {
@@ -34,5 +34,5 @@ function GoogleIcon() {
       />
       <path d="M1 1h22v22H1z" fill="none" />
     </svg>
-  );
+  )
 }

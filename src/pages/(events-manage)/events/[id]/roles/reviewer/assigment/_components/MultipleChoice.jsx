@@ -1,14 +1,14 @@
-import React from "react";
-import { cn } from "@/lib/utils";
+import React from 'react'
+import { cn } from '@/lib/utils'
 
 export default function MultipleChoice({ options, value, onChange }) {
   const handleOptionClick = (option) => {
     if (value.includes(option)) {
-      onChange(value.filter((item) => item !== option));
+      onChange(value.filter((item) => item !== option))
     } else {
-      onChange([...value, option]);
+      onChange([...value, option])
     }
-  };
+  }
 
   return (
     <div className="flex flex-col gap-4 sm:grid-cols-2">
@@ -16,20 +16,20 @@ export default function MultipleChoice({ options, value, onChange }) {
         <div
           key={option}
           className={cn(
-            "p-4 border rounded-lg cursor-pointer transition-all",
+            'p-4 border rounded-lg cursor-pointer transition-all',
             value.includes(option)
-              ? "border-primary bg-primary/10"
-              : "border-gray-200 hover:border-primary",
+              ? 'border-primary bg-primary/10'
+              : 'border-gray-200 hover:border-primary'
           )}
           onClick={() => handleOptionClick(option)}
         >
           <div className="flex items-center space-x-2">
             <div
               className={cn(
-                "w-4 h-4 rounded border-2",
+                'w-4 h-4 rounded border-2',
                 value.includes(option)
-                  ? "border-primary bg-primary"
-                  : "border-gray-400",
+                  ? 'border-primary bg-primary'
+                  : 'border-gray-400'
               )}
             >
               {value.includes(option) && (
@@ -52,5 +52,5 @@ export default function MultipleChoice({ options, value, onChange }) {
         </div>
       ))}
     </div>
-  );
+  )
 }

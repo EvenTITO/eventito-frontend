@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState } from 'react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
-} from "@/components/ui/card";
-import { CalendarDays, MapPin, Tag, Users, Clock, Mail } from "lucide-react";
-import { RegistrationTab } from "./prices";
+} from '@/components/ui/card'
+import { CalendarDays, MapPin, Tag, Users, Clock, Mail } from 'lucide-react'
+import { RegistrationTab } from './prices'
 
 export default function Page({ eventInfo }) {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState('overview')
 
   return (
     <div className="min-h-screen bg-background">
@@ -31,10 +31,11 @@ export default function Page({ eventInfo }) {
               </div>
             </CardHeader>
             <CardContent>
-              {eventInfo.media.find((item) => item.name === "banner_image") && (
+              {eventInfo.media.find((item) => item.name === 'banner_image') && (
                 <img
                   src={
-                    eventInfo.media.find((item) => item.name === "banner_image").url
+                    eventInfo.media.find((item) => item.name === 'banner_image')
+                      .url
                   }
                   width={1200}
                   height={400}
@@ -61,7 +62,8 @@ export default function Page({ eventInfo }) {
                   <div key={index} className="flex items-center space-x-2">
                     <CalendarDays className="h-5 w-5" />
                     <span>
-                      {date.label}: {date.date || "A definir"} {date.time? date.time.slice(0, 5) + "hs" : ""}
+                      {date.label}: {date.date || 'A definir'}{' '}
+                      {date.time ? date.time.slice(0, 5) + 'hs' : ''}
                     </span>
                   </div>
                 ))}
@@ -89,10 +91,11 @@ export default function Page({ eventInfo }) {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">{eventInfo.description}</p>
-                {eventInfo.media.find((item) => item.name === "main_image") && (
+                {eventInfo.media.find((item) => item.name === 'main_image') && (
                   <img
                     src={
-                      eventInfo.media.find((item) => item.name === "main_image").url
+                      eventInfo.media.find((item) => item.name === 'main_image')
+                        .url
                     }
                     alt="Event Main Image"
                     className="w-full h-auto object-cover rounded-lg mt-4"
@@ -135,8 +138,8 @@ export default function Page({ eventInfo }) {
                     <div key={index} className="flex items-center space-x-2">
                       <Clock className="h-5 w-5" />
                       <span>
-                        {date.label}: {date.date || "A definir"}{" "}
-                        {date.time? date.time.slice(0, 5) + "hs" : ""}
+                        {date.label}: {date.date || 'A definir'}{' '}
+                        {date.time ? date.time.slice(0, 5) + 'hs' : ''}
                       </span>
                     </div>
                   ))}
@@ -173,5 +176,5 @@ export default function Page({ eventInfo }) {
         </Tabs>
       </main>
     </div>
-  );
+  )
 }

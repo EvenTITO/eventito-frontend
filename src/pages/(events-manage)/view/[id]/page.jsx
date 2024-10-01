@@ -1,20 +1,20 @@
-import { format } from "@formkit/tempo";
-import { CalendarDays, MapPin, Users } from "lucide-react";
+import { format } from '@formkit/tempo'
+import { CalendarDays, MapPin, Users } from 'lucide-react'
 import {
   MotionDiv,
   MotionH1,
   MotionH2,
   MotionMain,
   MotionP,
-} from "./_components/Animation";
-import ContainerViewPage from "./_components/ContainerViewPage";
-import ImageHeader from "./_components/ImageHeader";
+} from './_components/Animation'
+import ContainerViewPage from './_components/ContainerViewPage'
+import ImageHeader from './_components/ImageHeader'
 
 export default function Page({ event }) {
   return (
     <ContainerViewPage>
       <ImageHeader
-        image={event.media.find((item) => item.name === "banner_image")}
+        image={event.media.find((item) => item.name === 'banner_image')}
       />
       <MotionMain>
         <MotionDiv className="space-y-6 mb-12">
@@ -37,12 +37,12 @@ export default function Page({ event }) {
                 key={index}
                 className="flex items-center text-sm text-muted-foreground"
               >
-                <CalendarDays className="h-4 w-4 mr-2"/>
+                <CalendarDays className="h-4 w-4 mr-2" />
                 <p className="font-medium">{date.description}:&nbsp;&nbsp;</p>
                 <span>
                   {format(new Date(`${date.date}T${date.time}`), {
-                    date: "full",
-                    time: "short",
+                    date: 'full',
+                    time: 'short',
                   })}
                 </span>
               </MotionDiv>
@@ -58,5 +58,5 @@ export default function Page({ event }) {
         </MotionDiv>
       </MotionMain>
     </ContainerViewPage>
-  );
+  )
 }

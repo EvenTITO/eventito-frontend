@@ -1,37 +1,37 @@
-import { useState } from "react";
-import { Upload } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react'
+import { Upload } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useEditWork } from "@/hooks/events/authorHooks";
-import ButtonWithLoading from "@/components/ButtonWithLoading";
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { useEditWork } from '@/hooks/events/authorHooks'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
 export default function EditableWork({ workData }) {
-  const [title, setTitle] = useState(workData.title);
-  const [keywords, setKeywords] = useState(workData.keywords?.join(","));
-  const [abstract, setAbstract] = useState(workData.abstract);
-  const [file, setFile] = useState(null);
-  const [fileName, setFileName] = useState(workData.pdfFileName);
+  const [title, setTitle] = useState(workData.title)
+  const [keywords, setKeywords] = useState(workData.keywords?.join(','))
+  const [abstract, setAbstract] = useState(workData.abstract)
+  const [file, setFile] = useState(null)
+  const [fileName, setFileName] = useState(workData.pdfFileName)
 
-  const { mutateAsync: editWork, isPending, error } = useEditWork();
+  const { mutateAsync: editWork, isPending, error } = useEditWork()
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-      setFileName(e.target.files[0].name);
+      setFile(e.target.files[0])
+      setFileName(e.target.files[0].name)
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     await editWork({
       workData: {
         title,
@@ -39,8 +39,8 @@ export default function EditableWork({ workData }) {
         abstract,
         file,
       },
-    });
-  };
+    })
+  }
 
   return (
     <Card>
@@ -94,12 +94,12 @@ export default function EditableWork({ workData }) {
               />
               <Button
                 type="button"
-                onClick={() => document.getElementById("pdf")?.click()}
+                onClick={() => document.getElementById('pdf')?.click()}
                 variant="outline"
                 className="w-full"
               >
                 <Upload className="mr-2 h-4 w-4" />
-                {fileName || "Elegir archivo PDF"}
+                {fileName || 'Elegir archivo PDF'}
               </Button>
             </div>
           </div>
@@ -113,5 +113,5 @@ export default function EditableWork({ workData }) {
         </form>
       </CardContent>
     </Card>
-  );
+  )
 }

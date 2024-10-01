@@ -1,14 +1,12 @@
-import QuestionCard from "./QuestionCard";
+import QuestionCard from './QuestionCard'
 
-export default function QuestionsList(
-  {
-    questions,
-    recommendation,
-    handleUpdateQuestion,
-    handleDeleteQuestion,
-    isPending,
-  }
-) {
+export default function QuestionsList({
+  questions,
+  recommendation,
+  handleUpdateQuestion,
+  handleDeleteQuestion,
+  isPending,
+}) {
   return (
     <div className="space-y-4">
       {questions.map((question, index) => (
@@ -29,5 +27,5 @@ export default function QuestionsList(
         canBeDeleted={false}
       />
     </div>
-  );
+  )
 }

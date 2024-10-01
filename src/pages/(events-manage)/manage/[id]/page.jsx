@@ -1,90 +1,92 @@
-import { useState } from "react";
-import { format } from "date-fns";
-import { CalendarDays, Clock, Edit2, MapPin, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
+import { useState } from 'react'
+import { format } from 'date-fns'
+import { CalendarDays, Clock, Edit2, MapPin, Users } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from '@/components/ui/popover'
 import {
   MotionDiv,
   MotionH1,
   MotionH2,
   MotionMain,
   MotionP,
-} from "./_components/Animation";
+} from './_components/Animation'
+import { CREATED_STATUS, STARTED_STATUS } from '@/lib/Constants.js'
+import { useToast } from '@/hooks/use-toast'
+import ContainerOrganizationPage from './_components/ContainerOrganizationPage'
+import ImageHeader from './_components/ImageHeader'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 import {
-  CREATED_STATUS,
-  STARTED_STATUS
-} from "@/lib/Constants.js";
-import {useToast} from "@/hooks/use-toast";
-import ContainerOrganizationPage from "./_components/ContainerOrganizationPage";
-import ImageHeader from "./_components/ImageHeader";
-import ButtonWithLoading from "@/components/ButtonWithLoading";
-import { useEditEvent, useUploadEventImage, useUpdateEventStatus } from "@/hooks/manage/generalHooks";
+  useEditEvent,
+  useUploadEventImage,
+  useUpdateEventStatus,
+} from '@/hooks/manage/generalHooks'
 
 export default function Page({ eventInfo }) {
-  const [event, setEvent] = useState(eventInfo);
-  const [isEditing, setIsEditing] = useState(false);
-  const { mutateAsync: submitEditEvent, isPending, error } = useEditEvent();
-  const { mutateAsync: uploadEventImage } = useUploadEventImage();
-  const { mutateAsync: updateEventStatus } = useUpdateEventStatus();
-  const {toast} = useToast();
+  const [event, setEvent] = useState(eventInfo)
+  const [isEditing, setIsEditing] = useState(false)
+  const { mutateAsync: submitEditEvent, isPending, error } = useEditEvent()
+  const { mutateAsync: uploadEventImage } = useUploadEventImage()
+  const { mutateAsync: updateEventStatus } = useUpdateEventStatus()
+  const { toast } = useToast()
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEvent((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setEvent((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleDateChange = (index, field, value) => {
     setEvent((prev) => ({
       ...prev,
       dates: prev.dates.map((date, i) =>
-        i === index ? { ...date, [field]: value } : date,
+        i === index ? { ...date, [field]: value } : date
       ),
-    }));
-  };
+    }))
+  }
 
   const handleSave = async () => {
-    let eventCopy = JSON.parse(JSON.stringify(event));
-    delete eventCopy.title;
-    await submitEditEvent({ eventData: eventCopy });
-    setIsEditing(false);
-  };
+    let eventCopy = JSON.parse(JSON.stringify(event))
+    delete eventCopy.title
+    await submitEditEvent({ eventData: eventCopy })
+    setIsEditing(false)
+  }
 
   //TODO @gonzasabation con esta funcion subis cualquier imagen del evento
   // parametrizar para elegir cual de las 3 imagenes subir (banner_image, main_image, brochure)
   const uploadFile = async (e) => {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      await uploadEventImage({ imageName: "banner_image", image: file });
+      const file = e.target.files[0]
+      await uploadEventImage({ imageName: 'banner_image', image: file })
     }
-  };
+  }
 
   const publishEvent = async () => {
-    const newStatus = STARTED_STATUS;
+    const newStatus = STARTED_STATUS
     try {
-      await updateEventStatus({newStatus});
+      await updateEventStatus({ newStatus })
       toast({
-        title: "Publicación exitosa",
-        description: "Publicación realizada satisfactoriamente. Todos los usuarios podrán inscribirse y enviar trabajos a tu evento.",
-      });
+        title: 'Publicación exitosa',
+        description:
+          'Publicación realizada satisfactoriamente. Todos los usuarios podrán inscribirse y enviar trabajos a tu evento.',
+      })
     } catch (error) {
       toast({
-        title: "Publicación fallida",
+        title: 'Publicación fallida',
         description: error.response.data.detail,
-      });
+      })
     }
   }
 
   return (
     <ContainerOrganizationPage>
       <ImageHeader
-        image={event.media.find((item) => item.name === "banner_image")}
+        image={event.media.find((item) => item.name === 'banner_image')}
       />
       <MotionMain className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
@@ -126,7 +128,7 @@ export default function Page({ eventInfo }) {
                 </div>
               ) : (
                 <span>
-                  <span className="text-muted-foreground">Organizado por:</span>{" "}
+                  <span className="text-muted-foreground">Organizado por:</span>{' '}
                   {event.organized_by}
                 </span>
               )}
@@ -144,7 +146,7 @@ export default function Page({ eventInfo }) {
                 </div>
               ) : (
                 <span className="break-words">
-                  <span className="text-muted-foreground">Ubicación:</span>{" "}
+                  <span className="text-muted-foreground">Ubicación:</span>{' '}
                   {event.location}
                 </span>
               )}
@@ -174,8 +176,8 @@ export default function Page({ eventInfo }) {
                             >
                               <CalendarDays className="mr-2 h-4 w-4" />
                               {date.date
-                                ? format(new Date(date.date), "PPP")
-                                : "Seleccionar una fecha"}
+                                ? format(new Date(date.date), 'PPP')
+                                : 'Seleccionar una fecha'}
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="start">
@@ -187,8 +189,8 @@ export default function Page({ eventInfo }) {
                               onSelect={(newDate) =>
                                 handleDateChange(
                                   index,
-                                  "date",
-                                  newDate ? format(newDate, "yyyy-MM-dd") : "",
+                                  'date',
+                                  newDate ? format(newDate, 'yyyy-MM-dd') : ''
                                 )
                               }
                               initialFocus
@@ -199,7 +201,7 @@ export default function Page({ eventInfo }) {
                           type="time"
                           value={date.time}
                           onChange={(e) =>
-                            handleDateChange(index, "time", e.target.value)
+                            handleDateChange(index, 'time', e.target.value)
                           }
                           className="w-[120px]"
                         />
@@ -207,8 +209,8 @@ export default function Page({ eventInfo }) {
                     ) : (
                       <p className="text-sm text-muted-foreground">
                         {date.date
-                          ? format(new Date(date.date), "PPP")
-                          : "Seleccionar una fecha"}
+                          ? format(new Date(date.date), 'PPP')
+                          : 'Seleccionar una fecha'}
                       </p>
                     )}
                   </div>
@@ -242,24 +244,21 @@ export default function Page({ eventInfo }) {
           <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4 flex justify-end">
             <ButtonWithLoading
               onClick={handleSave}
-              className={"size-lg"}
+              className={'size-lg'}
               isLoading={isPending}
             >
               Guardar cambios
             </ButtonWithLoading>
           </div>
         )}
-        <EventStatus event={event} publishEvent={publishEvent}>
-
-        </EventStatus>
+        <EventStatus event={event} publishEvent={publishEvent}></EventStatus>
       </MotionMain>
     </ContainerOrganizationPage>
-  );
+  )
 }
 
-
 function EventStatus({ event, publishEvent }) {
-  const canPublishEvent = event.status === CREATED_STATUS;
+  const canPublishEvent = event.status === CREATED_STATUS
   return (
     <>
       {canPublishEvent && (
@@ -272,5 +271,5 @@ function EventStatus({ event, publishEvent }) {
         </Button>
       )}
     </>
-  );
+  )
 }

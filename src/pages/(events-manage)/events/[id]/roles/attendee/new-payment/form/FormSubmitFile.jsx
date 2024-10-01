@@ -1,20 +1,20 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addPdfPayment } from "@/state/events/newPaymentSlice";
-import { Label } from "@/components/ui/label";
-import { Upload } from "lucide-react";
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addPdfPayment } from '@/state/events/newPaymentSlice'
+import { Label } from '@/components/ui/label'
+import { Upload } from 'lucide-react'
 
 export default function FormSubmitPayment() {
-  const { pricing, paymentPDF } = useSelector((state) => state.newPayment);
-  const [paymentPDFFile, setPaymentPDFFile] = useState(paymentPDF);
+  const { pricing, paymentPDF } = useSelector((state) => state.newPayment)
+  const [paymentPDFFile, setPaymentPDFFile] = useState(paymentPDF)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   function changePayment(e) {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setPaymentPDFFile(file);
-      dispatch(addPdfPayment(file));
+      const file = e.target.files[0]
+      setPaymentPDFFile(file)
+      dispatch(addPdfPayment(file))
     }
   }
 
@@ -24,12 +24,12 @@ export default function FormSubmitPayment() {
         Carga de Comprobante de Pago
       </h2>
       <PDFOption
-        title={"Subir comprobante"}
+        title={'Subir comprobante'}
         changeFile={changePayment}
         pdf={paymentPDFFile}
       />
     </div>
-  );
+  )
 }
 
 function PDFOption({ changeFile, pdf, title }) {
@@ -52,9 +52,9 @@ function PDFOption({ changeFile, pdf, title }) {
           onChange={changeFile}
         />
         <span className="ml-3 text-sm text-gray-500">
-          {pdf ? pdf.name : "Ningún archivo seleccionado"}
+          {pdf ? pdf.name : 'Ningún archivo seleccionado'}
         </span>
       </div>
     </div>
-  );
+  )
 }

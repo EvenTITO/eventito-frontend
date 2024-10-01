@@ -1,6 +1,6 @@
-import { ChevronRight, ChevronDown, X, Shield, Calendar } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import PriceDialog from "./PriceDialog";
+import { ChevronRight, ChevronDown, X, Shield, Calendar } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import PriceDialog from './PriceDialog'
 
 export default function PricesTable({
   prices,
@@ -22,7 +22,7 @@ export default function PricesTable({
         />
       ))}
     </div>
-  );
+  )
 }
 
 function PriceItem({
@@ -57,18 +57,18 @@ function PriceItem({
         <div className="p-4 bg-gray-50 flex justify-between items-center">
           <div className="space-y-2">
             <p>
-              <strong>Roles:</strong>{" "}
+              <strong>Roles:</strong>{' '}
               {price.roles.length > 0
-                ? price.roles.join(", ")
-                : "Sin roles especificados"}
+                ? price.roles.join(', ')
+                : 'Sin roles especificados'}
             </p>
             <p>
-              <strong>Requiere verificación:</strong>{" "}
-              {price.need_verification ? "Sí" : "No"}
+              <strong>Requiere verificación:</strong>{' '}
+              {price.need_verification ? 'Sí' : 'No'}
             </p>
             <p>
-              <strong>Fecha límite:</strong>{" "}
-              {price.related_date || "Sin fecha límite"}
+              <strong>Fecha límite:</strong>{' '}
+              {price.related_date || 'Sin fecha límite'}
             </p>
           </div>
           <div className="space-x-2">
@@ -85,5 +85,5 @@ function PriceItem({
         </div>
       )}
     </div>
-  );
+  )
 }

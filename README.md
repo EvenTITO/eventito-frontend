@@ -12,6 +12,21 @@ npm install
 npm run dev
 ```
 
+## Run the linter
+
+Install dependencies
+
+```sh
+npm install --save-dev prettier eslint eslint-config-prettier eslint-plugin-react @typescript-eslint/parser @typescript-eslint/eslint-plugin husky lint-staged
+npm install
+```
+
+Run formatter
+
+```
+npm run format
+```
+
 ## Curl
 
 curl -X POST -d '{"email":"mateocapon@gmail.com","password":"adminadmin","returnSecureToken":true}' -H "Content-Type: application/json" "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBJdOMRxl7_IENGO8LB1lp3moUpPeAVaME"

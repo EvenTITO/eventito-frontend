@@ -1,0 +1,15 @@
+# Ignore artifacts:
+build
+coverage
+
+# Ignore all HTML files:
+*.html
+
+# Ignore all JSON files:
+*.json
+
+# Ignore specific files:
+tailwind.config.js
+postcss.config.js
+vite.config.js
+node_modules/

@@ -1,6 +1,6 @@
-import { CalendarIcon } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MotionDiv } from "../../_components/Animation";
+import { CalendarIcon } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { MotionDiv } from '../../_components/Animation'
 
 export default function Prices({ event }) {
   return (
@@ -26,5 +26,5 @@ export default function Prices({ event }) {
         ))}
       </div>
     </MotionDiv>
-  );
+  )
 }

@@ -1,13 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import StatCard from "./StatCard";
-import AddAuthorDialog from "../../_components/AddAuthorDialog";
-import { onWorkEditDay } from "./utils";
-import { WORKS_STATUS_LABELS } from "@/lib/Constants.js";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import StatCard from './StatCard'
+import AddAuthorDialog from '../../_components/AddAuthorDialog'
+import { onWorkEditDay } from './utils'
+import { WORKS_STATUS_LABELS } from '@/lib/Constants.js'
 
 export default function WorkInfo({ workData }) {
-  const isEditable = onWorkEditDay(workData);
+  const isEditable = onWorkEditDay(workData)
   return (
     <div className="space-y-8">
       <div className="grid gap-4 md:grid-cols-3">
@@ -18,12 +18,12 @@ export default function WorkInfo({ workData }) {
         />
         <StatCard
           title="En fecha de edición"
-          value={isEditable ? "Sí" : "No"}
+          value={isEditable ? 'Sí' : 'No'}
           icon="FileText"
         />
         <StatCard
           title={
-            isEditable ? "Fecha límite de entrega" : "Última actualización"
+            isEditable ? 'Fecha límite de entrega' : 'Última actualización'
           }
           value={
             isEditable
@@ -53,7 +53,7 @@ export default function WorkInfo({ workData }) {
                     src={`https://api.dicebear.com/6.x/initials/svg?seed=${author.full_name}`}
                   />
                   <AvatarFallback>
-                    {author.full_name?.charAt(0) || ""}
+                    {author.full_name?.charAt(0) || ''}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-grow">
@@ -85,5 +85,5 @@ export default function WorkInfo({ workData }) {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

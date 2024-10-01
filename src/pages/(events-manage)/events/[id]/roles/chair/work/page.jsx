@@ -1,48 +1,51 @@
-import {ArrowLeft} from "lucide-react";
-import LineTabs from "@/components/LineTabs";
-import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
-import TitlePage from "@/pages/(events-manage)/_components/titlePage";
-import {useNavigator} from "@/lib/navigation";
-import {DetailsTab} from "./details";
-import Reviews from "./reviews";
-import StatusSelector from "./_components/StatusSelector";
-import {useGetWorkDownloadURL} from "@/hooks/events/worksHooks";
-import {useToast} from "@/hooks/use-toast";
-import {useEffect} from "react";
-import {useSubmitChairReview, useUpdateReviewDeadlineForReviewer} from "@/hooks/events/chairHooks";
+import { ArrowLeft } from 'lucide-react'
+import LineTabs from '@/components/LineTabs'
+import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
+import TitlePage from '@/pages/(events-manage)/_components/titlePage'
+import { useNavigator } from '@/lib/navigation'
+import { DetailsTab } from './details'
+import Reviews from './reviews'
+import StatusSelector from './_components/StatusSelector'
+import { useGetWorkDownloadURL } from '@/hooks/events/worksHooks'
+import { useToast } from '@/hooks/use-toast'
+import { useEffect } from 'react'
+import {
+  useSubmitChairReview,
+  useUpdateReviewDeadlineForReviewer,
+} from '@/hooks/events/chairHooks'
 
-export default function Page({selectedWork, reviews, reviewers}) {
-  const navigator = useNavigator("/works");
-  const {toast} = useToast();
+export default function Page({ selectedWork, reviews, reviewers }) {
+  const navigator = useNavigator('/works')
+  const { toast } = useToast()
   const {
     data: fileData,
     mutate: downloadWorkFile,
     isError,
     isPending,
     isSuccess,
-  } = useGetWorkDownloadURL();
-  const chairReview = useSubmitChairReview(reviews);
-  const updateReviewDeadlineForReviewer = useUpdateReviewDeadlineForReviewer();
+  } = useGetWorkDownloadURL()
+  const chairReview = useSubmitChairReview(reviews)
+  const updateReviewDeadlineForReviewer = useUpdateReviewDeadlineForReviewer()
 
   useEffect(() => {
     if (isError) {
       toast({
-        variant: "destructiveOutline",
-        title: "Error al descargar trabajo",
-        description: "El autor no ha subido un archivo todavia",
-      });
+        variant: 'destructiveOutline',
+        title: 'Error al descargar trabajo',
+        description: 'El autor no ha subido un archivo todavia',
+      })
     } else if (isSuccess) {
-      window.open(fileData.download_url.download_url, "_blank");
+      window.open(fileData.download_url.download_url, '_blank')
     }
-  }, [isError, isSuccess, toast]);
+  }, [isError, isSuccess, toast])
 
   function handleBack(e) {
-    e.preventDefault();
-    navigator.back();
+    e.preventDefault()
+    navigator.back()
   }
 
   function onSubmit() {
-    navigator.back();
+    navigator.back()
   }
 
   return (
@@ -52,7 +55,7 @@ export default function Page({selectedWork, reviews, reviewers}) {
         onClick={handleBack}
         className="inline-flex items-center text-sm font-medium text-blue-600 hover:underline mb-6"
       >
-        <ArrowLeft className="mr-2 h-4 w-4"/> Volver a tracks
+        <ArrowLeft className="mr-2 h-4 w-4" /> Volver a tracks
       </a>
       <TitlePage
         title={selectedWork.title}
@@ -69,7 +72,7 @@ export default function Page({selectedWork, reviews, reviewers}) {
         <LineTabs
           tabs={[
             {
-              label: "Entrega",
+              label: 'Entrega',
               component: (
                 <DetailsTab
                   handleBack={handleBack}
@@ -80,16 +83,18 @@ export default function Page({selectedWork, reviews, reviewers}) {
               ),
             },
             {
-              label: "Revisiones",
-              component: <Reviews
-                reviews={reviews}
-                reviewers={reviewers}
-                updateReviewDeadline={updateReviewDeadlineForReviewer.mutate}
-              />,
+              label: 'Revisiones',
+              component: (
+                <Reviews
+                  reviews={reviews}
+                  reviewers={reviewers}
+                  updateReviewDeadline={updateReviewDeadlineForReviewer.mutate}
+                />
+              ),
             },
           ]}
         />
       </div>
     </ContainerPage>
-  );
+  )
 }

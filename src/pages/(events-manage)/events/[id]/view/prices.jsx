@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -7,12 +7,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { CheckCircle, DollarSign, Clock } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+} from '@/components/ui/table'
+import { CheckCircle, DollarSign, Clock } from 'lucide-react'
+import { Link, useParams } from 'react-router-dom'
 
 export function RegistrationTab({ event }) {
-  const { id: eventId } = useParams();
+  const { id: eventId } = useParams()
 
   return (
     <Card>
@@ -92,5 +92,5 @@ export function RegistrationTab({ event }) {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

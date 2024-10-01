@@ -1,5 +1,5 @@
-import { ORGANIZER_ROLE } from "@/lib/Constants";
-import SideBar from "@/pages/(events-manage)/_components/Sidebar";
+import { ORGANIZER_ROLE } from '@/lib/Constants'
+import SideBar from '@/pages/(events-manage)/_components/Sidebar'
 import {
   BookOpenCheck,
   DollarSign,
@@ -7,7 +7,7 @@ import {
   Settings,
   Table,
   Users,
-} from "lucide-react";
+} from 'lucide-react'
 
 export default function OrganizationSidebar() {
   return (
@@ -16,61 +16,61 @@ export default function OrganizationSidebar() {
       isSidebarOpen={true}
       roles={[ORGANIZER_ROLE]}
     />
-  );
+  )
 }
 
-const classNameIcons = "mr-2 h-4 w-4";
+const classNameIcons = 'mr-2 h-4 w-4'
 const itemList = [
   {
-    label: "Configuración",
+    label: 'Configuración',
     children: [
       {
-        label: "General",
+        label: 'General',
         icon: <Settings className={classNameIcons} />,
-        to: "general",
+        to: 'general',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
-        label: "Comité de miembros",
+        label: 'Comité de miembros',
         icon: <Users className={classNameIcons} />,
-        to: "members",
+        to: 'members',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
-        label: "Revisiones",
+        label: 'Revisiones',
         icon: <FilePenLine className={classNameIcons} />,
-        to: "reviews",
+        to: 'reviews',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
-        label: "Tracks",
+        label: 'Tracks',
         icon: <Table className={classNameIcons} />,
-        to: "tracks",
+        to: 'tracks',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
-        label: "Tarifas",
+        label: 'Tarifas',
         icon: <DollarSign className={classNameIcons} />,
-        to: "pricing",
+        to: 'pricing',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
     ],
   },
   {
-    label: "Datos del evento",
+    label: 'Datos del evento',
     children: [
       {
-        label: "inscripciones",
+        label: 'inscripciones',
         icon: <BookOpenCheck className={classNameIcons} />,
-        to: "inscriptions",
+        to: 'inscriptions',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
     ],
   },
-];
+]

@@ -1,24 +1,24 @@
-import {format} from "date-fns";
+import { format } from 'date-fns'
 
 export function convertEventsData(data) {
-  return data.map(convertEventItem);
+  return data.map(convertEventItem)
 }
 
 function convertDate(eventData, typeDate) {
-  return eventData.dates.find((date) => date.name === typeDate)?.date || null;
+  return eventData.dates.find((date) => date.name === typeDate)?.date || null
 }
 
 export function convertStartDate(eventData) {
-  return convertDate(eventData, "START_DATE");
+  return convertDate(eventData, 'START_DATE')
 }
 
 export function convertEndDate(eventData) {
-  return convertDate(eventData, "END_DATE");
+  return convertDate(eventData, 'END_DATE')
 }
 
 function convertEventItem(data) {
-  const startDate = convertStartDate(data);
-  const endDate = convertEndDate(data);
+  const startDate = convertStartDate(data)
+  const endDate = convertEndDate(data)
 
   return {
     id: data.id,
@@ -27,7 +27,7 @@ function convertEventItem(data) {
     startDate: startDate,
     endDate: endDate,
     location: data.location,
-  };
+  }
 }
 
 export function convertMyEventsData(data) {
@@ -48,33 +48,39 @@ export function convertMyEventsData(data) {
     roles: event.roles,
     status: event.status,
     tracks: event.tracks,
-  }));
+  }))
 }
 
 export function convertReviewSkeleton(newQuestions) {
   return {
     review_skeleton: {
-      questions: newQuestions
-    }
+      questions: newQuestions,
+    },
   }
 }
 
 export function convertUpdatePricing(actualPricing, newFare) {
-  const newPricing = actualPricing.map(fare => {
+  const newPricing = actualPricing.map((fare) => {
     if (fare.name === newFare.name) {
       return {
         name: newFare.name ? newFare.name : fare.name,
-        description: newFare.description ? newFare.description : fare.description,
+        description: newFare.description
+          ? newFare.description
+          : fare.description,
         value: newFare.value ? newFare.value : fare.value,
-        need_verification: newFare.needVerification ? newFare.needVerification : fare.need_verification,
+        need_verification: newFare.needVerification
+          ? newFare.needVerification
+          : fare.need_verification,
         roles: newFare.roles ? newFare.roles : fare.roles,
         currency: newFare.currency ? newFare.currency : fare.currency,
-        related_date: newFare.relatedDate ? newFare.relatedDate : fare.related_date,
+        related_date: newFare.relatedDate
+          ? newFare.relatedDate
+          : fare.related_date,
       }
     }
-    return fare;
+    return fare
   })
-  return {pricing: newPricing}
+  return { pricing: newPricing }
 }
 
 export function convertNewPricing(actualPricing, newFare) {
@@ -85,9 +91,9 @@ export function convertNewPricing(actualPricing, newFare) {
     need_verification: newFare.need_verification,
     roles: newFare.roles,
     related_date: newFare.related_date || null,
-    currency: "ARS"
+    currency: 'ARS',
   }
-  return {pricing: [...actualPricing, updateFare]}
+  return { pricing: [...actualPricing, updateFare] }
 }
 
 export function convertNewDates(actualDates, newDate) {
@@ -99,7 +105,7 @@ export function convertNewDates(actualDates, newDate) {
     date: format(newDate.date, 'yyyy-MM-dd'),
     time: format(newDate.date, 'HH:mm:ss'),
   }
-  return {dates: [...actualDates, updateDate]}
+  return { dates: [...actualDates, updateDate] }
 }
 
 function convertFare(fare) {
@@ -110,12 +116,12 @@ function convertFare(fare) {
     need_verification: fare.need_verification,
     roles: fare.roles,
     related_date: fare.related_date,
-    currency: "ARS"
+    currency: 'ARS',
   }
 }
 
 export function convertFares(fares) {
   return {
-    pricing: fares.map(f => convertFare(f))
+    pricing: fares.map((f) => convertFare(f)),
   }
 }

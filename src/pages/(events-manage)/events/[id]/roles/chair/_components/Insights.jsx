@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BarChart, PieChart } from "lucide-react";
-import WorkStatusChart from "./WorkStatusChart";
-import ReviewProgressChart from "./ReviewProgressChart";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { BarChart, PieChart } from 'lucide-react'
+import WorkStatusChart from './WorkStatusChart'
+import ReviewProgressChart from './ReviewProgressChart'
 
 export default function Insights({ works }) {
   return (
@@ -31,5 +31,5 @@ export default function Insights({ works }) {
         </Tabs>
       </CardContent>
     </Card>
-  );
+  )
 }

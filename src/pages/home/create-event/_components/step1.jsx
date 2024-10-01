@@ -1,43 +1,43 @@
-import { cn } from "@/lib/utils";
-import { Container } from "./container";
-import { Link } from "react-router-dom";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useDispatch } from "react-redux";
-import { addEventType } from "@/state/events/createEventSlice";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { BottomContainer } from "./bottomContainer";
+import { cn } from '@/lib/utils'
+import { Container } from './container'
+import { Link } from 'react-router-dom'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { useDispatch } from 'react-redux'
+import { addEventType } from '@/state/events/createEventSlice'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { BottomContainer } from './bottomContainer'
 
 const eventTypes = [
   {
-    id: "conference",
-    title: "Conferencia",
+    id: 'conference',
+    title: 'Conferencia',
     description:
-      "Evento de multiples dias, con charlas, presentaciones de trabajos, aprobacion de los mismos, etc",
+      'Evento de multiples dias, con charlas, presentaciones de trabajos, aprobacion de los mismos, etc',
   },
   {
-    id: "talk",
-    title: "Charla",
-    description: "Evento de un unico dia, con charlas.",
+    id: 'talk',
+    title: 'Charla',
+    description: 'Evento de un unico dia, con charlas.',
   },
-];
+]
 
 export default function CreateEventStep1({ step, setStep }) {
-  const [eventType, setEventType] = useState(null);
-  const [error, setError] = useState(false);
-  const dispatch = useDispatch();
+  const [eventType, setEventType] = useState(null)
+  const [error, setError] = useState(false)
+  const dispatch = useDispatch()
 
   function handleNext() {
     if (!eventType) {
-      setError(true);
+      setError(true)
     } else {
-      dispatch(addEventType(eventType));
-      setStep(2);
+      dispatch(addEventType(eventType))
+      setStep(2)
     }
   }
   function handleSetEventType(idType) {
-    setEventType(idType);
-    setError(false);
+    setEventType(idType)
+    setError(false)
   }
 
   if (step === 1) {
@@ -61,20 +61,20 @@ export default function CreateEventStep1({ step, setStep }) {
                   <div
                     key={type.id}
                     className={cn(
-                      "p-4 border rounded-lg cursor-pointer transition-all",
+                      'p-4 border rounded-lg cursor-pointer transition-all',
                       eventType === type.id
-                        ? "border-primary bg-primary/10"
-                        : "border-gray-200 hover:border-primary",
+                        ? 'border-primary bg-primary/10'
+                        : 'border-gray-200 hover:border-primary'
                     )}
                     onClick={() => handleSetEventType(type.id)}
                   >
                     <div className="flex items-center space-x-2">
                       <div
                         className={cn(
-                          "w-4 h-4 rounded-full border-2",
+                          'w-4 h-4 rounded-full border-2',
                           eventType === type.id
-                            ? "border-primary bg-primary"
-                            : "border-gray-400",
+                            ? 'border-primary bg-primary'
+                            : 'border-gray-400'
                         )}
                       ></div>
                       <h3 className="font-semibold">{type.title}</h3>
@@ -89,7 +89,7 @@ export default function CreateEventStep1({ step, setStep }) {
           </form>
         </Container>
         <BottomContainer>
-          <Link to={"/home"}>
+          <Link to={'/home'}>
             <Button variant="outline">Cancelar</Button>
           </Link>
           <Button type="button" onClick={handleNext}>
@@ -97,8 +97,8 @@ export default function CreateEventStep1({ step, setStep }) {
           </Button>
         </BottomContainer>
       </>
-    );
+    )
   } else {
-    return null;
+    return null
   }
 }

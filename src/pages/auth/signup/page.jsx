@@ -1,76 +1,81 @@
-import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { Mail, Lock } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { useSelector } from "react-redux";
+import { useState } from 'react'
+import { Link, Navigate } from 'react-router-dom'
+import { Mail, Lock } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { useSelector } from 'react-redux'
 import {
   useSignUpWithEmailAndPassword,
   useSignUpWithGoogle,
-} from "@/hooks/auth/authHooks";
-import ButtonWithLoading from "@/components/ButtonWithLoading";
-import ContainerAuthPage from "../_components/ContainerAuthPage";
-import GoogleButton from "../_components/GoogleButton";
+} from '@/hooks/auth/authHooks'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
+import ContainerAuthPage from '../_components/ContainerAuthPage'
+import GoogleButton from '../_components/GoogleButton'
 
 export default function SignupPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const { currentUser } = useSelector((state) => state.user);
-  const { idUser, email: authEmail } = useSelector((state) => state.auth);
-  const validationPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$&])[a-zA-Z0-9!@#$&]{6,15}$/;
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [repeatPassword, setRepeatPassword] = useState('')
+  const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const { currentUser } = useSelector((state) => state.user)
+  const { idUser, email: authEmail } = useSelector((state) => state.auth)
+  const validationPasswordRegex =
+    /^(?=.*[0-9])(?=.*[!@#$&])[a-zA-Z0-9!@#$&]{6,15}$/
 
-  const signupMutation = useSignUpWithEmailAndPassword();
-  const googleSignupMutation = useSignUpWithGoogle();
+  const signupMutation = useSignUpWithEmailAndPassword()
+  const googleSignupMutation = useSignUpWithGoogle()
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (password !== repeatPassword) {
-      setError(true);
-      setErrorMessage("Las contraseñas no coinciden");
-      return;
+      setError(true)
+      setErrorMessage('Las contraseñas no coinciden')
+      return
     }
-    if (!(validationPasswordRegex.test(password))) {
-      setError(true);
-      setErrorMessage("Contraseña inválida. Debe contener entre 6 y 15 caracteres con al menos un número y un carácter especial (Ejemplo: !,@,#,$ o &).");
-      return;
+    if (!validationPasswordRegex.test(password)) {
+      setError(true)
+      setErrorMessage(
+        'Contraseña inválida. Debe contener entre 6 y 15 caracteres con al menos un número y un carácter especial (Ejemplo: !,@,#,$ o &).'
+      )
+      return
     }
     try {
-      await signupMutation.mutateAsync({ email, password });
+      await signupMutation.mutateAsync({ email, password })
     } catch (error) {
-      setError(true);
-      const errorCode = error.code;
+      setError(true)
+      const errorCode = error.code
       switch (errorCode) {
-        case "auth/weak-password":
-          setErrorMessage("Contraseña insegura.")
+        case 'auth/weak-password':
+          setErrorMessage('Contraseña insegura.')
           break
-        case "auth/email-already-in-use":
-          setErrorMessage("Ya existe una cuenta vinculada al email ingresado.")
+        case 'auth/email-already-in-use':
+          setErrorMessage('Ya existe una cuenta vinculada al email ingresado.')
           break
         default:
           console.error(errorCode)
-          setErrorMessage("No pudo crearse la cuenta. Por favor intente más tarde")
-          break;
+          setErrorMessage(
+            'No pudo crearse la cuenta. Por favor intente más tarde'
+          )
+          break
       }
     }
-  };
+  }
 
   const onGoogleSignup = async () => {
     try {
-      await googleSignupMutation.mutateAsync();
+      await googleSignupMutation.mutateAsync()
     } catch (error) {
-      setError(true);
-      setErrorMessage("Error al registrarse con Google");
+      setError(true)
+      setErrorMessage('Error al registrarse con Google')
     }
-  };
+  }
 
   if (currentUser) {
-    return <Navigate to="/home" replace />;
+    return <Navigate to="/home" replace />
   }
 
   if (idUser && authEmail) {
-    return <Navigate to="/complete-register" replace />;
+    return <Navigate to="/complete-register" replace />
   }
 
   return (
@@ -155,5 +160,5 @@ export default function SignupPage() {
       </div>
       <GoogleButton text="Registrarse con Google" onClick={onGoogleSignup} />
     </ContainerAuthPage>
-  );
+  )
 }

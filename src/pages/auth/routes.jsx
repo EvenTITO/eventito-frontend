@@ -1,8 +1,8 @@
-import { Route, Routes } from "react-router-dom";
-import LayoutAuth from "./layout";
-import LoginPage from "./login/page";
-import SignupPage from "./signup/page";
-import CompleteRegisterPage from "./complete-register/page";
+import { Route, Routes } from 'react-router-dom'
+import LayoutAuth from './layout'
+import LoginPage from './login/page'
+import SignupPage from './signup/page'
+import CompleteRegisterPage from './complete-register/page'
 
 export default function RoutesAuth() {
   return (
@@ -14,5 +14,5 @@ export default function RoutesAuth() {
         <Route path="complete-register" element={<CompleteRegisterPage />} />
       </Route>
     </Routes>
-  );
+  )
 }

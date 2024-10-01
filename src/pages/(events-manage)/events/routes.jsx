@@ -1,16 +1,16 @@
-import { Route, Routes } from "react-router-dom";
-import LayoutEvents from "./layout";
-import EventViewPage from "./[id]/view";
-import ChairPage from "./[id]/roles/chair";
-import ReviewerPage from "./[id]/roles/reviewer";
-import AuthorPage from "./[id]/roles/author";
-import AssignmentPage from "./[id]/roles/reviewer/assigment";
-import ChairWorkPage from "./[id]/roles/chair/work";
-import AttendeePage from "./[id]/roles/attendee";
-import NewPaymentPage from "./[id]/roles/attendee/new-payment";
-import NewWorkPage from "./[id]/roles/author/new-work";
-import ViewWorkPage from "./[id]/roles/author/works";
-import ProtectedRoute from "./protection";
+import { Route, Routes } from 'react-router-dom'
+import LayoutEvents from './layout'
+import EventViewPage from './[id]/view'
+import ChairPage from './[id]/roles/chair'
+import ReviewerPage from './[id]/roles/reviewer'
+import AuthorPage from './[id]/roles/author'
+import AssignmentPage from './[id]/roles/reviewer/assigment'
+import ChairWorkPage from './[id]/roles/chair/work'
+import AttendeePage from './[id]/roles/attendee'
+import NewPaymentPage from './[id]/roles/attendee/new-payment'
+import NewWorkPage from './[id]/roles/author/new-work'
+import ViewWorkPage from './[id]/roles/author/works'
+import ProtectedRoute from './protection'
 
 export default function RoutesEvents() {
   return (
@@ -64,5 +64,5 @@ export default function RoutesEvents() {
         element={<NewWorkPage />}
       />
     </Routes>
-  );
+  )
 }

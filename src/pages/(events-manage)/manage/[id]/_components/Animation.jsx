@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -9,7 +9,7 @@ const containerVariants = {
       delayChildren: 0.3,
     },
   },
-};
+}
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -17,11 +17,11 @@ const itemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: 'spring',
       stiffness: 100,
     },
   },
-};
+}
 
 export function MotionMain({ children }) {
   return (
@@ -33,7 +33,7 @@ export function MotionMain({ children }) {
     >
       {children}
     </motion.main>
-  );
+  )
 }
 
 export function MotionDiv({ children, className }) {
@@ -41,7 +41,7 @@ export function MotionDiv({ children, className }) {
     <motion.div className={className} variants={itemVariants}>
       {children}
     </motion.div>
-  );
+  )
 }
 
 export function MotionH1({ children, className }) {
@@ -49,7 +49,7 @@ export function MotionH1({ children, className }) {
     <motion.h1 className={className} variants={itemVariants}>
       {children}
     </motion.h1>
-  );
+  )
 }
 
 export function MotionH2({ children, className }) {
@@ -57,7 +57,7 @@ export function MotionH2({ children, className }) {
     <motion.h1 className={className} variants={itemVariants}>
       {children}
     </motion.h1>
-  );
+  )
 }
 
 export function MotionP({ children, className }) {
@@ -65,5 +65,5 @@ export function MotionP({ children, className }) {
     <motion.h1 className={className} variants={itemVariants}>
       {children}
     </motion.h1>
-  );
+  )
 }

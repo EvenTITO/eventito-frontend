@@ -5,16 +5,16 @@ import {
   ResponsiveContainer,
   Legend,
   Tooltip,
-} from "recharts";
-import { WORKS_STATUS_LABELS } from "@/lib/Constants";
+} from 'recharts'
+import { WORKS_STATUS_LABELS } from '@/lib/Constants'
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
 export default function WorkStatusChart({ works }) {
   const data = Object.entries(WORKS_STATUS_LABELS).map(([status, label]) => ({
     name: label,
     value: works.filter((work) => work.status === status).length,
-  }));
+  }))
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -36,5 +36,5 @@ export default function WorkStatusChart({ works }) {
         <Legend />
       </PieChart>
     </ResponsiveContainer>
-  );
+  )
 }

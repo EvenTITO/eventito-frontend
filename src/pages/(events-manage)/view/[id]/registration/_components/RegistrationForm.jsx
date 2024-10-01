@@ -1,30 +1,30 @@
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {cn, getEventId} from "@/lib/utils";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Upload } from "lucide-react";
-import { MotionDiv } from "../../_components/Animation";
-import { useSubmitInscription } from "@/hooks/events/attendeeHooks";
-import ButtonWithLoading from "@/components/ButtonWithLoading";
-import { REGISTRATION_ROLES } from "@/lib/Constants";
-import {toast, useToast} from "@/hooks/use-toast.js";
-import {useNavigate} from "react-router-dom";
+import { useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm, Controller } from 'react-hook-form'
+import { z } from 'zod'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { cn, getEventId } from '@/lib/utils'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Upload } from 'lucide-react'
+import { MotionDiv } from '../../_components/Animation'
+import { useSubmitInscription } from '@/hooks/events/attendeeHooks'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
+import { REGISTRATION_ROLES } from '@/lib/Constants'
+import { toast, useToast } from '@/hooks/use-toast.js'
+import { useNavigate } from 'react-router-dom'
 
 const schema = z.object({
-  role: z.string().min(1, { message: "Seleccionar un rol para continuar" }),
+  role: z.string().min(1, { message: 'Seleccionar un rol para continuar' }),
   affiliation: z.string().optional(),
   file: z.any().optional(),
-});
+})
 
 export default function RegistrationForm() {
-  const [file, setFile] = useState(null);
-  const { toast } = useToast();
-  const eventId = getEventId();
-  const navigate = useNavigate();
+  const [file, setFile] = useState(null)
+  const { toast } = useToast()
+  const eventId = getEventId()
+  const navigate = useNavigate()
 
   const {
     register,
@@ -34,44 +34,45 @@ export default function RegistrationForm() {
     setError,
   } = useForm({
     resolver: zodResolver(schema),
-  });
+  })
 
   const {
     mutateAsync: submitRegistration,
     isPending,
     error: submitError,
-  } = useSubmitInscription();
+  } = useSubmitInscription()
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
+      setFile(e.target.files[0])
     }
-  };
+  }
 
   const onSubmit = async (data) => {
     const inscriptionData = {
       ...data,
       file: file,
-      roles: data.role.split(',')
+      roles: data.role.split(','),
     }
     await submitRegistration({ inscriptionData })
       .then(() => {
-        console.log("Inscripcion generada correctamente")
+        console.log('Inscripcion generada correctamente')
         toast({
-          title: "Inscripción exitosa.",
+          title: 'Inscripción exitosa.',
           description: `Inscripción realizada satisfactoriamente. Ya podés interactuar con el evento.`,
-        });
-        navigate(`/events/${eventId}/view`);
+        })
+        navigate(`/events/${eventId}/view`)
       })
-      .catch(e =>{
-        console.log("Inscripcion fallida", e)
+      .catch((e) => {
+        console.log('Inscripcion fallida', e)
         toast({
-          title: "Inscripción fallida",
-          description: "Error al realizar la inscripción. Por favor intente nuevamente más tarde.",
-          variant: "destructive",
-        });
-      });
-  };
+          title: 'Inscripción fallida',
+          description:
+            'Error al realizar la inscripción. Por favor intente nuevamente más tarde.',
+          variant: 'destructive',
+        })
+      })
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -111,20 +112,20 @@ export default function RegistrationForm() {
                     <div
                       key={roleOption.id}
                       className={cn(
-                        "p-4 border rounded-lg cursor-pointer transition-all",
+                        'p-4 border rounded-lg cursor-pointer transition-all',
                         field.value === roleOption.id
-                          ? "border-primary bg-primary/10"
-                          : "border-gray-200 hover:border-primary",
+                          ? 'border-primary bg-primary/10'
+                          : 'border-gray-200 hover:border-primary'
                       )}
                       onClick={() => field.onChange(roleOption.id)}
                     >
                       <div className="flex items-center space-x-2">
                         <div
                           className={cn(
-                            "w-4 h-4 rounded-full border-2",
+                            'w-4 h-4 rounded-full border-2',
                             field.value === roleOption.id
-                              ? "border-primary bg-primary"
-                              : "border-gray-400",
+                              ? 'border-primary bg-primary'
+                              : 'border-gray-400'
                           )}
                         ></div>
                         <h3 className="font-semibold">{roleOption.title}</h3>
@@ -149,7 +150,7 @@ export default function RegistrationForm() {
               <Label htmlFor="affiliation">Filiación</Label>
               <Input
                 id="affiliation"
-                {...register("affiliation")}
+                {...register('affiliation')}
                 placeholder="Ingresá tu filiación"
               />
             </div>
@@ -171,7 +172,7 @@ export default function RegistrationForm() {
                   onChange={handleFileChange}
                 />
                 <span className="ml-3 text-sm text-gray-500">
-                  {file ? file.name : "Ningún archivo seleccionado"}
+                  {file ? file.name : 'Ningún archivo seleccionado'}
                 </span>
               </div>
             </div>
@@ -188,5 +189,5 @@ export default function RegistrationForm() {
         </ButtonWithLoading>
       </MotionDiv>
     </form>
-  );
+  )
 }

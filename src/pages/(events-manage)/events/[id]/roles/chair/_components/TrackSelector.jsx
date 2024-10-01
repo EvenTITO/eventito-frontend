@@ -6,7 +6,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select'
 
 export default function TrackSelector({
   tracks,
@@ -27,11 +27,13 @@ export default function TrackSelector({
           <SelectGroup>
             <SelectLabel>Elección de track</SelectLabel>
             {tracks.map((track, index) => (
-              <SelectItem key={index} value={track}>{track}</SelectItem>
+              <SelectItem key={index} value={track}>
+                {track}
+              </SelectItem>
             ))}
           </SelectGroup>
         </SelectContent>
       </Select>
     </div>
-  );
+  )
 }

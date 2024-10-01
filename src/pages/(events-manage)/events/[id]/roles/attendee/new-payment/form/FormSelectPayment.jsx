@@ -1,16 +1,16 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addPaymentChoice } from "@/state/events/newPaymentSlice";
-import { cn } from "@/lib/utils";
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addPaymentChoice } from '@/state/events/newPaymentSlice'
+import { cn } from '@/lib/utils'
 
 export default function FormSelectPayment({ eventPricing }) {
-  const { pricing } = useSelector((state) => state.newPayment);
-  const [price, setPrice] = useState(pricing);
-  const dispatch = useDispatch();
+  const { pricing } = useSelector((state) => state.newPayment)
+  const [price, setPrice] = useState(pricing)
+  const dispatch = useDispatch()
 
   function changePrice(fareName) {
-    setPrice(fareName.name);
-    dispatch(addPaymentChoice(fareName.name));
+    setPrice(fareName.name)
+    dispatch(addPaymentChoice(fareName.name))
   }
 
   return (
@@ -21,20 +21,20 @@ export default function FormSelectPayment({ eventPricing }) {
           <div
             key={fareOption.name}
             className={cn(
-              "p-4 border rounded-lg cursor-pointer transition-all",
+              'p-4 border rounded-lg cursor-pointer transition-all',
               price === fareOption.name
-                ? "border-primary bg-primary/10"
-                : "border-gray-200 hover:border-primary",
+                ? 'border-primary bg-primary/10'
+                : 'border-gray-200 hover:border-primary'
             )}
             onClick={() => changePrice(fareOption)}
           >
             <div className="flex items-center space-x-2">
               <div
                 className={cn(
-                  "w-4 h-4 rounded-full border-2",
+                  'w-4 h-4 rounded-full border-2',
                   price === fareOption.name
-                    ? "border-primary bg-primary"
-                    : "border-gray-400",
+                    ? 'border-primary bg-primary'
+                    : 'border-gray-400'
                 )}
               ></div>
               <h3 className="font-semibold">{fareOption.name}</h3>
@@ -49,5 +49,5 @@ export default function FormSelectPayment({ eventPricing }) {
         ))}
       </div>
     </div>
-  );
+  )
 }

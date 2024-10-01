@@ -1,6 +1,6 @@
-import { isAuthenticated } from "@/lib/routes/isAuthenticated";
-import { Navigate, Outlet } from "react-router-dom";
-import Header from "./_components/Header";
+import { isAuthenticated } from '@/lib/routes/isAuthenticated'
+import { Navigate, Outlet } from 'react-router-dom'
+import Header from './_components/Header'
 
 export default function LayoutHome() {
   if (isAuthenticated()) {
@@ -11,8 +11,8 @@ export default function LayoutHome() {
           <Outlet />
         </main>
       </div>
-    );
+    )
   } else {
-    return <Navigate to={"/login"} />;
+    return <Navigate to={'/login'} />
   }
 }

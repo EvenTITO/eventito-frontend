@@ -1,12 +1,12 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import ButtonWithLoading from "@/components/ButtonWithLoading";
+} from '@/components/ui/dialog'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
 export default function AddQuestionDetails({
   isDetailsDialogOpen,
@@ -28,13 +28,13 @@ export default function AddQuestionDetails({
             <Label htmlFor="new-title">Título</Label>
             <Input
               id="new-title"
-              value={newQuestion?.question || ""}
+              value={newQuestion?.question || ''}
               onChange={(e) =>
                 setNewQuestion({ ...newQuestion, question: e.target.value })
               }
             />
           </div>
-          {newQuestionType === "rating" && (
+          {newQuestionType === 'rating' && (
             <div>
               <Label htmlFor="new-max-value">Máximo valor</Label>
               <Input
@@ -59,5 +59,5 @@ export default function AddQuestionDetails({
         </ButtonWithLoading>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

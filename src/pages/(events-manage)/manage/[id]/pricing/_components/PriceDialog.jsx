@@ -1,43 +1,43 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Edit2, Plus } from "lucide-react";
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Edit2, Plus } from 'lucide-react'
 
 export default function PriceDialog({ price, onSave }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
   const [formData, setFormData] = useState(
     price || {
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       value: 0,
       need_verification: false,
       related_date: null,
       roles: [],
-    },
-  );
+    }
+  )
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    onSave(formData);
-    setIsOpen(false);
-  };
+    e.preventDefault()
+    onSave(formData)
+    setIsOpen(false)
+  }
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked } = e.target
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+      [name]: type === 'checkbox' ? checked : value,
+    }))
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -57,7 +57,7 @@ export default function PriceDialog({ price, onSave }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {price ? "Editar tarifa" : "Agregar nueva tarifa"}
+            {price ? 'Editar tarifa' : 'Agregar nueva tarifa'}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -112,7 +112,7 @@ export default function PriceDialog({ price, onSave }) {
               id="related_date"
               name="related_date"
               type="date"
-              value={formData.related_date || ""}
+              value={formData.related_date || ''}
               onChange={handleChange}
             />
           </div>
@@ -121,11 +121,11 @@ export default function PriceDialog({ price, onSave }) {
             <Input
               id="roles"
               name="roles"
-              value={formData.roles.join(", ")}
+              value={formData.roles.join(', ')}
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  roles: e.target.value.split(",").map((role) => role.trim()),
+                  roles: e.target.value.split(',').map((role) => role.trim()),
                 }))
               }
             />
@@ -134,5 +134,5 @@ export default function PriceDialog({ price, onSave }) {
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

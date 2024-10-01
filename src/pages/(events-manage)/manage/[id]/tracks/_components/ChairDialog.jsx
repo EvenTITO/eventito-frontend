@@ -1,38 +1,38 @@
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react'
+import { Input } from '@/components/ui/input'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import ButtonWithLoading from "@/components/ButtonWithLoading";
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
 export default function ChairDialog({
   track,
-  initialEmail = "",
+  initialEmail = '',
   onUpdateChair,
   onAddChair,
   triggerButton,
   isPending,
 }) {
-  const [email, setEmail] = useState(initialEmail);
-  const [isOpen, setIsOpen] = useState(false);
+  const [email, setEmail] = useState(initialEmail)
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (email) {
       if (initialEmail) {
-        await onUpdateChair(track, email, initialEmail);
+        await onUpdateChair(track, email, initialEmail)
       } else {
-        console.log("en fn", track, email);
-        await onAddChair(track, email);
+        console.log('en fn', track, email)
+        await onAddChair(track, email)
       }
-      setIsOpen(false);
+      setIsOpen(false)
     }
-  };
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -40,7 +40,7 @@ export default function ChairDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {initialEmail ? "Actualizar chair" : "Agregar chair"}
+            {initialEmail ? 'Actualizar chair' : 'Agregar chair'}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -63,5 +63,5 @@ export default function ChairDialog({
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

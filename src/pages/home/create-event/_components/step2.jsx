@@ -1,26 +1,26 @@
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Container } from "./container";
-import { BottomContainer } from "./bottomContainer";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { addEventMandatory } from "@/state/events/createEventSlice";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useDispatch } from "react-redux";
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import { Container } from './container'
+import { BottomContainer } from './bottomContainer'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { addEventMandatory } from '@/state/events/createEventSlice'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { useDispatch } from 'react-redux'
 
 export default function CreateEventStep2({ step, setStep }) {
-  const [title, setTitle] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [organizer, setOrganizer] = useState(null);
-  const [error, setError] = useState(false);
+  const [title, setTitle] = useState(null)
+  const [description, setDescription] = useState(null)
+  const [organizer, setOrganizer] = useState(null)
+  const [error, setError] = useState(false)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   function checkErrors() {
-    const newErrors = !(title && description && organizer);
-    setError(newErrors);
-    return newErrors;
+    const newErrors = !(title && description && organizer)
+    setError(newErrors)
+    return newErrors
   }
   function handleNext() {
     if (!checkErrors()) {
@@ -29,9 +29,9 @@ export default function CreateEventStep2({ step, setStep }) {
           title: title,
           description: description,
           organized_by: organizer,
-        }),
-      );
-      setStep(3);
+        })
+      )
+      setStep(3)
     }
   }
 
@@ -58,8 +58,8 @@ export default function CreateEventStep2({ step, setStep }) {
                     id="title"
                     value={title}
                     onChange={(e) => {
-                      setTitle(e.target.value);
-                      setError(false);
+                      setTitle(e.target.value)
+                      setError(false)
                     }}
                     placeholder="Ingresar titulo del evento"
                     required
@@ -71,8 +71,8 @@ export default function CreateEventStep2({ step, setStep }) {
                     id="description"
                     value={description}
                     onChange={(e) => {
-                      setDescription(e.target.value);
-                      setError(false);
+                      setDescription(e.target.value)
+                      setError(false)
                     }}
                     placeholder="Ingresar una descripcion corta del evento"
                     required
@@ -84,8 +84,8 @@ export default function CreateEventStep2({ step, setStep }) {
                     id="organizer"
                     value={organizer}
                     onChange={(e) => {
-                      setOrganizer(e.target.value);
-                      setError(false);
+                      setOrganizer(e.target.value)
+                      setError(false)
                     }}
                     placeholder="Ingresar persona, grupo u organizacion a cargo del evento"
                     required
@@ -104,8 +104,8 @@ export default function CreateEventStep2({ step, setStep }) {
           </Button>
         </BottomContainer>
       </>
-    );
+    )
   } else {
-    return null;
+    return null
   }
 }

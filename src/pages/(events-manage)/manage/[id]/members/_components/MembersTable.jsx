@@ -1,33 +1,34 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { DeleteButton } from "@/components/ui/deleteButton"
-import {
-  ORGANIZER_ROLE,
-  CHAIR_ROLE,
-  EVENT_ROLES_LABELS,
-} from "@/lib/Constants";
-import { LoaderSpinner } from "@/components/Loader";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+} from '@/components/ui/select'
+import { DeleteButton } from '@/components/ui/deleteButton'
+import { ORGANIZER_ROLE, CHAIR_ROLE, EVENT_ROLES_LABELS } from '@/lib/Constants'
+import { LoaderSpinner } from '@/components/Loader'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { X } from 'lucide-react'
 
-export default function MembersTable({ members, onRoleChange, isPending, onDeleteMember }) {
-  const [filter, setFilter] = useState(null);
+export default function MembersTable({
+  members,
+  onRoleChange,
+  isPending,
+  onDeleteMember,
+}) {
+  const [filter, setFilter] = useState(null)
 
   const filteredMembers = filter
     ? members.filter((member) => member.role === filter)
-    : members;
+    : members
 
   const title = filter
     ? `Listado de miembros por rol: ${EVENT_ROLES_LABELS[filter]}`
-    : "Listado de miembros";
+    : 'Listado de miembros'
 
   return (
     <Card className="w-full">
@@ -55,14 +56,14 @@ export default function MembersTable({ members, onRoleChange, isPending, onDelet
         )}
       </CardContent>
     </Card>
-  );
+  )
 }
 
 function RoleFilter({ currentFilter, onFilterChange }) {
   return (
     <div className="flex items-center space-x-2">
       <Select
-        value={currentFilter || ""}
+        value={currentFilter || ''}
         onValueChange={(value) => onFilterChange(value)}
       >
         <SelectTrigger className="w-[180px]">
@@ -88,7 +89,7 @@ function RoleFilter({ currentFilter, onFilterChange }) {
         </Button>
       )}
     </div>
-  );
+  )
 }
 
 function Member({ member, index, onRoleChange, onDeleteMember }) {
@@ -100,7 +101,7 @@ function Member({ member, index, onRoleChange, onDeleteMember }) {
             <AvatarImage
               src={`https://api.dicebear.com/6.x/initials/svg?seed=${member.username}`}
             />
-            <AvatarFallback>{member.username.charAt(0) || ""}</AvatarFallback>
+            <AvatarFallback>{member.username.charAt(0) || ''}</AvatarFallback>
           </Avatar>
           <div className="flex-grow min-w-0">
             <p className="text-sm font-medium truncate">{member.username}</p>
@@ -128,7 +129,7 @@ function Member({ member, index, onRoleChange, onDeleteMember }) {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }
 
 function MembersPending() {
@@ -136,5 +137,5 @@ function MembersPending() {
     <div className="w-full flex justify-center items-center">
       <LoaderSpinner size={32} />
     </div>
-  );
+  )
 }
