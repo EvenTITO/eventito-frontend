@@ -24,9 +24,11 @@ import ImageHeader from './_components/ImageHeader'
 import ButtonWithLoading from '@/components/ButtonWithLoading'
 import {
   useEditEvent,
-  useUploadEventImage,
   useUpdateEventStatus,
+  useUploadEventImage,
 } from '@/hooks/manage/generalHooks'
+import { canStartEvent } from '@/lib/utils.js'
+import * as Tooltip from '@radix-ui/react-tooltip'
 
 export default function Page({ eventInfo }) {
   const [event, setEvent] = useState(eventInfo)
@@ -101,15 +103,21 @@ export default function Page({ eventInfo }) {
             <MotionH1 className="text-4xl font-bold">{event.title}</MotionH1>
           )}
           {!isEditing && (
-            <Button
-              variant="table"
-              size="sm"
-              onClick={() => setIsEditing(true)}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <Edit2 className="h-4 w-4 mr-2" />
-              Editar
-            </Button>
+            <div className="flex gap-2 items-center">
+              <Button
+                variant="table"
+                size="sm"
+                onClick={() => setIsEditing(true)}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <Edit2 className="h-4 w-4 mr-2" />
+                Editar
+              </Button>
+              <EventStatus
+                event={event}
+                publishEvent={publishEvent}
+              ></EventStatus>
+            </div>
           )}
         </div>
 
@@ -251,25 +259,55 @@ export default function Page({ eventInfo }) {
             </ButtonWithLoading>
           </div>
         )}
-        <EventStatus event={event} publishEvent={publishEvent}></EventStatus>
       </MotionMain>
     </ContainerOrganizationPage>
   )
 }
 
 function EventStatus({ event, publishEvent }) {
-  const canPublishEvent = event.status === CREATED_STATUS
+  if (event.status !== CREATED_STATUS) {
+    return null
+  }
+  const canPublishEvent = canStartEvent(event)
   return (
     <>
-      {canPublishEvent && (
-        <Button
-          variant="outline"
-          className="w-[240px] justify-start text-left font-normal"
-          onClick={publishEvent}
-        >
-          Publicar el evento
-        </Button>
-      )}
+      <Tooltip.Provider>
+        <Tooltip.Root>
+          <Tooltip.Trigger asChild>
+            <span>
+              <Button
+                size="sm"
+                onClick={publishEvent}
+                disabled={!canPublishEvent}
+              >
+                Publicar el evento
+              </Button>
+            </span>
+          </Tooltip.Trigger>
+          {!canPublishEvent && (
+            <Tooltip.Content
+              side="top"
+              align="center"
+              style={{
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                color: 'white',
+                padding: '8px 12px',
+                borderRadius: '8px',
+                fontSize: '14px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                backdropFilter: 'blur(4px)',
+                zIndex: 1000,
+                maxWidth: '200px',
+                whiteSpace: 'normal',
+                wordWrap: 'break-word',
+              }}
+            >
+              {'Para poder hacer el evento publico se deben completar las ' +
+                'fechas obligatorias y definir al menos un track y una tarifa.'}
+            </Tooltip.Content>
+          )}
+        </Tooltip.Root>
+      </Tooltip.Provider>
     </>
   )
 }
