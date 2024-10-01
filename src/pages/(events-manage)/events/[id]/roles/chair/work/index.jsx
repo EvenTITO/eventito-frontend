@@ -1,38 +1,21 @@
 import FetchStatus from '@/components/FetchStatus'
 import Page from './page'
-import {
-  useGetReviewersForWork,
-  useGetReviewsForWork,
-} from '@/hooks/events/chairHooks'
-import { useGetWorkById } from '@/hooks/events/worksHooks'
+import { useGetWorkById, useGetWorkInfo } from '@/hooks/events/worksHooks'
 
 export default function ChairWorkPage() {
-  const workInfo = useGetWorkById()
-  const reviews = useGetReviewsForWork()
-  const reviewers = useGetReviewersForWork()
-  const reviewsWithSubmissionNumber = getReviewsData(
-    workInfo.data,
-    reviews.data
-  )
-  const reviewersWithStatus = getReviewersData(
-    workInfo.data,
-    reviews.data,
-    reviewers.data
-  )
+  const { workInfo, reviews, reviewers, isPending, error } = useGetWorkInfo()
+  const reviewsWithSubmissionNumber = getReviewsData(workInfo, reviews)
+  const reviewersWithStatus = getReviewersData(workInfo, reviews, reviewers)
 
   const component = (
     <Page
-      selectedWork={workInfo.data}
+      selectedWork={workInfo}
       reviews={reviewsWithSubmissionNumber}
       reviewers={reviewersWithStatus}
     />
   )
   return (
-    <FetchStatus
-      component={component}
-      isPending={workInfo.isPending || reviews.isPending || reviewers.isPending}
-      error={workInfo.error || reviews.error || reviewers.error}
-    />
+    <FetchStatus component={component} isPending={isPending} error={error} />
   )
 }
 

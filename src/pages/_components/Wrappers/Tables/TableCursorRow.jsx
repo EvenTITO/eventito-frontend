@@ -1,4 +1,4 @@
-import { TableRow } from './ui/table'
+import { TableRow } from '@/components/ui/table'
 
 export default function TableCursorRow({ onClick, children }) {
   return (

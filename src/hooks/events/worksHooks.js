@@ -9,6 +9,21 @@ import {
 } from '@/services/api/works/queries'
 import { convertWork } from '@/services/api/works/conversor'
 import { useGetMyWorks } from './authorHooks'
+import { useGetReviewersForWork, useGetReviewsForWork } from './chairHooks'
+
+export function useGetWorkInfo() {
+  const workInfo = useGetWorkById()
+  const reviews = useGetReviewsForWork()
+  const reviewers = useGetReviewersForWork()
+
+  return {
+    workInfo: workInfo.data,
+    reviews: reviews.data,
+    reviewers: reviewers.data,
+    isPending: workInfo.isPending || reviews.isPending || reviewers.isPending,
+    error: workInfo.error || reviews.error || reviewers.error,
+  }
+}
 
 export function useGetWorkById() {
   const workId = getWorkId()

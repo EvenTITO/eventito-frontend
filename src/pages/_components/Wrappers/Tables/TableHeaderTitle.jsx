@@ -1,4 +1,4 @@
-import { TableHeader } from './ui/table'
+import { TableHeader } from '@/components/ui/table'
 
 export default function TableHeaderTitle({ children, headerColor }) {
   return (
