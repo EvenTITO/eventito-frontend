@@ -28,7 +28,7 @@ const createEventSlice = createSlice({
       state.location = action.payload.location
     },
     reset: (state) => {
-      state = initialState
+      Object.assign(state, initialState)
     },
   },
 })
