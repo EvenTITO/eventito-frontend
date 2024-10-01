@@ -1,4 +1,4 @@
-import TableContent from '@/components/TableContent'
+import TableContent from '@/pages/_components/Wrappers/Tables/TableContent'
 import ChairTable from './ChairTable'
 
 export default function Tables({ works, selectedTrack, handleRowClick }) {
