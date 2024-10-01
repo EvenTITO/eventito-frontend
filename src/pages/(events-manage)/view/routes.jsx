@@ -1,8 +1,8 @@
-import { Route, Routes } from "react-router-dom";
-import EventViewPage from "./[id]/index";
-import LayoutViewEvent from "./layout";
-import RegistrationPage from "./[id]/registration";
-import ProtectedRoute from "./protection";
+import { Route, Routes } from 'react-router-dom'
+import EventViewPage from './[id]/index'
+import LayoutViewEvent from './layout'
+import RegistrationPage from './[id]/registration'
+import ProtectedRoute from './protection'
 
 export default function RouteViewEvent() {
   return (
@@ -34,5 +34,5 @@ export default function RouteViewEvent() {
         />
       </Route>
     </Routes>
-  );
+  )
 }

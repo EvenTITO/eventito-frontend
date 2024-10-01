@@ -1,26 +1,25 @@
-import {Button} from "@/components/ui/button";
-import {ArrowLeft, LogOut} from "lucide-react";
-import {Link, useNavigate} from "react-router-dom";
-import {useLogout} from "@/hooks/auth/authHooks.js";
+import { Button } from '@/components/ui/button'
+import { ArrowLeft, LogOut } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useLogout } from '@/hooks/auth/authHooks.js'
 
-export default function Header({headerTitle}) {
+export default function Header({ headerTitle }) {
   const navigate = useNavigate()
   const logout = useLogout()
 
   const title =
-    headerTitle.length < 50 ? headerTitle : `${headerTitle.slice(0, 50)}...`;
+    headerTitle.length < 50 ? headerTitle : `${headerTitle.slice(0, 50)}...`
 
   const handleLogout = async () => {
-    await logout.mutateAsync();
-    console.log("Bye !!")
-    navigate("/")
+    await logout.mutateAsync()
+    console.log('Bye !!')
+    navigate('/')
   }
 
   return (
-    <header
-      className="h-16 bg-[#121827] flex items-center justify-between px-4 fixed top-0 left-0 right-0 z-50 text-white">
+    <header className="h-16 bg-[#121827] flex items-center justify-between px-4 fixed top-0 left-0 right-0 z-50 text-white">
       <div className="flex items-center">
-        <GoBack/>
+        <GoBack />
         <div className={`h-6 border-l border-gray-500 mx-4`}></div>
         <h1 className="text-lg">{title}</h1>
       </div>
@@ -30,22 +29,18 @@ export default function Header({headerTitle}) {
         </Button>
       </div>
     </header>
-  );
+  )
 }
 
 function GoBack() {
   return (
     <Link
-      to={"/home"}
+      to={'/home'}
       className={`flex items-center gap-2 text-tabNotSelected hover:text-white`}
-      style={{fontWeight: 'normal'}}
+      style={{ fontWeight: 'normal' }}
     >
-      <ArrowLeft className="h-4 w-4"/>
-      <span
-        style={{fontSize: '0.82rem'}}
-      >
-				inicio
-			</span>
+      <ArrowLeft className="h-4 w-4" />
+      <span style={{ fontSize: '0.82rem' }}>inicio</span>
     </Link>
-  );
+  )
 }

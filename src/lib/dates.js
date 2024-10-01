@@ -1,29 +1,29 @@
 function getDate(nameDate, eventData) {
-  return eventData?.dates.filter((date) => date.name === nameDate)[0];
+  return eventData?.dates.filter((date) => date.name === nameDate)[0]
 }
 
 export function getStartDate(eventData) {
-  return getDate("START_DATE", eventData);
+  return getDate('START_DATE', eventData)
 }
 
 export function getDeadlineSubmissions(eventData) {
-  return getDate("SUBMISSION_DEADLINE_DATE", eventData);
+  return getDate('SUBMISSION_DEADLINE_DATE', eventData)
 }
 
 export function dateIsValid(minDate = null, maxDate = null) {
-  let valid = true;
-  const now = new Date();
+  let valid = true
+  const now = new Date()
 
   if (minDate) {
     if (now < minDate) {
-      valid = false;
+      valid = false
     }
   }
 
   if (maxDate) {
     if (now > maxDate) {
-      valid = false;
+      valid = false
     }
   }
-  return valid;
+  return valid
 }

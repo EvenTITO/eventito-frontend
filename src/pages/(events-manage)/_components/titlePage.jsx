@@ -5,8 +5,8 @@ export default function TitlePage({ title, rightComponent }) {
         <h1 className="text-2xl font-bold mb-6">{title}</h1>
         {rightComponent}
       </div>
-    );
+    )
   }
 
-  return <h1 className="text-2xl font-bold mb-6">{title}</h1>;
+  return <h1 className="text-2xl font-bold mb-6">{title}</h1>
 }

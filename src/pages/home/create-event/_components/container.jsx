@@ -7,5 +7,5 @@ export function Container({ children }) {
         {children}
       </div>
     </div>
-  );
+  )
 }

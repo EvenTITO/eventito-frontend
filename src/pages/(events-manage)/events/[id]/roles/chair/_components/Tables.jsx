@@ -1,9 +1,9 @@
-import TableContent from "@/components/TableContent";
-import ChairTable from "./ChairTable";
+import TableContent from '@/components/TableContent'
+import ChairTable from './ChairTable'
 
 export default function Tables({ works, selectedTrack, handleRowClick }) {
-  const history = works.filter((work) => work.published);
-  const pendings = works.filter((work) => !work.published);
+  const history = works.filter((work) => work.published)
+  const pendings = works.filter((work) => !work.published)
 
   return (
     <>
@@ -19,5 +19,5 @@ export default function Tables({ works, selectedTrack, handleRowClick }) {
         </TableContent>
       ) : null}
     </>
-  );
+  )
 }

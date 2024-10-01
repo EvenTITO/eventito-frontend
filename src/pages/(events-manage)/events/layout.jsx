@@ -1,34 +1,34 @@
-import { Outlet } from "react-router-dom";
-import Header from "../_components/Header";
-import Sidebar from "./_components/Sidebar";
-import FetchStatus from "@/components/FetchStatus";
-import { useGetEvent } from "@/hooks/events/useEventState";
-import { useEffect } from "react";
-import { useNavigator } from "@/lib/navigation";
-import { getEventId } from "@/lib/utils";
-import EventSidebar from "./_components/Sidebar";
+import { Outlet } from 'react-router-dom'
+import Header from '../_components/Header'
+import Sidebar from './_components/Sidebar'
+import FetchStatus from '@/components/FetchStatus'
+import { useGetEvent } from '@/hooks/events/useEventState'
+import { useEffect } from 'react'
+import { useNavigator } from '@/lib/navigation'
+import { getEventId } from '@/lib/utils'
+import EventSidebar from './_components/Sidebar'
 
 export default function LayoutEvents() {
-  const { data: eventData, isPending } = useGetEvent();
+  const { data: eventData, isPending } = useGetEvent()
 
   const layoutComponent = (
     <Layout
-      eventTitle={eventData?.title || ""}
+      eventTitle={eventData?.title || ''}
       roles={eventData?.roles || []}
     />
-  );
+  )
   return (
     <FetchStatus
       isPending={isPending}
       error={false}
       component={layoutComponent}
     />
-  );
+  )
 }
 
 function Layout({ eventTitle, roles }) {
-  const eventId = getEventId();
-  const navigator = useNavigator();
+  const eventId = getEventId()
+  const navigator = useNavigator()
 
   return (
     <div className="flex flex-col h-screen bg-background">
@@ -41,5 +41,5 @@ function Layout({ eventTitle, roles }) {
         </main>
       </div>
     </div>
-  );
+  )
 }

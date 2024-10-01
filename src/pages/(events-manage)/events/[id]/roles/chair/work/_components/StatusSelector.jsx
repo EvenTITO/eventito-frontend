@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
+import { useState } from 'react'
+import { CalendarIcon } from 'lucide-react'
+import { format } from 'date-fns'
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Dialog,
   DialogContent,
@@ -12,23 +12,23 @@ import {
   DialogTitle,
   DialogFooter,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import ButtonWithLoading from "@/components/ButtonWithLoading";
+} from '@/components/ui/popover'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
-import { WORKS_STATUS_PUBLISH } from "@/lib/Constants"
-import { keyValueToValueLabel } from "@/lib/utils";
+import { WORKS_STATUS_PUBLISH } from '@/lib/Constants'
+import { keyValueToValueLabel } from '@/lib/utils'
 
 const statuses = keyValueToValueLabel(WORKS_STATUS_PUBLISH)
 
@@ -37,22 +37,22 @@ export default function StatusSelector({
   isPending,
   onSubmit,
 }) {
-  const [open, setOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState("");
-  const [date, setDate] = useState(null);
+  const [open, setOpen] = useState(false)
+  const [selectedStatus, setSelectedStatus] = useState('')
+  const [date, setDate] = useState(null)
 
   const handleStatusChange = (value) => {
-    setSelectedStatus(value);
-    if (value !== "RE_SUBMIT") {
-      setDate(null);
+    setSelectedStatus(value)
+    if (value !== 'RE_SUBMIT') {
+      setDate(null)
     }
-  };
+  }
 
   const handleContinue = async () => {
-    await submitChairReview({ status: selectedStatus, deadlineDate: date });
-    setOpen(false);
-    onSubmit();
-  };
+    await submitChairReview({ status: selectedStatus, deadlineDate: date })
+    setOpen(false)
+    onSubmit()
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -69,8 +69,8 @@ export default function StatusSelector({
               <SelectTrigger>
                 <SelectValue placeholder="Seleccionar estado" />
               </SelectTrigger>
-              <SelectContent>{
-                statuses.map((status) => (
+              <SelectContent>
+                {statuses.map((status) => (
                   <SelectItem key={status.value} value={status.value}>
                     {status.label}
                   </SelectItem>
@@ -78,20 +78,20 @@ export default function StatusSelector({
               </SelectContent>
             </Select>
           </div>
-          {selectedStatus === "RE_SUBMIT" && (
+          {selectedStatus === 'RE_SUBMIT' && (
             <div className="grid gap-2">
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    variant={"outline"}
+                    variant={'outline'}
                     className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !date && "text-muted-foreground",
+                      'w-full justify-start text-left font-normal',
+                      !date && 'text-muted-foreground'
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {date ? (
-                      format(date, "PPP")
+                      format(date, 'PPP')
                     ) : (
                       <span>Fecha límite de corrección</span>
                     )}
@@ -119,5 +119,5 @@ export default function StatusSelector({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

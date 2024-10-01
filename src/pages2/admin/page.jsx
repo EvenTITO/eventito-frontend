@@ -1,113 +1,128 @@
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Search, ChevronRight, Bell, User } from "lucide-react";
-import { useGetEventsWaitingApproval, useUpdateEventStatus } from "@/hooks/admin/adminEventsHooks"
-import { useAdminGetUsers, useAdminUpdateUserRole } from "@/hooks/admin/adminUsersHooks"
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { Search, ChevronRight, Bell, User } from 'lucide-react'
+import {
+  useGetEventsWaitingApproval,
+  useUpdateEventStatus,
+} from '@/hooks/admin/adminEventsHooks'
+import {
+  useAdminGetUsers,
+  useAdminUpdateUserRole,
+} from '@/hooks/admin/adminUsersHooks'
 
 export default function AdminPanel() {
-  const { isPending: eventsPending, error: eventsError, data: eventsWaitingApproval } = useGetEventsWaitingApproval();
-  const { mutate: updateEventStatus} = useUpdateEventStatus();
-  const { isPending: usersPending, error: usersError, data: users } = useAdminGetUsers();
-  const { mutate: updateUserRole} = useAdminUpdateUserRole();
-  
+  const {
+    isPending: eventsPending,
+    error: eventsError,
+    data: eventsWaitingApproval,
+  } = useGetEventsWaitingApproval()
+  const { mutate: updateEventStatus } = useUpdateEventStatus()
+  const {
+    isPending: usersPending,
+    error: usersError,
+    data: users,
+  } = useAdminGetUsers()
+  const { mutate: updateUserRole } = useAdminUpdateUserRole()
 
   if (!eventsPending) {
-    console.log(`events waiting approval: ${JSON.stringify(eventsWaitingApproval)}`)
+    console.log(
+      `events waiting approval: ${JSON.stringify(eventsWaitingApproval)}`
+    )
   }
 
   if (!usersPending) {
-    console.log(`users: ${JSON.stringify(users)}`);
+    console.log(`users: ${JSON.stringify(users)}`)
   }
-  const [activeTab, setActiveTab] = useState("events");
+  const [activeTab, setActiveTab] = useState('events')
 
   const [events, setEvents] = useState([
     {
-      id: "1",
-      title: "CONGRESO DE QUIMICA",
-      organizer: "Pepe Argento",
-      location: "FIUBA, Av. Paseo Colon 850",
-      contact: "Pepe",
-      organized_by: "Pepe Argento",
-      description: "Evento en FIUBA",
-      event_type: "CONFERENCE",
-      start_date: "2024-10-10",
-      end_date: "2024-11-10",
-      status: "pending",
+      id: '1',
+      title: 'CONGRESO DE QUIMICA',
+      organizer: 'Pepe Argento',
+      location: 'FIUBA, Av. Paseo Colon 850',
+      contact: 'Pepe',
+      organized_by: 'Pepe Argento',
+      description: 'Evento en FIUBA',
+      event_type: 'CONFERENCE',
+      start_date: '2024-10-10',
+      end_date: '2024-11-10',
+      status: 'pending',
     },
-  ]);
+  ])
 
   const [members, setMembers] = useState([
     {
-      id: "1",
-      name: "Alice Cooper",
-      email: "alice@example.com",
-      role: "Administrator",
+      id: '1',
+      name: 'Alice Cooper',
+      email: 'alice@example.com',
+      role: 'Administrator',
     },
     {
-      id: "2",
-      name: "Bob Dylan",
-      email: "bob@example.com",
-      role: "Event Creator",
+      id: '2',
+      name: 'Bob Dylan',
+      email: 'bob@example.com',
+      role: 'Event Creator',
     },
     {
-      id: "3",
-      name: "Charlie Brown",
-      email: "charlie@example.com",
-      role: "No Role",
+      id: '3',
+      name: 'Charlie Brown',
+      email: 'charlie@example.com',
+      role: 'No Role',
     },
-  ]);
+  ])
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [roleFilter, setRoleFilter] = useState("All");
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [newStatus, setNewStatus] = useState("");
+  const [searchTerm, setSearchTerm] = useState('')
+  const [roleFilter, setRoleFilter] = useState('All')
+  const [selectedEvent, setSelectedEvent] = useState(null)
+  const [newStatus, setNewStatus] = useState('')
 
   const handleStatusChange = (id, newStatus) => {
     setEvents(
       events.map((event) =>
-        event.id === id ? { ...event, status: newStatus } : event,
-      ),
-    );
-    setSelectedEvent(null);
-    setNewStatus("");
-  };
+        event.id === id ? { ...event, status: newStatus } : event
+      )
+    )
+    setSelectedEvent(null)
+    setNewStatus('')
+  }
 
   const handleRoleChange = (id, newRole) => {
     setMembers(
       members.map((member) =>
-        member.id === id ? { ...member, role: newRole } : member,
-      ),
-    );
-  };
+        member.id === id ? { ...member, role: newRole } : member
+      )
+    )
+  }
 
   const filteredEvents = events.filter(
     (event) =>
       event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.organizer.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+      event.organizer.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   const filteredMembers = members.filter(
     (member) =>
       (member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.email.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (roleFilter === "All" || member.role === roleFilter),
-  );
+      (roleFilter === 'All' || member.role === roleFilter)
+  )
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -117,14 +132,14 @@ export default function AdminPanel() {
             <h1 className="text-2xl font-bold">Panel de administrador</h1>
             <nav className="hidden md:flex space-x-6">
               <button
-                onClick={() => setActiveTab("events")}
-                className={`text-base ${activeTab === "events" ? "text-black" : "text-gray-400 hover:text-gray-600"}`}
+                onClick={() => setActiveTab('events')}
+                className={`text-base ${activeTab === 'events' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}`}
               >
                 Eventos
               </button>
               <button
-                onClick={() => setActiveTab("members")}
-                className={`text-base ${activeTab === "members" ? "text-black" : "text-gray-400 hover:text-gray-600"}`}
+                onClick={() => setActiveTab('members')}
+                className={`text-base ${activeTab === 'members' ? 'text-black' : 'text-gray-400 hover:text-gray-600'}`}
               >
                 Miembros
               </button>
@@ -142,9 +157,9 @@ export default function AdminPanel() {
         <div className="bg-white shadow rounded-lg p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold">
-              {activeTab === "events"
-                ? "Solicitudes de eventos"
-                : "Miembros y roles"}
+              {activeTab === 'events'
+                ? 'Solicitudes de eventos'
+                : 'Miembros y roles'}
             </h2>
             <div className="flex items-center space-x-2 w-64">
               <Search className="w-4 h-4 text-gray-500" />
@@ -157,7 +172,7 @@ export default function AdminPanel() {
             </div>
           </div>
 
-          {activeTab === "events" && (
+          {activeTab === 'events' && (
             <div className="space-y-4">
               {filteredEvents.map((event) => (
                 <div
@@ -175,7 +190,7 @@ export default function AdminPanel() {
             </div>
           )}
 
-          {activeTab === "members" && (
+          {activeTab === 'members' && (
             <div className="space-y-4">
               {filteredMembers.map((member) => (
                 <div
@@ -292,5 +307,5 @@ export default function AdminPanel() {
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import { Loader2 } from "lucide-react";
-import { Button } from "./ui/button";
+import { Loader2 } from 'lucide-react'
+import { Button } from './ui/button'
 
 export default function ButtonWithLoading({
   onClick,
@@ -31,5 +31,5 @@ export default function ButtonWithLoading({
         </>
       )}
     </Button>
-  );
+  )
 }

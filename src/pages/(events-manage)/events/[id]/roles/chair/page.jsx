@@ -1,11 +1,11 @@
-import React from "react";
-import { useNavigator } from "@/lib/navigation";
-import ContainerPage from "@/pages/(events-manage)/_components/containerPage";
-import TitlePage from "@/pages/(events-manage)/_components/titlePage";
-import TrackSelector from "./_components/TrackSelector";
-import Stats from "./_components/Stats";
-import Insights from "./_components/Insights";
-import Tables from "./_components/Tables";
+import React from 'react'
+import { useNavigator } from '@/lib/navigation'
+import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
+import TitlePage from '@/pages/(events-manage)/_components/titlePage'
+import TrackSelector from './_components/TrackSelector'
+import Stats from './_components/Stats'
+import Insights from './_components/Insights'
+import Tables from './_components/Tables'
 
 export default function Component({
   tracks,
@@ -13,17 +13,17 @@ export default function Component({
   setSelectedTrack,
   works,
 }) {
-  const navigator = useNavigator();
+  const navigator = useNavigator()
 
   const handleRowClick = (work) => {
-    const path = `works/${work.id}`;
-    navigator.foward(path);
-  };
+    const path = `works/${work.id}`
+    navigator.foward(path)
+  }
 
   return (
     <ContainerPage>
       <TitlePage
-        title={"Administración y envío de revisiones"}
+        title={'Administración y envío de revisiones'}
         rightComponent={
           <TrackSelector
             tracks={tracks}
@@ -44,5 +44,5 @@ export default function Component({
         <Insights works={works} />
       </div>
     </ContainerPage>
-  );
+  )
 }

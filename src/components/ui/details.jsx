@@ -1,6 +1,6 @@
-import { BadgeCheck } from "lucide-react";
-import { Badge } from "../ui/badge";
-import { cn } from "@/lib/utils"
+import { BadgeCheck } from 'lucide-react'
+import { Badge } from '../ui/badge'
+import { cn } from '@/lib/utils'
 import {
   Card,
   CardContent,
@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card'
 
 export function DetailsHeader({ event }) {
   return (
@@ -16,9 +16,7 @@ export function DetailsHeader({ event }) {
       <Card x-chunk="dashboard-06-chunk-0">
         <CardHeader>
           <CardTitle>{event.title}</CardTitle>
-          <CardDescription>
-            Del 10 al 15 de noviembre
-          </CardDescription>
+          <CardDescription>Del 10 al 15 de noviembre</CardDescription>
         </CardHeader>
         <CardContent>
           <h2 className="text-2xl">Descripción General</h2>
@@ -26,5 +24,5 @@ export function DetailsHeader({ event }) {
         </CardContent>
       </Card>
     </main>
-  );
+  )
 }

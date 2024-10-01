@@ -1,37 +1,37 @@
-import { Link } from "react-router-dom";
-import Logo from "@/components/Logo";
+import { Link } from 'react-router-dom'
+import Logo from '@/components/Logo'
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card'
 
 export default function ContainerAuthPage({ title, children, isLogin = true }) {
-  let footer = null;
+  let footer = null
   if (isLogin) {
     footer = (
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          ¿No tenés cuenta?{" "}
+          ¿No tenés cuenta?{' '}
           <Link to="/signup" className="text-primary hover:underline">
             Ir a registro
           </Link>
         </p>
       </CardFooter>
-    );
+    )
   } else {
     footer = (
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          ¿Ya tenés cuenta?{" "}
+          ¿Ya tenés cuenta?{' '}
           <Link to="/login" className="text-primary hover:underline">
             Ir a inicio de sesión
           </Link>
         </p>
       </CardFooter>
-    );
+    )
   }
 
   return (
@@ -50,5 +50,5 @@ export default function ContainerAuthPage({ title, children, isLogin = true }) {
         {footer}
       </Card>
     </div>
-  );
+  )
 }

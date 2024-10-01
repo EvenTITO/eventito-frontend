@@ -1,22 +1,30 @@
 export function convertInscriptions(inscriptions, payments = []) {
-  return inscriptions.map(i => convertInscription(i, payments.filter(p => p.inscription_id === i.id)));
+  return inscriptions.map((i) =>
+    convertInscription(
+      i,
+      payments.filter((p) => p.inscription_id === i.id)
+    )
+  )
 }
 
 export function convertInscription(inscription, payments = []) {
-  return inscription === undefined ? undefined
+  return inscription === undefined
+    ? undefined
     : {
-      id: inscription.id,
-      roles: inscription.roles,
-      affiliation: inscription.affiliation,
-      userId: inscription.user_id,
-      userName: inscription.user.fullname,
-      userEmail: inscription.user.email,
-      payments: convertPayments(payments)
-    }
+        id: inscription.id,
+        roles: inscription.roles,
+        affiliation: inscription.affiliation,
+        userId: inscription.user_id,
+        userName: inscription.user.fullname,
+        userEmail: inscription.user.email,
+        payments: convertPayments(payments),
+      }
 }
 
 export function convertPayments(payments) {
-  return payments === undefined || payments.length === 0 ? [] : payments.map(convertPayment);
+  return payments === undefined || payments.length === 0
+    ? []
+    : payments.map(convertPayment)
 }
 
 function convertPayment(payment) {

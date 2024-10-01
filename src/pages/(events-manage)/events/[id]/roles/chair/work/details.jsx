@@ -1,10 +1,10 @@
-import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { FileDown, Calendar, Users, User, BookOpen } from "lucide-react";
-import { format } from "date-fns";
-import ButtonWithLoading from "@/components/ButtonWithLoading";
+import React from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
+import { FileDown, Calendar, Users, User, BookOpen } from 'lucide-react'
+import { format } from 'date-fns'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
 export function DetailsTab({ selectedWork: work, getFileData, isPending }) {
   return (
@@ -21,7 +21,7 @@ export function DetailsTab({ selectedWork: work, getFileData, isPending }) {
         <div className="flex items-center space-x-2">
           <Users className="h-5 w-5 text-muted-foreground" />
           <span className="font-semibold">Autores:&nbsp;</span>
-          {work.authors.map(a => a.full_name).join(", ")}
+          {work.authors.map((a) => a.full_name).join(', ')}
         </div>
         <div className="flex items-center space-x-2">
           <BookOpen className="h-5 w-5 text-muted-foreground" />
@@ -31,7 +31,7 @@ export function DetailsTab({ selectedWork: work, getFileData, isPending }) {
         <div className="flex items-center space-x-2">
           <Calendar className="h-5 w-5 text-muted-foreground" />
           <span className="font-semibold">Última actualización:&nbsp;</span>
-          {format(work.lastUpdate, "MMMM d, yyyy")}
+          {format(work.lastUpdate, 'MMMM d, yyyy')}
         </div>
         <Separator />
         <div>
@@ -49,5 +49,5 @@ export function DetailsTab({ selectedWork: work, getFileData, isPending }) {
         </ButtonWithLoading>
       </CardContent>
     </Card>
-  );
+  )
 }

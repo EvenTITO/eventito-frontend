@@ -1,25 +1,37 @@
-import {Button} from "@/components/ui/button";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {PlusIcon} from "lucide-react";
-import {format} from "@formkit/tempo";
-import {useNavigator} from "@/lib/navigation";
-import {PAYMENT_STATUS_LABELS} from "@/lib/Constants.js";
-import {useNavigate} from "react-router-dom";
+import { Button } from '@/components/ui/button'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { PlusIcon } from 'lucide-react'
+import { format } from '@formkit/tempo'
+import { useNavigator } from '@/lib/navigation'
+import { PAYMENT_STATUS_LABELS } from '@/lib/Constants.js'
+import { useNavigate } from 'react-router-dom'
 
-export default function PaymentsTab({inscription}) {
-  const navigator = useNavigator();
-  const navigate = useNavigate();
+export default function PaymentsTab({ inscription }) {
+  const navigator = useNavigator()
+  const navigate = useNavigate()
 
-
-  const payments = inscription.payments;
+  const payments = inscription.payments
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Mis pagos</span>
-          <Button onClick={() => navigator.fowardWithState('/new-payment', {state: {inscriptionId: inscription.id}})}>
-            <PlusIcon className="mr-2 h-4 w-4"/>
+          <Button
+            onClick={() =>
+              navigator.fowardWithState('/new-payment', {
+                state: { inscriptionId: inscription.id },
+              })
+            }
+          >
+            <PlusIcon className="mr-2 h-4 w-4" />
             Nuevo pago
           </Button>
         </CardTitle>
@@ -46,7 +58,7 @@ export default function PaymentsTab({inscription}) {
               {payments.map((payment) => (
                 <TableRow key={payment.id}>
                   <TableCell className="font-medium">{payment.name}</TableCell>
-                  <TableCell>{format(payment.date, "long")}</TableCell>
+                  <TableCell>{format(payment.date, 'long')}</TableCell>
                   <TableCell>
                     {payment.works.length > 0 ? (
                       <ul className="list-disc list-inside">
@@ -68,5 +80,5 @@ export default function PaymentsTab({inscription}) {
         )}
       </CardContent>
     </Card>
-  );
+  )
 }

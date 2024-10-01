@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { ChevronRight, ChevronDown, Plus, X, Edit2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import ChairDialog from "./ChairDialog";
+import { useState } from 'react'
+import { ChevronRight, ChevronDown, Plus, X, Edit2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import ChairDialog from './ChairDialog'
 
 export default function TracksTable({
   initialTracks,
@@ -11,31 +11,31 @@ export default function TracksTable({
   onDelete,
   isPending,
 }) {
-  const [tracks, setTracks] = useState(initialTracks);
-  const [expandedTracks, setExpandedTracks] = useState(new Set());
+  const [tracks, setTracks] = useState(initialTracks)
+  const [expandedTracks, setExpandedTracks] = useState(new Set())
 
   const toggleTrackExpansion = (trackId) => {
     setExpandedTracks((prev) => {
-      const newSet = new Set(prev);
+      const newSet = new Set(prev)
       if (newSet.has(trackId)) {
-        newSet.delete(trackId);
+        newSet.delete(trackId)
       } else {
-        newSet.add(trackId);
+        newSet.add(trackId)
       }
-      return newSet;
-    });
-  };
+      return newSet
+    })
+  }
 
   async function updateChair(track, newEmail, oldEmail) {
-    await onUpdate(track, newEmail, oldEmail);
+    await onUpdate(track, newEmail, oldEmail)
   }
 
   async function deleteChair(track, email) {
-    await onDelete(track, email);
+    await onDelete(track, email)
   }
 
   async function addChair(track, newEmail) {
-    await onAdd(track, newEmail);
+    await onAdd(track, newEmail)
   }
 
   return (
@@ -53,7 +53,7 @@ export default function TracksTable({
         />
       ))}
     </div>
-  );
+  )
 }
 
 function TrackItem({
@@ -130,5 +130,5 @@ function TrackItem({
         </div>
       )}
     </div>
-  );
+  )
 }

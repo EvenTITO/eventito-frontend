@@ -1,46 +1,46 @@
-import { useState } from "react";
+import { useState } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import ButtonWithLoading from "@/components/ButtonWithLoading";
-import { useAddAuthorToWork } from "@/hooks/events/authorHooks";
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
+import { useAddAuthorToWork } from '@/hooks/events/authorHooks'
 
 export default function AddAuthorDialog() {
-  const [email, setEmail] = useState("");
-  const [affiliation, setAffiliation] = useState("");
-  const [isSpeaker, setIsSpeaker] = useState(false);
-  const [notifyAuthor, setNotifyAuthor] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState('')
+  const [affiliation, setAffiliation] = useState('')
+  const [isSpeaker, setIsSpeaker] = useState(false)
+  const [notifyAuthor, setNotifyAuthor] = useState(false)
+  const [open, setOpen] = useState(false)
 
-  const { mutateAsync: addAuthor, isPending, error } = useAddAuthorToWork();
+  const { mutateAsync: addAuthor, isPending, error } = useAddAuthorToWork()
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (email) {
       await addAuthor({
         authorData: {
           email,
-          full_name: "usuario",
+          full_name: 'usuario',
           affiliation,
           isSpeaker,
           notifyAuthor,
         },
-      });
-      setEmail("");
-      setAffiliation("");
-      setIsSpeaker(false);
-      setNotifyAuthor(false);
-      setOpen(false);
+      })
+      setEmail('')
+      setAffiliation('')
+      setIsSpeaker(false)
+      setNotifyAuthor(false)
+      setOpen(false)
     }
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -101,5 +101,5 @@ export default function AddAuthorDialog() {
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

@@ -1,20 +1,20 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { cn } from "@/lib/utils";
-import { CheckIcon } from "lucide-react";
-import { addWorkId, removeWorkId } from "@/state/events/newPaymentSlice";
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { cn } from '@/lib/utils'
+import { CheckIcon } from 'lucide-react'
+import { addWorkId, removeWorkId } from '@/state/events/newPaymentSlice'
 
 export default function FormSelectWorks({ works }) {
-  const [selectedWorks, setSelectedWorks] = useState([]);
-  const dispatch = useDispatch();
+  const [selectedWorks, setSelectedWorks] = useState([])
+  const dispatch = useDispatch()
 
   function toggleWorkSelection(work) {
     if (selectedWorks.includes(work.id)) {
-      setSelectedWorks(selectedWorks.filter((id) => id !== work.id));
-      dispatch(removeWorkId(work.id));
+      setSelectedWorks(selectedWorks.filter((id) => id !== work.id))
+      dispatch(removeWorkId(work.id))
     } else {
-      setSelectedWorks([...selectedWorks, work.id]);
-      dispatch(addWorkId(work.id));
+      setSelectedWorks([...selectedWorks, work.id])
+      dispatch(addWorkId(work.id))
     }
   }
 
@@ -28,10 +28,10 @@ export default function FormSelectWorks({ works }) {
           <div
             key={work.id}
             className={cn(
-              "p-4 border rounded-lg cursor-pointer transition-all",
+              'p-4 border rounded-lg cursor-pointer transition-all',
               selectedWorks.includes(work.id)
-                ? "border-primary bg-primary/10"
-                : "border-gray-200 hover:border-primary",
+                ? 'border-primary bg-primary/10'
+                : 'border-gray-200 hover:border-primary'
             )}
             onClick={() => toggleWorkSelection(work)}
           >
@@ -39,10 +39,10 @@ export default function FormSelectWorks({ works }) {
               <div className="flex items-center space-x-2">
                 <div
                   className={cn(
-                    "w-5 h-5 rounded border-2 flex items-center justify-center",
+                    'w-5 h-5 rounded border-2 flex items-center justify-center',
                     selectedWorks.includes(work.id)
-                      ? "border-primary bg-primary text-white"
-                      : "border-gray-400",
+                      ? 'border-primary bg-primary text-white'
+                      : 'border-gray-400'
                   )}
                 >
                   {selectedWorks.includes(work.id) && (
@@ -57,5 +57,5 @@ export default function FormSelectWorks({ works }) {
         ))}
       </div>
     </div>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom'
 
 export default function NoPermissions() {
-  return <Outlet />;
+  return <Outlet />
 }

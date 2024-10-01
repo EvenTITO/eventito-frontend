@@ -4,11 +4,11 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
 
 export default function ViewOnlySubmission({ workData }) {
-  const { title, track, keywords, abstract, pdfFileName } = workData;
+  const { title, track, keywords, abstract, pdfFileName } = workData
 
   return (
     <Card>
@@ -43,11 +43,11 @@ export default function ViewOnlySubmission({ workData }) {
           <div className="space-y-2">
             <Label htmlFor="pdf">PDF</Label>
             <div className="p-2 border rounded-md">
-              {pdfFileName || "No se ha cargado ningún archivo"}
+              {pdfFileName || 'No se ha cargado ningún archivo'}
             </div>
           </div>
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

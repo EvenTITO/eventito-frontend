@@ -1,0 +1,17 @@
+# Ignore build output:
+build
+
+# Ignore coverage reports:
+coverage
+
+# Ignore node_modules:
+node_modules
+
+# Ignore all HTML files:
+**/*.html
+
+# Ignore specific files:
+tailwind.config.js
+postcss.config.js
+vite.config.js
+node_modules/

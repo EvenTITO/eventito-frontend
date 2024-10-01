@@ -1,30 +1,53 @@
-import {useState} from "react";
-import {Table, TableBody, TableCell, TableHead, TableRow,} from "@/components/ui/table";
-import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,} from "@/components/ui/dialog";
-import {format} from "@formkit/tempo";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Button} from "@/components/ui/button";
-import {Calendar} from "@/components/ui/calendar";
-import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover";
-import {CalendarIcon} from "lucide-react";
-import TableHeaderTitle from "@/components/TableHeaderTitle";
-import TableCursorRow from "@/components/TableCursorRow";
-import TableContent from "@/components/TableContent";
-import {REVIEW_STATUS_LABELS} from "@/lib/Constants.js";
+import { useState } from 'react'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@/components/ui/table'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { format } from '@formkit/tempo'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { CalendarIcon } from 'lucide-react'
+import TableHeaderTitle from '@/components/TableHeaderTitle'
+import TableCursorRow from '@/components/TableCursorRow'
+import TableContent from '@/components/TableContent'
+import { REVIEW_STATUS_LABELS } from '@/lib/Constants.js'
 
-export default function ReviewsTable({reviews, reviewers, updateReviewDeadline}) {
-  const [selectedReview, setSelectedReview] = useState(null);
-  const [selectedReviewer, setSelectedReviewer] = useState(null);
-  const [newDeadline, setNewDeadline] = useState(null);
+export default function ReviewsTable({
+  reviews,
+  reviewers,
+  updateReviewDeadline,
+}) {
+  const [selectedReview, setSelectedReview] = useState(null)
+  const [selectedReviewer, setSelectedReviewer] = useState(null)
+  const [newDeadline, setNewDeadline] = useState(null)
 
   const handleUpdateDeadline = async () => {
     if (selectedReviewer && newDeadline) {
-      await updateReviewDeadline({reviewerId: selectedReviewer.id, deadline: newDeadline});
-      setSelectedReviewer(null);
-      setNewDeadline(null);
+      await updateReviewDeadline({
+        reviewerId: selectedReviewer.id,
+        deadline: newDeadline,
+      })
+      setSelectedReviewer(null)
+      setNewDeadline(null)
     }
-  };
+  }
 
   return (
     <div className="flex space-x-8">
@@ -53,13 +76,13 @@ export default function ReviewsTable({reviews, reviewers, updateReviewDeadline})
             {selectedReview?.reviewForm.map((item, index) => (
               <div key={index}>
                 <h3 className="font-semibold">{item.question}</h3>
-                {
-                  item.type_question === "multiple_choice"
-                  && item.options
-                  && item.more_than_one_answer_allowed
-                    ? item.answer.map(a => (<p>{a}</p>))
-                    : (<p>{item.answer}</p>)
-                }
+                {item.type_question === 'multiple_choice' &&
+                item.options &&
+                item.more_than_one_answer_allowed ? (
+                  item.answer.map((a) => <p>{a}</p>)
+                ) : (
+                  <p>{item.answer}</p>
+                )}
               </div>
             ))}
           </div>
@@ -69,8 +92,8 @@ export default function ReviewsTable({reviews, reviewers, updateReviewDeadline})
       <Dialog
         open={selectedReviewer !== null}
         onOpenChange={() => {
-          setSelectedReviewer(null);
-          setNewDeadline(null);
+          setSelectedReviewer(null)
+          setNewDeadline(null)
         }}
       >
         <DialogContent>
@@ -86,7 +109,7 @@ export default function ReviewsTable({reviews, reviewers, updateReviewDeadline})
               </label>
               <p>
                 {selectedReviewer &&
-                  format(new Date(selectedReviewer.deadline), "long")}
+                  format(new Date(selectedReviewer.deadline), 'long')}
               </p>
             </div>
             <div>
@@ -99,9 +122,9 @@ export default function ReviewsTable({reviews, reviewers, updateReviewDeadline})
                     variant="outline"
                     className="w-full justify-start text-left font-normal"
                   >
-                    <CalendarIcon className="mr-2 h-4 w-4"/>
+                    <CalendarIcon className="mr-2 h-4 w-4" />
                     {newDeadline ? (
-                      format(newDeadline, "long")
+                      format(newDeadline, 'long')
                     ) : (
                       <span>Seleccionar fecha</span>
                     )}
@@ -129,12 +152,12 @@ export default function ReviewsTable({reviews, reviewers, updateReviewDeadline})
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }
 
-function CompletedReviews({reviews, setSelectedReview}) {
+function CompletedReviews({ reviews, setSelectedReview }) {
   return (
-    <TableContent title={"Revisiones finalizadas"}>
+    <TableContent title={'Revisiones finalizadas'}>
       <Table>
         <TableHeaderTitle>
           <TableRow>
@@ -145,7 +168,7 @@ function CompletedReviews({reviews, setSelectedReview}) {
           </TableRow>
         </TableHeaderTitle>
         <TableBody>
-          {reviews.map((review, index) =>
+          {reviews.map((review, index) => (
             <TableCursorRow
               key={index}
               onClick={() => setSelectedReview(review)}
@@ -154,17 +177,17 @@ function CompletedReviews({reviews, setSelectedReview}) {
               <TableCell>{review.submissionNumber + 1}</TableCell>
               <TableCell>{REVIEW_STATUS_LABELS[review.status]}</TableCell>
               <TableCell>
-                {format(new Date(review.creationDate), "long")}
+                {format(new Date(review.creationDate), 'long')}
               </TableCell>
             </TableCursorRow>
-          )}
+          ))}
         </TableBody>
       </Table>
     </TableContent>
-  );
+  )
 }
 
-function AllReviewers({reviewers, setSelectedReviewer}) {
+function AllReviewers({ reviewers, setSelectedReviewer }) {
   return (
     <Card>
       <CardHeader>
@@ -187,13 +210,15 @@ function AllReviewers({reviewers, setSelectedReviewer}) {
               <div className="flex-grow">
                 <p className="text-sm font-medium">{reviewer.reviewer}</p>
                 <p className="text-sm text-muted-foreground">
-                  Fecha límite: {format(new Date(reviewer.deadline), "long")}
+                  Fecha límite: {format(new Date(reviewer.deadline), 'long')}
                 </p>
               </div>
               <div
                 className="w-3 h-3 rounded-full bg-green-500"
                 style={{
-                  backgroundColor: reviewer.reviewAlreadySubmitted ? "green" : "orange",
+                  backgroundColor: reviewer.reviewAlreadySubmitted
+                    ? 'green'
+                    : 'orange',
                 }}
               />
             </div>
@@ -201,5 +226,5 @@ function AllReviewers({reviewers, setSelectedReviewer}) {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

@@ -1,53 +1,53 @@
-import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
-import { Mail, Lock } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { useSelector } from "react-redux";
+import { useState } from 'react'
+import { Link, Navigate } from 'react-router-dom'
+import { Mail, Lock } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { useSelector } from 'react-redux'
 import {
   useLoginWithEmailAndPassword,
   useLoginWithGoogle,
-} from "@/hooks/auth/authHooks";
-import ButtonWithLoading from "@/components/ButtonWithLoading";
-import ContainerAuthPage from "../_components/ContainerAuthPage";
-import GoogleButton from "../_components/GoogleButton";
+} from '@/hooks/auth/authHooks'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
+import ContainerAuthPage from '../_components/ContainerAuthPage'
+import GoogleButton from '../_components/GoogleButton'
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { currentUser } = useSelector((state) => state.user);
-  const { idUser, email: authEmail } = useSelector((state) => state.auth);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const { currentUser } = useSelector((state) => state.user)
+  const { idUser, email: authEmail } = useSelector((state) => state.auth)
 
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const loginMutation = useLoginWithEmailAndPassword();
-  const googleLoginMutation = useLoginWithGoogle();
+  const loginMutation = useLoginWithEmailAndPassword()
+  const googleLoginMutation = useLoginWithGoogle()
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      await loginMutation.mutateAsync({ email, password });
+      await loginMutation.mutateAsync({ email, password })
     } catch (error) {
-      setError(true);
-      setErrorMessage("Usuario y/o contraseña inválidos");
+      setError(true)
+      setErrorMessage('Usuario y/o contraseña inválidos')
     }
-  };
+  }
 
   const onGoogleLogin = async () => {
     try {
-      await googleLoginMutation.mutateAsync();
+      await googleLoginMutation.mutateAsync()
     } catch (error) {
-      setError(true);
-      setErrorMessage("Error al iniciar sesión con Google");
+      setError(true)
+      setErrorMessage('Error al iniciar sesión con Google')
     }
-  };
+  }
 
   if (currentUser) {
-    return <Navigate to="/home" replace />;
+    return <Navigate to="/home" replace />
   }
 
   if (idUser && authEmail) {
-    return <Navigate to="/complete-register" replace />;
+    return <Navigate to="/complete-register" replace />
   }
 
   return (
@@ -112,5 +112,5 @@ export default function LoginPage() {
       </div>
       <GoogleButton text="Continuar con Google" onClick={onGoogleLogin} />
     </ContainerAuthPage>
-  );
+  )
 }

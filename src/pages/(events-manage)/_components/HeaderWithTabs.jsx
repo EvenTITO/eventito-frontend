@@ -1,25 +1,25 @@
-import { Button } from "@/components/ui/button";
-import {List, ChevronDown, ArrowLeft, LogOut} from "lucide-react";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import { Button } from '@/components/ui/button'
+import { List, ChevronDown, ArrowLeft, LogOut } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn, getEventId } from "@/lib/utils";
-import {useLogout} from "@/hooks/auth/authHooks.js";
+} from '@/components/ui/dropdown-menu'
+import { cn, getEventId } from '@/lib/utils'
+import { useLogout } from '@/hooks/auth/authHooks.js'
 
 export default function HeaderWithTabs({ toggleSidebar, tabs }) {
-  const location = useLocation().pathname;
-  const eventId = getEventId();
+  const location = useLocation().pathname
+  const eventId = getEventId()
   const navigate = useNavigate()
   const logout = useLogout()
 
   const handleLogout = async () => {
-    await logout.mutateAsync();
-    console.log("Bye !!")
-    navigate("/")
+    await logout.mutateAsync()
+    console.log('Bye !!')
+    navigate('/')
   }
 
   return (
@@ -37,7 +37,7 @@ export default function HeaderWithTabs({ toggleSidebar, tabs }) {
         </Button>
         <nav className="hidden md:flex space-x-6">
           {tabs.map((tab) =>
-            tab.type === "parent" ? (
+            tab.type === 'parent' ? (
               <ParentTab key={tab.id} tab={tab} />
             ) : (
               <RegularTab
@@ -47,17 +47,17 @@ export default function HeaderWithTabs({ toggleSidebar, tabs }) {
                   tab.to.split(eventId)[1] === location.split(eventId)[1]
                 }
               />
-            ),
+            )
           )}
         </nav>
       </div>
       <div className="flex items-center space-x-4">
-        <Button onClick={handleLogout} variant="ghost" size="icon">
+        <Button onClick={handleLogout} variant="table" size="icon">
           <LogOut className="h-5 w-5" />
         </Button>
       </div>
     </header>
-  );
+  )
 }
 
 function ParentTab({ tab }) {
@@ -76,7 +76,7 @@ function ParentTab({ tab }) {
         {tab.children?.map((childTab) => (
           <DropdownMenuItem key={childTab.id} asChild>
             <Link
-              to={childTab.to || "#"}
+              to={childTab.to || '#'}
               className="block w-full px-2 py-2 text-sm"
             >
               {childTab.label}
@@ -85,22 +85,22 @@ function ParentTab({ tab }) {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }
 
 function RegularTab({ tab, isSelected }) {
   const style = isSelected
-    ? "text-white hover:text-gray-100"
-    : "text-tabNotSelected hover:text-gray-300";
+    ? 'text-white hover:text-gray-100'
+    : 'text-tabNotSelected hover:text-gray-300'
 
   return (
     <Link
-      to={tab.to || "#"}
-      className={cn("flex items-center space-x-1", style)}
+      to={tab.to || '#'}
+      className={cn('flex items-center space-x-1', style)}
     >
       {tab.label}
     </Link>
-  );
+  )
 }
 
 function GoBack() {
@@ -108,10 +108,10 @@ function GoBack() {
     <Link
       to="/home"
       className="flex items-center gap-2 text-tabNotSelected hover:text-white"
-      style={{ fontWeight: "normal" }}
+      style={{ fontWeight: 'normal' }}
     >
       <ArrowLeft className="h-4 w-4" />
-      <span style={{ fontSize: "0.82rem" }}>inicio</span>
+      <span style={{ fontSize: '0.82rem' }}>inicio</span>
     </Link>
-  );
+  )
 }

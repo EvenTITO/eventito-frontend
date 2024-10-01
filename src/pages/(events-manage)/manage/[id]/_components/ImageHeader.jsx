@@ -5,10 +5,10 @@ export default function ImageHeader({ image }) {
         src={image.url}
         onError={(e) => {
           e.target.src =
-            "https://cphfcrflaa.cloudimg.io/_bcuimages/academic-conference-primary-132249422941807450.jpg";
+            'https://cphfcrflaa.cloudimg.io/_bcuimages/academic-conference-primary-132249422941807450.jpg'
         }}
         className="w-full h-full object-cover"
       />
     </div>
-  );
+  )
 }

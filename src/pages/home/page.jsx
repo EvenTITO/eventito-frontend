@@ -1,33 +1,33 @@
-import FetchStatus from "@/components/FetchStatus";
-import { getPublicEvents } from "@/services/api/events/general/hooks";
+import FetchStatus from '@/components/FetchStatus'
+import { getPublicEvents } from '@/services/api/events/general/hooks'
 
 export default function HomePage() {
-  const { isPending, error, data: events } = getPublicEvents();
+  const { isPending, error, data: events } = getPublicEvents()
 
-  const component = <HomeMain events={events} />;
+  const component = <HomeMain events={events} />
   return (
     <FetchStatus isPending={isPending} error={error} component={component} />
-  );
+  )
 }
 
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { CalendarDays, MapPin, Search, ArrowRight } from "lucide-react";
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { CalendarDays, MapPin, Search, ArrowRight } from 'lucide-react'
 
 function HomeMain({ events }) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('')
 
   const filteredEvents = events.filter((event) =>
-    event.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+    event.title.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   return (
     <>
@@ -75,7 +75,7 @@ function HomeMain({ events }) {
         </div>
       </section>
     </>
-  );
+  )
 }
 
 function EventCard({ event }) {
@@ -90,13 +90,13 @@ function EventCard({ event }) {
           <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
             <CalendarDays className="h-4 w-4" />
             <span>
-              Inicio: {event.startDate ? event.startDate : "A definir"}
+              Inicio: {event.startDate ? event.startDate : 'A definir'}
             </span>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
             <CalendarDays className="h-4 w-4" />
             <span>
-              Ultimo dia: {event.endData ? event.endData : "A definir"}
+              Ultimo dia: {event.endData ? event.endData : 'A definir'}
             </span>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
@@ -110,5 +110,5 @@ function EventCard({ event }) {
         </CardContent>
       </Card>
     </Link>
-  );
+  )
 }

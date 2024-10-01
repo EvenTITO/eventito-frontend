@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Label } from "@/components/ui/label";
-import { addAbstract } from "@/state/events/newWorkSlice";
-import { Textarea } from "@/components/ui/textarea";
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Label } from '@/components/ui/label'
+import { addAbstract } from '@/state/events/newWorkSlice'
+import { Textarea } from '@/components/ui/textarea'
 
 export default function FormContentData() {
-  const dispatch = useDispatch();
-  const [abstract, setAbstract] = useState(null);
+  const dispatch = useDispatch()
+  const [abstract, setAbstract] = useState(null)
   function changeAbstract(newAbstract) {
-    setAbstract(newAbstract);
-    dispatch(addAbstract(newAbstract));
+    setAbstract(newAbstract)
+    dispatch(addAbstract(newAbstract))
   }
 
   return (
@@ -27,5 +27,5 @@ export default function FormContentData() {
         />
       </div>
     </div>
-  );
+  )
 }

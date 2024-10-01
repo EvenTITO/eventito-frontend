@@ -1,12 +1,12 @@
-import { WORKS_STATUS_LABELS } from "@/lib/Constants";
-import StatCard from "./StatCard";
+import { WORKS_STATUS_LABELS } from '@/lib/Constants'
+import StatCard from './StatCard'
 
 export default function Stats({ works }) {
-  const totalWorks = works.length;
-  const publishedWorks = works.filter((work) => work.published).length;
+  const totalWorks = works.length
+  const publishedWorks = works.filter((work) => work.published).length
   const acceptedWorks = works.filter(
-    (work) => WORKS_STATUS_LABELS[work.status] === "Aceptado",
-  ).length;
+    (work) => WORKS_STATUS_LABELS[work.status] === 'Aceptado'
+  ).length
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
@@ -26,5 +26,5 @@ export default function Stats({ works }) {
         icon="CheckCircle"
       />
     </div>
-  );
+  )
 }

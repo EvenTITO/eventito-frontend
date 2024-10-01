@@ -1,42 +1,42 @@
-import { useState } from "react";
+import { useState } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { format } from "@formkit/tempo";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Calendar } from "@/components/ui/calendar";
+} from '@/components/ui/dialog'
+import { format } from '@formkit/tempo'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useAddReviewer } from "@/hooks/events/chairHooks";
+} from '@/components/ui/popover'
+import { CalendarIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { useAddReviewer } from '@/hooks/events/chairHooks'
 
 export default function AddReviewerDialog() {
-  const [email, setEmail] = useState("");
-  const [deadline, setDeadline] = useState(null);
-  const [open, setOpen] = useState(false);
-  const { mutate: addReviewer } = useAddReviewer();
+  const [email, setEmail] = useState('')
+  const [deadline, setDeadline] = useState(null)
+  const [open, setOpen] = useState(false)
+  const { mutate: addReviewer } = useAddReviewer()
 
-  const { mutate, error } = useAddReviewer();
+  const { mutate, error } = useAddReviewer()
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (email && deadline) {
-      addReviewer({ email: email, deadline: deadline });
-      setEmail("");
-      setDeadline(null);
-      setOpen(false);
+      addReviewer({ email: email, deadline: deadline })
+      setEmail('')
+      setDeadline(null)
+      setOpen(false)
     }
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -63,15 +63,15 @@ export default function AddReviewerDialog() {
             <Popover>
               <PopoverTrigger asChild>
                 <Button
-                  variant={"outline"}
+                  variant={'outline'}
                   className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !deadline && "text-muted-foreground",
+                    'w-full justify-start text-left font-normal',
+                    !deadline && 'text-muted-foreground'
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {deadline ? (
-                    format(deadline, "full")
+                    format(deadline, 'full')
                   ) : (
                     <span>Seleccionar fecha</span>
                   )}
@@ -95,5 +95,5 @@ export default function AddReviewerDialog() {
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

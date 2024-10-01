@@ -1,10 +1,10 @@
-import { useNavigator } from "@/lib/navigation";
-import { ArrowLeft } from "lucide-react";
+import { useNavigator } from '@/lib/navigation'
+import { ArrowLeft } from 'lucide-react'
 
 export default function GoBackLink({ to, text }) {
-  const navigator = useNavigator(to);
+  const navigator = useNavigator(to)
   function handleBack() {
-    navigator.back();
+    navigator.back()
   }
 
   return (
@@ -15,5 +15,5 @@ export default function GoBackLink({ to, text }) {
     >
       <ArrowLeft className="mr-2 h-4 w-4" /> {text}
     </a>
-  );
+  )
 }

@@ -1,12 +1,12 @@
-import { PlusIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { PlusIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 
 export default function AddQuestion({
   isAddDialogOpen,
@@ -15,26 +15,26 @@ export default function AddQuestion({
 }) {
   const questionItems = [
     {
-      label: "Pregunta a desarrollar",
-      type_question: "simple_question",
+      label: 'Pregunta a desarrollar',
+      type_question: 'simple_question',
       more_than_one_question_allowed: false,
     },
     {
-      label: "Calificación",
-      type_question: "rating",
+      label: 'Calificación',
+      type_question: 'rating',
       more_than_one_question_allowed: false,
     },
     {
-      label: "Múltiple choice (opción única)",
-      type_question: "multiple_choice",
+      label: 'Múltiple choice (opción única)',
+      type_question: 'multiple_choice',
       more_than_one_question_allowed: false,
     },
     {
-      label: "Múltiple choice (múltiples opciones)",
-      type_question: "multiple_choice",
+      label: 'Múltiple choice (múltiples opciones)',
+      type_question: 'multiple_choice',
       more_than_one_question_allowed: true,
     },
-  ];
+  ]
 
   return (
     <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
@@ -55,7 +55,7 @@ export default function AddQuestion({
               onClick={() =>
                 handleAddQuestion(
                   question.type_question,
-                  question.more_than_one_question_allowed,
+                  question.more_than_one_question_allowed
                 )
               }
             >
@@ -65,5 +65,5 @@ export default function AddQuestion({
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

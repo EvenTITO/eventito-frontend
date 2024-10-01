@@ -1,26 +1,26 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { CalendarIcon } from "lucide-react";
-import { format } from "@formkit/tempo"
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { CalendarIcon } from 'lucide-react'
+import { format } from '@formkit/tempo'
+import { cn } from '@/lib/utils'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { useState } from "react";
-import { Container } from "./container";
-import { BottomContainer } from "./bottomContainer";
-import { useSelector } from "react-redux";
-import SubmitButton from "./SubmitButton";
+} from '@/components/ui/popover'
+import { useState } from 'react'
+import { Container } from './container'
+import { BottomContainer } from './bottomContainer'
+import { useSelector } from 'react-redux'
+import SubmitButton from './SubmitButton'
 
 export default function CreateEventStep3({ step, setStep }) {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [location, setLocation] = useState(null);
-  const { event_type: eventType } = useSelector((state) => state.createEvent);
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
+  const [location, setLocation] = useState(null)
+  const { event_type: eventType } = useSelector((state) => state.createEvent)
 
   if (step === 3) {
     return (
@@ -37,15 +37,15 @@ export default function CreateEventStep3({ step, setStep }) {
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
-                        variant={"outline"}
+                        variant={'outline'}
                         className={cn(
-                          "w-full justify-start text-left font-normal",
-                          !startDate && "text-muted-foreground",
+                          'w-full justify-start text-left font-normal',
+                          !startDate && 'text-muted-foreground'
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {startDate ? (
-                          format(startDate, "full")
+                          format(startDate, 'full')
                         ) : (
                           <span>Seleccionar fecha</span>
                         )}
@@ -62,21 +62,21 @@ export default function CreateEventStep3({ step, setStep }) {
                   </Popover>
                 </div>
 
-                {eventType === "conference" && (
+                {eventType === 'conference' && (
                   <div>
                     <Label>Fecha de finalizacion</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
-                          variant={"outline"}
+                          variant={'outline'}
                           className={cn(
-                            "w-full justify-start text-left font-normal",
-                            !endDate && "text-muted-foreground",
+                            'w-full justify-start text-left font-normal',
+                            !endDate && 'text-muted-foreground'
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
                           {endDate ? (
-                            format(endDate, "full")
+                            format(endDate, 'full')
                           ) : (
                             <span>Seleccionar fecha</span>
                           )}
@@ -118,8 +118,8 @@ export default function CreateEventStep3({ step, setStep }) {
           />
         </BottomContainer>
       </>
-    );
+    )
   } else {
-    return null;
+    return null
   }
 }

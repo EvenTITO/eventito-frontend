@@ -1,16 +1,18 @@
-import {REVIEW_STATUS_LABELS_REVERSE} from "@/lib/Constants"
+import { REVIEW_STATUS_LABELS_REVERSE } from '@/lib/Constants'
 
 export function convertAssignments(assignments) {
-  return assignments.map((a) => convertAssignment(a));
+  return assignments.map((a) => convertAssignment(a))
 }
 
 function getMainAuthorFullName(work) {
-  let mainAuthor = work.authors.filter(a => a.is_main)[0]
+  let mainAuthor = work.authors.filter((a) => a.is_main)[0]
   if (!mainAuthor) {
-    console.error("Should have created the work with a main author in the frontend");
+    console.error(
+      'Should have created the work with a main author in the frontend'
+    )
     mainAuthor = work.authors[0]
   }
-  return mainAuthor.full_name;
+  return mainAuthor.full_name
 }
 
 function convertAssignment(assignment) {
@@ -22,16 +24,17 @@ function convertAssignment(assignment) {
     maxReviewDate: new Date(assignment.review_deadline),
     track: assignment.work.track,
     authors: assignment.work.authors,
-    abstract: assignment.work.abstract
+    abstract: assignment.work.abstract,
   }
 }
 
 export function convertReviewToReviewBody(review) {
-  const reviewDecisionAnswer = REVIEW_STATUS_LABELS_REVERSE[review[review.length - 1]["answer"]];
+  const reviewDecisionAnswer =
+    REVIEW_STATUS_LABELS_REVERSE[review[review.length - 1]['answer']]
   return {
     status: reviewDecisionAnswer,
     review: {
-      answers: review.slice(0, -1)
-    }
+      answers: review.slice(0, -1),
+    },
   }
 }

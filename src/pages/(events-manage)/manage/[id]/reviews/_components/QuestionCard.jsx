@@ -1,101 +1,110 @@
-import {useState} from "react";
-import {ChevronRight, Pencil, PlusIcon, Trash2} from "lucide-react";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {Textarea} from "@/components/ui/textarea";
-import {Dialog, DialogContent, DialogHeader, DialogTitle,} from "@/components/ui/dialog";
-import {Slider} from "@/components/ui/slider";
-import ButtonWithLoading from "@/components/ButtonWithLoading";
+import { useState } from 'react'
+import { ChevronRight, Pencil, PlusIcon, Trash2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Slider } from '@/components/ui/slider'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
-export default function QuestionCard(
-  {
-    questionIndex,
-    question,
-    onUpdate,
-    onDelete,
-    isPending,
-    canBeEdited,
-    canBeDeleted,
-  }
-) {
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [editingQuestion, setEditingQuestion] = useState(question);
-  const [editingOptionIndex, setEditingOptionIndex] = useState(null);
+export default function QuestionCard({
+  questionIndex,
+  question,
+  onUpdate,
+  onDelete,
+  isPending,
+  canBeEdited,
+  canBeDeleted,
+}) {
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [editingQuestion, setEditingQuestion] = useState(question)
+  const [editingOptionIndex, setEditingOptionIndex] = useState(null)
 
   const handleSaveEdit = async () => {
-    await onUpdate({updatedQuestion: editingQuestion, index: questionIndex});
-    setIsEditDialogOpen(false);
-    setEditingOptionIndex(null);
-  };
+    await onUpdate({ updatedQuestion: editingQuestion, index: questionIndex })
+    setIsEditDialogOpen(false)
+    setEditingOptionIndex(null)
+  }
 
   const handleEditOption = (index) => {
-    setEditingOptionIndex(index);
-    setIsEditDialogOpen(true);
-  };
+    setEditingOptionIndex(index)
+    setIsEditDialogOpen(true)
+  }
 
   const handleUpdateOption = (value) => {
-    const newOptions = [...editingQuestion.options];
-    newOptions[editingOptionIndex] = value;
+    const newOptions = [...editingQuestion.options]
+    newOptions[editingOptionIndex] = value
     setEditingQuestion({
       ...editingQuestion,
       options: newOptions,
-    });
-  };
+    })
+  }
 
   const handleDelete = async () => {
-    await onDelete(question, questionIndex);
-  };
+    await onDelete(question, questionIndex)
+  }
 
   const handleAddOption = () => {
     setEditingQuestion({
       ...editingQuestion,
-      options: [...editingQuestion.options, "Nueva opción"],
-    });
-    setEditingOptionIndex(editingQuestion.options.length);
-    setIsEditDialogOpen(true);
-  };
+      options: [...editingQuestion.options, 'Nueva opción'],
+    })
+    setEditingOptionIndex(editingQuestion.options.length)
+    setIsEditDialogOpen(true)
+  }
 
-  let title = question.question;
+  let title = question.question
   title +=
-    question.type_question === "multiple_choice"
+    question.type_question === 'multiple_choice'
       ? question.more_than_one_answer_allowed
-        ? " (múltiples opciones)"
-        : " (opción única)"
-      : "";
+        ? ' (múltiples opciones)'
+        : ' (opción única)'
+      : ''
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4 relative">
       <div className="flex items-center mb-2">
         <div className="font-semibold text-lg flex-grow">
-          {title}{" "}
-          {question.is_mandatory ? (<span className="text-red-600">*</span>) : null}
+          {title}{' '}
+          {question.is_mandatory ? (
+            <span className="text-red-600">*</span>
+          ) : null}
         </div>
         <div className="flex items-center">
-          {canBeEdited && (<Button
-            variant="table"
-            size="sm"
-            onClick={() => {
-              setEditingOptionIndex(null);
-              setIsEditDialogOpen(true);
-            }}
-          >
-            <Pencil className="h-4 w-4"/>
-          </Button>)}
-          {canBeDeleted && (<Button variant="table" size="sm" onClick={handleDelete}>
-            <Trash2 className="h-4 w-4"/>
-          </Button>)}
+          {canBeEdited && (
+            <Button
+              variant="table"
+              size="sm"
+              onClick={() => {
+                setEditingOptionIndex(null)
+                setIsEditDialogOpen(true)
+              }}
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+          )}
+          {canBeDeleted && (
+            <Button variant="table" size="sm" onClick={handleDelete}>
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          )}
         </div>
       </div>
-      {question.type_question === "simple_question" && (
+      {question.type_question === 'simple_question' && (
         <Textarea
-          value={question.description || ""}
+          value={question.description || ''}
           readOnly
           className="mt-2 w-full"
           placeholder="Ingresar respuesta"
         />
       )}
-      {question.type_question === "rating" && (
+      {question.type_question === 'rating' && (
         <div className="flex items-center mt-2">
           <Slider
             defaultValue={[0]}
@@ -106,41 +115,47 @@ export default function QuestionCard(
           <span className="ml-2"> {question.max_value || 5}</span>
         </div>
       )}
-      {question.type_question === "multiple_choice" && (
+      {question.type_question === 'multiple_choice' && (
         <div className="mt-2 mx-4">
           {question.options?.map((option, index) => (
             <div key={index} className="flex items-center mb-2 relative">
-              <ChevronRight className="w-4 h-4  mr-2"/>
+              <ChevronRight className="w-4 h-4  mr-2" />
               <div className="flex-grow">{option}</div>
-              {canBeEdited && (<Button
-                variant="table"
-                size="sm"
-                onClick={() => handleEditOption(index)}
-              >
-                <Pencil className="h-4 w-4"/>
-              </Button>)}
-              {canBeDeleted && (<Button
-                variant="table"
-                size="sm"
-                onClick={() => {
-                  const newOptions = question.options.filter(
-                    (_, i) => i !== index,
-                  );
-                  onUpdate({...question, options: newOptions});
-                }}
-              >
-                <Trash2 className="h-4 w-4"/>
-              </Button>)}
+              {canBeEdited && (
+                <Button
+                  variant="table"
+                  size="sm"
+                  onClick={() => handleEditOption(index)}
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
+              )}
+              {canBeDeleted && (
+                <Button
+                  variant="table"
+                  size="sm"
+                  onClick={() => {
+                    const newOptions = question.options.filter(
+                      (_, i) => i !== index
+                    )
+                    onUpdate({ ...question, options: newOptions })
+                  }}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           ))}
-          {canBeEdited && (<Button
-            variant="outline"
-            size="sm"
-            onClick={handleAddOption}
-            className="mt-2"
-          >
-            <PlusIcon className="h-4 w-4 mr-2"/> Agregar opción
-          </Button>)}
+          {canBeEdited && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleAddOption}
+              className="mt-2"
+            >
+              <PlusIcon className="h-4 w-4 mr-2" /> Agregar opción
+            </Button>
+          )}
         </div>
       )}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
@@ -148,8 +163,8 @@ export default function QuestionCard(
           <DialogHeader>
             <DialogTitle>
               {editingOptionIndex !== null
-                ? "Editar opción"
-                : "Editar pregunta"}
+                ? 'Editar opción'
+                : 'Editar pregunta'}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
@@ -178,12 +193,12 @@ export default function QuestionCard(
               </div>
             )}
             {editingOptionIndex === null &&
-              editingQuestion.type_question === "simple_question" && (
+              editingQuestion.type_question === 'simple_question' && (
                 <div>
                   <Label htmlFor="description">Descripción</Label>
                   <Textarea
                     id="description"
-                    value={editingQuestion.description || ""}
+                    value={editingQuestion.description || ''}
                     onChange={(e) =>
                       setEditingQuestion({
                         ...editingQuestion,
@@ -194,7 +209,7 @@ export default function QuestionCard(
                 </div>
               )}
             {editingOptionIndex === null &&
-              editingQuestion.type_question === "rating" && (
+              editingQuestion.type_question === 'rating' && (
                 <div>
                   <Label htmlFor="max-value">Máxima calificación</Label>
                   <Input
@@ -217,5 +232,5 @@ export default function QuestionCard(
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }

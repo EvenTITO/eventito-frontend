@@ -1,17 +1,17 @@
-import Page from "./page";
-import FetchStatus from "@/components/FetchStatus";
-import { useGetMyWorks } from "@/hooks/events/authorHooks";
-import { useGetEvent } from "@/hooks/events/useEventState.js";
-import { SPEAKER_ROLE } from "@/lib/Constants";
+import Page from './page'
+import FetchStatus from '@/components/FetchStatus'
+import { useGetMyWorks } from '@/hooks/events/authorHooks'
+import { useGetEvent } from '@/hooks/events/useEventState.js'
+import { SPEAKER_ROLE } from '@/lib/Constants'
 
 export default function NewPaymentPage() {
   const {
     data: eventData,
     isLoading: isEventLoading,
     error: eventError,
-  } = useGetEvent();
+  } = useGetEvent()
 
-  const isSpeaker = eventData?.roles?.includes(SPEAKER_ROLE);
+  const isSpeaker = eventData?.roles?.includes(SPEAKER_ROLE)
 
   const {
     data: worksData,
@@ -19,11 +19,9 @@ export default function NewPaymentPage() {
     error: worksError,
   } = useGetMyWorks({
     enabled: !!isSpeaker,
-  });
+  })
 
-  const component = (
-    <Page eventData={eventData || {}} works={worksData || {}} />
-  );
+  const component = <Page eventData={eventData || {}} works={worksData || {}} />
 
   return (
     <FetchStatus
@@ -31,5 +29,5 @@ export default function NewPaymentPage() {
       isPending={isEventLoading || isWorksLoading}
       error={eventError || worksError}
     />
-  );
+  )
 }

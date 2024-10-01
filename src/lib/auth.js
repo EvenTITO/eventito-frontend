@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux'
 
 export function userAuthenticated() {
-  const {currentUser} = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user)
 
-  return currentUser != null;
+  return currentUser != null
 }

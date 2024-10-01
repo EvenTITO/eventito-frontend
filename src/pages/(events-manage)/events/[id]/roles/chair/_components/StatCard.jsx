@@ -1,15 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, CheckCircle, Users, ListTodo } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { FileText, CheckCircle, Users, ListTodo } from 'lucide-react'
 
 const icons = {
   FileText,
   CheckCircle,
   Users,
   ListTodo,
-};
+}
 
 export default function StatCard({ title, value, icon }) {
-  const Icon = icons[icon];
+  const Icon = icons[icon]
 
   return (
     <Card>
@@ -21,5 +21,5 @@ export default function StatCard({ title, value, icon }) {
         <div className="text-2xl font-bold">{value}</div>
       </CardContent>
     </Card>
-  );
+  )
 }

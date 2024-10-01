@@ -1,7 +1,6 @@
 export function convertWorks(works) {
-  return works.map((w) => convertWork(w, undefined));
+  return works.map((w) => convertWork(w, undefined))
 }
-
 
 export function convertWork(work, submissions = undefined) {
   return {
@@ -16,21 +15,24 @@ export function convertWork(work, submissions = undefined) {
     authors: work.authors,
     abstract: work.abstract,
     status: work.state,
-    published: work.state !== "SUBMITTED",
+    published: work.state !== 'SUBMITTED',
     submissions: submissions,
-    lastSubmission: submissions ? submissions.toSorted((a, b) => a.creation_date - b.creation_date)[0] : null,
-    keywords: work.keywords
+    lastSubmission: submissions
+      ? submissions.toSorted((a, b) => a.creation_date - b.creation_date)[0]
+      : null,
+    keywords: work.keywords,
   }
 }
 
-
 function getMainAuthorFullName(work) {
-  let mainAuthor = work.authors.filter(a => a.is_main)[0]
+  let mainAuthor = work.authors.filter((a) => a.is_main)[0]
   if (!mainAuthor) {
-    console.error("Should have created the work with a main author in the frontend");
+    console.error(
+      'Should have created the work with a main author in the frontend'
+    )
     mainAuthor = work.authors[0]
   }
-  return mainAuthor.full_name;
+  return mainAuthor.full_name
 }
 
 export function convertReviews(reviews) {
@@ -39,7 +41,7 @@ export function convertReviews(reviews) {
 
 function convertReview(review) {
   return {
-    reviewer: review.reviewer.name + " " + review.reviewer.lastname,
+    reviewer: review.reviewer.name + ' ' + review.reviewer.lastname,
     email: review.reviewer.email,
     completed: true,
     creationDate: review.creation_date,
@@ -47,7 +49,7 @@ function convertReview(review) {
     submissionId: review.submission_id,
     reviewerId: review.reviewer_id,
     reviewForm: review.review.answers,
-    reviewId: review.id
+    reviewId: review.id,
   }
 }
 
@@ -58,9 +60,9 @@ export function convertReviewers(reviewers) {
 function convertReviewer(reviewer) {
   return {
     id: reviewer.user_id,
-    reviewer: reviewer.user.name + " " + reviewer.user.lastname,
+    reviewer: reviewer.user.name + ' ' + reviewer.user.lastname,
     email: reviewer.user.email,
-    deadline: reviewer.works[0].review_deadline
+    deadline: reviewer.works[0].review_deadline,
   }
 }
 
@@ -71,7 +73,7 @@ function convertMyWork(myWork) {
     authors: myWork.authors,
     status: myWork.state,
     track: myWork.track,
-    abstract: myWork.abstract
+    abstract: myWork.abstract,
   }
 }
 

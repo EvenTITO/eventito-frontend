@@ -1,5 +1,5 @@
-import { Loader2 } from "lucide-react";
-import "./loading-button.css";
+import { Loader2 } from 'lucide-react'
+import './loading-button.css'
 
 export function LoadingButton() {
   return (
@@ -11,5 +11,5 @@ export function LoadingButton() {
         </div>
       </div>
     </button>
-  );
+  )
 }
