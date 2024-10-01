@@ -155,7 +155,7 @@ export default function Page({ eventInfo }) {
         </MotionDiv>
 
         <MotionDiv className="space-y-6 mb-12">
-          <MotionH2 className="text-2xl font-semibold">Calendar</MotionH2>
+          <MotionH2 className="text-2xl font-semibold">Calendario</MotionH2>
           <div className="space-y-4">
             {event.dates.map((date, index) => (
               <div

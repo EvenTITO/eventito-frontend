@@ -5,10 +5,8 @@ import Page from './page'
 
 export default function ChairPage() {
   const { data: tracks } = useGetEvent((data) => data.tracks)
-  const [selectedTrack, setSelectedTrack] = useState(tracks[0] || [])
-
+  const [selectedTrack, setSelectedTrack] = useState(tracks[0])
   const { data: works, isPending, error } = useGetWorksByTrack(selectedTrack)
-
   return (
     <Page
       tracks={tracks || []}
