@@ -1,5 +1,5 @@
 import { EVENTS_URL } from '@/lib/Constants'
-import { getEventId, getInscriptionId } from '@/lib/utils'
+import { getEventId } from '@/lib/utils'
 import { HTTPClient } from '@/services/api/HTTPClient'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
@@ -36,7 +36,8 @@ export function useSubmitInscription() {
         eventId,
         inscriptionData
       )
-      await uploadFile(res.data.upload_url, inscriptionData.file)
+      if (inscriptionData.file && res.data.upload_url)
+        await uploadFile(res.data.upload_url, inscriptionData.file)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
