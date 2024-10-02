@@ -8,7 +8,7 @@ export default function Tables({ works, selectedTrack, handleRowClick }) {
   return (
     <>
       <TableContent
-        title={`Trabajos pendientes a revisar en track: ${selectedTrack}`}
+        title={`Trabajos pendientes a revisar ${selectedTrack ? 'en track: ' + selectedTrack : ''}`}
       >
         <ChairTable works={pendings} handleRowClick={handleRowClick} />
       </TableContent>

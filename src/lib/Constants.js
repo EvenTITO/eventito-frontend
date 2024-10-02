@@ -92,6 +92,11 @@ export const INSCRIPTION_ROLES_LABELS = {
   ATTENDEE: 'Asistente',
 }
 
+export const INSCRIPTION_ROLES_LABELS_REVERSE = {
+  Autor: SPEAKER_ROLE,
+  Asistente: ATTENDEE_ROLE,
+}
+
 export const PAYMENT_STATUS_LABELS = {
   APPROVED: 'Aprobado',
   REJECTED: 'Rechazado',

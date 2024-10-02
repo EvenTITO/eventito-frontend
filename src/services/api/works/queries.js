@@ -5,13 +5,8 @@ export const apiGetWorksByTrack = async (
   limit = 100,
   offset = 0
 ) => {
-  return (
-    await httpClient.get(`/${eventId}/works`, {
-      track,
-      offset,
-      limit,
-    })
-  ).data
+  return (await httpClient.get(`/${eventId}/works`, { track, offset, limit }))
+    .data
 }
 
 export const apiGetWorkById = async (httpClient, eventId, workId) => {

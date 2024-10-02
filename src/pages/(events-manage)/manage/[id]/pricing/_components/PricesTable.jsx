@@ -1,6 +1,7 @@
-import { ChevronRight, ChevronDown, X, Shield, Calendar } from 'lucide-react'
+import { Calendar, ChevronDown, ChevronRight, Shield, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import PriceDialog from './PriceDialog'
+import { INSCRIPTION_ROLES_LABELS } from '@/lib/Constants.js'
 
 export default function PricesTable({
   prices,
@@ -45,7 +46,9 @@ function PriceItem({
         )}
         <span className="font-medium mr-2">{price.name}</span>
         <span className="text-sm text-gray-500 mr-2">{price.description}</span>
-        <span className="font-semibold">${price.value}</span>
+        <span className="font-semibold">
+          {price.value === 0 ? 'Gratuita' : '$' + price.value}
+        </span>
         {price.need_verification && (
           <Shield className="h-4 w-4 ml-2 text-blue-500" />
         )}
@@ -59,7 +62,7 @@ function PriceItem({
             <p>
               <strong>Roles:</strong>{' '}
               {price.roles.length > 0
-                ? price.roles.join(', ')
+                ? price.roles.map((r) => INSCRIPTION_ROLES_LABELS[r]).join(', ')
                 : 'Sin roles especificados'}
             </p>
             <p>

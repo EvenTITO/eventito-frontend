@@ -1,3 +1,5 @@
+import { WAITING_APPROVAL_STATUS } from '@/lib/Constants.js'
+
 export const apiGetAllEventsWaitingApproval = async (
   httpClient,
   offset = 0,
@@ -5,7 +7,7 @@ export const apiGetAllEventsWaitingApproval = async (
 ) => {
   const response = await httpClient.get(
     '/',
-    { status: 'WAITING_APPROVAL', offset, limit },
+    { status: WAITING_APPROVAL_STATUS, offset, limit },
     {}
   )
   return response.data

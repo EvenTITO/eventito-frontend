@@ -5,6 +5,9 @@ export default function TrackSelector({
   selectedTrack,
   setSelectedTrack,
 }) {
+  if (tracks.length === 0) {
+    return null
+  }
   return (
     <div className="flex gap-2 items-center">
       <span>Track actual: </span>

@@ -11,23 +11,21 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Edit2, Plus } from 'lucide-react'
+import {
+  INSCRIPTION_ROLES_LABELS,
+  INSCRIPTION_ROLES_LABELS_REVERSE,
+} from '@/lib/Constants.js'
 
 export default function PriceDialog({ price, onSave }) {
   const [isOpen, setIsOpen] = useState(false)
   const [formData, setFormData] = useState(
-    price || {
-      name: '',
-      description: '',
-      value: 0,
-      need_verification: false,
-      related_date: null,
-      roles: [],
-    }
+    sanitizePriceBackToFront(price) || defaultFormData
   )
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    onSave(formData)
+    const formDataSanitized = sanitizePriceFrontToBack(formData)
+    onSave(formDataSanitized)
     setIsOpen(false)
   }
 
@@ -121,7 +119,8 @@ export default function PriceDialog({ price, onSave }) {
             <Input
               id="roles"
               name="roles"
-              value={formData.roles.join(', ')}
+              placeholder="Roles permitidos: Autor o Asistente"
+              value={formData.roles}
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
@@ -135,4 +134,34 @@ export default function PriceDialog({ price, onSave }) {
       </DialogContent>
     </Dialog>
   )
+}
+
+const defaultFormData = {
+  name: '',
+  description: '',
+  value: 0,
+  need_verification: false,
+  related_date: null,
+  roles: [],
+}
+
+function sanitizePriceFrontToBack(formData) {
+  return {
+    ...formData,
+    roles: formData.roles
+      .map((role) => role.trim())
+      .map((role) => INSCRIPTION_ROLES_LABELS_REVERSE[role]),
+  }
+}
+
+function sanitizePriceBackToFront(formData) {
+  return !formData
+    ? undefined
+    : {
+        ...formData,
+        roles: formData.roles
+          .map((role) => role.trim())
+          .map((role) => INSCRIPTION_ROLES_LABELS[role])
+          .join(', '),
+      }
 }

@@ -46,3 +46,14 @@ export function keyValueToValueLabel(obj) {
     return { value, label }
   })
 }
+
+export function canStartEvent(event) {
+  //TODO estas validaciones revisarlas, si se cambian adecuar el mensaje
+  // harcodeado del tooltip del page donde se utiliza esta función
+  const hasMandatoryDates =
+    event.dates.length > 0 &&
+    event.dates.every((d) => !d.is_mandatory || (d.date && d.time))
+  const hasPricing = event.pricing.length > 0
+  const hasTracks = event.tracks.length > 0
+  return hasMandatoryDates && hasPricing && hasTracks
+}
