@@ -1,5 +1,5 @@
 import { EVENTS_URL } from '@/lib/Constants'
-import { getEventId, wait } from '@/lib/utils'
+import { getEventId } from '@/lib/utils'
 import { HTTPClient } from '@/services/api/HTTPClient'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { uploadFile } from '@/services/api/storage/queries.js'
@@ -17,10 +17,7 @@ export function useEditEvent() {
   return useMutation({
     mutationFn: async ({ eventData }) => {
       const httpClient = new HTTPClient(EVENTS_URL)
-      let updateEvent = {
-        ...eventData,
-      }
-      await apiUpdateGeneralEvent(httpClient, eventId, updateEvent)
+      await apiUpdateGeneralEvent(httpClient, eventId, { ...eventData })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

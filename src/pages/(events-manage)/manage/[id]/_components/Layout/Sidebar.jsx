@@ -1,6 +1,7 @@
 import { ORGANIZER_ROLE } from '@/lib/Constants'
 import SideBar from '@/pages/(events-manage)/_components/Sidebar'
 import {
+  MapPin,
   BookOpenCheck,
   DollarSign,
   FilePenLine,
@@ -56,6 +57,13 @@ const itemList = [
         label: 'Tarifas',
         icon: <DollarSign className={classNameIcons} />,
         to: 'pricing',
+        requiredRoles: [ORGANIZER_ROLE],
+        isOrganizerRoute: true,
+      },
+      {
+        label: 'Salas',
+        icon: <MapPin className={classNameIcons} />,
+        to: 'rooms',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
