@@ -28,7 +28,7 @@ export function constructCreateEventBody(eventData) {
       },
     ],
     location: location ? location : '',
-    contact: 'Pepe',
+    contact: '',
     organized_by: organized_by ? organized_by : '',
     title: title,
     description: description,
