@@ -18,7 +18,14 @@ import {
 } from '@/components/ui/select'
 import ButtonWithLoading from '@/components/ButtonWithLoading'
 import { useAddMember } from '@/hooks/manage/membersHooks'
-import { CHAIR_ROLE, EVENT_ROLES_LABELS, ORGANIZER_ROLE } from '@/lib/Constants'
+import {
+  ALREADY_MEMBER_EXIST_ERROR_CODE,
+  CHAIR_ROLE,
+  EVENT_ROLES_LABELS,
+  ORGANIZER_ROLE,
+  USER_NOT_FOUND_ERROR_CODE,
+} from '@/lib/Constants'
+import { toast } from '@/hooks/use-toast.js'
 
 export default function AddMemberButton() {
   const [email, setEmail] = useState('')
@@ -30,10 +37,37 @@ export default function AddMemberButton() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (email && role) {
-      await addMember({
-        newMemberEmail: email,
-        newMemberRole: role,
-      })
+      await addMember({ newMemberEmail: email, newMemberRole: role })
+        .then(() => {
+          toast({
+            title: 'Miembro agregado',
+            description:
+              'Se ha agregado exitosamente el nuevo miembro al evento.',
+          })
+        })
+        .catch((e) => {
+          let description =
+            'No se pudo agregar al miembro. Por favor intente nuevamente más tarde.'
+          if (error?.response?.data?.detail?.errorcode) {
+            switch (error.response.data.detail.errorcode) {
+              case ALREADY_MEMBER_EXIST_ERROR_CODE:
+                description =
+                  'El usuario ingresado ya es actualmente miembro del evento.'
+                break
+              case USER_NOT_FOUND_ERROR_CODE:
+                description =
+                  'El mail ingresado no corresponde a un usuario de EvenTITO.'
+                break
+              default:
+                console.log('errorcode: ', error.response.data.detail.errorcode)
+            }
+          }
+          toast({
+            title: 'Error',
+            description: description,
+            variant: 'destructive',
+          })
+        })
       setEmail('')
       setRole('')
       setOpen(false)

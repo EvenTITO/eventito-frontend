@@ -17,6 +17,14 @@ export const REVIEWER_ROLE = 'REVIEWER'
 export const SPEAKER_ROLE = 'SPEAKER'
 export const ATTENDEE_ROLE = 'ATTENDEE'
 
+export const ALREADY_MEMBER_EXIST_ERROR_CODE = 'ALREADY_MEMBER_EXIST'
+export const USER_NOT_FOUND_ERROR_CODE = 'USER_NOT_FOUND'
+
+export const ALL_ERROR_CODES = [
+  ALREADY_MEMBER_EXIST_ERROR_CODE,
+  USER_NOT_FOUND_ERROR_CODE,
+]
+
 // Roles ordered from the highest permissions to lowest.
 export const RoleImportance = {
   [ORGANIZER_ROLE]: 1,
