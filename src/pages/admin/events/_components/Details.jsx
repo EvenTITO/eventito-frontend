@@ -73,7 +73,7 @@ export default function Details({ event, onClose }) {
 
         <div className="fixed bottom-0 left-1/2 right-0 bg-white p-4">
           <div className="flex justify-end space-x-4 max-w-md mx-auto">
-            <Button variant="outline" className="w-full">
+            <Button variant="notApproved" className="w-full">
               Rechazar
             </Button>
             <Button className="w-full">Aceptar</Button>

@@ -45,7 +45,7 @@ export default function EventCreationRequests({ events }) {
       <div className="mb-12 space-y-4">
         <h1 className="text-4xl font-bold tracking-tight flex items-center gap-3">
           <FileText className="h-10 w-10 text-gray-600" />
-          Event Creation Requests
+          Solicitudes de creación de eventos
         </h1>
         <p className="text-xl text-gray-600">
           Review and manage event creation requests
