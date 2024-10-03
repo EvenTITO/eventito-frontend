@@ -36,9 +36,5 @@ export function useUpdateEventStatus() {
         queryKey: ['getEventsWaitingApproval'],
       })
     },
-    onError: (e) => {
-      console.log(e)
-      console.error(JSON.stringify(e))
-    },
   })
 }

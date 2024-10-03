@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react'
-import { X, MapPin, Clock, Users, AtSign, Calendar, Info } from 'lucide-react'
+import { X, MapPin, Users, AtSign, Calendar, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { format } from 'date-fns'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 
-export default function Details({ event, onClose }) {
+export default function Details({ event, onClose, onSetEventStatus }) {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -15,6 +14,11 @@ export default function Details({ event, onClose }) {
   const handleClose = () => {
     setIsVisible(false)
     setTimeout(onClose, 300)
+  }
+
+  const handleSetEventStatus = async (newStatus) => {
+    await onSetEventStatus(event.id, newStatus)
+    handleClose()
   }
 
   return (
@@ -73,10 +77,19 @@ export default function Details({ event, onClose }) {
 
         <div className="fixed bottom-0 left-1/2 right-0 bg-white p-4">
           <div className="flex justify-end space-x-4 max-w-md mx-auto">
-            <Button variant="notApproved" className="w-full">
+            <Button
+              variant="notApproved"
+              className="w-full"
+              onClick={() => handleSetEventStatus('NOT_APPROVED')}
+            >
               Rechazar
             </Button>
-            <Button className="w-full">Aceptar</Button>
+            <Button
+              className="w-full"
+              onClick={() => handleSetEventStatus('CREATED')}
+            >
+              Aceptar
+            </Button>
           </div>
         </div>
       </div>

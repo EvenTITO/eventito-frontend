@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { X, Users, Filter, Search } from 'lucide-react'
+import { X, Filter, Search } from 'lucide-react'
 import { REGULAR, EVENT_CREATOR, ADMIN, EVENT_ROLES_LABELS } from './constants'
 import { useAdminUpdateUserRole } from '@/hooks/admin/adminUsersHooks'
 import ContainerAdminPage from '../_components/ContainerAdminPage'

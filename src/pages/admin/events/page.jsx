@@ -2,18 +2,26 @@ import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
-import { Calendar, Search, FileText, MapPin, Clock } from 'lucide-react'
+import { Calendar, Search, MapPin, Clock } from 'lucide-react'
 import { format } from 'date-fns'
 import Details from './_components/Details'
+import ContainerAdminPage from '../_components/ContainerAdminPage'
+import { LoaderSpinner } from '@/components/Loader'
+import { useUpdateEventStatus } from '@/hooks/admin/adminEventsHooks'
 
-export default function EventCreationRequests({ events }) {
+export default function Page({ events }) {
   const [search, setSearch] = useState('')
   const [selectedEvent, setSelectedEvent] = useState(null)
+  const {
+    mutateAsync: updateEventStatus,
+    isPending,
+    error,
+  } = useUpdateEventStatus()
 
   const filteredEvents = events.filter((event) =>
     search
       ? event.title.toLowerCase().includes(search.toLowerCase()) ||
-        event.organized_by.toLowerCase().includes(search.toLowerCase())
+        nt.organized_by.toLowerCase().includes(search.toLowerCase())
       : true
   )
 
@@ -27,20 +35,17 @@ export default function EventCreationRequests({ events }) {
     document.body.style.overflow = 'auto'
   }
 
-  return (
-    <div
-      className={`max-w-6xl mx-auto p-8 bg-white min-h-screen transition-all duration-300 ${selectedEvent ? 'mr-[50vw]' : ''}`}
-    >
-      <div className="mb-12 space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight flex items-center gap-3">
-          <FileText className="h-10 w-10 text-gray-600" />
-          Solicitudes de creación de eventos
-        </h1>
-        <p className="text-xl text-gray-600">
-          Selección y administración del estado de un nuevo evento
-        </p>
-      </div>
+  const handleSetEventStatus = async (eventId, newStatus) => {
+    await updateEventStatus({ eventId, newStatus })
+  }
 
+  return (
+    <ContainerAdminPage
+      title={'Solicitudes de creación de eventos'}
+      subtitle={'Selección y administración del estado de un nuevo evento'}
+      icon={'FileText'}
+      className={`transition-all duration-300 ${selectedEvent ? 'mr-[50vw]' : ''}`}
+    >
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <Card className="lg:col-span-1 h-fit sticky top-8">
           <CardContent className="p-6 space-y-6">
@@ -68,29 +73,40 @@ export default function EventCreationRequests({ events }) {
                   <Calendar className="h-6 w-6 text-gray-600" />
                   Solicitudes pendientes de aprobación
                 </span>
-                <span className="text-sm font-normal text-gray-600">
-                  {filteredEvents.length} solicitud
-                  {filteredEvents.length !== 1 && 'es'}
-                </span>
+
+                {!isPending ? (
+                  <span className="text-sm font-normal text-gray-600">
+                    {filteredEvents.length} solicitud
+                    {filteredEvents.length !== 1 && 'es'}
+                  </span>
+                ) : (
+                  <LoaderSpinner size={32} />
+                )}
               </h2>
-              <div className="space-y-4">
-                {filteredEvents.map((event) => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                    onClick={() => handleEventClick(event)}
-                  />
-                ))}
-              </div>
+              {!isPending ? (
+                <div className="space-y-4">
+                  {filteredEvents.map((event) => (
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      onClick={() => handleEventClick(event)}
+                    />
+                  ))}
+                </div>
+              ) : null}
             </CardContent>
           </Card>
         </div>
       </div>
 
       {selectedEvent && (
-        <Details event={selectedEvent} onClose={handleCloseEventDetails} />
+        <Details
+          event={selectedEvent}
+          onClose={handleCloseEventDetails}
+          onSetEventStatus={handleSetEventStatus}
+        />
       )}
-    </div>
+    </ContainerAdminPage>
   )
 }
 
