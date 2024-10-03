@@ -1,6 +1,6 @@
 import { isAuthenticated } from '@/lib/routes/isAuthenticated'
 import { Navigate, Outlet } from 'react-router-dom'
-import Header from '@/pages/_components/headers/(home-admin)'
+import Header from '@/pages/_components/Headers/home-admin'
 
 export default function LayoutAdmin() {
   if (isAuthenticated()) {
