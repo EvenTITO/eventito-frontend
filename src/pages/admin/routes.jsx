@@ -1,13 +1,13 @@
 import { Route, Routes } from 'react-router-dom'
 import LayoutAdmin from './layout'
-import AdminPage from './members'
+import AdminMembersPage from './members'
 
 export default function RoutesAdmin() {
   return (
     <Routes>
       <Route path="/admin" element={<LayoutAdmin />}>
-        <Route index element={<AdminPage />} />
-        <Route path="members" element={<AdminPage />} />
+        <Route index element={<AdminMembersPage />} />
+        <Route path="members" element={<AdminMembersPage />} />
       </Route>
     </Routes>
   )
