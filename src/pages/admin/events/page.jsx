@@ -111,10 +111,10 @@ export default function Page({ events }) {
 }
 
 function EventCard({ event, onClick }) {
-  const startDate = event.dates.find((d) => d.name === 'START_DATE')
+  const startDate = event.dates?.find((d) => d.name === 'START_DATE') || null
   const formattedDate = startDate
     ? format(new Date(startDate.date), 'MMM d, yyyy')
-    : 'Date not set'
+    : 'Fecha no definida'
 
   return (
     <Card
@@ -125,10 +125,7 @@ function EventCard({ event, onClick }) {
         <div className="flex items-start space-x-4">
           <Avatar className="h-16 w-16 border-2 border-gray-200 group-hover:border-gray-400 transition-all duration-200">
             <AvatarImage
-              src={
-                event.media.find((m) => m.name === 'main_image')?.url ||
-                `https://api.dicebear.com/6.x/identicon/svg?seed=${event.title}`
-              }
+              src={`https://api.dicebear.com/6.x/initials/svg?seed=${event.title}`}
             />
             <AvatarFallback>{event.title.charAt(0)}</AvatarFallback>
           </Avatar>

@@ -148,7 +148,7 @@ function Member({ member, onRoleChange }) {
         <div className="flex items-center space-x-4">
           <Avatar className="h-16 w-16 group-hover:ring-offset-4 transition-all duration-200">
             <AvatarImage
-              src={`https://api.dicebear.com/6.x/initials/svg?seed=${member.username}`}
+              src={`https://api.dicebear.com/6.x/identicon/svg?seed=${member.username}`}
             />
             <AvatarFallback>{member.username.charAt(0) || ''}</AvatarFallback>
           </Avatar>
