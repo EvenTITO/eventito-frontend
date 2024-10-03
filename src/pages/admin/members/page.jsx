@@ -29,7 +29,7 @@ export default function Page({ members }) {
         (search
           ? member.name.toLowerCase().includes(search.toLowerCase()) ||
             member.lastname.toLowerCase().includes(search.toLowerCase()) ||
-            er.email.toLowerCase().includes(search.toLowerCase())
+            member.email.toLowerCase().includes(search.toLowerCase())
           : true)
     )
   }, [members, filter, search])
