@@ -33,6 +33,12 @@ const itemList = [
         to: 'view/general',
         requiredRoles: Object.keys(EVENT_ROLES_LABELS),
       },
+      {
+        label: 'Calendario',
+        icon: <Calendar className={classNameIcons} />,
+        to: 'view/calendar',
+        requiredRoles: Object.keys(EVENT_ROLES_LABELS),
+      },
     ],
   },
   {

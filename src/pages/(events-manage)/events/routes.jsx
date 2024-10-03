@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import LayoutEvents from './layout'
 import EventViewPage from './[id]/view'
+import EventViewCalendarPage from './[id]/view/calendar'
 import ChairPage from './[id]/roles/chair'
 import ReviewerPage from './[id]/roles/reviewer'
 import AuthorPage from './[id]/roles/author'
@@ -29,6 +30,14 @@ export default function RoutesEvents() {
           element={
             <ProtectedRoute>
               <EventViewPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path=":id/view/calendar"
+          element={
+            <ProtectedRoute>
+              <EventViewCalendarPage />
             </ProtectedRoute>
           }
         />
