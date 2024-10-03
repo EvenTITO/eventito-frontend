@@ -1,14 +1,6 @@
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Calendar, Search, Filter, FileText, MapPin, Clock } from 'lucide-react'
 import { format } from 'date-fns'
@@ -48,7 +40,7 @@ export default function EventCreationRequests({ events }) {
           Solicitudes de creación de eventos
         </h1>
         <p className="text-xl text-gray-600">
-          Review and manage event creation requests
+          Selección y administración del estado de un nuevo evento
         </p>
       </div>
 
@@ -58,32 +50,15 @@ export default function EventCreationRequests({ events }) {
             <div>
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                 <Search className="h-5 w-5" />
-                Search Events
+                Buscar eventos
               </h2>
               <Input
                 type="text"
-                placeholder="Search by title or organizer"
+                placeholder="Buscar por título o creador"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full"
               />
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Filter className="h-5 w-5" />
-                Filter by Event Type
-              </h2>
-              <Select value={filter} onValueChange={setFilter}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select event type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ALL">All Types</SelectItem>
-                  <SelectItem value="CONFERENCE">Conference</SelectItem>
-                  <SelectItem value="WORKSHOP">Workshop</SelectItem>
-                  <SelectItem value="SEMINAR">Seminar</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </CardContent>
         </Card>
@@ -94,11 +69,11 @@ export default function EventCreationRequests({ events }) {
               <h2 className="text-2xl font-bold mb-6 flex items-center justify-between">
                 <span className="flex items-center gap-3">
                   <Calendar className="h-6 w-6 text-gray-600" />
-                  Pending Requests
+                  Solicitudes pendientes de aprobación
                 </span>
                 <span className="text-sm font-normal text-gray-600">
-                  {filteredEvents.length} request
-                  {filteredEvents.length !== 1 && 's'}
+                  {filteredEvents.length} solicitud
+                  {filteredEvents.length !== 1 && 'es'}
                 </span>
               </h2>
               <div className="space-y-4">
@@ -149,12 +124,12 @@ function EventCard({ event, onClick }) {
               {event.title}
             </h3>
             <p className="text-sm text-gray-600 truncate">
-              Organized by: {event.organized_by}
+              Email responsable: {event.creator.email}
             </p>
             <div className="mt-2 flex flex-wrap gap-2">
               <span className="inline-flex items-center text-xs text-gray-600">
                 <Calendar className="h-3 w-3 mr-1" />
-                {event.event_type || 'Type not set'}
+                {event.event_type}
               </span>
               <span className="inline-flex items-center text-xs text-gray-600">
                 <Clock className="h-3 w-3 mr-1" />
@@ -162,13 +137,10 @@ function EventCard({ event, onClick }) {
               </span>
               <span className="inline-flex items-center text-xs text-gray-600">
                 <MapPin className="h-3 w-3 mr-1" />
-                {event.location || 'Location not set'}
+                {event.location || 'Ubicación no definida'}
               </span>
             </div>
           </div>
-          <Button variant="ghost" className="shrink-0">
-            Review
-          </Button>
         </div>
       </CardContent>
     </Card>
