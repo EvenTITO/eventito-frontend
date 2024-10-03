@@ -1,9 +1,9 @@
-import { isAuthenticated } from '@/lib/routes/isAuthenticated'
+import { isAdmin } from '@/lib/routes/isAuthenticated'
 import { Navigate, Outlet } from 'react-router-dom'
 import Header from '@/pages/_components/Headers/home-admin'
 
 export default function LayoutAdmin() {
-  if (isAuthenticated()) {
+  if (isAdmin()) {
     return (
       <div className="flex flex-col min-h-screen">
         <Header />
