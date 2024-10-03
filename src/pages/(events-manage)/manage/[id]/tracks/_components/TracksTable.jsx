@@ -5,13 +5,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import ChairDialog from './ChairDialog'
 
 export default function TracksTable({
-  initialTracks,
+  tracks,
   onAdd,
   onUpdate,
   onDelete,
   isPending,
 }) {
-  const [tracks, setTracks] = useState(initialTracks)
   const [expandedTracks, setExpandedTracks] = useState(new Set())
 
   const toggleTrackExpansion = (trackId) => {
