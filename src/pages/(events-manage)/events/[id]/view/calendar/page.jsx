@@ -64,6 +64,20 @@ export default function ConferenceCalendar({ talks, locationList }) {
     document.body.style.overflow = 'auto'
   }
 
+  if (talks.length === 0 || talks === null) {
+    return (
+      <ContainerPage>
+        <TitlePage title={'Calendario de presentaciones'} />
+        <div className="text-center py-10">
+          <h2 className="text-xl font-semibold mb-2">
+            El calendario aún no está disponible
+          </h2>
+          <p className="text-gray-500 mb-4">Será publicado a la brevedad</p>
+        </div>
+      </ContainerPage>
+    )
+  }
+
   return (
     <ContainerPage>
       <div
