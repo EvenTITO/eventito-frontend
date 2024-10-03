@@ -12,10 +12,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Calendar, Search, Filter, FileText, MapPin, Clock } from 'lucide-react'
 import { format } from 'date-fns'
+import Details from './_components/Details'
 
-export default function Page({ events }) {
+export default function EventCreationRequests({ events }) {
   const [filter, setFilter] = useState('ALL')
   const [search, setSearch] = useState('')
+  const [selectedEvent, setSelectedEvent] = useState(null)
 
   const filteredEvents = events.filter(
     (event) =>
@@ -26,14 +28,26 @@ export default function Page({ events }) {
         : true)
   )
 
+  const handleEventClick = (event) => {
+    setSelectedEvent(event)
+    document.body.style.overflow = 'hidden'
+  }
+
+  const handleCloseEventDetails = () => {
+    setSelectedEvent(null)
+    document.body.style.overflow = 'auto'
+  }
+
   return (
-    <div className="max-w-6xl mx-auto p-8 bg-white min-h-screen">
+    <div
+      className={`max-w-6xl mx-auto p-8 bg-white min-h-screen transition-all duration-300 ${selectedEvent ? 'mr-[50vw]' : ''}`}
+    >
       <div className="mb-12 space-y-4">
         <h1 className="text-4xl font-bold tracking-tight flex items-center gap-3">
-          <FileText className="h-10 w-10 text-primary" />
+          <FileText className="h-10 w-10 text-gray-600" />
           Event Creation Requests
         </h1>
-        <p className="text-xl text-muted-foreground">
+        <p className="text-xl text-gray-600">
           Review and manage event creation requests
         </p>
       </div>
@@ -79,37 +93,49 @@ export default function Page({ events }) {
             <CardContent className="p-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center justify-between">
                 <span className="flex items-center gap-3">
-                  <Calendar className="h-6 w-6 text-primary" />
+                  <Calendar className="h-6 w-6 text-gray-600" />
                   Pending Requests
                 </span>
-                <span className="text-sm font-normal text-muted-foreground">
+                <span className="text-sm font-normal text-gray-600">
                   {filteredEvents.length} request
                   {filteredEvents.length !== 1 && 's'}
                 </span>
               </h2>
               <div className="space-y-4">
                 {filteredEvents.map((event) => (
-                  <EventCard key={event.id} event={event} />
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    onClick={() => handleEventClick(event)}
+                  />
                 ))}
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
+
+      {selectedEvent && (
+        <Details event={selectedEvent} onClose={handleCloseEventDetails} />
+      )}
     </div>
   )
 }
 
-function EventCard({ event }) {
-  const startDate = new Date(
-    event.dates.find((d) => d.name === 'START_DATE').date
-  )
+function EventCard({ event, onClick }) {
+  const startDate = event.dates.find((d) => d.name === 'START_DATE')
+  const formattedDate = startDate
+    ? format(new Date(startDate.date), 'MMM d, yyyy')
+    : 'Date not set'
 
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-all duration-200 group">
+    <Card
+      className="overflow-hidden hover:shadow-md transition-all duration-200 group cursor-pointer"
+      onClick={onClick}
+    >
       <CardContent className="p-6">
         <div className="flex items-start space-x-4">
-          <Avatar className="h-16 w-16 ring-2 ring-primary ring-offset-2 group-hover:ring-offset-4 transition-all duration-200">
+          <Avatar className="h-16 w-16 border-2 border-gray-200 group-hover:border-gray-400 transition-all duration-200">
             <AvatarImage
               src={
                 event.media.find((m) => m.name === 'main_image')?.url ||
@@ -119,27 +145,28 @@ function EventCard({ event }) {
             <AvatarFallback>{event.title.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="flex-grow min-w-0">
-            <h3 className="text-xl font-medium truncate group-hover:text-primary transition-colors duration-200">
+            <h3 className="text-xl font-medium truncate group-hover:text-gray-800 transition-colors duration-200">
               {event.title}
             </h3>
-            <p className="text-sm text-muted-foreground truncate">
+            <p className="text-sm text-gray-600 truncate">
               Organized by: {event.organized_by}
             </p>
             <div className="mt-2 flex flex-wrap gap-2">
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                {event.event_type}
+              <span className="inline-flex items-center text-xs text-gray-600">
+                <Calendar className="h-3 w-3 mr-1" />
+                {event.event_type || 'Type not set'}
               </span>
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              <span className="inline-flex items-center text-xs text-gray-600">
                 <Clock className="h-3 w-3 mr-1" />
-                {format(startDate, 'MMM d, yyyy')}
+                {formattedDate}
               </span>
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+              <span className="inline-flex items-center text-xs text-gray-600">
                 <MapPin className="h-3 w-3 mr-1" />
-                {event.location}
+                {event.location || 'Location not set'}
               </span>
             </div>
           </div>
-          <Button variant="outline" className="shrink-0">
+          <Button variant="ghost" className="shrink-0">
             Review
           </Button>
         </div>
