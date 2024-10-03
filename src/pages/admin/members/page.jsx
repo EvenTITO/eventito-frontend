@@ -14,6 +14,7 @@ import { X, Users, Filter, Search } from 'lucide-react'
 import { REGULAR, EVENT_CREATOR, ADMIN, EVENT_ROLES_LABELS } from './constants'
 import { useAdminUpdateUserRole } from '@/hooks/admin/adminUsersHooks'
 import ContainerAdminPage from '../_components/ContainerAdminPage'
+import { LoaderSpinner } from '@/components/Loader'
 
 export default function Page({ members }) {
   const [filter, setFilter] = useState(null)
@@ -28,7 +29,7 @@ export default function Page({ members }) {
         (search
           ? member.name.toLowerCase().includes(search.toLowerCase()) ||
             member.lastname.toLowerCase().includes(search.toLowerCase()) ||
-            mber.email.toLowerCase().includes(search.toLowerCase())
+            er.email.toLowerCase().includes(search.toLowerCase())
           : true)
     )
   }, [members, filter, search])
@@ -78,20 +79,26 @@ export default function Page({ members }) {
             <CardContent className="p-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center justify-between">
                 <span className="flex items-center gap-3">{title}</span>
-                <span className="text-sm font-normal text-muted-foreground">
-                  {filteredMembers.length} miembro
-                  {filteredMembers.length !== 1 && 's'}
-                </span>
+                {!isPending ? (
+                  <span className="text-sm font-normal text-muted-foreground">
+                    {filteredMembers.length} miembro
+                    {filteredMembers.length !== 1 && 's'}
+                  </span>
+                ) : (
+                  <LoaderSpinner size={32} />
+                )}
               </h2>
-              <div className="space-y-4">
-                {filteredMembers.map((member) => (
-                  <Member
-                    key={member.id}
-                    member={member}
-                    onRoleChange={handleRoleChange}
-                  />
-                ))}
-              </div>
+              {!isPending ? (
+                <div className="space-y-4">
+                  {filteredMembers.map((member) => (
+                    <Member
+                      key={member.id}
+                      member={member}
+                      onRoleChange={handleRoleChange}
+                    />
+                  ))}
+                </div>
+              ) : null}
             </CardContent>
           </Card>
         </div>
