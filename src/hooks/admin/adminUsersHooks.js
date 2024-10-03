@@ -22,7 +22,6 @@ export function useAdminUpdateUserRole() {
 
   return useMutation({
     mutationFn: async ({ userId, newRole }) => {
-      // newRole must be one of: "ADMIN", "EVENT_CREATOR", "DEFAULT".
       const httpClient = new HTTPClient(USERS_URL)
       await apiUpdateUserRole(httpClient, userId, { role: newRole })
     },

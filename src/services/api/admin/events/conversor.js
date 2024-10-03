@@ -20,5 +20,6 @@ function convertEventItem(event) {
     start_date: convertStartDate(event),
     end_date: convertEndDate(event),
     status: event.status,
+    creator: event.creator,
   }
 }

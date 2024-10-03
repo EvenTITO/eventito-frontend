@@ -19,6 +19,8 @@ const buttonVariants = cva(
         ghost: 'hover:bg-elegantSoft hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         table: 'hover:bg-slate-100',
+        selectable: 'hover:bg-slate-100',
+        notApproved: 'bg-red-50 hover:bg-red-200',
       },
       size: {
         default: 'h-10 px-4 py-2',
