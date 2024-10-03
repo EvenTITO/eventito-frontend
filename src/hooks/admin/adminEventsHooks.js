@@ -14,9 +14,7 @@ export function useGetEventsWaitingApproval() {
       const httpClient = new HTTPClient(EVENTS_URL)
       // TODO: add offset & limit.
       const eventData = await apiGetAllEventsWaitingApproval(httpClient)
-      const events = convertEventsWaitingApproval(eventData)
-      console.log(`los events waiting approval son: ${JSON.stringify(events)}`)
-      return events
+      return convertEventsWaitingApproval(eventData)
     },
   })
 }
