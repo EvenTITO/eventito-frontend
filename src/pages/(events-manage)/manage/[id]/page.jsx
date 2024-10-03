@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { CalendarDays, Clock, Edit2, MapPin, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -85,6 +86,9 @@ export default function Page({ eventInfo }) {
     }
   }
 
+  console.log(event.dates)
+  console.log(format(event.dates[0].date, 'PPP', { locale: es }))
+
   return (
     <ContainerOrganizationPage>
       <ImageHeader
@@ -92,23 +96,13 @@ export default function Page({ eventInfo }) {
       />
       <MotionMain className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
-          {isEditing ? (
-            <Input
-              name="title"
-              value={event.title}
-              onChange={handleInputChange}
-              className="text-4xl font-bold border-none shadow-none focus-visible:ring-0 px-0"
-            />
-          ) : (
-            <MotionH1 className="text-4xl font-bold">{event.title}</MotionH1>
-          )}
+          <MotionH1 className="text-4xl font-bold">{event.title}</MotionH1>
           {!isEditing && (
             <div className="flex gap-2 items-center">
               <Button
-                variant="table"
+                variant="secondary"
                 size="sm"
                 onClick={() => setIsEditing(true)}
-                className="text-muted-foreground hover:text-foreground"
               >
                 <Edit2 className="h-4 w-4 mr-2" />
                 Editar
@@ -122,44 +116,57 @@ export default function Page({ eventInfo }) {
         </div>
 
         <MotionDiv className="space-y-4 mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-sm">
-            <div className="flex items-center">
-              <Users className="h-5 w-5 mr-2 text-muted-foreground" />
-              {isEditing ? (
-                <div className="flex items-center">
+          {isEditing ? (
+            <div className="flex flex-row sm:flex-row text-sm">
+              <div className="flex flex-col between my-2 gap-8">
+                <div className="flex flex-row items-center">
+                  <Users className="h-5 w-5 mr-2 text-muted-foreground" />
+                  <span className="text-muted-foreground mr-2 text-nowrap">
+                    Organizado por:
+                  </span>
+                </div>
+                <div className="flex flex-row items-center">
+                  <MapPin className="h-5 w-5 mr-2 text-muted-foreground flex-shrink-0" />
+                  <span className="text-muted-foreground">Ubicación:</span>
+                </div>
+              </div>
+              <div className="flex flex-col items-center w-full gap-4">
+                <div className="flex items-center w-full">
                   <Input
                     name="organized_by"
                     value={event.organized_by}
                     onChange={handleInputChange}
-                    className="border-none shadow-none focus-visible:ring-0 px-0 w-auto"
+                    className="flex-grow"
                   />
                 </div>
-              ) : (
-                <span>
-                  <span className="text-muted-foreground">Organizado por:</span>{' '}
-                  {event.organized_by}
-                </span>
-              )}
-            </div>
-            <div className="flex items-center">
-              <MapPin className="h-5 w-5 mr-2 text-muted-foreground flex-shrink-0" />
-              {isEditing ? (
-                <div className="flex items-center flex-grow">
+                <div className="flex items-center flex-grow w-full">
                   <Input
                     name="location"
                     value={event.location}
                     onChange={handleInputChange}
-                    className="border-none shadow-none focus-visible:ring-0 px-0 w-full"
+                    className="flex-grow"
                   />
                 </div>
-              ) : (
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col sm:flex-col sm:items-start gap-4 text-sm">
+              <div className="flex items-center w-full">
+                <Users className="h-5 w-5 mr-2 text-muted-foreground" />
+                <span>
+                  <span className="text-muted-foreground">Organizado por:</span>{' '}
+                  {event.organized_by}
+                </span>
+              </div>
+              <div className="flex items-center w-full">
+                <MapPin className="h-5 w-5 mr-2 text-muted-foreground flex-shrink-0" />
                 <span className="break-words">
                   <span className="text-muted-foreground">Ubicación:</span>{' '}
                   {event.location}
                 </span>
-              )}
+              </div>
             </div>
-          </div>
+          )}
         </MotionDiv>
 
         <MotionDiv className="space-y-6 mb-12">
@@ -184,7 +191,9 @@ export default function Page({ eventInfo }) {
                             >
                               <CalendarDays className="mr-2 h-4 w-4" />
                               {date.date
-                                ? format(new Date(date.date), 'PPP')
+                                ? format(new Date(date.date), 'PPP', {
+                                    locale: es,
+                                  })
                                 : 'Seleccionar una fecha'}
                             </Button>
                           </PopoverTrigger>
@@ -194,13 +203,18 @@ export default function Page({ eventInfo }) {
                               selected={
                                 date.date ? new Date(date.date) : undefined
                               }
-                              onSelect={(newDate) =>
+                              onSelect={(newDate) => {
+                                console.log('new date seleccionado', newDate)
+                                console.log(
+                                  'new date seleccionado con format',
+                                  newDate ? format(newDate, 'yyyy-MM-dd') : ''
+                                )
                                 handleDateChange(
                                   index,
                                   'date',
                                   newDate ? format(newDate, 'yyyy-MM-dd') : ''
                                 )
-                              }
+                              }}
                               initialFocus
                             />
                           </PopoverContent>
@@ -217,7 +231,7 @@ export default function Page({ eventInfo }) {
                     ) : (
                       <p className="text-sm text-muted-foreground">
                         {date.date
-                          ? format(new Date(date.date), 'PPP')
+                          ? format(new Date(date.date), 'PPP', { locale: es })
                           : 'Seleccionar una fecha'}
                       </p>
                     )}
@@ -249,7 +263,16 @@ export default function Page({ eventInfo }) {
         </MotionDiv>
 
         {isEditing && (
-          <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4 flex justify-end">
+          <div className="bg-background border-t p-4 gap-2 flex justify-end">
+            <ButtonWithLoading
+              onClick={() => {
+                setIsEditing(false)
+                setEvent(eventInfo)
+              }}
+              className={'size-lg'}
+            >
+              Cancelar
+            </ButtonWithLoading>
             <ButtonWithLoading
               onClick={handleSave}
               className={'size-lg'}
