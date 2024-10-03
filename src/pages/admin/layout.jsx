@@ -2,7 +2,7 @@ import { isAuthenticated } from '@/lib/routes/isAuthenticated'
 import { Navigate, Outlet } from 'react-router-dom'
 import Header from '@/pages/_components/headers/(home-admin)'
 
-export default function LayoutHome() {
+export default function LayoutAdmin() {
   if (isAuthenticated()) {
     return (
       <div className="flex flex-col min-h-screen">
@@ -13,6 +13,6 @@ export default function LayoutHome() {
       </div>
     )
   } else {
-    return <Navigate to={'/login'} />
+    return <Navigate to={'/home'} />
   }
 }

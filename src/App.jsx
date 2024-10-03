@@ -1,16 +1,16 @@
-import { BrowserRouter } from 'react-router-dom'
-import RoutesHome from './pages/home/routes'
 import { useEffect, useState } from 'react'
+import { BrowserRouter } from 'react-router-dom'
 import { onAuthStateChanged } from '@firebase/auth'
 import { auth } from '@/services/firebase/firebaseAuth.js'
 import { logout } from './state/user/userSlice'
 import { useDispatch } from 'react-redux'
 import { Toaster } from './components/ui/toaster'
-import RoutesAdmin from './pages2/admin/routes'
+import RoutesAuth from './pages/auth/routes'
+import RoutesHome from './pages/home/routes'
+import RoutesAdmin from './pages/admin/routes'
 import RoutesEvents from './pages/(events-manage)/events/routes'
 import RouteViewEvent from './pages/(events-manage)/view/routes'
 import RoutesOrganization from './pages/(events-manage)/manage/routes'
-import RoutesAuth from './pages/auth/routes'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
