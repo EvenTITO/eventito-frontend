@@ -3,9 +3,11 @@ import { X, MapPin, Users, AtSign, Calendar, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
 export default function Details({ event, onClose, onSetEventStatus }) {
   const [isVisible, setIsVisible] = useState(false)
+  const [isPending, setIsPending] = useState(false)
 
   useEffect(() => {
     setIsVisible(true)
@@ -17,8 +19,10 @@ export default function Details({ event, onClose, onSetEventStatus }) {
   }
 
   const handleSetEventStatus = async (newStatus) => {
+    setIsPending(true)
     await onSetEventStatus(event.id, newStatus)
     handleClose()
+    setIsPending(false)
   }
 
   return (
@@ -84,12 +88,13 @@ export default function Details({ event, onClose, onSetEventStatus }) {
             >
               Rechazar
             </Button>
-            <Button
+            <ButtonWithLoading
               className="w-full"
               onClick={() => handleSetEventStatus('CREATED')}
+              isLoading={isPending}
             >
               Aceptar
-            </Button>
+            </ButtonWithLoading>
           </div>
         </div>
       </div>
