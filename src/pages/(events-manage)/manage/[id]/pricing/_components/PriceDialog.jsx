@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -15,17 +15,24 @@ import {
   INSCRIPTION_ROLES_LABELS,
   INSCRIPTION_ROLES_LABELS_REVERSE,
 } from '@/lib/Constants.js'
+import PriceRoleSelector from '@/pages/(events-manage)/manage/[id]/pricing/_components/PriceRoleSelector.jsx'
 
 export default function PriceDialog({ price, onSave }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [formData, setFormData] = useState(
-    sanitizePriceBackToFront(price) || defaultFormData
+  const [formData, setFormData] = useState(price || defaultFormData)
+  const [selectedRole, setSelectedRole] = useState(
+    formData.roles.map((r) => INSCRIPTION_ROLES_LABELS[r]).join(', ')
   )
+
+  useEffect(() => {
+    if (!price) {
+      setFormData(defaultFormData)
+    }
+  }, [price, isOpen])
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const formDataSanitized = sanitizePriceFrontToBack(formData)
-    onSave(formDataSanitized)
+    onSave(formData)
     setIsOpen(false)
   }
 
@@ -35,6 +42,15 @@ export default function PriceDialog({ price, onSave }) {
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }))
+  }
+
+  const handleChangeRole = (e) => {
+    setSelectedRole(e)
+    if (e === 'Autor, Asistente') {
+      setFormData({ ...formData, roles: Object.keys(INSCRIPTION_ROLES_LABELS) })
+    } else {
+      setFormData({ ...formData, roles: [INSCRIPTION_ROLES_LABELS_REVERSE[e]] })
+    }
   }
 
   return (
@@ -115,18 +131,14 @@ export default function PriceDialog({ price, onSave }) {
             />
           </div>
           <div>
-            <Label htmlFor="roles">Roles (separados por coma)</Label>
-            <Input
-              id="roles"
-              name="roles"
-              placeholder="Roles permitidos: Autor o Asistente"
-              value={formData.roles}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  roles: e.target.value.split(',').map((role) => role.trim()),
-                }))
-              }
+            <Label htmlFor="roles">Roles</Label>
+            <PriceRoleSelector
+              roles={[
+                ...Object.values(INSCRIPTION_ROLES_LABELS),
+                'Autor, Asistente',
+              ]}
+              selectedRole={selectedRole}
+              setSelectedRole={handleChangeRole}
             />
           </div>
           <Button type="submit">Continuar</Button>
@@ -143,25 +155,4 @@ const defaultFormData = {
   need_verification: false,
   related_date: null,
   roles: [],
-}
-
-function sanitizePriceFrontToBack(formData) {
-  return {
-    ...formData,
-    roles: formData.roles
-      .map((role) => role.trim())
-      .map((role) => INSCRIPTION_ROLES_LABELS_REVERSE[role]),
-  }
-}
-
-function sanitizePriceBackToFront(formData) {
-  return !formData
-    ? undefined
-    : {
-        ...formData,
-        roles: formData.roles
-          .map((role) => role.trim())
-          .map((role) => INSCRIPTION_ROLES_LABELS[role])
-          .join(', '),
-      }
 }
