@@ -138,9 +138,9 @@ function Member({ member, onRoleChange }) {
     <Card className="overflow-hidden hover:shadow-md transition-all duration-200 group">
       <CardContent className="p-6">
         <div className="flex items-center space-x-4">
-          <Avatar className="h-16 w-16 ring-2 ring-primary ring-offset-2 group-hover:ring-offset-4 transition-all duration-200">
+          <Avatar className="h-16 w-16 group-hover:ring-offset-4 transition-all duration-200">
             <AvatarImage
-              src={`https://api.dicebear.com/6.x/micah/svg?seed=${member.username}`}
+              src={`https://api.dicebear.com/6.x/initials/svg?seed=${member.username}`}
             />
             <AvatarFallback>{member.username.charAt(0) || ''}</AvatarFallback>
           </Avatar>
