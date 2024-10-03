@@ -2,22 +2,19 @@ import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
-import { Calendar, Search, Filter, FileText, MapPin, Clock } from 'lucide-react'
+import { Calendar, Search, FileText, MapPin, Clock } from 'lucide-react'
 import { format } from 'date-fns'
 import Details from './_components/Details'
 
 export default function EventCreationRequests({ events }) {
-  const [filter, setFilter] = useState('ALL')
   const [search, setSearch] = useState('')
   const [selectedEvent, setSelectedEvent] = useState(null)
 
-  const filteredEvents = events.filter(
-    (event) =>
-      (filter === 'ALL' ? true : event.event_type === filter) &&
-      (search
-        ? event.title.toLowerCase().includes(search.toLowerCase()) ||
-          event.organized_by.toLowerCase().includes(search.toLowerCase())
-        : true)
+  const filteredEvents = events.filter((event) =>
+    search
+      ? event.title.toLowerCase().includes(search.toLowerCase()) ||
+        event.organized_by.toLowerCase().includes(search.toLowerCase())
+      : true
   )
 
   const handleEventClick = (event) => {
