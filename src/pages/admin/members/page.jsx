@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { X, Users, Filter, Sparkles, Search } from 'lucide-react'
+import { X, Users, Filter, Search } from 'lucide-react'
 import { REGULAR, EVENT_CREATOR, ADMIN, EVENT_ROLES_LABELS } from './constants'
 
 export default function Page({ members }) {
@@ -78,12 +78,9 @@ export default function Page({ members }) {
           <Card>
             <CardContent className="p-6">
               <h2 className="text-2xl font-bold mb-6 flex items-center justify-between">
-                <span className="flex items-center gap-3">
-                  <Sparkles className="h-6 w-6 text-primary" />
-                  {title}
-                </span>
+                <span className="flex items-center gap-3">{title}</span>
                 <span className="text-sm font-normal text-muted-foreground">
-                  {filteredMembers.length} member
+                  {filteredMembers.length} miembro
                   {filteredMembers.length !== 1 && 's'}
                 </span>
               </h2>
@@ -129,7 +126,7 @@ function RoleFilter({ currentFilter, onFilterChange }) {
           onClick={() => onFilterChange(null)}
         >
           <X className="h-4 w-4 mr-2" />
-          Clear filter
+          Limpiar filtro
         </Button>
       )}
     </div>
