@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState, useMemo } from 'react'
+import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   Select,
@@ -9,59 +9,110 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { X } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { X, Users, Filter, Sparkles, Search } from 'lucide-react'
 import { REGULAR, EVENT_CREATOR, ADMIN, EVENT_ROLES_LABELS } from './constants'
 
 export default function Page({ members }) {
   const [filter, setFilter] = useState(null)
+  const [search, setSearch] = useState('')
 
-  const filteredMembers = filter
-    ? members.filter((member) => member.role === filter)
-    : members
+  const filteredMembers = useMemo(() => {
+    return members.filter(
+      (member) =>
+        (filter ? member.role === filter : true) &&
+        (search
+          ? member.username.toLowerCase().includes(search.toLowerCase()) ||
+            member.email.toLowerCase().includes(search.toLowerCase())
+          : true)
+    )
+  }, [members, filter, search])
 
   const title = filter
-    ? `Members by role: ${EVENT_ROLES_LABELS[filter]}`
-    : 'All Members'
+    ? `Miembros con rol: ${EVENT_ROLES_LABELS[filter]}`
+    : 'Todos los miembros'
 
   const handleRoleChange = (memberId, newRole) => {
-    // In a real application, this would update the backend
     console.log(`Changed role for member ${memberId} to ${newRole}`)
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <Card className="w-full mb-6">
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle className="text-2xl font-bold">{title}</CardTitle>
-            <RoleFilter currentFilter={filter} onFilterChange={setFilter} />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {filteredMembers.map((member) => (
-              <Member
-                key={member.id}
-                member={member}
-                onRoleChange={handleRoleChange}
+    <div className="max-w-6xl mx-auto p-8 bg-white min-h-screen">
+      <div className="mb-12 space-y-4">
+        <h1 className="text-4xl font-bold tracking-tight flex items-center gap-3">
+          <Users className="h-10 w-10 text-primary" />
+          Administración de miembros
+        </h1>
+        <p className="text-xl text-muted-foreground">
+          Cambiar los roles de los usuarios de eventito
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <Card className="lg:col-span-1 h-fit sticky top-8">
+          <CardContent className="p-6 space-y-6">
+            <div>
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Search className="h-5 w-5" />
+                Buscar miembros
+              </h2>
+              <Input
+                type="text"
+                placeholder="Buscar por nombre o email"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full"
               />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Filter className="h-5 w-5" />
+                Filtrar por rol
+              </h2>
+              <RoleFilter currentFilter={filter} onFilterChange={setFilter} />
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="lg:col-span-3 space-y-6">
+          <Card>
+            <CardContent className="p-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center justify-between">
+                <span className="flex items-center gap-3">
+                  <Sparkles className="h-6 w-6 text-primary" />
+                  {title}
+                </span>
+                <span className="text-sm font-normal text-muted-foreground">
+                  {filteredMembers.length} member
+                  {filteredMembers.length !== 1 && 's'}
+                </span>
+              </h2>
+              <div className="space-y-4">
+                {filteredMembers.map((member) => (
+                  <Member
+                    key={member.id}
+                    member={member}
+                    onRoleChange={handleRoleChange}
+                  />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   )
 }
 
 function RoleFilter({ currentFilter, onFilterChange }) {
   return (
-    <div className="flex items-center space-x-2">
+    <div className="space-y-4">
       <Select
         value={currentFilter || ''}
         onValueChange={(value) => onFilterChange(value)}
       >
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Filter by role" />
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Seleccionar un rol" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value={REGULAR}>{EVENT_ROLES_LABELS[REGULAR]}</SelectItem>
@@ -74,11 +125,11 @@ function RoleFilter({ currentFilter, onFilterChange }) {
       {currentFilter && (
         <Button
           variant="outline"
-          size="icon"
+          className="w-full"
           onClick={() => onFilterChange(null)}
         >
-          <X className="h-4 w-4" />
-          <span className="sr-only">Clear filter</span>
+          <X className="h-4 w-4 mr-2" />
+          Clear filter
         </Button>
       )}
     </div>
@@ -87,17 +138,19 @@ function RoleFilter({ currentFilter, onFilterChange }) {
 
 function Member({ member, onRoleChange }) {
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow duration-200">
-      <CardContent className="p-4">
+    <Card className="overflow-hidden hover:shadow-md transition-all duration-200 group">
+      <CardContent className="p-6">
         <div className="flex items-center space-x-4">
-          <Avatar className="h-12 w-12">
+          <Avatar className="h-16 w-16 ring-2 ring-primary ring-offset-2 group-hover:ring-offset-4 transition-all duration-200">
             <AvatarImage
-              src={`https://api.dicebear.com/6.x/initials/svg?seed=${member.username}`}
+              src={`https://api.dicebear.com/6.x/micah/svg?seed=${member.username}`}
             />
             <AvatarFallback>{member.username.charAt(0) || ''}</AvatarFallback>
           </Avatar>
           <div className="flex-grow min-w-0">
-            <p className="text-lg font-medium truncate">{member.username}</p>
+            <p className="text-xl font-medium truncate group-hover:text-primary transition-colors duration-200">
+              {member.username}
+            </p>
             <p className="text-sm text-muted-foreground truncate">
               {member.email}
             </p>
@@ -107,7 +160,7 @@ function Member({ member, onRoleChange }) {
             onValueChange={(newRole) => onRoleChange(member.id, newRole)}
           >
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select role" />
+              <SelectValue placeholder="Change role" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={REGULAR}>
