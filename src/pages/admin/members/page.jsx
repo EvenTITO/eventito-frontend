@@ -12,10 +12,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { X, Users, Filter, Search } from 'lucide-react'
 import { REGULAR, EVENT_CREATOR, ADMIN, EVENT_ROLES_LABELS } from './constants'
+import { useAdminUpdateUserRole } from '@/hooks/admin/adminUsersHooks'
+import ContainerAdminPage from '../_components/ContainerAdminPage'
 
 export default function Page({ members }) {
   const [filter, setFilter] = useState(null)
   const [search, setSearch] = useState('')
+
+  const { mutateAsync: updateRole, isPending, error } = useAdminUpdateUserRole()
 
   const filteredMembers = useMemo(() => {
     return members.filter(
@@ -24,7 +28,7 @@ export default function Page({ members }) {
         (search
           ? member.name.toLowerCase().includes(search.toLowerCase()) ||
             member.lastname.toLowerCase().includes(search.toLowerCase()) ||
-            member.email.toLowerCase().includes(search.toLowerCase())
+            mber.email.toLowerCase().includes(search.toLowerCase())
           : true)
     )
   }, [members, filter, search])
@@ -33,22 +37,16 @@ export default function Page({ members }) {
     ? `Miembros con rol: ${EVENT_ROLES_LABELS[filter]}`
     : 'Todos los miembros'
 
-  const handleRoleChange = (memberId, newRole) => {
-    console.log(`Changed role for member ${memberId} to ${newRole}`)
+  const handleRoleChange = async (memberId, newRole) => {
+    await updateRole({ userId: memberId, newRole: newRole })
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-8 bg-white min-h-screen">
-      <div className="mb-12 space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight flex items-center gap-3">
-          <Users className="h-10 w-10 text-primary" />
-          Administración de miembros
-        </h1>
-        <p className="text-xl text-muted-foreground">
-          Cambiar los roles de los usuarios de eventito
-        </p>
-      </div>
-
+    <ContainerAdminPage
+      title={'Administración de miembros'}
+      subtitle={'Cambiar los roles de los usuarios de eventito.'}
+      icon={'Users'}
+    >
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <Card className="lg:col-span-1 h-fit sticky top-8">
           <CardContent className="p-6 space-y-6">
@@ -98,7 +96,7 @@ export default function Page({ members }) {
           </Card>
         </div>
       </div>
-    </div>
+    </ContainerAdminPage>
   )
 }
 
