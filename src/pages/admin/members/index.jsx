@@ -1,39 +1,16 @@
-import { REGULAR, EVENT_CREATOR, ADMIN } from './constants'
+import { useAdminGetUsers } from '@/hooks/admin/adminUsersHooks'
 import Page from './page'
+import FetchStatus from '@/components/FetchStatus'
 
 export default function AdminMembersPage() {
-  const simulatedMembers = [
-    {
-      id: '1',
-      username: 'john_doe',
-      email: 'john@example.com',
-      role: REGULAR,
-    },
-    {
-      id: '2',
-      username: 'jane_smith',
-      email: 'jane@example.com',
-      role: EVENT_CREATOR,
-    },
-    {
-      id: '3',
-      username: 'admin_user',
-      email: 'admin@example.com',
-      role: ADMIN,
-    },
-    {
-      id: '4',
-      username: 'event_planner',
-      email: 'planner@example.com',
-      role: EVENT_CREATOR,
-    },
-    {
-      id: '5',
-      username: 'regular_joe',
-      email: 'joe@example.com',
-      role: REGULAR,
-    },
-  ]
+  const { data: members, isPending, error } = useAdminGetUsers()
 
-  return <Page members={simulatedMembers} />
+  if (members) {
+    console.log(members)
+  }
+
+  const component = <Page members={members || []} />
+  return (
+    <FetchStatus component={component} isPending={isPending} error={error} />
+  )
 }

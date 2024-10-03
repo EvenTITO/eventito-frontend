@@ -1,4 +1,4 @@
-export const REGULAR = 'REGULAR'
+export const REGULAR = 'DEFAULT'
 export const EVENT_CREATOR = 'EVENT_CREATOR'
 export const ADMIN = 'ADMIN'
 

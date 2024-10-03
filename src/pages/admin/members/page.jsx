@@ -22,7 +22,8 @@ export default function Page({ members }) {
       (member) =>
         (filter ? member.role === filter : true) &&
         (search
-          ? member.username.toLowerCase().includes(search.toLowerCase()) ||
+          ? member.name.toLowerCase().includes(search.toLowerCase()) ||
+            member.lastname.toLowerCase().includes(search.toLowerCase()) ||
             member.email.toLowerCase().includes(search.toLowerCase())
           : true)
     )
@@ -134,6 +135,8 @@ function RoleFilter({ currentFilter, onFilterChange }) {
 }
 
 function Member({ member, onRoleChange }) {
+  member.username = member.name + ' ' + member.lastname
+
   return (
     <Card className="overflow-hidden hover:shadow-md transition-all duration-200 group">
       <CardContent className="p-6">
