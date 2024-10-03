@@ -5,7 +5,6 @@ import {
   useGetEventChairsByTracks,
 } from '@/hooks/manage/tracksHooks'
 import { useGetEvent } from '@/hooks/events/useEventState'
-import { unifyEventTracksWithChairs } from './_components/utils'
 
 export default function TracksConfigPage() {
   const eventData = useGetEvent()
@@ -24,11 +23,9 @@ export default function TracksConfigPage() {
 
   const component = (
     <Page
-      tracks={unifyEventTracksWithChairs(
-        eventData.data.tracks,
-        tracksByChair || []
-      )}
+      event={eventData.data}
       chairs={chairsData.data}
+      tracksByChair={tracksByChair || []}
     />
   )
   return (

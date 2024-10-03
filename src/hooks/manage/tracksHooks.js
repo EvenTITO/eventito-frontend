@@ -31,6 +31,9 @@ export function useAddTrack() {
       queryClient.invalidateQueries({
         queryKey: ['getEventChairs', { eventId }],
       })
+      queryClient.invalidateQueries({
+        queryKey: ['getEventChairsByTracks', { eventId }],
+      })
     },
   })
 }

@@ -8,9 +8,11 @@ import {
   useDeleteChairOfTrack,
 } from '@/hooks/manage/tracksHooks'
 import { toast } from '@/hooks/use-toast.js'
+import { unifyEventTracksWithChairs } from '@/pages/(events-manage)/manage/[id]/tracks/_components/utils.js'
 
-export default function Page({ tracks, chairs }) {
-  const initialTracks = tracks.map((track, index) => ({
+export default function Page({ event, chairs, tracksByChair }) {
+  const trackByChairs = unifyEventTracksWithChairs(event.tracks, tracksByChair)
+  const initialTracks = trackByChairs.map((track, index) => ({
     ...track,
     id: index,
   }))
@@ -39,22 +41,26 @@ export default function Page({ tracks, chairs }) {
   }
 
   const handleAddTrack = async (newTrack) => {
-    try {
-      await addTrack.mutateAsync({
-        eventTracks: tracks.map((track) => track.track),
+    await addTrack
+      .mutateAsync({
+        eventTracks: trackByChairs.map((track) => track.track),
         track: newTrack,
       })
-      toast({
-        title: 'Track agregado',
-        description: `${newTrack} agregado con éxito.`,
+      .then(() => {
+        toast({
+          title: 'Track agregado',
+          description: `${newTrack} agregado con éxito.`,
+        })
       })
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Error al agregar el track. Intente nuevamente.',
-        variant: 'destructive',
+      .catch((e) => {
+        console.error(e)
+        toast({
+          title: 'Error',
+          description:
+            'Error al agregar el track. Intente nuevamente más tarde.',
+          variant: 'destructive',
+        })
       })
-    }
   }
 
   return (
@@ -65,7 +71,7 @@ export default function Page({ tracks, chairs }) {
       />
       <div className="space-y-6 pt-6">
         <TracksTable
-          initialTracks={initialTracks}
+          tracks={initialTracks}
           onAdd={onAdd}
           onUpdate={onUpdate}
           onDelete={onDelete}
