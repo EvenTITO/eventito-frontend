@@ -8,7 +8,7 @@ import {
   useDeleteChairOfTrack,
 } from '@/hooks/manage/tracksHooks'
 import { toast } from '@/hooks/use-toast.js'
-import { unifyEventTracksWithChairs } from '@/pages/(events-manage)/manage/[id]/tracks/_components/utils.js'
+import { unifyEventTracksWithChairs } from './_components/utils.js'
 
 export default function Page({ event, chairs, tracksByChair }) {
   const trackByChairs = unifyEventTracksWithChairs(event.tracks, tracksByChair)
