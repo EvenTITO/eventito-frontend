@@ -4,7 +4,6 @@
 
 - agregar pantalla de fowardeo en caso de 500
 - herencia para el http client -> que los cree cada hook
-- cambiar loader
 - restringir largo de campos en tablas
 
 ## Create event
