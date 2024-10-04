@@ -191,7 +191,6 @@ export default function Page({ eventInfo }) {
                           open={datesOpen[index]}
                           onOpenChange={(v) => handleDatesOpen(v, index)}
                         >
-                          >
                           <PopoverTrigger asChild>
                             <Button
                               variant="outline"
