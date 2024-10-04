@@ -69,6 +69,8 @@ const itemList = [
       },
     ],
   },
+  //TODO volver a meter cuando corresponda
+  /**,
   {
     label: 'Datos del evento',
     children: [
@@ -80,5 +82,5 @@ const itemList = [
         isOrganizerRoute: true,
       },
     ],
-  },
+  },**/
 ]

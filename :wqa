@@ -1,9 +1,0 @@
-import { REGULAR, EVENT_CREATOR, ADMIN } from './constants'
-import { useGetAdminUsers } from '@/hooks/admin/adminUsersHooks'
-import Page from './page'
-
-export default function AdminMembersPage() {
-  const { data: members, isPending, error } = useGetAdminUsers()
-
-  return <Page members={simulatedMembers} />
-}

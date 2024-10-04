@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { CalendarDays, Clock, Edit2, MapPin, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -34,6 +34,7 @@ import * as Tooltip from '@radix-ui/react-tooltip'
 export default function Page({ eventInfo }) {
   const [event, setEvent] = useState(eventInfo)
   const [isEditing, setIsEditing] = useState(false)
+  const [datesOpen, setDatesOpen] = useState(event.dates.map(() => false))
   const { mutateAsync: submitEditEvent, isPending, error } = useEditEvent()
   const { mutateAsync: uploadEventImage } = useUploadEventImage()
   const { mutateAsync: updateEventStatus } = useUpdateEventStatus()
@@ -58,6 +59,12 @@ export default function Page({ eventInfo }) {
     delete eventCopy.title
     await submitEditEvent({ eventData: eventCopy })
     setIsEditing(false)
+  }
+
+  const handleDatesOpen = async (value, index) => {
+    setDatesOpen(
+      datesOpen.map((isOpen, idx) => (index === idx ? value : isOpen))
+    )
   }
 
   //TODO @gonzasabation con esta funcion subis cualquier imagen del evento
@@ -85,9 +92,6 @@ export default function Page({ eventInfo }) {
       })
     }
   }
-
-  console.log(event.dates)
-  console.log(format(event.dates[0].date, 'PPP', { locale: es }))
 
   return (
     <ContainerOrganizationPage>
@@ -183,7 +187,11 @@ export default function Page({ eventInfo }) {
                     <p className="font-medium">{date.description}</p>
                     {isEditing ? (
                       <div className="flex items-center space-x-2 mt-1">
-                        <Popover>
+                        <Popover
+                          open={datesOpen[index]}
+                          onOpenChange={(v) => handleDatesOpen(v, index)}
+                        >
+                          >
                           <PopoverTrigger asChild>
                             <Button
                               variant="outline"
@@ -191,9 +199,13 @@ export default function Page({ eventInfo }) {
                             >
                               <CalendarDays className="mr-2 h-4 w-4" />
                               {date.date
-                                ? format(new Date(date.date), 'PPP', {
-                                    locale: es,
-                                  })
+                                ? format(
+                                    parse(date.date, 'yyyy-MM-dd', new Date()),
+                                    'PPP',
+                                    {
+                                      locale: es,
+                                    }
+                                  )
                                 : 'Seleccionar una fecha'}
                             </Button>
                           </PopoverTrigger>
@@ -201,19 +213,17 @@ export default function Page({ eventInfo }) {
                             <Calendar
                               mode="single"
                               selected={
-                                date.date ? new Date(date.date) : undefined
+                                date.date
+                                  ? parse(date.date, 'yyyy-MM-dd', new Date())
+                                  : undefined
                               }
                               onSelect={(newDate) => {
-                                console.log('new date seleccionado', newDate)
-                                console.log(
-                                  'new date seleccionado con format',
-                                  newDate ? format(newDate, 'yyyy-MM-dd') : ''
-                                )
                                 handleDateChange(
                                   index,
                                   'date',
                                   newDate ? format(newDate, 'yyyy-MM-dd') : ''
                                 )
+                                handleDatesOpen(false, index)
                               }}
                               initialFocus
                             />
@@ -231,7 +241,11 @@ export default function Page({ eventInfo }) {
                     ) : (
                       <p className="text-sm text-muted-foreground">
                         {date.date
-                          ? format(new Date(date.date), 'PPP', { locale: es })
+                          ? format(
+                              parse(date.date, 'yyyy-MM-dd', new Date()),
+                              'PPP',
+                              { locale: es }
+                            )
                           : 'Seleccionar una fecha'}
                       </p>
                     )}

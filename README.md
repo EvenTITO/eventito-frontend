@@ -1,5 +1,4 @@
 # Eventito frontend
-
 ## Install the dependencies
 
 ```sh
