@@ -117,9 +117,9 @@ export const INSCRIPTION_STATUS_LABELS = {
 }
 
 export const INSCRIPTION_STATUS_LABELS_REVERSE = {
-  Aprobada: 'APPROVED',
-  Rechazada: 'REJECTED',
-  'Pendiente de revisión': 'PENDING_APPROVAL',
+  Aprobada: APPROVED_STATUS,
+  Rechazada: REJECTED_STATUS,
+  'Pendiente de revisión': PENDING_APPROVAL_STATUS,
 }
 
 export const PAYMENT_STATUS_LABELS = {
@@ -130,8 +130,8 @@ export const PAYMENT_STATUS_LABELS = {
 }
 
 export const PAYMENT_STATUS_LABELS_REVERSE = {
-  Aprobado: 'APPROVED',
-  Rechazado: 'REJECTED',
-  Insuficiente: 'UNCOMPLETED',
-  'Pendiente de revisión': 'PENDING_APPROVAL',
+  Aprobado: APPROVED_STATUS,
+  Rechazado: REJECTED_STATUS,
+  Insuficiente: UNCOMPLETED_STATUS,
+  'Pendiente de revisión': PENDING_APPROVAL_STATUS,
 }
