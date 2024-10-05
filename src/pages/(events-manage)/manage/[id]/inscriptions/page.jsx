@@ -61,7 +61,7 @@ export default function InscriptionsPage({ inscriptions }) {
               <InscriptionGroup
                 key={status}
                 groupInscriptions={inscriptions}
-                title={`Inscripciones ${status.toLowerCase().replace('_', ' ')}`}
+                title={`Inscripciones ${INSCRIPTION_STATUS_LABELS[status].toLowerCase()}`}
                 handleInscriptionClick={handleInscriptionClick}
               />
             )
