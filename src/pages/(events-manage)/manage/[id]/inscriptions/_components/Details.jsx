@@ -63,16 +63,22 @@ export default function Details({ inscription, onClose }) {
     NOT_APPROVED: 'bg-red-100 text-red-800',
   }
 
+  const hasPayments = payments && payments.length > 0
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[90%] h-[90vh] overflow-y-auto">
+      <DialogContent
+        className={`sm:max-w-[90%] ${hasPayments ? 'h-[90vh]' : 'max-h-[80vh]'} overflow-y-auto`}
+      >
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
             Detalles de la inscripción
           </DialogTitle>
         </DialogHeader>
-        <div className="grid gap-6">
-          <div className="flex items-center justify-between">
+        <div className={`grid gap-6 ${hasPayments ? '' : 'items-center'}`}>
+          <div
+            className={`flex ${hasPayments ? 'items-start' : 'items-center'} justify-between`}
+          >
             <div className="flex items-center space-x-4">
               <Avatar className="h-20 w-20">
                 <AvatarImage
@@ -134,88 +140,84 @@ export default function Details({ inscription, onClose }) {
               </DropdownMenu>
             </div>
           </div>
-          <Separator />
-          {payments && payments.length > 0 ? (
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Pagos</h3>
-              <div className="space-y-4">
-                {payments.map((payment) => (
-                  <Card key={payment.id}>
-                    <CardHeader>
-                      <CardTitle className="flex justify-between items-center">
-                        <span>{payment.name}</span>
-                        <Badge
-                          variant={
-                            payment.status === 'PENDING_APPROVAL'
-                              ? 'warning'
-                              : payment.status === 'APPROVED'
-                                ? 'success'
-                                : 'destructive'
-                          }
-                        >
-                          {payment.status}
-                        </Badge>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-500 mb-2">
-                        Fecha: {new Date(payment.date).toLocaleDateString()}
-                      </p>
-                      {payment.works && payment.works.length > 0 && (
-                        <div className="mb-4">
-                          <h4 className="font-semibold mb-2">
-                            Trabajos relacionados:
-                          </h4>
-                          <ul className="list-disc pl-5">
-                            {payment.works.map((work, index) => (
-                              <li key={index} className="text-sm">
-                                {work.title} ({work.track})
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDownloadReceipt(payment.id)}
-                        >
-                          <Download className="mr-2 h-4 w-4" /> Descargar
-                          comprobante
-                        </Button>
-                        {payment.status === 'PENDING_APPROVAL' && (
-                          <>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleApprovePayment(payment.id)}
-                            >
-                              <Check className="mr-2 h-4 w-4" /> Aprobar
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() =>
-                                handleDisapprovePayment(payment.id)
-                              }
-                            >
-                              <X className="mr-2 h-4 w-4" /> Rechazar
-                            </Button>
-                          </>
+          {hasPayments && (
+            <>
+              <Separator />
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Pagos</h3>
+                <div className="space-y-4">
+                  {payments.map((payment) => (
+                    <Card key={payment.id}>
+                      <CardHeader>
+                        <CardTitle className="flex justify-between items-center">
+                          <span>{payment.name}</span>
+                          <Badge
+                            variant={
+                              payment.status === 'PENDING_APPROVAL'
+                                ? 'warning'
+                                : payment.status === 'APPROVED'
+                                  ? 'success'
+                                  : 'destructive'
+                            }
+                          >
+                            {payment.status}
+                          </Badge>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-500 mb-2">
+                          Fecha: {new Date(payment.date).toLocaleDateString()}
+                        </p>
+                        {payment.works && payment.works.length > 0 && (
+                          <div className="mb-4">
+                            <h4 className="font-semibold mb-2">
+                              Trabajos relacionados:
+                            </h4>
+                            <ul className="list-disc pl-5">
+                              {payment.works.map((work, index) => (
+                                <li key={index} className="text-sm">
+                                  {work.title} ({work.track})
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                        <div className="flex space-x-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDownloadReceipt(payment.id)}
+                          >
+                            <Download className="mr-2 h-4 w-4" /> Descargar
+                            comprobante
+                          </Button>
+                          {payment.status === 'PENDING_APPROVAL' && (
+                            <>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleApprovePayment(payment.id)}
+                              >
+                                <Check className="mr-2 h-4 w-4" /> Aprobar
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() =>
+                                  handleDisapprovePayment(payment.id)
+                                }
+                              >
+                                <X className="mr-2 h-4 w-4" /> Rechazar
+                              </Button>
+                            </>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <p className="text-gray-500">
-                Esta inscripción no tiene pagos asociados.
-              </p>
-            </div>
+            </>
           )}
         </div>
       </DialogContent>
