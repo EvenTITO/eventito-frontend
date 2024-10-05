@@ -3,7 +3,7 @@ import { useGetInscriptions } from '@/hooks/manage/inscriptionHooks'
 import Page from './page'
 
 export default function InscriptionsDataPage() {
-  const { data: inscriptions, isLoading, error } = useGetInscriptions()
+  const { data: inscriptions, isPending, error } = useGetInscriptions()
 
   if (inscriptions) {
     console.log('inscripciones', inscriptions)
@@ -11,6 +11,6 @@ export default function InscriptionsDataPage() {
 
   const component = <Page inscriptions={inscriptions || []} />
   return (
-    <FetchStatus component={component} isLoading={isLoading} error={error} />
+    <FetchStatus component={component} isPending={isPending} error={error} />
   )
 }
