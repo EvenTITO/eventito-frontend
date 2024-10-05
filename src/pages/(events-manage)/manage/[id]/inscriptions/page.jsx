@@ -4,6 +4,8 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ChevronRight } from 'lucide-react'
 import Details from './_components/Details'
+import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
+import TitlePage from '@/pages/(events-manage)/_components/titlePage'
 
 export default function InscriptionsPage({ inscriptions }) {
   const [selectedInscription, setSelectedInscription] = useState(null)
@@ -29,8 +31,9 @@ export default function InscriptionsPage({ inscriptions }) {
   }
 
   return (
-    <div className="relative">
-      <h1 className="text-3xl font-bold mb-6">Inscripciones del evento</h1>
+    <ContainerPage>
+      <TitlePage title={'Inscripciones del evento'} />
+
       {renderInscriptionGroup(
         groupedInscriptions.pending,
         'Inscripciones con pagos pendientes de revisión',
@@ -47,7 +50,7 @@ export default function InscriptionsPage({ inscriptions }) {
           onClose={handleCloseDetails}
         />
       )}
-    </div>
+    </ContainerPage>
   )
 }
 
