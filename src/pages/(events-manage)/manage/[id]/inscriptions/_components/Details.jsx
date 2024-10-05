@@ -52,8 +52,6 @@ export default function Details({ inscription, onClose }) {
 
   const handleChangeStatus = (newStatus) => {
     setStatus(newStatus)
-    // Here you would typically update the status on the server
-    console.log(`Updating inscription status to ${newStatus}`)
   }
 
   const statusColors = {
