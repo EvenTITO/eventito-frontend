@@ -1,11 +1,8 @@
 import { useState } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { ChevronRight } from 'lucide-react'
 import Details from './_components/Details'
 import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
 import TitlePage from '@/pages/(events-manage)/_components/titlePage'
+import InscriptionGroup from './_components/InscriptionGroup'
 
 export default function InscriptionsPage({ inscriptions }) {
   const [selectedInscription, setSelectedInscription] = useState(null)
@@ -34,16 +31,16 @@ export default function InscriptionsPage({ inscriptions }) {
     <ContainerPage>
       <TitlePage title={'Inscripciones del evento'} />
 
-      {renderInscriptionGroup(
-        groupedInscriptions.pending,
-        'Inscripciones con pagos pendientes de revisión',
-        handleInscriptionClick
-      )}
-      {renderInscriptionGroup(
-        groupedInscriptions.approved,
-        'Inscripciones aceptadas',
-        handleInscriptionClick
-      )}
+      <InscriptionGroup
+        groupInscriptions={groupedInscriptions.pending}
+        title={'Inscripciones con pagos pendientes de revisión'}
+        handleInscriptionClick={handleInscriptionClick}
+      />
+      <InscriptionGroup
+        groupInscriptions={groupedInscriptions.approved}
+        title={'Inscripciones aceptadas'}
+        handleInscriptionClick={handleInscriptionClick}
+      />
       {selectedInscription && (
         <Details
           inscription={selectedInscription}
@@ -53,62 +50,3 @@ export default function InscriptionsPage({ inscriptions }) {
     </ContainerPage>
   )
 }
-
-const renderInscriptionGroup = (
-  groupInscriptions,
-  title,
-  handleInscriptionClick
-) => (
-  <div className="mb-8">
-    <h2 className="text-xl font-semibold mb-4">{title}</h2>
-    <div className="space-y-4">
-      {groupInscriptions.map((inscription) => (
-        <Card
-          key={inscription.id}
-          className="cursor-pointer hover:shadow-md transition-shadow duration-200"
-          onClick={() => handleInscriptionClick(inscription)}
-        >
-          <CardContent className="flex items-center justify-between p-4">
-            <div className="flex items-center space-x-4">
-              <Avatar className="h-10 w-10">
-                <AvatarImage
-                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${inscription.userName}`}
-                />
-                <AvatarFallback>
-                  {inscription.userName
-                    .split(' ')
-                    .map((n) => n[0])
-                    .join('')
-                    .toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <h3 className="font-medium">{inscription.userName}</h3>
-                <p className="text-sm text-gray-500">{inscription.userEmail}</p>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <Badge
-                variant={
-                  inscription.payments.some(
-                    (p) => p.status === 'PENDING_APPROVAL'
-                  )
-                    ? 'warning'
-                    : 'success'
-                }
-              >
-                {
-                  inscription.payments.filter(
-                    (p) => p.status === 'PENDING_APPROVAL'
-                  ).length
-                }{' '}
-                pendientes
-              </Badge>
-              <ChevronRight className="ml-2" />
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  </div>
-)
