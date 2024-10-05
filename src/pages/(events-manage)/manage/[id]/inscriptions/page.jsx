@@ -38,7 +38,7 @@ export default function InscriptionsPage({ inscriptions }) {
       />
       <InscriptionGroup
         groupInscriptions={groupedInscriptions.approved}
-        title={'Inscripciones aceptadas'}
+        title={'Otras inscripciones'}
         handleInscriptionClick={handleInscriptionClick}
       />
       {selectedInscription && (
