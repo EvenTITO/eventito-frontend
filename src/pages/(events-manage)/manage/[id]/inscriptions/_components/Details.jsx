@@ -17,6 +17,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+  APPROVED_STATUS,
+  PENDING_APPROVAL_STATUS,
+  REJECTED_STATUS,
+} from '@/lib/Constants'
 
 export default function Details({ inscription, onClose }) {
   const [isOpen, setIsOpen] = useState(true)
@@ -35,7 +40,9 @@ export default function Details({ inscription, onClose }) {
   const handleApprovePayment = (paymentId) => {
     setPayments(
       payments.map((payment) =>
-        payment.id === paymentId ? { ...payment, status: 'APPROVED' } : payment
+        payment.id === paymentId
+          ? { ...payment, status: APPROVED_STATUS }
+          : payment
       )
     )
   }
@@ -44,7 +51,7 @@ export default function Details({ inscription, onClose }) {
     setPayments(
       payments.map((payment) =>
         payment.id === paymentId
-          ? { ...payment, status: 'NOT_APPROVED' }
+          ? { ...payment, status: REJECTED_STATUS }
           : payment
       )
     )
@@ -55,9 +62,9 @@ export default function Details({ inscription, onClose }) {
   }
 
   const statusColors = {
-    PENDING_APPROVAL: 'bg-yellow-100 text-yellow-800',
-    APPROVED: 'bg-green-100 text-green-800',
-    NOT_APPROVED: 'bg-red-100 text-red-800',
+    'Pendiente de aprobación': 'bg-yellow-100 text-yellow-800',
+    Aceptada: 'bg-green-100 text-green-800',
+    Rechazada: 'bg-red-100 text-red-800',
   }
 
   const hasPayments = payments && payments.length > 0
@@ -119,19 +126,21 @@ export default function Details({ inscription, onClose }) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuItem
-                    onClick={() => handleChangeStatus('APPROVED')}
+                    onClick={() => handleChangeStatus('Aceptada')}
                   >
-                    APPROVED
+                    Aceptada
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => handleChangeStatus('NOT_APPROVED')}
+                    onClick={() => handleChangeStatus('Rechazada')}
                   >
-                    NOT APPROVED
+                    Rechazada
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => handleChangeStatus('PENDING_APPROVAL')}
+                    onClick={() =>
+                      handleChangeStatus('Pendiente de aprobación')
+                    }
                   >
-                    PENDING APPROVAL
+                    Pendiente de aprobación
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
