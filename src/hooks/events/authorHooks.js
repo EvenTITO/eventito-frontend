@@ -1,15 +1,15 @@
 import { EVENTS_URL } from '@/lib/Constants'
-import { getEventId, getWorkId, wait } from '@/lib/utils'
+import { getEventId, getWorkId } from '@/lib/utils'
 import { useSelector } from 'react-redux'
 import { HTTPClient } from '@/services/api/HTTPClient'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   apiGetMyWorks,
-  apiPutWork,
   apiGetSubmissionUploadUrl,
   apiPostWork,
+  apiPutWork,
 } from '@/services/api/works/queries'
-import { convertMyWorks } from '@/services/api/works/conversor'
+import { convertWorks } from '@/services/api/works/conversor'
 import { getWorkById } from '@/hooks/events/worksHooks'
 import { uploadFile } from '@/services/api/storage/queries'
 import { getInscriptionWithPayments } from '@/hooks/events/attendeeHooks'
@@ -21,7 +21,7 @@ export function useGetMyWorks() {
     queryFn: async () => {
       const httpClient = new HTTPClient(EVENTS_URL)
       const myWorks = await apiGetMyWorks(httpClient, eventId)
-      return convertMyWorks(myWorks)
+      return convertWorks(myWorks)
     },
   })
 }
@@ -106,6 +106,7 @@ export function useEditWork() {
     },
   })
 }
+
 export function useAddAuthorToWork() {
   const eventId = getEventId()
   const workId = getWorkId()

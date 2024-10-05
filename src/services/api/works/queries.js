@@ -52,3 +52,7 @@ export const apiGetSubmissionUploadUrl = async (
     await httpClient.put(`/${eventId}/works/${workId}/submissions/submit`)
   ).data
 }
+
+export const apiGetWorksWithTalk = async (httpClient, eventId) => {
+  return (await httpClient.get(`/${eventId}/works/talks`)).data
+}

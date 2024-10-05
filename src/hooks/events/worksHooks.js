@@ -6,8 +6,9 @@ import {
   apiGetSubmissionsForWork,
   apiGetWorkById,
   apiGetWorkDownloadURL,
+  apiGetWorksWithTalk,
 } from '@/services/api/works/queries'
-import { convertWork } from '@/services/api/works/conversor'
+import { convertWork, convertWorks } from '@/services/api/works/conversor'
 import { useGetMyWorks } from './authorHooks'
 import { useGetReviewersForWork, useGetReviewsForWork } from './chairHooks'
 
@@ -71,5 +72,17 @@ export function useGetWorksForPayment({ roles }) {
       return useGetMyWorks()
     },
     enabled: !!roles,
+  })
+}
+
+export function useGetWorksWithTalk() {
+  const eventId = getEventId()
+  return useQuery({
+    queryKey: ['getWorksWithTalk', { eventId }],
+    queryFn: async () => {
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const worksWithTalk = await apiGetWorksWithTalk(httpClient, eventId)
+      return convertWorks(worksWithTalk)
+    },
   })
 }

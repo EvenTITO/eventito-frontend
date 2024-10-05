@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 
-export default function TalkDetails({ talk, onClose }) {
+export default function TalkDetails({ work, onClose }) {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function TalkDetails({ talk, onClose }) {
     >
       <div className="p-6 space-y-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">{talk.title}</h2>
+          <h2 className="text-2xl font-bold">{work.title}</h2>
           <Button variant="table" size="icon" onClick={handleClose}>
             <X className="h-6 w-6" />
           </Button>
@@ -32,24 +32,24 @@ export default function TalkDetails({ talk, onClose }) {
 
         <div className="bg-gray-50 p-4 rounded-lg space-y-4">
           <div className="flex items-center justify-between">
-            <Badge variant="outline">{talk.location}</Badge>
+            <Badge variant="outline">{work.talk.location}</Badge>
             <span className="text-sm text-gray-500">
-              ID: {talk.id.slice(0, 8)}
+              ID: {work.id.slice(0, 8)}
             </span>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="flex items-center text-sm text-gray-600">
               <Users className="h-4 w-4 mr-2" />
-              <span>{talk.authors[0].full_name}</span>
+              <span>{work.authors[0].full_name}</span>
             </div>
             <div className="flex items-center text-sm text-gray-600">
               <Calendar className="h-4 w-4 mr-2" />
-              <span>{new Date(talk.date).toLocaleString()}</span>
+              <span>{new Date(work.talk.date).toLocaleString()}</span>
             </div>
             <div className="flex items-center text-sm text-gray-600">
               <MapPin className="h-4 w-4 mr-2" />
-              <span>{talk.location}</span>
+              <span>{work.talk.location}</span>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ export default function TalkDetails({ talk, onClose }) {
             <Info className="h-5 w-5" />
             Abstract
           </h3>
-          <p className="text-gray-600 whitespace-pre-wrap">{talk.abstract}</p>
+          <p className="text-gray-600 whitespace-pre-wrap">{work.abstract}</p>
         </div>
       </div>
     </div>
