@@ -11,6 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  APPROVED_STATUS,
+  INSCRIPTION_STATUS_LABELS,
+  PENDING_APPROVAL_STATUS,
+  REJECTED_STATUS,
+} from '@/lib/Constants'
 
 export default function InscriptionsPage({ inscriptions }) {
   const [selectedInscription, setSelectedInscription] = useState(null)
@@ -18,9 +24,9 @@ export default function InscriptionsPage({ inscriptions }) {
   const [statusFilter, setStatusFilter] = useState('all')
 
   const groupedInscriptions = inscriptions.reduce((acc, inscription) => {
-    const status = inscription.status || 'PENDING_APPROVAL'
+    const status = inscription.status || PENDING_APPROVAL_STATUS
     const hasPendingPayment = inscription.payments.some(
-      (payment) => payment.status === 'PENDING_APPROVAL'
+      (payment) => payment.status === PENDING_APPROVAL_STATUS
     )
 
     if (!acc[status]) {
@@ -64,7 +70,7 @@ export default function InscriptionsPage({ inscriptions }) {
         return (
           <InscriptionGroup
             groupInscriptions={groupedInscriptions[statusFilter] || []}
-            title={`Inscripciones ${statusFilter.toLowerCase().replace('_', ' ')}`}
+            title={`Inscripciones ${INSCRIPTION_STATUS_LABELS[statusFilter].toLowerCase()}`}
             handleInscriptionClick={handleInscriptionClick}
           />
         )
@@ -99,11 +105,11 @@ export default function InscriptionsPage({ inscriptions }) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todos los estados</SelectItem>
-              <SelectItem value="PENDING_APPROVAL">
+              <SelectItem value={PENDING_APPROVAL_STATUS}>
                 Pendiente de aprobación
               </SelectItem>
-              <SelectItem value="APPROVED">Aprobado</SelectItem>
-              <SelectItem value="NOT_APPROVED">No aprobado</SelectItem>
+              <SelectItem value={APPROVED_STATUS}>Aprobado</SelectItem>
+              <SelectItem value={REJECTED_STATUS}>No aprobado</SelectItem>
             </SelectContent>
           </Select>
         )}
