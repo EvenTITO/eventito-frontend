@@ -8,6 +8,7 @@ import {
   useAddQuestion,
   useDeleteQuestion,
   useUpdateQuestion,
+  useSwapQuestions,
 } from '@/hooks/manage/reviewsHooks'
 import { useToast } from '@/hooks/use-toast'
 
@@ -22,6 +23,7 @@ export default function Page({ reviewSkeleton }) {
   const addQuestion = useAddQuestion()
   const updateQuestion = useUpdateQuestion()
   const deleteQuestion = useDeleteQuestion()
+  const swapQuestions = useSwapQuestions()
 
   const handleAddQuestion = (type_question, more_than_one_answer_allowed) => {
     setNewQuestionType(type_question)
@@ -116,6 +118,30 @@ export default function Page({ reviewSkeleton }) {
     setQuestions(questions.filter((q) => q.question !== question.question))
   }
 
+  const handleSwapQuestions = async (
+    firstQuestionIndex,
+    secondQuestionIndex
+  ) => {
+    await swapQuestions
+      .mutateAsync({
+        firstQuestionIndex,
+        secondQuestionIndex,
+        reviewSkeleton: { questions: questions },
+      })
+      .then((newReviewSkeleton) => {
+        console.log('exito')
+        setQuestions(newReviewSkeleton.questions)
+      })
+      .catch((e) => {
+        console.error(e)
+        toast({
+          title: 'Error',
+          description: 'Error al mover la pregunta. Intente nuevamente.',
+          variant: 'destructive',
+        })
+      })
+  }
+
   return (
     <ContainerPage>
       <TitlePage title={'Configuración de formulario de revisión'} />
@@ -123,6 +149,7 @@ export default function Page({ reviewSkeleton }) {
       <QuestionsList
         questions={questions}
         recommendation={reviewSkeleton.recommendation}
+        handleSwapQuestions={handleSwapQuestions}
         handleUpdateQuestion={handleUpdateQuestion}
         handleDeleteQuestion={handleDeleteQuestion}
         isPending={

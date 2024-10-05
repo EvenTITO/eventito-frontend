@@ -1,6 +1,6 @@
 import { EVENTS_URL } from '@/lib/Constants'
 import { HTTPClient } from '@/services/api/HTTPClient'
-import { getEventId, wait } from '@/lib/utils'
+import { getEventId } from '@/lib/utils'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   apiUpdateReviewSkeleton,
@@ -68,6 +68,36 @@ export function useUpdateQuestion() {
       const newReviewSkeleton = convertReviewSkeleton(newQuestions)
 
       await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['getEventById', { eventId }],
+      })
+    },
+  })
+}
+
+export function useSwapQuestions() {
+  const eventId = getEventId()
+
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({
+      firstQuestionIndex,
+      secondQuestionIndex,
+      reviewSkeleton,
+    }) => {
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const temp = reviewSkeleton.questions[firstQuestionIndex]
+      reviewSkeleton.questions[firstQuestionIndex] =
+        reviewSkeleton.questions[secondQuestionIndex]
+      reviewSkeleton.questions[secondQuestionIndex] = temp
+      console.log(JSON.stringify(reviewSkeleton))
+      const newReviewSkeleton = convertReviewSkeleton(reviewSkeleton.questions)
+
+      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
+      return reviewSkeleton
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
