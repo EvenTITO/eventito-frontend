@@ -21,6 +21,7 @@ export function convertWork(work, submissions = undefined) {
       ? submissions.toSorted((a, b) => a.creation_date - b.creation_date)[0]
       : null,
     keywords: work.keywords,
+    talk: work.talk,
   }
 }
 
@@ -64,19 +65,4 @@ function convertReviewer(reviewer) {
     email: reviewer.user.email,
     deadline: reviewer.works[0].review_deadline,
   }
-}
-
-function convertMyWork(myWork) {
-  return {
-    id: myWork.id,
-    title: myWork.title,
-    authors: myWork.authors,
-    status: myWork.state,
-    track: myWork.track,
-    abstract: myWork.abstract,
-  }
-}
-
-export function convertMyWorks(myWorks) {
-  return myWorks.map(convertMyWork)
 }
