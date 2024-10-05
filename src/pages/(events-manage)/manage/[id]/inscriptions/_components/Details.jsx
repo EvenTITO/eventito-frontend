@@ -29,8 +29,7 @@ export default function Details({ inscription, onClose }) {
   }
 
   const handleDownloadReceipt = (paymentId) => {
-    // Implement the download logic here
-    console.log(`Downloading receipt for payment ${paymentId}`)
+    // TODO
   }
 
   const handleApprovePayment = (paymentId) => {
