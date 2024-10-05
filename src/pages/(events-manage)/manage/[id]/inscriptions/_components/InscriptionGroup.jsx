@@ -8,6 +8,10 @@ export default function InscriptionGroup({
   title,
   handleInscriptionClick,
 }) {
+  if (groupInscriptions.length === 0) {
+    return null
+  }
+
   return (
     <div className="mb-8">
       <h2 className="text-xl font-semibold mb-4">{title}</h2>

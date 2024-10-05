@@ -12,14 +12,20 @@ export default function InscriptionsPage({ inscriptions }) {
       const hasPendingApproval = inscription.payments.some(
         (payment) => payment.status === 'PENDING_APPROVAL'
       )
-      const key = hasPendingApproval ? 'pending' : 'approved'
+      let key = 'pending'
+      if (!hasPendingApproval && inscriptions.payments?.length > 0) {
+        key = 'approved'
+      } else if (!hasPendingApproval) {
+        key = 'withoutPayments'
+      }
       acc[key].push(inscription)
       return acc
     },
-    { pending: [], approved: [] }
+    { pending: [], approved: [], withoutPayments: [] }
   )
 
   function handleInscriptionClick(inscription) {
+    console.log(inscription.payments)
     setSelectedInscription(inscription)
   }
 
@@ -38,7 +44,12 @@ export default function InscriptionsPage({ inscriptions }) {
       />
       <InscriptionGroup
         groupInscriptions={groupedInscriptions.approved}
-        title={'Otras inscripciones'}
+        title={'Inscripciones con pagos aceptados'}
+        handleInscriptionClick={handleInscriptionClick}
+      />
+      <InscriptionGroup
+        groupInscriptions={groupedInscriptions.withoutPayments}
+        title={'Inscripciones sin pagos asociados'}
         handleInscriptionClick={handleInscriptionClick}
       />
       {selectedInscription && (
