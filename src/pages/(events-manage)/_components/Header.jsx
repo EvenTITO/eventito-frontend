@@ -24,7 +24,7 @@ export default function Header({ eventTitle, isOrganizer = false }) {
       </div>
       <div className="ml-auto flex items-center space-x-4">
         <Button variant="ghost" size="sm" onClick={handleGoTo}>
-          <Eye className="h-4 w-4 mr-2" />
+          {isOrganizer ? <Eye className="h-4 w-4 mr-2" /> : null}
           {isOrganizer ? 'Ver sitio del evento' : 'Sitio de organizador'}
         </Button>
       </div>
