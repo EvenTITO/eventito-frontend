@@ -46,6 +46,20 @@ export default function Details({
     // TODO
   }
 
+  function onPaymentChange(paymentId, newStatus) {
+    setPayments(
+      payments.map((payment) => {
+        payment.id === paymentId ? { ...payment, status: newStatus } : payment
+      })
+    )
+    handleChangePaymentStatus(inscription.id, newStatus)
+  }
+
+  function onInscriptionChange(newStatus) {
+    setStatus(newStatus)
+    handleChangeInscriptionStatus(inscription.id, newStatus)
+  }
+
   const hasPayments = payments && payments.length > 0
 
   return (
@@ -95,12 +109,7 @@ export default function Details({
               <p className="text-sm text-gray-500 mb-2">
                 Estado de la inscripción
               </p>
-              <Select
-                value={status}
-                onValueChange={(newStatus) =>
-                  handleChangeInscriptionStatus(inscription.id, newStatus)
-                }
-              >
+              <Select value={status} onValueChange={onInscriptionChange}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Seleccionar estado" />
                 </SelectTrigger>
@@ -130,7 +139,7 @@ export default function Details({
                           <Select
                             value={payment.status}
                             onValueChange={(newStatus) =>
-                              handleChangePaymentStatus(payment.id, newStatus)
+                              onPaymentChange(payment.id, newStatus)
                             }
                           >
                             <SelectTrigger className="w-[180px] font-normal">
