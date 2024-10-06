@@ -163,7 +163,7 @@ function EditInscription({ editInscription, setEditInscription, error }) {
             onValueChange={(value) => handleInputChange('roles', value)}
           >
             <SelectTrigger id="roles">
-              <SelectValue placeholder="Select roles" />
+              <SelectValue placeholder="Seleccionar roles" />
             </SelectTrigger>
             <SelectContent>
               {Object.entries(INSCRIPTION_ROLES_LABELS).map(([key, value]) => (
