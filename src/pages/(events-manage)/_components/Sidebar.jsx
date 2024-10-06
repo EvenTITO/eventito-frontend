@@ -1,22 +1,29 @@
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { useNavigate, useParams } from 'react-router-dom'
-import { cn } from '@/lib/utils'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
+import { cn, getEventId } from '@/lib/utils'
 
 export default function SideBar({
   itemList,
   isSidebarOpen = true,
   roles = [],
-  selectedItem = '',
 }) {
   const { id } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const filteredItemList = itemList.filter((parent) =>
     parent.children.some((child) =>
       child.requiredRoles.some((role) => roles.includes(role))
     )
   )
+
+  const eventId = getEventId()
+  const isItemSelected = (item) => {
+    const pathSegments = location.pathname.split(eventId)
+    const currentRoute = pathSegments[1]
+    return currentRoute === '/' + item.to
+  }
 
   return (
     <aside
@@ -43,7 +50,7 @@ export default function SideBar({
                     variant="ghost"
                     className={cn(
                       'w-full justify-start py-1 text-sm font-normal text-gray-700 hover:bg-gray-100 rounded-sm',
-                      selectedItem === child.to && 'bg-gray-100 font-medium'
+                      isItemSelected(child) && 'bg-gray-100 font-medium'
                     )}
                     onClick={() =>
                       child.isOrganizerRoute
