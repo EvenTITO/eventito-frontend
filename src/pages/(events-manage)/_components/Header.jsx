@@ -1,19 +1,29 @@
 import { Button } from '@/components/ui/button'
-import { ArrowLeft, LogOut } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { ArrowLeft, Eye, Globe, LogOut } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useLogout } from '@/hooks/auth/authHooks.js'
+import { useNavigator } from '@/lib/navigation'
+import { getEventId } from '@/lib/utils'
 
-export default function Header({ headerTitle }) {
-  const navigate = useNavigate()
+export default function Header({ headerTitle, isOrganizer = false }) {
+  const navigator = useNavigator()
   const logout = useLogout()
+  const eventId = getEventId()
 
   const title =
     headerTitle.length < 50 ? headerTitle : `${headerTitle.slice(0, 50)}...`
 
-  const handleLogout = async () => {
+  async function handleLogout() {
     await logout.mutateAsync()
-    console.log('Bye !!')
-    navigate('/')
+    navigator.to('/')
+  }
+
+  function handleGoTo() {
+    if (isOrganizer) {
+      navigator.to(`/events/${eventId}/view/general`)
+    } else {
+      navigator.to(`/manage/${eventId}/general`)
+    }
   }
 
   return (
@@ -24,7 +34,17 @@ export default function Header({ headerTitle }) {
         <h1 className="text-lg">{title}</h1>
       </div>
       <div className="flex items-center space-x-4">
-        <Button onClick={handleLogout} variant="ghost" size="icon">
+        <Button onClick={handleGoTo} variant="header">
+          {isOrganizer ? (
+            <div className="flex items-center gap-2">
+              <Eye className="h-4 w-4" />
+              <span>Ver sitio del evento</span>
+            </div>
+          ) : (
+            <span>Sitio de organizador</span>
+          )}
+        </Button>
+        <Button onClick={handleLogout} variant="header" size="icon">
           <LogOut className="h-5 w-5" />
         </Button>
       </div>

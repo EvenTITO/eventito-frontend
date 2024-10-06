@@ -73,13 +73,6 @@ const itemList = [
         to: 'roles/chair',
         requiredRoles: [ORGANIZER_ROLE, CHAIR_ROLE],
       },
-      {
-        label: 'Panel de organizador',
-        icon: <Settings className={classNameIcons} />,
-        to: 'general',
-        requiredRoles: [ORGANIZER_ROLE],
-        isOrganizerRoute: true,
-      },
     ],
   },
 ]
