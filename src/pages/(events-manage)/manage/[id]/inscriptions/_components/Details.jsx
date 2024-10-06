@@ -110,7 +110,7 @@ export default function Details({
                 Estado de la inscripción
               </p>
               <Select value={status} onValueChange={onInscriptionChange}>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-[200px]">
                   <SelectValue placeholder="Seleccionar estado" />
                 </SelectTrigger>
                 <SelectContent>
