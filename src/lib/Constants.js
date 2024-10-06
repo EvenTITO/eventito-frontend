@@ -105,9 +105,33 @@ export const INSCRIPTION_ROLES_LABELS_REVERSE = {
   Asistente: ATTENDEE_ROLE,
 }
 
+export const APPROVED_STATUS = 'APPROVED'
+export const REJECTED_STATUS = 'REJECTED'
+export const PENDING_APPROVAL_STATUS = 'PENDING_APPROVAL'
+export const UNCOMPLETED_STATUS = 'UNCOMPLETED'
+
+export const INSCRIPTION_STATUS_LABELS = {
+  APPROVED: 'Aprobada',
+  REJECTED: 'Rechazada',
+  PENDING_APPROVAL: 'Pendiente de revisión',
+}
+
+export const INSCRIPTION_STATUS_LABELS_REVERSE = {
+  Aprobada: APPROVED_STATUS,
+  Rechazada: REJECTED_STATUS,
+  'Pendiente de revisión': PENDING_APPROVAL_STATUS,
+}
+
 export const PAYMENT_STATUS_LABELS = {
   APPROVED: 'Aprobado',
   REJECTED: 'Rechazado',
   UNCOMPLETED: 'Insuficiente',
   PENDING_APPROVAL: 'Pendiente de revisión',
+}
+
+export const PAYMENT_STATUS_LABELS_REVERSE = {
+  Aprobado: APPROVED_STATUS,
+  Rechazado: REJECTED_STATUS,
+  Insuficiente: UNCOMPLETED_STATUS,
+  'Pendiente de revisión': PENDING_APPROVAL_STATUS,
 }

@@ -17,6 +17,7 @@ export function convertInscription(inscription, payments = []) {
         userId: inscription.user_id,
         userName: inscription.user.fullname,
         userEmail: inscription.user.email,
+        status: inscription.status,
         payments: convertPayments(payments),
       }
 }

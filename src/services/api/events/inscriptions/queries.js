@@ -56,3 +56,13 @@ export const apiUpdateInscriptionStatus = async (
     update
   )
 }
+
+export const apiUpdatePaymentStatus = async (
+  httpClient,
+  eventId,
+  paymentId,
+  update
+) => {
+  console.log(eventId, paymentId, update)
+  return await httpClient.patch(`/${eventId}/payments/${paymentId}`, update)
+}

@@ -6,6 +6,7 @@ import ReviewsConfigPage from './[id]/reviews'
 import TracksConfigPage from './[id]/tracks'
 import PricingConfigPage from './[id]/pricing'
 import RoomsConfigPage from './[id]/rooms'
+import InscriptionsDataPage from './[id]/inscriptions'
 
 export default function RoutesOrganization() {
   return (
@@ -19,6 +20,10 @@ export default function RoutesOrganization() {
         <Route path="/manage/:id/tracks" element={<TracksConfigPage />} />
         <Route path="/manage/:id/pricing" element={<PricingConfigPage />} />
         <Route path="/manage/:id/rooms" element={<RoomsConfigPage />} />
+        <Route
+          path="/manage/:id/inscriptions"
+          element={<InscriptionsDataPage />}
+        />
       </Route>
     </Routes>
   )
