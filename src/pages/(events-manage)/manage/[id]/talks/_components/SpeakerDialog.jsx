@@ -4,16 +4,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { toast } from '@/hooks/use-toast'
+import WorkItem from './WorkItem'
 
 export default function SpeakerDialog({
   isOpen,
@@ -22,12 +15,12 @@ export default function SpeakerDialog({
   selectedWork,
   rooms,
 }) {
-  const handleAssignLocation = (workId, track, location) => {
-    alert(`Assigning location ${location} to work ${workId} - ${track}`)
-  }
-
-  const handleAssignDate = (workId, track, date) => {
-    alert(`Assigning date ${date} to work ${workId} - ${track}`)
+  const handleSaveWork = (editedWork) => {
+    // Here you would typically update your local state or refetch the data
+    toast({
+      title: 'Cambios guardados',
+      description: 'Los cambios se han guardado correctamente.',
+    })
   }
 
   if (!speaker) return null
@@ -45,91 +38,39 @@ export default function SpeakerDialog({
           </DialogTitle>
         </DialogHeader>
         <div className="grid gap-6">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center space-x-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage
-                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${speaker.full_name}`}
-                />
-                <AvatarFallback>
-                  {speaker.full_name
-                    .split(' ')
-                    .map((n) => n[0])
-                    .join('')
-                    .toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <h2 className="text-2xl font-bold">{speaker.full_name}</h2>
-                <p className="text-gray-500">{speaker.mail}</p>
-                {speaker.membership && (
-                  <p className="text-gray-500">{speaker.membership}</p>
-                )}
-              </div>
+          <div className="flex items-start space-x-4">
+            <Avatar className="h-20 w-20">
+              <AvatarImage
+                src={`https://api.dicebear.com/6.x/initials/svg?seed=${speaker.full_name}`}
+              />
+              <AvatarFallback>
+                {speaker.full_name
+                  .split(' ')
+                  .map((n) => n[0])
+                  .join('')
+                  .toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <h2 className="text-2xl font-bold">{speaker.full_name}</h2>
+              <p className="text-muted-foreground">{speaker.mail}</p>
+              {speaker.membership && (
+                <p className="text-muted-foreground">{speaker.membership}</p>
+              )}
             </div>
           </div>
           <div>
             <h3 className="text-xl font-semibold mb-4">
               {selectedWork ? 'Charla' : 'Charlas'}
             </h3>
-            <div className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {works.map((work) => (
-                <Card key={work.id}>
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-semibold">{work.title}</h4>
-                      <Badge
-                        variant={
-                          work.state === 'SUBMITTED' ? 'secondary' : 'success'
-                        }
-                      >
-                        {work.state}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-gray-500 mb-2">
-                      Track: {work.track}
-                    </p>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-500 mb-1">Ubicación</p>
-                        <Select
-                          defaultValue={work.talk?.location || ''}
-                          onValueChange={(value) =>
-                            handleAssignLocation(work.id, work.track, value)
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Seleccionar ubicación" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {rooms.map((room) => (
-                              <SelectItem key={room} value={room}>
-                                {room}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500 mb-1">
-                          Fecha y Hora
-                        </p>
-                        <input
-                          type="datetime-local"
-                          defaultValue={work.talk?.date || ''}
-                          onChange={(e) =>
-                            handleAssignDate(
-                              work.id,
-                              work.track,
-                              e.target.value
-                            )
-                          }
-                          className="w-full p-2 border rounded"
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <WorkItem
+                  key={work.id}
+                  work={work}
+                  rooms={rooms}
+                  onSave={handleSaveWork}
+                />
               ))}
             </div>
           </div>
