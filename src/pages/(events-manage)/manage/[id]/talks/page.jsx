@@ -166,7 +166,7 @@ export default function Page({ works, rooms }) {
       <h1 className="text-3xl font-bold mb-6">Asignación de Ubicaciones</h1>
       <Tabs defaultValue="speakers" className="w-full">
         <TabsList className="mb-4">
-          <TabsTrigger value="speakers">Ponentes</TabsTrigger>
+          <TabsTrigger value="speakers">Por presentador</TabsTrigger>
           <TabsTrigger value="calendar">Calendario</TabsTrigger>
         </TabsList>
         <TabsContent value="speakers">
@@ -292,7 +292,7 @@ export default function Page({ works, rooms }) {
         <DialogContent className="sm:max-w-[90%] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold">
-              Detalles del Ponente
+              Detalles del presentador
             </DialogTitle>
           </DialogHeader>
           <div className="grid gap-6">
