@@ -22,12 +22,12 @@ export default function SpeakerDialog({
   selectedWork,
   rooms,
 }) {
-  const handleAssignLocation = (workId, location) => {
-    console.log(`Assigning location ${location} to work ${workId}`)
+  const handleAssignLocation = (workId, track, location) => {
+    alert(`Assigning location ${location} to work ${workId} - ${track}`)
   }
 
-  const handleAssignDate = (workId, date) => {
-    console.log(`Assigning date ${date} to work ${workId}`)
+  const handleAssignDate = (workId, track, date) => {
+    alert(`Assigning date ${date} to work ${workId} - ${track}`)
   }
 
   if (!speaker) return null
@@ -39,7 +39,9 @@ export default function SpeakerDialog({
       <DialogContent className="sm:max-w-[90%] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
-            {selectedWork ? 'Detalles de la Charla' : 'Detalles del Ponente'}
+            {selectedWork
+              ? 'Detalles de la Charla'
+              : 'Detalles del presentador'}
           </DialogTitle>
         </DialogHeader>
         <div className="grid gap-6">
@@ -93,7 +95,7 @@ export default function SpeakerDialog({
                         <Select
                           defaultValue={work.talk?.location || ''}
                           onValueChange={(value) =>
-                            handleAssignLocation(work.id, value)
+                            handleAssignLocation(work.id, work.track, value)
                           }
                         >
                           <SelectTrigger>
@@ -116,7 +118,11 @@ export default function SpeakerDialog({
                           type="datetime-local"
                           defaultValue={work.talk?.date || ''}
                           onChange={(e) =>
-                            handleAssignDate(work.id, e.target.value)
+                            handleAssignDate(
+                              work.id,
+                              work.track,
+                              e.target.value
+                            )
                           }
                           className="w-full p-2 border rounded"
                         />

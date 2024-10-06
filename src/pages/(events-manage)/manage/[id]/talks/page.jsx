@@ -32,7 +32,7 @@ export default function Page({ works, rooms }) {
       <h1 className="text-3xl font-bold mb-6">Asignación de Ubicaciones</h1>
       <Tabs defaultValue="speakers" className="w-full">
         <TabsList className="mb-4">
-          <TabsTrigger value="speakers">Ponentes</TabsTrigger>
+          <TabsTrigger value="speakers">Presentadores</TabsTrigger>
           <TabsTrigger value="calendar">Calendario</TabsTrigger>
         </TabsList>
         <TabsContent value="speakers">
