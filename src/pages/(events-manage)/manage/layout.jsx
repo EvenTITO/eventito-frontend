@@ -42,12 +42,11 @@ function Layout({ eventTitle, roles }) {
   }, [roles])
 
   return (
-    <div className="flex flex-col h-screen bg-background">
-      <Header headerTitle={eventTitle} isOrganizer />
-
-      <div className="flex flex-1 pt-16">
-        <OrganizationSidebar />
-        <main className="flex-1 p-4 md:ml-64 pt-4 overflow-auto">
+    <div className="flex h-screen bg-white">
+      <OrganizationSidebar eventTitle={eventTitle} />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header eventTitle={eventTitle} isOrganizer />
+        <main className="flex-1 overflow-auto p-6">
           <Outlet />
         </main>
       </div>

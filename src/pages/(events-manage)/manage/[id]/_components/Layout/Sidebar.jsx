@@ -8,15 +8,38 @@ import {
   Settings,
   Table,
   Users,
+  PanelLeftClose,
 } from 'lucide-react'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 
-export default function OrganizationSidebar() {
+export default function OrganizationSidebar({ eventTitle }) {
+  const [isCollapsed, setIsCollapsed] = useState(false)
+
   return (
-    <SideBar
-      itemList={itemList}
-      isSidebarOpen={true}
-      roles={[ORGANIZER_ROLE]}
-    />
+    <aside
+      className={`bg-gray-100 transition-all duration-300 ease-in-out flex flex-col h-screen ${isCollapsed ? 'w-16' : 'w-64'}`}
+    >
+      <div className="p-4 flex items-center justify-between">
+        <h1 className={`font-semibold truncate ${isCollapsed ? 'hidden' : ''}`}>
+          {eventTitle}
+        </h1>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          <PanelLeftClose
+            className={`h-4 w-4 transform ${isCollapsed ? 'rotate-180' : ''}`}
+          />
+        </Button>
+      </div>
+      <SideBar
+        itemList={itemList}
+        isSidebarOpen={!isCollapsed}
+        roles={[ORGANIZER_ROLE]}
+      />
+    </aside>
   )
 }
 
