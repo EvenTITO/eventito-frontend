@@ -114,16 +114,20 @@ export default function InscriptionsPage({ inscriptions }) {
 
         {filterType === 'status' && (
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-auto">
               <SelectValue placeholder="Filtrar por estado" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todos los estados</SelectItem>
               <SelectItem value={PENDING_APPROVAL_STATUS}>
-                Pendiente de aprobación
+                Inscripción pendiente de aprobación
               </SelectItem>
-              <SelectItem value={APPROVED_STATUS}>Aprobado</SelectItem>
-              <SelectItem value={REJECTED_STATUS}>No aprobado</SelectItem>
+              <SelectItem value={APPROVED_STATUS}>
+                Inscripción aceptada
+              </SelectItem>
+              <SelectItem value={REJECTED_STATUS}>
+                Inscripción rechazada
+              </SelectItem>
             </SelectContent>
           </Select>
         )}
