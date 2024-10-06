@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { Eye } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import { useNavigator } from '@/lib/navigation'
 import { getEventId } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
 
 export default function Header({ eventTitle, isOrganizer = false }) {
   const navigator = useNavigator()
@@ -18,7 +18,10 @@ export default function Header({ eventTitle, isOrganizer = false }) {
 
   return (
     <header className="bg-white border-b h-12 flex items-center px-4">
-      <h1 className="text-lg font-semibold">{eventTitle}</h1>
+      <div className="flex gap-2">
+        <h1 className="text-lg font-semibold">{eventTitle}</h1>
+        {isOrganizer ? <Badge variant="secondary">Organizador</Badge> : null}
+      </div>
       <div className="ml-auto flex items-center space-x-4">
         <Button variant="ghost" size="sm" onClick={handleGoTo}>
           <Eye className="h-4 w-4 mr-2" />
