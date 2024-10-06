@@ -1,4 +1,4 @@
-import { getEventId, wait } from '@/lib/utils'
+import { getEventId } from '@/lib/utils'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { HTTPClient } from '@/services/api/HTTPClient.js'
 import { EVENTS_URL } from '@/lib/Constants.js'
@@ -6,7 +6,6 @@ import {
   apiUpdateDatesEvent,
   apiUpdatePricingEvent,
 } from '@/services/api/events/general/queries.js'
-import { useGetEvent } from '@/hooks/events/useEventState.js'
 import {
   convertNewDates,
   convertNewPricing,
@@ -61,7 +60,6 @@ export function useDeletePayment() {
       const httpClient = new HTTPClient(EVENTS_URL)
 
       const updatedFares = eventPricing.filter((p) => p.name !== fareName)
-      console.log(fareName, updatedFares)
       const faresConverted = convertFares(updatedFares)
       return await apiUpdatePricingEvent(httpClient, eventId, faresConverted)
     },

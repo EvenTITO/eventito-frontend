@@ -92,8 +92,8 @@ function MyEvents({ events }) {
         </div>
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredEvents.map((event) => (
-          <EventCard event={event} />
+        {filteredEvents.map((event, idx) => (
+          <EventCard key={idx} event={event} />
         ))}
       </div>
       {filteredEvents.length === 0 && (

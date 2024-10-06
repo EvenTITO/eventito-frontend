@@ -50,7 +50,6 @@ async function uploadEventImage(eventId, imageName, image) {
       eventId,
       imageName
     )
-    console.log(uploadUrl)
     await uploadFile(uploadUrl, image)
   }
 }

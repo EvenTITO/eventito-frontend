@@ -2,6 +2,10 @@ export const apiGetEventChairs = async (httpClient, eventId) => {
   return (await httpClient.get(`/${eventId}/chairs`)).data
 }
 
+export const apiGetMyEventChair = async (httpClient, eventId) => {
+  return (await httpClient.get(`/${eventId}/chairs/me`)).data
+}
+
 export const apiGetEventChair = async (httpClient, eventId, userId) => {
   return (await httpClient.get(`/${eventId}/chairs/${userId}`)).data
 }
