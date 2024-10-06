@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { Download, Check, X, ChevronDown } from 'lucide-react'
+import { Download, ChevronDown } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,14 +19,22 @@ import {
 } from '@/components/ui/dropdown-menu'
 import {
   APPROVED_STATUS,
-  PENDING_APPROVAL_STATUS,
   REJECTED_STATUS,
+  PENDING_APPROVAL_STATUS,
+  UNCOMPLETED_STATUS,
+  INSCRIPTION_STATUS_LABELS,
+  INSCRIPTION_STATUS_LABELS_REVERSE,
+  PAYMENT_STATUS_LABELS,
+  PAYMENT_STATUS_LABELS_REVERSE,
+  INSCRIPTION_ROLES_LABELS,
 } from '@/lib/Constants'
 
 export default function Details({ inscription, onClose }) {
   const [isOpen, setIsOpen] = useState(true)
   const [payments, setPayments] = useState(inscription.payments)
-  const [status, setStatus] = useState(inscription.status || 'PENDING_APPROVAL')
+  const [status, setStatus] = useState(
+    inscription.status || PENDING_APPROVAL_STATUS
+  )
 
   const handleClose = () => {
     setIsOpen(false)
@@ -37,22 +45,10 @@ export default function Details({ inscription, onClose }) {
     // TODO
   }
 
-  const handleApprovePayment = (paymentId) => {
+  const handleChangePaymentStatus = (paymentId, newStatus) => {
     setPayments(
       payments.map((payment) =>
-        payment.id === paymentId
-          ? { ...payment, status: APPROVED_STATUS }
-          : payment
-      )
-    )
-  }
-
-  const handleDisapprovePayment = (paymentId) => {
-    setPayments(
-      payments.map((payment) =>
-        payment.id === paymentId
-          ? { ...payment, status: REJECTED_STATUS }
-          : payment
+        payment.id === paymentId ? { ...payment, status: newStatus } : payment
       )
     )
   }
@@ -62,9 +58,9 @@ export default function Details({ inscription, onClose }) {
   }
 
   const statusColors = {
-    'Pendiente de aprobación': 'bg-yellow-100 text-yellow-800',
-    Aceptada: 'bg-green-100 text-green-800',
-    Rechazada: 'bg-red-100 text-red-800',
+    [PENDING_APPROVAL_STATUS]: 'bg-yellow-100 text-yellow-800',
+    [APPROVED_STATUS]: 'bg-green-100 text-green-800',
+    [REJECTED_STATUS]: 'bg-red-100 text-red-800',
   }
 
   const hasPayments = payments && payments.length > 0
@@ -104,7 +100,7 @@ export default function Details({ inscription, onClose }) {
                   <div className="flex flex-wrap gap-2 mt-2">
                     {inscription.roles.map((role, index) => (
                       <Badge key={index} variant="secondary">
-                        {role}
+                        {INSCRIPTION_ROLES_LABELS[role] || role}
                       </Badge>
                     ))}
                   </div>
@@ -121,27 +117,21 @@ export default function Details({ inscription, onClose }) {
                     variant="outline"
                     className={`${statusColors[status]} px-4 py-2 rounded-full`}
                   >
-                    {status} <ChevronDown className="ml-2 h-4 w-4" />
+                    {INSCRIPTION_STATUS_LABELS[status]}{' '}
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem
-                    onClick={() => handleChangeStatus('Aceptada')}
-                  >
-                    Aceptada
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => handleChangeStatus('Rechazada')}
-                  >
-                    Rechazada
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() =>
-                      handleChangeStatus('Pendiente de aprobación')
-                    }
-                  >
-                    Pendiente de aprobación
-                  </DropdownMenuItem>
+                  {Object.entries(INSCRIPTION_STATUS_LABELS).map(
+                    ([key, value]) => (
+                      <DropdownMenuItem
+                        key={key}
+                        onClick={() => handleChangeStatus(key)}
+                      >
+                        {value}
+                      </DropdownMenuItem>
+                    )
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -157,17 +147,39 @@ export default function Details({ inscription, onClose }) {
                       <CardHeader>
                         <CardTitle className="flex justify-between items-center">
                           <span>{payment.name}</span>
-                          <Badge
-                            variant={
-                              payment.status === 'PENDING_APPROVAL'
-                                ? 'warning'
-                                : payment.status === 'APPROVED'
-                                  ? 'success'
-                                  : 'destructive'
-                            }
-                          >
-                            {payment.status}
-                          </Badge>
+                          <div>
+                            <p className="text-sm font-normal text-gray-500 mb-2">
+                              Estado del pago
+                            </p>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  className={`${statusColors[payment.status]} px-4 py-2 rounded-full`}
+                                >
+                                  {PAYMENT_STATUS_LABELS[payment.status]}{' '}
+                                  <ChevronDown className="ml-2 h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                {Object.entries(PAYMENT_STATUS_LABELS).map(
+                                  ([key, value]) => (
+                                    <DropdownMenuItem
+                                      key={key}
+                                      onClick={() =>
+                                        handleChangePaymentStatus(
+                                          payment.id,
+                                          key
+                                        )
+                                      }
+                                    >
+                                      {value}
+                                    </DropdownMenuItem>
+                                  )
+                                )}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -197,26 +209,6 @@ export default function Details({ inscription, onClose }) {
                             <Download className="mr-2 h-4 w-4" /> Descargar
                             comprobante
                           </Button>
-                          {payment.status === 'PENDING_APPROVAL' && (
-                            <>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleApprovePayment(payment.id)}
-                              >
-                                <Check className="mr-2 h-4 w-4" /> Aprobar
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() =>
-                                  handleDisapprovePayment(payment.id)
-                                }
-                              >
-                                <X className="mr-2 h-4 w-4" /> Rechazar
-                              </Button>
-                            </>
-                          )}
                         </div>
                       </CardContent>
                     </Card>
