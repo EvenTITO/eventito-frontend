@@ -6,6 +6,7 @@ import {
   apiGetInscriptions,
   apiGetPayments,
   apiUpdateInscriptionStatus,
+  apiUpdatePaymentStatus,
 } from '@/services/api/events/inscriptions/queries.js'
 import { convertInscriptions } from '@/services/api/events/inscriptions/conversor.js'
 import { useToastMutation } from '../use-toast-mutation'
@@ -39,6 +40,37 @@ export function useUpdateInscriptionStatus() {
         inscriptionId,
         update
       )
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getInscriptions', { eventId }],
+        })
+      },
+    },
+    {
+      success: {
+        show: true,
+        message: 'Inscripción actualizada con éxito',
+      },
+      error: {
+        message: 'Error al actualizar la inscripción',
+      },
+    }
+  )
+}
+
+export function useUpdatePaymentStatus() {
+  const eventId = getEventId()
+  const queryClient = useQueryClient()
+
+  return useToastMutation(
+    async ({ paymentId, newStatus }) => {
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const update = {
+        status: newStatus,
+      }
+      await apiUpdatePaymentStatus(httpClient, eventId, paymentId, update)
     },
     {
       onSuccess: () => {
