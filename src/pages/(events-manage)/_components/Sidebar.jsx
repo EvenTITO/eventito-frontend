@@ -19,7 +19,7 @@ export default function SideBar({
   )
 
   const eventId = getEventId()
-  const isItemSelected = (item) => {
+  function isItemSelected(item) {
     const pathSegments = location.pathname.split(eventId)
     const currentRoute = pathSegments[1]
     return currentRoute === '/' + item.to
@@ -28,7 +28,7 @@ export default function SideBar({
   return (
     <aside
       className={cn(
-        'w-64 bg-white border-r fixed top-16 bottom-0 left-0 z-30 transform transition-transform duration-300 ease-in-out md:translate-x-0',
+        'w-64 bg-slate-50 border-r fixed top-16 bottom-0 left-0 z-30 transform transition-transform duration-300 ease-in-out md:translate-x-0',
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       )}
     >
@@ -50,7 +50,7 @@ export default function SideBar({
                     variant="ghost"
                     className={cn(
                       'w-full justify-start py-1 text-sm font-normal text-gray-700 hover:bg-gray-100 rounded-sm',
-                      isItemSelected(child) && 'bg-gray-100 font-medium'
+                      isItemSelected(child) && 'font-semibold'
                     )}
                     onClick={() =>
                       child.isOrganizerRoute
