@@ -43,16 +43,17 @@ export default function Details({
   }
 
   const handleDownloadPDF = (paymentId) => {
-    // TODO
+    // TODO: Implement PDF download functionality
+    console.log('Downloading PDF for payment:', paymentId)
   }
 
   function onPaymentChange(paymentId, newStatus) {
     setPayments(
-      payments.map((payment) => {
+      payments.map((payment) =>
         payment.id === paymentId ? { ...payment, status: newStatus } : payment
-      })
+      )
     )
-    handleChangePaymentStatus(inscription.id, newStatus)
+    handleChangePaymentStatus(inscription.id, paymentId, newStatus)
   }
 
   function onInscriptionChange(newStatus) {
