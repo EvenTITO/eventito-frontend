@@ -13,6 +13,7 @@ import { convertWorks } from '@/services/api/works/conversor'
 import { getWorkById } from '@/hooks/events/worksHooks'
 import { uploadFile } from '@/services/api/storage/queries'
 import { getInscriptionWithPayments } from '@/hooks/events/attendeeHooks'
+import { useToastMutation } from '@/hooks/use-toast-mutation.js'
 
 export function useGetMyWorks() {
   const eventId = getEventId()
@@ -31,8 +32,8 @@ export function useNewWork() {
   const { currentUser } = useSelector((state) => state.user)
   const queryClient = useQueryClient()
 
-  return useMutation({
-    mutationFn: async ({ workData }) => {
+  return useToastMutation(
+    async ({ workData }) => {
       const httpClient = new HTTPClient(EVENTS_URL)
       const inscription = await queryClient.ensureQueryData({
         queryKey: ['getMyInscription', { eventId }],
@@ -57,12 +58,26 @@ export function useNewWork() {
       const workId = await apiPostWork(httpClient, eventId, work)
       await uploadSubmissionFile(eventId, workId, workData.pdfFile)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['getMyWorks'],
-      })
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getMyWorks'],
+        })
+      },
     },
-  })
+    {
+      success: {
+        show: true,
+        title: 'Trabajo subido correctamente',
+        message: 'Se subió el trabajo para su revision de forma correcta',
+      },
+      error: {
+        title: 'Subida de trabajo fallida',
+        message:
+          'Ocurrió un error al subir el trabajo. Por favor intente más tarde',
+      },
+    }
+  )
 }
 
 async function uploadSubmissionFile(eventId, workId, file) {
@@ -81,8 +96,8 @@ export function useEditWork() {
 
   const queryClient = useQueryClient()
 
-  return useMutation({
-    mutationFn: async ({ workData }) => {
+  return useToastMutation(
+    async ({ workData }) => {
       const httpClient = new HTTPClient(EVENTS_URL)
       const work = await queryClient.ensureQueryData({
         queryKey: ['getWorkById', { workId }],
@@ -99,12 +114,27 @@ export function useEditWork() {
 
       await uploadSubmissionFile(eventId, workId, workData.file)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['getWorkById', { workId }],
-      })
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getWorkById', { workId }],
+        })
+      },
     },
-  })
+    {
+      success: {
+        show: true,
+        title: 'Trabajo actualizado correctamente',
+        message:
+          'Se actualizó la información y/o archivo de su trabajo de forma correcta',
+      },
+      error: {
+        title: 'Actualización de trabajo fallida',
+        message:
+          'Ocurrió un error al actualizar el trabajo. Por favor intente más tarde',
+      },
+    }
+  )
 }
 
 export function useAddAuthorToWork() {

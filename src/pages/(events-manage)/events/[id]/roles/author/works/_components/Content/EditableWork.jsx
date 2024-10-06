@@ -40,6 +40,10 @@ export default function EditableWork({ workData }) {
         file,
       },
     })
+      .then(() => console.log('Trabajo actualizado'))
+      .catch((e) => console.log(e))
+    setFile(null)
+    setFileName(workData.pdfFileName)
   }
 
   return (

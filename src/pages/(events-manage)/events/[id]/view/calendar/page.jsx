@@ -205,7 +205,7 @@ function getTalks(tab, works, selectedWork, event, handleClick) {
               <div>
                 <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <Search className="h-5 w-5" />
-                  Presentaciónes
+                  Presentaciones
                 </h2>
                 <Input
                   type="text"
@@ -220,7 +220,7 @@ function getTalks(tab, works, selectedWork, event, handleClick) {
                   <h2 className="text-lg font-semibold mb-4">Fechas</h2>
                   <Select value={selectedDate} onValueChange={setSelectedDate}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecciona una fecha" />
+                      <SelectValue placeholder="Seleccionar una fecha" />
                     </SelectTrigger>
                     <SelectContent>
                       {works.map((work) => {
@@ -235,7 +235,7 @@ function getTalks(tab, works, selectedWork, event, handleClick) {
                         )
                       })}
                       <SelectItem value="ALL_DATES">
-                        Selecciona una fecha
+                        Seleccionar una fecha
                       </SelectItem>
                     </SelectContent>
                   </Select>
@@ -248,7 +248,7 @@ function getTalks(tab, works, selectedWork, event, handleClick) {
                     onValueChange={setSelectedLocationName}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecciona una sala" />
+                      <SelectValue placeholder="Seleccionar una sala" />
                     </SelectTrigger>
                     <SelectContent>
                       {event.mdata?.rooms.map((location) => (
@@ -257,7 +257,7 @@ function getTalks(tab, works, selectedWork, event, handleClick) {
                         </SelectItem>
                       ))}
                       <SelectItem value="ALL_LOCATIONS">
-                        Selecciona una sala
+                        Seleccionar una sala
                       </SelectItem>
                     </SelectContent>
                   </Select>

@@ -36,8 +36,9 @@ export default function Page() {
     await newWork({
       workData,
     })
-    dispatch(reset())
-    navigator.back()
+      .then(() => console.log('Trabajo subido'))
+      .catch((e) => console.log(e))
+    onCancel()
   }
 
   function onCancel() {
