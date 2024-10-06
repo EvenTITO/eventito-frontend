@@ -1,5 +1,12 @@
 import { useState } from 'react'
-import { ChevronRight, Pencil, PlusIcon, Trash2 } from 'lucide-react'
+import {
+  ChevronRight,
+  ChevronUp,
+  ChevronDown,
+  Pencil,
+  PlusIcon,
+  Trash2,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -18,9 +25,14 @@ export default function QuestionCard({
   question,
   onUpdate,
   onDelete,
+  onSwapUp,
+  onSwapDown,
   isPending,
   canBeEdited,
   canBeDeleted,
+  canBeSwapedUp,
+  canBeSwapedDown,
+  canBeMoved,
 }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [editingQuestion, setEditingQuestion] = useState(question)
@@ -77,6 +89,26 @@ export default function QuestionCard({
           ) : null}
         </div>
         <div className="flex items-center">
+          {canBeMoved && (
+            <div>
+              <Button
+                variant="table"
+                size="sm"
+                onClick={async () => (canBeSwapedUp ? await onSwapUp() : null)}
+              >
+                <ChevronUp className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="table"
+                size="sm"
+                onClick={async () =>
+                  canBeSwapedDown ? await onSwapDown() : null
+                }
+              >
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
           {canBeEdited && (
             <Button
               variant="table"
