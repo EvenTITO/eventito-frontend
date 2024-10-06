@@ -18,6 +18,8 @@ import {
   apiPutReviewDeadline,
 } from '@/services/api/events/reviewer/queries'
 import { format } from 'date-fns'
+import { apiGetMyEventChair } from '@/services/api/events/chair/queries.js'
+import { convertEventChair } from '@/services/api/events/chair/conversor.js'
 
 export function useGetWorksByTrack(track) {
   const eventId = getEventId()
@@ -25,6 +27,9 @@ export function useGetWorksByTrack(track) {
   return useQuery({
     queryKey: ['getWorksByTrack', { eventId, track }],
     queryFn: async () => {
+      if (!track) {
+        return []
+      }
       const httpClient = new HTTPClient(EVENTS_URL)
       const works = await apiGetWorksByTrack(httpClient, eventId, track)
       return convertWorks(works)
@@ -166,6 +171,19 @@ export function useUpdateReviewDeadlineForReviewer() {
       queryClient.invalidateQueries({
         queryKey: ['getReviewersForWork', { workId }],
       })
+    },
+  })
+}
+
+export function useGetMyChair() {
+  const eventId = getEventId()
+
+  return useQuery({
+    queryKey: ['getMyChair', { eventId }],
+    queryFn: async () => {
+      const httpClient = new HTTPClient(EVENTS_URL)
+      const myChair = await apiGetMyEventChair(httpClient, eventId)
+      return convertEventChair(myChair)
     },
   })
 }

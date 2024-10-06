@@ -63,6 +63,5 @@ export const apiUpdatePaymentStatus = async (
   paymentId,
   update
 ) => {
-  console.log(eventId, paymentId, update)
   return await httpClient.patch(`/${eventId}/payments/${paymentId}`, update)
 }
