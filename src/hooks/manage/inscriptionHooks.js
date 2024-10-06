@@ -49,6 +49,7 @@ export function useUpdateInscriptionStatus() {
     },
     {
       success: {
+        show: true,
         message: 'Inscripción actualizada con éxito',
       },
       error: {

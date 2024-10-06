@@ -17,11 +17,13 @@ import {
   PENDING_APPROVAL_STATUS,
   REJECTED_STATUS,
 } from '@/lib/Constants'
+import { useUpdateInscriptionStatus } from '@/hooks/manage/inscriptionHooks'
 
 export default function InscriptionsPage({ inscriptions }) {
   const [selectedInscription, setSelectedInscription] = useState(null)
   const [filterType, setFilterType] = useState('status')
   const [statusFilter, setStatusFilter] = useState('all')
+  const { mutateAsync: updateInscriptionStatus } = useUpdateInscriptionStatus()
 
   const groupedInscriptions = inscriptions.reduce((acc, inscription) => {
     const status = inscription.status || PENDING_APPROVAL_STATUS
@@ -50,6 +52,14 @@ export default function InscriptionsPage({ inscriptions }) {
 
   function handleCloseDetails() {
     setSelectedInscription(null)
+  }
+
+  async function handleChangePaymentStatus(paymentId, newStatus) {
+    alert('TODO')
+  }
+
+  async function handleChangeInscriptionStatus(inscriptionId, newStatus) {
+    await updateInscriptionStatus({ inscriptionId, newStatus })
   }
 
   const renderFilteredInscriptions = () => {
@@ -121,6 +131,8 @@ export default function InscriptionsPage({ inscriptions }) {
         <Details
           inscription={selectedInscription}
           onClose={handleCloseDetails}
+          handleChangeInscriptionStatus={handleChangeInscriptionStatus}
+          handleChangePaymentStatus={handleChangePaymentStatus}
         />
       )}
     </ContainerPage>

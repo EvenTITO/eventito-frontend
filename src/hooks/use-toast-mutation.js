@@ -4,7 +4,6 @@ import { useToast } from '@/hooks/use-toast'
 const defaultToastOptions = {
   success: {
     show: false,
-    message: 'Operación completada de forma exitosa',
   },
   error: {
     show: true,

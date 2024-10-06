@@ -19,18 +19,18 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import {
-  APPROVED_STATUS,
-  REJECTED_STATUS,
   PENDING_APPROVAL_STATUS,
-  UNCOMPLETED_STATUS,
   INSCRIPTION_STATUS_LABELS,
-  INSCRIPTION_STATUS_LABELS_REVERSE,
   PAYMENT_STATUS_LABELS,
-  PAYMENT_STATUS_LABELS_REVERSE,
   INSCRIPTION_ROLES_LABELS,
 } from '@/lib/Constants'
 
-export default function Details({ inscription, onClose }) {
+export default function Details({
+  inscription,
+  onClose,
+  handleChangeInscriptionStatus,
+  handleChangePaymentStatus,
+}) {
   const [isOpen, setIsOpen] = useState(true)
   const [payments, setPayments] = useState(inscription.payments)
   const [status, setStatus] = useState(
@@ -42,20 +42,8 @@ export default function Details({ inscription, onClose }) {
     onClose()
   }
 
-  const handleDownloadReceipt = (paymentId) => {
-    // TODO: Implement download receipt functionality
-  }
-
-  const handleChangePaymentStatus = (paymentId, newStatus) => {
-    setPayments(
-      payments.map((payment) =>
-        payment.id === paymentId ? { ...payment, status: newStatus } : payment
-      )
-    )
-  }
-
-  const handleChangeStatus = (newStatus) => {
-    setStatus(newStatus)
+  const handleDownloadPDF = (paymentId) => {
+    // TODO
   }
 
   const hasPayments = payments && payments.length > 0
@@ -107,7 +95,12 @@ export default function Details({ inscription, onClose }) {
               <p className="text-sm text-gray-500 mb-2">
                 Estado de la inscripción
               </p>
-              <Select value={status} onValueChange={handleChangeStatus}>
+              <Select
+                value={status}
+                onValueChange={(newStatus) =>
+                  handleChangeInscriptionStatus(inscription.id, newStatus)
+                }
+              >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Seleccionar estado" />
                 </SelectTrigger>
@@ -177,7 +170,7 @@ export default function Details({ inscription, onClose }) {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => handleDownloadReceipt(payment.id)}
+                            onClick={() => handleDownloadPDF(payment.id)}
                           >
                             <Download className="mr-2 h-4 w-4" /> Descargar
                             comprobante
