@@ -5,7 +5,7 @@ import {
   FileCheck,
   FileStack,
   Info,
-  Settings,
+  ChevronDown,
 } from 'lucide-react'
 import {
   ATTENDEE_ROLE,
@@ -16,9 +16,33 @@ import {
   SPEAKER_ROLE,
 } from '@/lib/Constants.js'
 import SideBar from '../../_components/Sidebar'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 
-export default function EventSidebar({ roles }) {
-  return <SideBar itemList={itemList} isSidebarOpen={true} roles={roles} />
+export default function EventSidebar({ eventTitle, roles }) {
+  const [isCollapsed, setIsCollapsed] = useState(false)
+
+  return (
+    <aside
+      className={`bg-gray-100 transition-all duration-300 ease-in-out flex flex-col h-screen ${isCollapsed ? 'w-16' : 'w-64'}`}
+    >
+      <div className="p-4 flex items-center justify-between">
+        <h1 className={`font-semibold truncate ${isCollapsed ? 'hidden' : ''}`}>
+          {eventTitle}
+        </h1>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          <ChevronDown
+            className={`h-4 w-4 transform ${isCollapsed ? 'rotate-180' : ''}`}
+          />
+        </Button>
+      </div>
+      <SideBar itemList={itemList} isSidebarOpen={!isCollapsed} roles={roles} />
+    </aside>
+  )
 }
 
 const classNameIcons = 'mr-2 h-4 w-4'

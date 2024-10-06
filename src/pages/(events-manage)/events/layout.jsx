@@ -1,11 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Header from '../_components/Header'
-import Sidebar from './_components/Sidebar'
 import FetchStatus from '@/components/FetchStatus'
 import { useGetEvent } from '@/hooks/events/useEventState'
-import { useEffect } from 'react'
-import { useNavigator } from '@/lib/navigation'
-import { getEventId } from '@/lib/utils'
 import EventSidebar from './_components/Sidebar'
 
 export default function LayoutEvents() {
@@ -27,16 +23,12 @@ export default function LayoutEvents() {
 }
 
 function Layout({ eventTitle, roles }) {
-  const eventId = getEventId()
-  const navigator = useNavigator()
-
   return (
-    <div className="flex flex-col h-screen bg-background">
-      <Header headerTitle={eventTitle} />
-
-      <div className="flex flex-1 pt-16">
-        <EventSidebar roles={roles} />
-        <main className="flex-1 p-4 md:ml-64 pt-4 overflow-auto">
+    <div className="flex h-screen bg-white">
+      <EventSidebar eventTitle={eventTitle} roles={roles} />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header eventTitle={eventTitle} />
+        <main className="flex-1 overflow-auto p-6">
           <Outlet />
         </main>
       </div>
