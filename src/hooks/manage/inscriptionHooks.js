@@ -24,69 +24,47 @@ export function useGetInscriptions() {
   })
 }
 
-export function useUpdateInscriptionStatus() {
-  const eventId = getEventId()
-  const queryClient = useQueryClient()
+export function createUseUpdateStatus(updateFunction, idName) {
+  return function useUpdateStatus() {
+    const eventId = getEventId()
+    const queryClient = useQueryClient()
 
-  return useToastMutation(
-    async ({ inscriptionId, newStatus }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const update = {
-        status: newStatus,
+    return useToastMutation(
+      async ({ [idName]: id, newStatus }) => {
+        const httpClient = new HTTPClient(EVENTS_URL)
+        const update = {
+          status: newStatus,
+        }
+        await updateFunction(httpClient, eventId, id, update)
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: ['getInscriptions', { eventId }],
+          })
+        },
+      },
+      {
+        success: {
+          show: true,
+          title: 'Inscripción actualizada',
+          message: 'Se actualizó la inscripción de forma correcta',
+        },
+        error: {
+          title: 'Inscripción no actualizada',
+          message: 'Ocurrió un error al actualizar la inscripción',
+        },
       }
-      await apiUpdateInscriptionStatus(
-        httpClient,
-        eventId,
-        inscriptionId,
-        update
-      )
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['getInscriptions', { eventId }],
-        })
-      },
-    },
-    {
-      success: {
-        show: true,
-        message: 'Inscripción actualizada con éxito',
-      },
-      error: {
-        message: 'Error al actualizar la inscripción',
-      },
-    }
-  )
+    )
+  }
 }
 
-export function useUpdatePaymentStatus() {
-  const eventId = getEventId()
-  const queryClient = useQueryClient()
+export const useUpdateInscriptionStatus = createUseUpdateStatus(
+  apiUpdateInscriptionStatus,
+  'inscriptionId'
+)
 
-  return useToastMutation(
-    async ({ paymentId, newStatus }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const update = {
-        status: newStatus,
-      }
-      await apiUpdatePaymentStatus(httpClient, eventId, paymentId, update)
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: ['getInscriptions', { eventId }],
-        })
-      },
-    },
-    {
-      success: {
-        show: true,
-        message: 'Inscripción actualizada con éxito',
-      },
-      error: {
-        message: 'Error al actualizar la inscripción',
-      },
-    }
-  )
-}
+export const useUpdatePaymentStatus = createUseUpdateStatus(
+  apiUpdatePaymentStatus,
+  'paymentId'
+)
