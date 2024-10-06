@@ -12,7 +12,7 @@ export default function TalksDataPage() {
     console.log('trabajos', works.data)
   }
 
-  const component = <Page works={works.data} rooms={rooms.data} />
+  const component = <Page works={works.data || []} rooms={rooms.data} />
   return (
     <FetchStatus
       component={component}
