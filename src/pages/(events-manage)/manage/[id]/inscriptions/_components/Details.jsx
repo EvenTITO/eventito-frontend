@@ -10,13 +10,14 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { Download, ChevronDown } from 'lucide-react'
+import { Download } from 'lucide-react'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import {
   APPROVED_STATUS,
   REJECTED_STATUS,
@@ -42,7 +43,7 @@ export default function Details({ inscription, onClose }) {
   }
 
   const handleDownloadReceipt = (paymentId) => {
-    // TODO
+    // TODO: Implement download receipt functionality
   }
 
   const handleChangePaymentStatus = (paymentId, newStatus) => {
@@ -55,12 +56,6 @@ export default function Details({ inscription, onClose }) {
 
   const handleChangeStatus = (newStatus) => {
     setStatus(newStatus)
-  }
-
-  const statusColors = {
-    [PENDING_APPROVAL_STATUS]: 'bg-yellow-100 text-yellow-800',
-    [APPROVED_STATUS]: 'bg-green-100 text-green-800',
-    [REJECTED_STATUS]: 'bg-red-100 text-red-800',
   }
 
   const hasPayments = payments && payments.length > 0
@@ -83,6 +78,7 @@ export default function Details({ inscription, onClose }) {
               <Avatar className="h-20 w-20">
                 <AvatarImage
                   src={`https://api.dicebear.com/6.x/initials/svg?seed=${inscription.userName}`}
+                  alt={inscription.userName}
                 />
                 <AvatarFallback>
                   {inscription.userName
@@ -111,29 +107,20 @@ export default function Details({ inscription, onClose }) {
               <p className="text-sm text-gray-500 mb-2">
                 Estado de la inscripción
               </p>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={`${statusColors[status]} px-4 py-2 rounded-full`}
-                  >
-                    {INSCRIPTION_STATUS_LABELS[status]}{' '}
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
+              <Select value={status} onValueChange={handleChangeStatus}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Seleccionar estado" />
+                </SelectTrigger>
+                <SelectContent>
                   {Object.entries(INSCRIPTION_STATUS_LABELS).map(
                     ([key, value]) => (
-                      <DropdownMenuItem
-                        key={key}
-                        onClick={() => handleChangeStatus(key)}
-                      >
+                      <SelectItem key={key} value={key}>
                         {value}
-                      </DropdownMenuItem>
+                      </SelectItem>
                     )
                   )}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           {hasPayments && (
@@ -147,39 +134,25 @@ export default function Details({ inscription, onClose }) {
                       <CardHeader>
                         <CardTitle className="flex justify-between items-center">
                           <span>{payment.name}</span>
-                          <div>
-                            <p className="text-sm font-normal text-gray-500 mb-2">
-                              Estado del pago
-                            </p>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button
-                                  variant="outline"
-                                  className={`${statusColors[payment.status]} px-4 py-2 rounded-full`}
-                                >
-                                  {PAYMENT_STATUS_LABELS[payment.status]}{' '}
-                                  <ChevronDown className="ml-2 h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                {Object.entries(PAYMENT_STATUS_LABELS).map(
-                                  ([key, value]) => (
-                                    <DropdownMenuItem
-                                      key={key}
-                                      onClick={() =>
-                                        handleChangePaymentStatus(
-                                          payment.id,
-                                          key
-                                        )
-                                      }
-                                    >
-                                      {value}
-                                    </DropdownMenuItem>
-                                  )
-                                )}
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
+                          <Select
+                            value={payment.status}
+                            onValueChange={(newStatus) =>
+                              handleChangePaymentStatus(payment.id, newStatus)
+                            }
+                          >
+                            <SelectTrigger className="w-[180px] font-normal">
+                              <SelectValue placeholder="Seleccionar estado" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.entries(PAYMENT_STATUS_LABELS).map(
+                                ([key, value]) => (
+                                  <SelectItem key={key} value={key}>
+                                    {value}
+                                  </SelectItem>
+                                )
+                              )}
+                            </SelectContent>
+                          </Select>
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
