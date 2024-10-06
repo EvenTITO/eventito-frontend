@@ -21,6 +21,7 @@ const buttonVariants = cva(
         table: 'hover:bg-slate-100',
         selectable: 'hover:bg-slate-100',
         notApproved: 'bg-red-50 hover:bg-red-200',
+        header: 'hover:text-gray-200 hover:bg-gray-700',
       },
       size: {
         default: 'h-10 px-4 py-2',
