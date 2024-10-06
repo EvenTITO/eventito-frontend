@@ -4,9 +4,12 @@ import { useToast } from '@/hooks/use-toast'
 const defaultToastOptions = {
   success: {
     show: false,
+    title: 'Operación finalizada',
+    message: 'Operación finalizada con éxito',
   },
   error: {
     show: true,
+    title: 'Error',
     message: 'Ocurrió un error al realizar la operación',
   },
 }
@@ -24,7 +27,7 @@ export function useToastMutation(mutationFn, options, toastOptions = {}) {
     onSuccess: (data, variables, context) => {
       if (mergedToastOptions.success.show) {
         toast({
-          title: 'Operación finalizada',
+          title: mergedToastOptions.success.title,
           description: mergedToastOptions.success.message,
         })
       }
@@ -34,7 +37,7 @@ export function useToastMutation(mutationFn, options, toastOptions = {}) {
       if (mergedToastOptions.error.show) {
         toast({
           variant: 'destructive',
-          title: 'Error',
+          title: mergedToastOptions.error.title,
           description:
             error instanceof Error
               ? error.message
