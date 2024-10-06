@@ -36,56 +36,58 @@ export default function SideBar({
   }
 
   return (
-    <ScrollArea className="flex flex-col h-[calc(100vh-5rem)]">
-      <nav className="space-y-1 p-2 flex-grow">
-        <Button
-          variant="ghost"
-          className={cn(
-            'w-full justify-start py-2 text-sm font-normal text-gray-700 hover:bg-gray-200 rounded-sm',
-            location.pathname === '/home' && 'bg-gray-200 font-medium'
-          )}
-          onClick={() => navigate('/home')}
-        >
-          <Home className="h-4 w-4 mr-2" />
-          {isSidebarOpen && <span>Inicio</span>}
-        </Button>
-        {filteredItemList.map((parent, index) => (
-          <div key={index} className="mb-4">
-            {isSidebarOpen && (
-              <div className="flex items-center px-3 py-2 text-sm font-medium text-gray-600">
-                {parent.label}
-              </div>
+    <div className="flex flex-col h-[calc(100vh-5rem)]">
+      <ScrollArea className="flex-grow">
+        <nav className="space-y-1 p-2">
+          <Button
+            variant="ghost"
+            className={cn(
+              'w-full justify-start py-2 text-sm font-normal text-gray-700 hover:bg-gray-200 rounded-sm',
+              location.pathname === '/home' && 'bg-gray-200 font-medium'
             )}
-            {parent.children
-              .filter((child) =>
-                child.requiredRoles.some((role) => roles.includes(role))
-              )
-              .map((child, idx) => (
-                <Button
-                  key={idx}
-                  variant="ghost"
-                  className={cn(
-                    'w-full justify-start py-2 text-sm font-normal text-gray-700 hover:bg-gray-200 rounded-sm',
-                    isItemSelected(child) && 'bg-gray-200 font-medium'
-                  )}
-                  onClick={() =>
-                    child.isOrganizerRoute
-                      ? navigate(`/manage/${id}/${child.to}`)
-                      : navigate(`/events/${id}/${child.to}`)
-                  }
-                >
-                  <span className="flex items-center">
-                    {child.icon}
-                    {isSidebarOpen && (
-                      <span className="ml-2">{child.label}</span>
+            onClick={() => navigate('/home')}
+          >
+            <Home className="h-4 w-4 mr-2" />
+            {isSidebarOpen && <span>Inicio</span>}
+          </Button>
+          {filteredItemList.map((parent, index) => (
+            <div key={index} className="mb-4">
+              {isSidebarOpen && (
+                <div className="flex items-center px-3 py-2 text-sm font-medium text-gray-600">
+                  {parent.label}
+                </div>
+              )}
+              {parent.children
+                .filter((child) =>
+                  child.requiredRoles.some((role) => roles.includes(role))
+                )
+                .map((child, idx) => (
+                  <Button
+                    key={idx}
+                    variant="ghost"
+                    className={cn(
+                      'w-full justify-start py-2 text-sm font-normal text-gray-700 hover:bg-gray-200 rounded-sm',
+                      isItemSelected(child) && 'bg-gray-200 font-medium'
                     )}
-                  </span>
-                </Button>
-              ))}
-          </div>
-        ))}
-      </nav>
-      <div className="p-2 mt-auto">
+                    onClick={() =>
+                      child.isOrganizerRoute
+                        ? navigate(`/manage/${id}/${child.to}`)
+                        : navigate(`/events/${id}/${child.to}`)
+                    }
+                  >
+                    <span className="flex items-center">
+                      {child.icon}
+                      {isSidebarOpen && (
+                        <span className="ml-2">{child.label}</span>
+                      )}
+                    </span>
+                  </Button>
+                ))}
+            </div>
+          ))}
+        </nav>
+      </ScrollArea>
+      <div className="p-2 mb-4">
         <Button
           variant="ghost"
           className="w-full justify-start py-2 text-sm font-normal text-gray-700 hover:bg-gray-200 rounded-sm"
@@ -95,6 +97,6 @@ export default function SideBar({
           {isSidebarOpen && <span>Cerrar sesión</span>}
         </Button>
       </div>
-    </ScrollArea>
+    </div>
   )
 }

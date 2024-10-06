@@ -5,7 +5,7 @@ import {
   FileCheck,
   FileStack,
   Info,
-  ChevronDown,
+  PanelLeftClose,
 } from 'lucide-react'
 import {
   ATTENDEE_ROLE,
@@ -35,7 +35,7 @@ export default function EventSidebar({ eventTitle, roles }) {
           size="sm"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          <ChevronDown
+          <PanelLeftClose
             className={`h-4 w-4 transform ${isCollapsed ? 'rotate-180' : ''}`}
           />
         </Button>

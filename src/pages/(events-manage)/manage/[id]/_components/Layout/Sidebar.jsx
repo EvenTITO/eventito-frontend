@@ -8,7 +8,7 @@ import {
   Settings,
   Table,
   Users,
-  ChevronDown,
+  PanelLeftClose,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -29,7 +29,7 @@ export default function OrganizationSidebar({ eventTitle }) {
           size="sm"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          <ChevronDown
+          <PanelLeftClose
             className={`h-4 w-4 transform ${isCollapsed ? 'rotate-180' : ''}`}
           />
         </Button>
