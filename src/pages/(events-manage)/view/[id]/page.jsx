@@ -1,5 +1,5 @@
 import { format } from '@formkit/tempo'
-import { CalendarDays, MapPin, Users } from 'lucide-react'
+import { CalendarDays, MapPin, Users, AtSign } from 'lucide-react'
 import {
   MotionDiv,
   MotionH1,
@@ -31,6 +31,14 @@ export default function Page({ event }) {
               <span>{event.location}</span>
             </div>
           </MotionDiv>
+          {event.contact && (
+            <MotionDiv className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center">
+                <AtSign className="h-4 w-4 mr-2" />
+                <span>Contacto: {event.contact}</span>
+              </div>
+            </MotionDiv>
+          )}
           <MotionDiv className="space-y-2">
             {event.dates?.map((date, index) => (
               <MotionDiv

@@ -100,7 +100,7 @@ export default function CreateEventStep3({ step, setStep }) {
                     id="location"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    placeholder="Ingresar ubicacion del evento"
+                    placeholder="Ingresar la ubicacion del evento"
                   />
                 </div>
               </div>
