@@ -9,6 +9,7 @@ import {
 } from '@/hooks/manage/tracksHooks'
 import { toast } from '@/hooks/use-toast.js'
 import { unifyEventTracksWithChairs } from './_components/utils.js'
+import { CREATED_STATUS } from '@/lib/Constants.js'
 
 export default function Page({ event, chairs, tracksByChair }) {
   const trackByChairs = unifyEventTracksWithChairs(event.tracks, tracksByChair)
@@ -20,6 +21,7 @@ export default function Page({ event, chairs, tracksByChair }) {
   const addChairToTrack = useAddChairToTrack()
   const deleteChairOfTrack = useDeleteChairOfTrack()
   const addTrack = useAddTrack()
+  const canAddOrRemoveTracks = event.status === CREATED_STATUS
 
   function getUserIdByEmail(email) {
     return chairs.filter((chair) => chair.email === email)[0]?.userId
@@ -67,7 +69,9 @@ export default function Page({ event, chairs, tracksByChair }) {
     <ContainerPage>
       <TitlePage
         title={'Administración de tracks'}
-        rightComponent={<AddTrackDialog onSave={handleAddTrack} />}
+        rightComponent={
+          canAddOrRemoveTracks && <AddTrackDialog onSave={handleAddTrack} />
+        }
       />
       <div className="space-y-6 pt-6">
         <TracksTable
