@@ -58,6 +58,11 @@ export const WORKS_STATUS_PUBLISH = {
   REJECTED: 'Rechazado',
 }
 
+export const WORK_SUBMITTED_STATUS = 'SUBMITTED'
+export const WORK_APPROVED_STATUS = 'APPROVED'
+export const WORK_REJECTED_STATUS = 'REJECTED'
+export const WORK_RE_SUBMIT_STATUS = 'RE_SUBMIT'
+
 export const WORKS_STATUS_LABELS = {
   APPROVED: 'Aprobado',
   REJECTED: 'Rechazado',

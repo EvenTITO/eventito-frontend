@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { CalendarIcon, MapPinIcon } from 'lucide-react'
 import WorkEditDialog from './WorkEditDialog'
+import { WORK_SUBMITTED_STATUS, WORKS_STATUS_LABELS } from '@/lib/Constants'
 
 export default function WorkItem({ work, rooms, onSave }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
@@ -24,9 +25,11 @@ export default function WorkItem({ work, rooms, onSave }) {
               {work.title}
             </h4>
             <Badge
-              variant={work.state === 'SUBMITTED' ? 'secondary' : 'success'}
+              variant={
+                work.state === WORK_SUBMITTED_STATUS ? 'secondary' : 'success'
+              }
             >
-              {work.state}
+              {WORKS_STATUS_LABELS[work.state]}
             </Badge>
           </div>
           <p className="text-sm text-muted-foreground mb-4">

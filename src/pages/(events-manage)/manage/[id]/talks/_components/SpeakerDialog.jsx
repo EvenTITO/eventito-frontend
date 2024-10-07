@@ -25,7 +25,7 @@ export default function SpeakerDialog({
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
             {selectedWork
-              ? 'Detalles de la Charla'
+              ? 'Detalles de la charla'
               : 'Detalles del presentador'}
           </DialogTitle>
         </DialogHeader>
