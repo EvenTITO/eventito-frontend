@@ -10,7 +10,12 @@ import {
 import { toast } from '@/hooks/use-toast.js'
 import { unifyEventTracksWithChairs } from './_components/utils.js'
 
-export default function Page({ event, chairs, tracksByChair }) {
+export default function Page({
+  event,
+  chairs,
+  tracksByChair,
+  canAddOrRemoveTracks,
+}) {
   const trackByChairs = unifyEventTracksWithChairs(event.tracks, tracksByChair)
   const initialTracks = trackByChairs.map((track, index) => ({
     ...track,
@@ -67,7 +72,9 @@ export default function Page({ event, chairs, tracksByChair }) {
     <ContainerPage>
       <TitlePage
         title={'Administración de tracks'}
-        rightComponent={<AddTrackDialog onSave={handleAddTrack} />}
+        rightComponent={
+          canAddOrRemoveTracks && <AddTrackDialog onSave={handleAddTrack} />
+        }
       />
       <div className="space-y-6 pt-6">
         <TracksTable
