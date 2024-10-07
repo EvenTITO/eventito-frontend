@@ -32,7 +32,7 @@ export default function Page({ event }) {
             </div>
           </MotionDiv>
           <MotionDiv className="space-y-2">
-            {event.dates.map((date, index) => (
+            {event.dates?.map((date, index) => (
               <MotionDiv
                 key={index}
                 className="flex items-center text-sm text-muted-foreground"
@@ -40,10 +40,12 @@ export default function Page({ event }) {
                 <CalendarDays className="h-4 w-4 mr-2" />
                 <p className="font-medium">{date.description}:&nbsp;&nbsp;</p>
                 <span>
-                  {format(new Date(`${date.date}T${date.time}`), {
-                    date: 'full',
-                    time: 'short',
-                  })}
+                  {date.date &&
+                    date.time &&
+                    format(new Date(`${date.date}T${date.time}`), {
+                      date: 'full',
+                      time: 'short',
+                    })}
                 </span>
               </MotionDiv>
             ))}
