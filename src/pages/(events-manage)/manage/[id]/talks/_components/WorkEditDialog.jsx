@@ -22,6 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
 export default function WorkEditDialog({
   isOpen,
@@ -30,6 +31,7 @@ export default function WorkEditDialog({
   rooms,
   onSave,
 }) {
+  const [isLoading, setIsLoading] = useState(false)
   const [editedWork, setEditedWork] = useState({ ...work })
 
   const handleChange = (field, value) => {
@@ -43,32 +45,9 @@ export default function WorkEditDialog({
   }
 
   const handleSave = async () => {
-    const payload = {
-      track: editedWork.track,
-      talk: {
-        date: editedWork.talk.date,
-        location: editedWork.talk.location,
-      },
-    }
-
-    try {
-      const response = await fetch(`/api/works/${work.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to update work')
-      }
-
-      onSave(editedWork)
-    } catch (error) {
-      console.error('Error updating work:', error)
-      // You might want to show an error message to the user here
-    }
+    setIsLoading(true)
+    await onSave(editedWork.id, editedWork.track, editedWork.talk)
+    setIsLoading(false)
   }
 
   return (
@@ -158,7 +137,9 @@ export default function WorkEditDialog({
           <Button variant="outline" onClick={onClose}>
             Cancelar
           </Button>
-          <Button onClick={handleSave}>Guardar Cambios</Button>
+          <ButtonWithLoading isLoading={isLoading} onClick={handleSave}>
+            Guardar cambios
+          </ButtonWithLoading>
         </div>
       </DialogContent>
     </Dialog>

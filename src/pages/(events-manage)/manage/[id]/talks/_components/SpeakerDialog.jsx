@@ -5,24 +5,16 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { toast } from '@/hooks/use-toast'
 import WorkItem from './WorkItem'
 
 export default function SpeakerDialog({
   isOpen,
   onClose,
+  onSave,
   speaker,
   selectedWork,
   rooms,
 }) {
-  const handleSaveWork = (editedWork) => {
-    // Here you would typically update your local state or refetch the data
-    toast({
-      title: 'Cambios guardados',
-      description: 'Los cambios se han guardado correctamente.',
-    })
-  }
-
   if (!speaker) return null
 
   const works = selectedWork ? [selectedWork] : speaker.works
@@ -69,7 +61,7 @@ export default function SpeakerDialog({
                   key={work.id}
                   work={work}
                   rooms={rooms}
-                  onSave={handleSaveWork}
+                  onSave={onSave}
                 />
               ))}
             </div>

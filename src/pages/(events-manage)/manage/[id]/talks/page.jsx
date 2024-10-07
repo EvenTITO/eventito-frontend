@@ -3,11 +3,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import SpeakersList from './_components/SpeakersList'
 import CalendarView from './_components/CalendarView'
 import SpeakerDialog from './_components/SpeakerDialog'
+import { useChangeTalkForWork } from '@/hooks/manage/talksHooks'
 
 export default function Page({ works, rooms }) {
   const [selectedSpeaker, setSelectedSpeaker] = useState(null)
   const [selectedWork, setSelectedWork] = useState(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const { mutateAsync: updateTalkForWork } = useChangeTalkForWork()
 
   const handleSpeakerClick = (speaker) => {
     setSelectedSpeaker(speaker)
@@ -25,6 +27,10 @@ export default function Page({ works, rooms }) {
     setIsDialogOpen(false)
     setSelectedSpeaker(null)
     setSelectedWork(null)
+  }
+
+  const handleSaveWork = async (workId, track, talk) => {
+    await updateTalkForWork({ workId, track, talk })
   }
 
   return (
@@ -50,6 +56,7 @@ export default function Page({ works, rooms }) {
       <SpeakerDialog
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
+        onSave={handleSaveWork}
         speaker={selectedSpeaker}
         selectedWork={selectedWork}
         rooms={rooms}

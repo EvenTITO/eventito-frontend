@@ -7,8 +7,8 @@ import WorkEditDialog from './WorkEditDialog'
 export default function WorkItem({ work, rooms, onSave }) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 
-  const handleSave = (editedWork) => {
-    onSave(editedWork)
+  const handleSave = async (workId, track, talk) => {
+    await onSave(workId, track, talk)
     setIsEditDialogOpen(false)
   }
 
