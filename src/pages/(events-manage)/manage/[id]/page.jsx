@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { format, parse } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { CalendarDays, Clock, Edit2, MapPin, Users } from 'lucide-react'
+import { CalendarDays, Clock, Edit2, MapPin, Users, AtSign } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -121,8 +121,8 @@ export default function Page({ eventInfo }) {
 
         <MotionDiv className="space-y-4 mb-12">
           {isEditing ? (
-            <div className="flex flex-row sm:flex-row text-sm">
-              <div className="flex flex-col between my-2 gap-8">
+            <div className="flex flex-col sm:flex-row text-sm gap-4">
+              <div className="flex flex-col sm:gap-8 my-2">
                 <div className="flex flex-row items-center">
                   <Users className="h-5 w-5 mr-2 text-muted-foreground" />
                   <span className="text-muted-foreground mr-2 text-nowrap">
@@ -133,22 +133,38 @@ export default function Page({ eventInfo }) {
                   <MapPin className="h-5 w-5 mr-2 text-muted-foreground flex-shrink-0" />
                   <span className="text-muted-foreground">Ubicación:</span>
                 </div>
+                <div className="flex flex-row items-center">
+                  <AtSign className="h-5 w-5 mr-2 text-muted-foreground flex-shrink-0" />
+                  <span className="text-muted-foreground">Contacto:</span>
+                </div>
               </div>
-              <div className="flex flex-col items-center w-full gap-4">
+
+              <div className="flex flex-col sm:flex-col justify-between w-full gap-2">
                 <div className="flex items-center w-full">
                   <Input
                     name="organized_by"
                     value={event.organized_by}
                     onChange={handleInputChange}
-                    className="flex-grow"
+                    className="w-full"
+                    placeholder="Ingresar persona, grupo u organizacion a cargo del evento"
                   />
                 </div>
-                <div className="flex items-center flex-grow w-full">
+                <div className="flex items-center w-full">
                   <Input
                     name="location"
                     value={event.location}
                     onChange={handleInputChange}
-                    className="flex-grow"
+                    className="w-full"
+                    placeholder="Ingresar la ubicacion del evento"
+                  />
+                </div>
+                <div className="flex items-center w-full">
+                  <Input
+                    name="contact"
+                    value={event.contact}
+                    onChange={handleInputChange}
+                    className="w-full"
+                    placeholder="Ingresar un email de contacto público"
                   />
                 </div>
               </div>
@@ -167,6 +183,13 @@ export default function Page({ eventInfo }) {
                 <span className="break-words">
                   <span className="text-muted-foreground">Ubicación:</span>{' '}
                   {event.location}
+                </span>
+              </div>
+              <div className="flex items-center w-full">
+                <AtSign className="h-5 w-5 mr-2 text-muted-foreground flex-shrink-0" />
+                <span className="break-words">
+                  <span className="text-muted-foreground">Contacto:</span>{' '}
+                  {event.contact}
                 </span>
               </div>
             </div>
