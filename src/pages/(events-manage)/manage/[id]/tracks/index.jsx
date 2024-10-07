@@ -5,7 +5,6 @@ import {
   useGetEventChairsByTracks,
 } from '@/hooks/manage/tracksHooks'
 import { useGetEvent } from '@/hooks/events/useEventState'
-import { CREATED_STATUS } from '@/lib/Constants.js'
 
 export default function TracksConfigPage() {
   const eventData = useGetEvent()
@@ -13,7 +12,6 @@ export default function TracksConfigPage() {
 
   const tracksSettled = eventData.data?.tracks
   const chairsSettled = chairsData.data
-  const canAddOrRemoveTracks = eventData.data.status === CREATED_STATUS
 
   const {
     data: tracksByChair,
@@ -28,7 +26,6 @@ export default function TracksConfigPage() {
       event={eventData.data}
       chairs={chairsData.data}
       tracksByChair={tracksByChair || []}
-      canAddOrRemoveTracks={canAddOrRemoveTracks}
     />
   )
   return (

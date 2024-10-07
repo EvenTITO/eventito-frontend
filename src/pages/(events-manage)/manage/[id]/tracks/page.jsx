@@ -9,13 +9,9 @@ import {
 } from '@/hooks/manage/tracksHooks'
 import { toast } from '@/hooks/use-toast.js'
 import { unifyEventTracksWithChairs } from './_components/utils.js'
+import { CREATED_STATUS } from '@/lib/Constants.js'
 
-export default function Page({
-  event,
-  chairs,
-  tracksByChair,
-  canAddOrRemoveTracks,
-}) {
+export default function Page({ event, chairs, tracksByChair }) {
   const trackByChairs = unifyEventTracksWithChairs(event.tracks, tracksByChair)
   const initialTracks = trackByChairs.map((track, index) => ({
     ...track,
@@ -25,6 +21,7 @@ export default function Page({
   const addChairToTrack = useAddChairToTrack()
   const deleteChairOfTrack = useDeleteChairOfTrack()
   const addTrack = useAddTrack()
+  const canAddOrRemoveTracks = event.status === CREATED_STATUS
 
   function getUserIdByEmail(email) {
     return chairs.filter((chair) => chair.email === email)[0]?.userId
