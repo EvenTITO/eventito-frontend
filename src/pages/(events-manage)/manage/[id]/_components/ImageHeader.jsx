@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import Banner from '@/assets/banner_default.png'
 
 export default function ImageHeader({
   image,
@@ -36,10 +37,15 @@ export default function ImageHeader({
       >
         {isEditing ? (
           <img
-            src={newBannerFile ? URL.createObjectURL(newBannerFile) : image.url}
+            src={
+              newBannerFile
+                ? URL.createObjectURL(newBannerFile)
+                : image
+                  ? image.url
+                  : Banner
+            }
             onError={(e) => {
-              e.target.src =
-                'https://cphfcrflaa.cloudimg.io/_bcuimages/academic-conference-primary-132249422941807450.jpg'
+              e.target.src = Banner
             }}
             className="w-full h-full object-cover"
             style={{
@@ -49,10 +55,9 @@ export default function ImageHeader({
           />
         ) : (
           <img
-            src={image.url}
+            src={image ? image.url : Banner}
             onError={(e) => {
-              e.target.src =
-                'https://cphfcrflaa.cloudimg.io/_bcuimages/academic-conference-primary-132249422941807450.jpg'
+              e.target.src = Banner
             }}
             className="w-full h-full object-cover"
           />

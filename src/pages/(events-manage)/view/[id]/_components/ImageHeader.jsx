@@ -1,15 +1,15 @@
+import Banner from '@/assets/banner_default.png'
+
 export default function ImageHeader({ image }) {
-  if (image) {
-    return (
-      <div className="w-full h-[300px] mb-8 rounded-lg overflow-hidden">
-        <img
-          src={
-            // image.url
-            'https://cphfcrflaa.cloudimg.io/_bcuimages/academic-conference-primary-132249422941807450.jpg'
-          }
-          className="w-full h-full object-cover"
-        />
-      </div>
-    )
-  }
+  return (
+    <div className="w-full h-[300px] mb-8 rounded-lg overflow-hidden">
+      <img
+        src={image ? image.url : Banner}
+        onError={(e) => {
+          e.target.src = Banner
+        }}
+        className="w-full h-full object-cover"
+      />
+    </div>
+  )
 }

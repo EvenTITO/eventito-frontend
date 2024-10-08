@@ -9,6 +9,7 @@ import {
 } from './_components/Animation'
 import ContainerViewPage from './_components/ContainerViewPage'
 import ImageHeader from './_components/ImageHeader'
+import ImageLogo from './_components/ImageLogo.jsx'
 
 export default function Page({ event }) {
   return (
@@ -18,7 +19,14 @@ export default function Page({ event }) {
       />
       <MotionMain>
         <MotionDiv className="space-y-6 mb-12">
-          <MotionH1 className="text-4xl font-bold">{event.title}</MotionH1>
+          <MotionDiv className="flex flex-row items-center">
+            <ImageLogo
+              image={event.media.find((item) => item.name === 'main_image')}
+            />
+            <MotionH1 className="text-4xl font-bold px-2">
+              {event.title}
+            </MotionH1>
+          </MotionDiv>
           <MotionDiv className="flex flex-wrap gap-4 text-sm text-muted-foreground">
             <div className="flex items-center">
               <Users className="h-4 w-4 mr-2" />
