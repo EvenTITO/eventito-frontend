@@ -22,6 +22,7 @@ import { CREATED_STATUS, STARTED_STATUS } from '@/lib/Constants.js'
 import { useToast } from '@/hooks/use-toast'
 import ContainerOrganizationPage from './_components/ContainerOrganizationPage'
 import ImageHeader from './_components/ImageHeader'
+import ImageLogo from './_components/ImageLogo'
 import ButtonWithLoading from '@/components/ButtonWithLoading'
 import {
   useEditEvent,
@@ -34,6 +35,8 @@ import * as Tooltip from '@radix-ui/react-tooltip'
 export default function Page({ eventInfo }) {
   const [event, setEvent] = useState(eventInfo)
   const [isEditing, setIsEditing] = useState(false)
+  const [bannerFile, setBannerFile] = useState(null)
+  const [logoFile, setLogoFile] = useState(null)
   const [datesOpen, setDatesOpen] = useState(event.dates.map(() => false))
   const { mutateAsync: submitEditEvent, isPending, error } = useEditEvent()
   const { mutateAsync: uploadEventImage } = useUploadEventImage()
@@ -58,22 +61,21 @@ export default function Page({ eventInfo }) {
     let eventCopy = JSON.parse(JSON.stringify(event))
     delete eventCopy.title
     await submitEditEvent({ eventData: eventCopy })
+    if (bannerFile) {
+      await uploadEventImage({ imageName: 'banner_image', image: bannerFile })
+    }
+    if (logoFile) {
+      await uploadEventImage({ imageName: 'main_image', image: logoFile })
+    }
     setIsEditing(false)
+    setBannerFile(null)
+    setLogoFile(null)
   }
 
   const handleDatesOpen = async (value, index) => {
     setDatesOpen(
       datesOpen.map((isOpen, idx) => (index === idx ? value : isOpen))
     )
-  }
-
-  //TODO @gonzasabation con esta funcion subis cualquier imagen del evento
-  // parametrizar para elegir cual de las 3 imagenes subir (banner_image, main_image, brochure)
-  const uploadFile = async (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0]
-      await uploadEventImage({ imageName: 'banner_image', image: file })
-    }
   }
 
   const publishEvent = async () => {
@@ -97,10 +99,23 @@ export default function Page({ eventInfo }) {
     <ContainerOrganizationPage>
       <ImageHeader
         image={event.media.find((item) => item.name === 'banner_image')}
+        isEditing={isEditing}
+        newBannerFile={bannerFile}
+        setBannerFile={setBannerFile}
       />
       <MotionMain className="max-w-4xl mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
-          <MotionH1 className="text-4xl font-bold">{event.title}</MotionH1>
+          <div className="flex justify-between items-center">
+            <ImageLogo
+              image={event.media.find((item) => item.name === 'main_image')}
+              isEditing={isEditing}
+              newLogoFile={logoFile}
+              setLogoFile={setLogoFile}
+            />
+            <MotionH1 className="text-4xl font-bold px-2">
+              {event.title}
+            </MotionH1>
+          </div>
           {!isEditing && (
             <div className="flex gap-2 items-center">
               <Button
@@ -304,6 +319,8 @@ export default function Page({ eventInfo }) {
               onClick={() => {
                 setIsEditing(false)
                 setEvent(eventInfo)
+                setBannerFile(null)
+                setLogoFile(null)
               }}
               className={'size-lg'}
             >
