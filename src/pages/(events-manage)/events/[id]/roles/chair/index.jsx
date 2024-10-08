@@ -2,9 +2,29 @@ import { useEffect, useState } from 'react'
 import { useGetMyChair, useGetWorksByTrack } from '@/hooks/events/chairHooks'
 import Page from './page'
 import FetchStatus from '@/components/FetchStatus.jsx'
+import { ORGANIZER_ROLE } from '@/lib/Constants.js'
+import { useGetEvent } from '@/hooks/events/useEventState'
+import { useSelector } from 'react-redux'
 
 export default function ChairPage() {
-  const myChairData = useGetMyChair()
+  const {
+    data: eventData,
+    isLoading: isEventLoading,
+    error: eventError,
+  } = useGetEvent()
+
+  const isOrganizer =
+    eventData?.roles !== undefined
+      ? eventData?.roles.includes(ORGANIZER_ROLE)
+      : false
+  const myChairData = isOrganizer
+    ? {
+        data: eventData,
+        isLoading: isEventLoading,
+        error: eventError,
+      }
+    : useGetMyChair()
+
   const tracksSettled = myChairData.data?.tracks
   const [selectedTrack, setSelectedTrack] = useState(
     tracksSettled ? tracksSettled[0] : ''
