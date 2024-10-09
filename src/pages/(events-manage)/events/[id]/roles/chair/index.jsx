@@ -4,7 +4,6 @@ import Page from './page'
 import FetchStatus from '@/components/FetchStatus.jsx'
 import { ORGANIZER_ROLE } from '@/lib/Constants.js'
 import { useGetEvent } from '@/hooks/events/useEventState'
-import { useSelector } from 'react-redux'
 
 export default function ChairPage() {
   const {
@@ -17,7 +16,7 @@ export default function ChairPage() {
     eventData?.roles !== undefined
       ? eventData?.roles.includes(ORGANIZER_ROLE)
       : false
-  const myChairData = isOrganizer
+  const chairOrEventData = isOrganizer
     ? {
         data: eventData,
         isLoading: isEventLoading,
@@ -25,7 +24,7 @@ export default function ChairPage() {
       }
     : useGetMyChair()
 
-  const tracksSettled = myChairData.data?.tracks
+  const tracksSettled = chairOrEventData.data?.tracks
   const [selectedTrack, setSelectedTrack] = useState(
     tracksSettled ? tracksSettled[0] : ''
   )
@@ -53,8 +52,8 @@ export default function ChairPage() {
   return (
     <FetchStatus
       component={component}
-      isPending={myChairData.isPending || isPendingWorks}
-      error={myChairData.error || errorWorks}
+      isPending={chairOrEventData.isPending || isPendingWorks}
+      error={chairOrEventData.error || errorWorks}
     />
   )
 }
