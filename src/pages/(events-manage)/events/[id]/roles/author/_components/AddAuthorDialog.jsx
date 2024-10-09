@@ -15,6 +15,7 @@ import { useAddAuthorToWork } from '@/hooks/events/authorHooks'
 
 export default function AddAuthorDialog() {
   const [email, setEmail] = useState('')
+  const [fullname, setFullname] = useState('')
   const [affiliation, setAffiliation] = useState('')
   const [isSpeaker, setIsSpeaker] = useState(false)
   const [notifyAuthor, setNotifyAuthor] = useState(false)
@@ -28,7 +29,7 @@ export default function AddAuthorDialog() {
       await addAuthor({
         authorData: {
           email,
-          full_name: 'usuario',
+          fullname,
           affiliation,
           isSpeaker,
           notifyAuthor,
@@ -52,6 +53,16 @@ export default function AddAuthorDialog() {
           <DialogTitle>Agregar nuevo autor</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="fullname">Nombre completo del autor</Label>
+            <Input
+              id="fullname"
+              type="fullname"
+              value={fullname}
+              onChange={(e) => setFullname(e.target.value)}
+              required
+            />
+          </div>
           <div>
             <Label htmlFor="email">Email del autor</Label>
             <Input

@@ -156,7 +156,7 @@ export function useAddAuthorToWork() {
         authors: [
           ...work.authors,
           {
-            full_name: authorData.full_name,
+            full_name: authorData.fullname,
             membership: authorData.affiliation,
             mail: authorData.email,
             notify_updates: authorData.notifyAuthor,
