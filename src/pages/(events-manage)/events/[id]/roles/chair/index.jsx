@@ -1,8 +1,8 @@
 import FetchStatus from '@/components/FetchStatus.jsx'
 import Page from './page'
-import { useState } from 'react'
 import { useEvent } from '@/lib/layout'
 import { useGetMyTracks, useGetWorksByTrack } from '@/hooks/events/chairHooks'
+import { useState } from 'react'
 
 export default function ChairPage() {
   const eventData = useEvent()
