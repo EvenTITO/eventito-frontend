@@ -8,9 +8,6 @@ export default function TalksDataPage() {
     (data) => data.mdata?.rooms.map((room) => room.name) || []
   )
   const works = useGetAllWorksForOrganizer()
-  if (works.data) {
-    console.log('trabajos', works.data)
-  }
 
   const component = <Page works={works.data || []} rooms={rooms.data} />
   return (

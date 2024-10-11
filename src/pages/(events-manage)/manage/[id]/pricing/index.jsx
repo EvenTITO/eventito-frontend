@@ -1,21 +1,8 @@
-import FetchStatus from '@/components/FetchStatus'
 import Page from './page'
-import { useGetEvent } from '@/hooks/events/useEventState'
+import { useEvent } from '@/lib/layout'
 
 export default function PricingConfigPage() {
-  const eventData = useGetEvent()
+  const eventData = useEvent()
 
-  const component = (
-    <Page
-      prices={eventData.data?.pricing || []}
-      dates={eventData.data?.dates}
-    />
-  )
-  return (
-    <FetchStatus
-      component={component}
-      isPending={eventData.isPending}
-      error={eventData.error}
-    />
-  )
+  return <Page prices={eventData?.pricing || []} dates={eventData?.dates} />
 }

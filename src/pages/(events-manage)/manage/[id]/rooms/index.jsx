@@ -1,17 +1,7 @@
-import { useGetEvent } from '@/hooks/events/useEventState.js'
-import FetchStatus from '@/components/FetchStatus.jsx'
 import Page from '@/pages/(events-manage)/manage/[id]/rooms/page.jsx'
+import { useEvent } from '@/lib/layout'
 
 export default function RoomsConfigPage() {
-  const eventData = useGetEvent()
-  const component = (
-    <Page event={eventData.data} rooms={eventData.data.mdata?.rooms || []} />
-  )
-  return (
-    <FetchStatus
-      component={component}
-      isPending={eventData.isPending}
-      error={eventData.error}
-    />
-  )
+  const eventData = useEvent()
+  return <Page event={eventData} rooms={eventData.mdata?.rooms || []} />
 }
