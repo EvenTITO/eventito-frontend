@@ -16,6 +16,8 @@ import { BottomContainer } from './bottomContainer'
 import { useSelector } from 'react-redux'
 import SubmitButton from './SubmitButton'
 
+const MAX_LOCATION_LENGTH = 100
+
 export default function CreateEventStep3({ step, setStep }) {
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
@@ -67,8 +69,13 @@ export default function CreateEventStep3({ step, setStep }) {
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="Ingresar la ubicacion del evento"
-                    maxLength={100}
+                    maxLength={MAX_LOCATION_LENGTH}
                   />
+                  {location?.length > 0.9 * MAX_LOCATION_LENGTH && (
+                    <p className="text-sm text-gray-500">
+                      {location.length}/{MAX_LOCATION_LENGTH}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
