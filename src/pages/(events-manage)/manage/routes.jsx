@@ -8,6 +8,7 @@ import PricingConfigPage from './[id]/pricing'
 import RoomsConfigPage from './[id]/rooms'
 import InscriptionsDataPage from './[id]/inscriptions'
 import TalksDataPage from './[id]/talks'
+import EventCalendar from './[id]/test/page'
 
 export default function RoutesOrganization() {
   return (
@@ -26,6 +27,7 @@ export default function RoutesOrganization() {
           element={<InscriptionsDataPage />}
         />
         <Route path="/manage/:id/talks" element={<TalksDataPage />} />
+        <Route path="/manage/:id/test" element={<EventCalendar />} />
       </Route>
     </Routes>
   )
