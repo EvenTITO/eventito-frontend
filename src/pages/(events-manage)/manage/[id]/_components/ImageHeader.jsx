@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import Banner from '@/assets/banner_default.png'
 
 export default function ImageHeader({
@@ -7,16 +7,7 @@ export default function ImageHeader({
   newBannerFile,
   setBannerFile,
 }) {
-  const [isHovered, setIsHovered] = useState(false)
-  const showImagePicker = useRef(false)
-
-  const handleMouseOver = () => {
-    setIsHovered(true)
-  }
-
-  const handleMouseLeave = () => {
-    setIsHovered(false)
-  }
+  const showImagePicker = useRef(null)
 
   const handleClick = () => {
     showImagePicker.current.click()
@@ -29,46 +20,36 @@ export default function ImageHeader({
   }
 
   return (
-    <div onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
-      <button
-        onClick={handleClick}
-        disabled={!isEditing}
-        className="w-full h-[300px] mb-8 rounded-lg overflow-hidden"
-      >
-        {isEditing ? (
-          <img
-            src={
-              newBannerFile
-                ? URL.createObjectURL(newBannerFile)
-                : image
-                  ? image.url
-                  : Banner
-            }
-            onError={(e) => {
-              e.target.src = Banner
-            }}
-            className="w-full h-full object-cover"
-            style={{
-              opacity: isHovered ? 0.7 : 1,
-              transition: 'opacity 0.3s',
-            }}
-          />
-        ) : (
-          <img
-            src={image ? image.url : Banner}
-            onError={(e) => {
-              e.target.src = Banner
-            }}
-            className="w-full h-full object-cover"
-          />
-        )}
-      </button>
+    <div className="relative w-full h-[300px] mb-8 rounded-lg overflow-hidden group">
+      <img
+        src={
+          newBannerFile
+            ? URL.createObjectURL(newBannerFile)
+            : image
+              ? image.url
+              : Banner
+        }
+        onError={(e) => {
+          e.target.src = Banner
+        }}
+        className="w-full h-full object-cover"
+      />
+      {isEditing && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <button
+            onClick={handleClick}
+            className="bg-white text-black px-4 py-2 rounded-md font-semibold"
+          >
+            Editar imagen
+          </button>
+        </div>
+      )}
       <input
         type="file"
         accept="image/*"
         onChange={handleFileChange}
         ref={showImagePicker}
-        style={{ display: 'none' }}
+        className="hidden"
       />
     </div>
   )
