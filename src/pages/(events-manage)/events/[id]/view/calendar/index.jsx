@@ -1,18 +1,14 @@
 import Page from '@/pages/(events-manage)/events/[id]/view/calendar/page'
-import { useGetEvent } from '@/hooks/events/useEventState.js'
 import { useGetWorksWithTalk } from '@/hooks/events/worksHooks.js'
 import FetchStatus from '@/components/FetchStatus.jsx'
+import { useEvent } from '@/lib/layout'
 
 export default function EventViewCalendarPage() {
-  const { data: eventInfo } = useGetEvent()
+  const eventData = useEvent()
   const { data: worksInfo, isPending, error } = useGetWorksWithTalk()
 
-  const pageComponent = <Page event={eventInfo} works={worksInfo || []} />
+  const component = <Page event={eventData} works={worksInfo || []} />
   return (
-    <FetchStatus
-      isPending={isPending}
-      error={error}
-      component={pageComponent}
-    />
+    <FetchStatus isPending={isPending} error={error} component={component} />
   )
 }

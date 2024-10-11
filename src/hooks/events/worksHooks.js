@@ -1,6 +1,5 @@
-import { EVENTS_URL, SPEAKER_ROLE } from '@/lib/Constants'
+import { SPEAKER_ROLE } from '@/lib/Constants'
 import { getEventId, getWorkId } from '@/lib/utils'
-import { HTTPClient } from '@/services/api/HTTPClient'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import {
   apiGetSubmissionsForWork,
@@ -37,13 +36,8 @@ export function useGetWorkById() {
 }
 
 export const getWorkById = async (eventId, workId) => {
-  const httpClient = new HTTPClient(EVENTS_URL)
-  const work = await apiGetWorkById(httpClient, eventId, workId)
-  const submissions = await apiGetSubmissionsForWork(
-    httpClient,
-    eventId,
-    workId
-  )
+  const work = await apiGetWorkById(eventId, workId)
+  const submissions = await apiGetSubmissionsForWork(eventId, workId)
   return convertWork(work, submissions)
 }
 
@@ -53,8 +47,7 @@ export function useGetWorkDownloadURL() {
 
   return useMutation({
     mutationFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      return await apiGetWorkDownloadURL(httpClient, eventId, workId)
+      return await apiGetWorkDownloadURL(eventId, workId)
     },
   })
 }
@@ -80,8 +73,7 @@ export function useGetWorksWithTalk() {
   return useQuery({
     queryKey: ['getWorksWithTalk', { eventId }],
     queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const worksWithTalk = await apiGetWorksWithTalk(httpClient, eventId)
+      const worksWithTalk = await apiGetWorksWithTalk(eventId)
       return convertWorks(worksWithTalk)
     },
   })

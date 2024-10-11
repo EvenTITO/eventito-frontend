@@ -4,13 +4,13 @@ import {
   useGetEventChairs,
   useGetEventChairsByTracks,
 } from '@/hooks/manage/tracksHooks'
-import { useGetEvent } from '@/hooks/events/useEventState'
+import { useEvent } from '@/lib/layout'
 
 export default function TracksConfigPage() {
-  const eventData = useGetEvent()
+  const eventData = useEvent()
   const chairsData = useGetEventChairs()
 
-  const tracksSettled = eventData.data?.tracks
+  const tracksSettled = eventData?.tracks
   const chairsSettled = chairsData.data
 
   const {
@@ -23,7 +23,7 @@ export default function TracksConfigPage() {
 
   const component = (
     <Page
-      event={eventData.data}
+      event={eventData}
       chairs={chairsData.data}
       tracksByChair={tracksByChair || []}
     />
@@ -31,8 +31,8 @@ export default function TracksConfigPage() {
   return (
     <FetchStatus
       component={component}
-      isPending={isPending || eventData.isPending || chairsData.isPending}
-      error={error || eventData.error || chairsData.error}
+      isPending={isPending || chairsData.isPending}
+      error={error || chairsData.error}
     />
   )
 }

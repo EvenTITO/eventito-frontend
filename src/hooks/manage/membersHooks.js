@@ -1,7 +1,6 @@
-import { getEventId, wait } from '@/lib/utils'
+import { getEventId } from '@/lib/utils'
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
-import { CHAIR_ROLE, EVENTS_URL, ORGANIZER_ROLE } from '@/lib/Constants'
-import { HTTPClient } from '@/services/api/HTTPClient'
+import { CHAIR_ROLE, ORGANIZER_ROLE } from '@/lib/Constants'
 import {
   apiGetEventMembers,
   apiPutMemberRole,
@@ -16,12 +15,11 @@ export function useAddMember() {
 
   return useMutation({
     mutationFn: async ({ newMemberEmail, newMemberRole }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const body = {
         email: newMemberEmail,
         role: newMemberRole,
       }
-      await apiPostMember(httpClient, eventId, body)
+      await apiPostMember(eventId, body)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getEventMembers'] })
@@ -38,8 +36,7 @@ export function useGetMembers() {
   return useQuery({
     queryKey: ['getEventMembers', eventId],
     queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const eventMembers = await apiGetEventMembers(httpClient, eventId)
+      const eventMembers = await apiGetEventMembers(eventId)
       return convertEventMembers(eventMembers)
     },
   })
@@ -55,8 +52,7 @@ export function useUpdateMemberRole() {
       if (newRole === ORGANIZER_ROLE) {
         roles.push(CHAIR_ROLE)
       }
-      const httpClient = new HTTPClient(EVENTS_URL)
-      return await apiPutMemberRole(httpClient, userId, roles, eventId)
+      return await apiPutMemberRole(userId, roles, eventId)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getEventMembers'] })
@@ -70,8 +66,7 @@ export function useDeleteMember() {
 
   return useMutation({
     mutationFn: async ({ userId }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      return await apiDeleteMember(httpClient, eventId, userId)
+      return await apiDeleteMember(eventId, userId)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getEventMembers'] })

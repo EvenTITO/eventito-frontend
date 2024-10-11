@@ -1,6 +1,4 @@
-import { EVENTS_URL } from '@/lib/Constants'
 import { getEventId } from '@/lib/utils'
-import { HTTPClient } from '@/services/api/HTTPClient'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   apiGetAllWorks,
@@ -15,8 +13,7 @@ export function useGetAllWorksForOrganizer() {
   return useQuery({
     queryKey: ['getAllWorksForOrganizer', { eventId }],
     queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const works = await apiGetAllWorks(httpClient, eventId)
+      const works = await apiGetAllWorks(eventId)
       return convertWorksForOrganizer(works)
     },
   })
@@ -28,12 +25,11 @@ export function useChangeTalkForWork() {
 
   return useToastMutation(
     async ({ workId, track, talk }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const talkData = {
         track: track,
         talk: talk,
       }
-      await apiPutTalkForWork(httpClient, eventId, workId, talkData)
+      await apiPutTalkForWork(eventId, workId, talkData)
     },
     {
       onSuccess: () => {

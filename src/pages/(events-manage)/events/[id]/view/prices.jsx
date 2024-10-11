@@ -8,11 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { getEventId } from '@/lib/utils'
 import { CheckCircle, DollarSign, Clock } from 'lucide-react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export function RegistrationTab({ event }) {
-  const { id: eventId } = useParams()
+  const eventId = getEventId()
 
   return (
     <Card>

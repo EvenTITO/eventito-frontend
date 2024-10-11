@@ -9,6 +9,7 @@ import {
   Table,
   Users,
   PanelLeftClose,
+  Calendar,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -96,9 +97,16 @@ const itemList = [
     label: 'Datos del evento',
     children: [
       {
-        label: 'inscripciones',
+        label: 'Inscripciones',
         icon: <BookOpenCheck className={classNameIcons} />,
         to: 'inscriptions',
+        requiredRoles: [ORGANIZER_ROLE],
+        isOrganizerRoute: true,
+      },
+      {
+        label: 'Presentaciones',
+        icon: <Calendar className={classNameIcons} />,
+        to: 'talks',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
