@@ -14,7 +14,13 @@ import UploadStates from './_components/UploadStates'
 import { MotionMain } from './_components/Animation'
 
 export default function Page({ eventInfo }) {
-  const [event, setEvent] = useState(eventInfo)
+  const [event, setEvent] = useState({
+    ...eventInfo,
+    mdata: {
+      ...eventInfo.mdata,
+      short_description: eventInfo.mdata?.short_description || '',
+    },
+  })
   const [isEditing, setIsEditing] = useState(false)
   const [bannerFile, setBannerFile] = useState(null)
   const [logoFile, setLogoFile] = useState(null)
@@ -26,7 +32,17 @@ export default function Page({ eventInfo }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
-    setEvent((prev) => ({ ...prev, [name]: value }))
+    if (name === 'short_description') {
+      setEvent((prev) => ({
+        ...prev,
+        mdata: {
+          ...prev.mdata,
+          short_description: value,
+        },
+      }))
+    } else {
+      setEvent((prev) => ({ ...prev, [name]: value }))
+    }
   }
 
   const handleDateChange = (index, field, value) => {
@@ -53,7 +69,13 @@ export default function Page({ eventInfo }) {
 
   const handleCancel = () => {
     setIsEditing(false)
-    setEvent(eventInfo)
+    setEvent({
+      ...eventInfo,
+      mdata: {
+        ...eventInfo.mdata,
+        short_description: eventInfo.mdata?.short_description || '',
+      },
+    })
     setBannerFile(null)
     setLogoFile(null)
   }
