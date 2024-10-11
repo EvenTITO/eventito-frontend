@@ -20,6 +20,7 @@ import {
 import { format } from 'date-fns'
 import { apiGetMyEventChair } from '@/services/api/events/chair/queries.js'
 import { convertEventChair } from '@/services/api/events/chair/conversor.js'
+import { ORGANIZER_ROLE } from '@/lib/Constants.js'
 
 export function useGetWorksByTrack(track) {
   const eventId = getEventId()
@@ -185,5 +186,22 @@ export function useGetMyChair() {
       const myChair = await apiGetMyEventChair(httpClient, eventId)
       return convertEventChair(myChair)
     },
+  })
+}
+
+export function useGetMyTracks(roles) {
+  const eventId = getEventId()
+  return useQuery({
+    queryKey: ['getMyChair', { eventId }],
+    queryFn: async () => {
+      const httpClient = new HTTPClient(EVENTS_URL)
+      if (roles.includes(ORGANIZER_ROLE)) {
+        return null
+      } else {
+        const myChair = await apiGetMyEventChair(httpClient, eventId)
+        return convertEventChair(myChair).tracks
+      }      
+    },
+    enabled: !!roles
   })
 }

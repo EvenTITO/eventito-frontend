@@ -1,4 +1,6 @@
-.rect1, .rect2, .rect3 {
+.rect1,
+.rect2,
+.rect3 {
   opacity: 0;
   -webkit-animation: fadeIn 2s linear forwards 0.5s;
   -o-animation: fadeIn 2s linear forwards 0.5s;
@@ -14,10 +16,10 @@
 }
 
 .rect2 {
-  -webkit-animation-delay: 1.0s;
-  -o-animation-delay: 1.0s;
-  -moz-animation-delay: 1.0s;
-  animation-delay: 1.0s;
+  -webkit-animation-delay: 1s;
+  -o-animation-delay: 1s;
+  -moz-animation-delay: 1s;
+  animation-delay: 1s;
 }
 
 .rect3 {
@@ -52,4 +54,3 @@
   width: 100%;
   min-height: 80vh;
 }
-
