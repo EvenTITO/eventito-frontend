@@ -1,11 +1,11 @@
 import FetchStatus from '@/components/FetchStatus'
 import Page from './page'
 import { SPEAKER_ROLE } from '@/lib/Constants'
-import { useEvent } from '@/lib/layout'
 import { useGetMyWorks } from '@/hooks/events/authorHooks'
+import { useGetEvent } from '@/hooks/events/useEventState'
 
 export default function NewPaymentPage() {
-  const eventData = useEvent()
+  const { data: eventData, isLoading, error } = useGetEvent()
   const isSpeaker = eventData?.roles?.includes(SPEAKER_ROLE)
 
   const {
@@ -21,8 +21,8 @@ export default function NewPaymentPage() {
   return (
     <FetchStatus
       component={component}
-      isPending={isWorksLoading}
-      error={worksError}
+      isPending={isWorksLoading || isLoading}
+      error={worksError || error}
     />
   )
 }
