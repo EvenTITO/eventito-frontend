@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.jsx'
+import { useRef } from 'react'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Logo from '@/assets/logo.svg'
 
 export default function ImageLogo({
@@ -8,16 +8,7 @@ export default function ImageLogo({
   newLogoFile,
   setLogoFile,
 }) {
-  const [isHovered, setIsHovered] = useState(false)
-  const showImagePicker = useRef(false)
-
-  const handleMouseOver = () => {
-    setIsHovered(true)
-  }
-
-  const handleMouseLeave = () => {
-    setIsHovered(false)
-  }
+  const showImagePicker = useRef(null)
 
   const handleClick = () => {
     showImagePicker.current.click()
@@ -30,54 +21,41 @@ export default function ImageLogo({
   }
 
   return (
-    <div onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
-      <button
-        onClick={handleClick}
-        disabled={!isEditing}
-        className="rounded-lg overflow-hidden"
-      >
-        {isEditing ? (
-          <Avatar
-            className="h-16 w-16 group-hover:ring-offset-4 transition-all duration-200"
-            style={{
-              opacity: isHovered ? 0.7 : 1,
-              transition: 'opacity 0.3s',
-            }}
+    <div className="relative group">
+      <Avatar className="h-16 w-16 group-hover:ring-offset-4 transition-all duration-200">
+        <AvatarImage
+          src={
+            newLogoFile
+              ? URL.createObjectURL(newLogoFile)
+              : image
+                ? image.url
+                : Logo
+          }
+        />
+        <AvatarFallback>
+          <img
+            className="size-10 transition-all group-hover:scale-110"
+            src={Logo}
+            alt="Logo"
+          />
+        </AvatarFallback>
+      </Avatar>
+      {isEditing && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <button
+            onClick={handleClick}
+            className="text-white text-xs font-semibold"
           >
-            <AvatarImage
-              src={
-                newLogoFile
-                  ? URL.createObjectURL(newLogoFile)
-                  : image
-                    ? image.url
-                    : Logo
-              }
-            />
-            <AvatarFallback>
-              <img
-                className="size-10 transition-all group-hover:scale-110"
-                src={Logo}
-              />
-            </AvatarFallback>
-          </Avatar>
-        ) : (
-          <Avatar className="h-16 w-16 group-hover:ring-offset-4 transition-all duration-200">
-            <AvatarImage src={image ? image.url : Logo} />
-            <AvatarFallback>
-              <img
-                className="size-10 transition-all group-hover:scale-110"
-                src={Logo}
-              />
-            </AvatarFallback>
-          </Avatar>
-        )}
-      </button>
+            Editar
+          </button>
+        </div>
+      )}
       <input
         type="file"
         accept="image/*"
         onChange={handleFileChange}
         ref={showImagePicker}
-        style={{ display: 'none' }}
+        className="hidden"
       />
     </div>
   )
