@@ -1,26 +1,23 @@
-export const apiGetAssignments = async (httpClient, eventId) => {
-  return (await httpClient.get(`/${eventId}/reviewers/my-assignments`)).data
+import { eventsClient } from '../../clients'
+
+export const apiGetAssignments = async (eventId) => {
+  return (await eventsClient.get(`/${eventId}/reviewers/my-assignments`)).data
 }
 
-export const apiPostReview = async (httpClient, eventId, workId, body) => {
-  return await httpClient.post(`/${eventId}/works/${workId}/reviews`, body)
+export const apiPostReview = async (eventId, workId, body) => {
+  return await eventsClient.post(`/${eventId}/works/${workId}/reviews`, body)
 }
 
-export const apiPutReviewDeadline = async (httpClient, eventId, body) => {
-  return await httpClient.put(`/${eventId}/reviewers`, body)
+export const apiPutReviewDeadline = async (eventId, body) => {
+  return await eventsClient.put(`/${eventId}/reviewers`, body)
 }
 
-export const apiPostAddReviewer = async (httpClient, eventId, body) => {
-  return await httpClient.post(`/${eventId}/reviewers`, body)
+export const apiPostAddReviewer = async (eventId, body) => {
+  return await eventsClient.post(`/${eventId}/reviewers`, body)
 }
 
-export const apiPostReviewsPublish = async (
-  httpClient,
-  eventId,
-  workId,
-  body
-) => {
-  return await httpClient.post(
+export const apiPostReviewsPublish = async (eventId, workId, body) => {
+  return await eventsClient.post(
     `/${eventId}/works/${workId}/reviews/publish`,
     body
   )

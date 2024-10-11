@@ -1,9 +1,11 @@
-export const apiGetManyUsers = async (httpClient, offset = 0, limit = 100) => {
-  const response = await httpClient.get('', { offset, limit })
+import { usersClient } from '../../clients'
+
+export const apiGetManyUsers = async (offset = 0, limit = 100) => {
+  const response = await usersClient.get('', { offset, limit })
   return response.data
 }
 
-export const apiUpdateUserRole = async (httpClient, userId, newRole) => {
-  const response = await httpClient.patch(`/${userId}/roles`, newRole)
+export const apiUpdateUserRole = async (userId, newRole) => {
+  const response = await usersClient.patch(`/${userId}/roles`, newRole)
   return response.data
 }

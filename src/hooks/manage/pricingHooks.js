@@ -1,7 +1,5 @@
 import { getEventId } from '@/lib/utils'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { HTTPClient } from '@/services/api/HTTPClient.js'
-import { EVENTS_URL } from '@/lib/Constants.js'
 import {
   apiUpdateDatesEvent,
   apiUpdatePricingEvent,
@@ -24,14 +22,12 @@ export function useAddOrModifyFareInEventPricing() {
       eventDates,
       relatedDate = undefined,
     }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-
       if (relatedDate) {
         if (eventDates.some((d) => d.name === relatedDate.name)) {
           newFare.relatedDate = relatedDate.name
         } else {
           const updatedDates = convertNewDates(eventDates, relatedDate)
-          await apiUpdateDatesEvent(httpClient, eventId, updatedDates)
+          await apiUpdateDatesEvent(eventId, updatedDates)
         }
       }
 
@@ -41,7 +37,7 @@ export function useAddOrModifyFareInEventPricing() {
       } else {
         updatedPricing = convertNewPricing(eventPrices, newFare)
       }
-      return await apiUpdatePricingEvent(httpClient, eventId, updatedPricing)
+      return await apiUpdatePricingEvent(eventId, updatedPricing)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -57,11 +53,9 @@ export function useDeletePayment() {
 
   return useMutation({
     mutationFn: async ({ fareName, eventPricing }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-
       const updatedFares = eventPricing.filter((p) => p.name !== fareName)
       const faresConverted = convertFares(updatedFares)
-      return await apiUpdatePricingEvent(httpClient, eventId, faresConverted)
+      return await apiUpdatePricingEvent(eventId, faresConverted)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

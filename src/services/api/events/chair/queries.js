@@ -1,29 +1,26 @@
-export const apiGetEventChairs = async (httpClient, eventId) => {
-  return (await httpClient.get(`/${eventId}/chairs`)).data
+import { eventsClient } from '../../clients'
+
+export const apiGetEventChairs = async (eventId) => {
+  return (await eventsClient.get(`/${eventId}/chairs`)).data
 }
 
-export const apiGetMyEventChair = async (httpClient, eventId) => {
-  return (await httpClient.get(`/${eventId}/chairs/me`)).data
+export const apiGetMyEventChair = async (eventId) => {
+  return (await eventsClient.get(`/${eventId}/chairs/me`)).data
 }
 
-export const apiGetEventChair = async (httpClient, eventId, userId) => {
-  return (await httpClient.get(`/${eventId}/chairs/${userId}`)).data
+export const apiGetEventChair = async (eventId, userId) => {
+  return (await eventsClient.get(`/${eventId}/chairs/${userId}`)).data
 }
 
-export const apiUpdateChairTracks = async (
-  httpClient,
-  eventId,
-  userId,
-  tracksUpdate
-) => {
-  return await httpClient.put(
+export const apiUpdateChairTracks = async (eventId, userId, tracksUpdate) => {
+  return await eventsClient.put(
     `/${eventId}/chairs/${userId}/tracks`,
     tracksUpdate
   )
 }
 
-export const apiUpdateTracks = async (httpClient, eventId, tracks) => {
-  return await httpClient.put(
+export const apiUpdateTracks = async (eventId, tracks) => {
+  return await eventsClient.put(
     `/${eventId}/configuration/general/tracks`,
     tracks
   )

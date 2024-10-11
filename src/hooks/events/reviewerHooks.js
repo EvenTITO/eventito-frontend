@@ -1,6 +1,4 @@
-import { EVENTS_URL } from '@/lib/Constants'
-import { getEventId, getWorkId, wait } from '@/lib/utils'
-import { HTTPClient } from '@/services/api/HTTPClient'
+import { getEventId, getWorkId } from '@/lib/utils'
 import {
   apiGetAssignments,
   apiPostReview,
@@ -16,8 +14,7 @@ export function useGetMyAssignments() {
   return useQuery({
     queryKey: ['getMyAssignments', { eventId }],
     queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const assignments = await apiGetAssignments(httpClient, eventId)
+      const assignments = await apiGetAssignments(eventId)
       return convertAssignments(assignments)
     },
   })
@@ -31,9 +28,8 @@ export function useSubmitReview() {
 
   return useMutation({
     mutationFn: async ({ review }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const reviewBody = convertReviewToReviewBody(review)
-      return await apiPostReview(httpClient, eventId, workId, reviewBody)
+      return await apiPostReview(eventId, workId, reviewBody)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

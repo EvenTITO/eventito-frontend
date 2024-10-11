@@ -1,6 +1,4 @@
-import { EVENTS_URL } from '@/lib/Constants'
 import { getEventId } from '@/lib/utils'
-import { HTTPClient } from '@/services/api/HTTPClient'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   convertEventChair,
@@ -20,9 +18,8 @@ export function useAddTrack() {
 
   return useMutation({
     mutationFn: async ({ eventTracks, track }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const newTracks = [...eventTracks, track]
-      return await apiUpdateTracks(httpClient, eventId, { tracks: newTracks })
+      return await apiUpdateTracks(eventId, { tracks: newTracks })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -82,21 +79,18 @@ export function useGetEventChairsByTracks() {
   })
 }
 
-// ... previous imports and hooks remain the same
-
 export function useAddChairToTrack() {
   const eventId = getEventId()
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async ({ track, userId }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const chair = await queryClient.ensureQueryData({
         queryKey: ['getEventChair', { eventId, userId }],
         queryFn: async () => await getEventChair(eventId, userId),
       })
       const newTracks = [...chair.tracks, track]
-      return await apiUpdateChairTracks(httpClient, eventId, userId, {
+      return await apiUpdateChairTracks(eventId, userId, {
         tracks: newTracks,
       })
     },
@@ -123,13 +117,12 @@ export function useDeleteChairOfTrack() {
 
   return useMutation({
     mutationFn: async ({ track, userId }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const chair = await queryClient.ensureQueryData({
         queryKey: ['getEventChair', { eventId, userId }],
         queryFn: async () => await getEventChair(eventId, userId),
       })
       const newTracks = [...chair.tracks.filter((t) => t !== track)]
-      return await apiUpdateChairTracks(httpClient, eventId, userId, {
+      return await apiUpdateChairTracks(eventId, userId, {
         tracks: newTracks,
       })
     },
@@ -151,11 +144,9 @@ export function useDeleteChairOfTrack() {
 }
 
 async function getEventChairs(eventId) {
-  const httpClient = new HTTPClient(EVENTS_URL)
-  return await apiGetEventChairs(httpClient, eventId)
+  return await apiGetEventChairs(eventId)
 }
 
 async function getEventChair(eventId, userId) {
-  const httpClient = new HTTPClient(EVENTS_URL)
-  return await apiGetEventChair(httpClient, eventId, userId)
+  return await apiGetEventChair(eventId, userId)
 }
