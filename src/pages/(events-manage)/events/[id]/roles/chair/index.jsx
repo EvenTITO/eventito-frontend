@@ -12,7 +12,7 @@ export default function ChairPage() {
   } = useGetEvent()
 
   const tracks = useGetMyTracks(eventData?.roles)
-  
+
   const tracksSettled = tracks.data ? tracks.data : eventData.tracks
   const [selectedTrack, setSelectedTrack] = useState(
     tracksSettled ? tracksSettled[0] : ''

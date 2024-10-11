@@ -200,8 +200,8 @@ export function useGetMyTracks(roles) {
       } else {
         const myChair = await apiGetMyEventChair(httpClient, eventId)
         return convertEventChair(myChair).tracks
-      }      
+      }
     },
-    enabled: !!roles
+    enabled: !!roles,
   })
 }
