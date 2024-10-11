@@ -20,7 +20,7 @@ import { apiGetMyEventChair } from '@/services/api/events/chair/queries.js'
 import { convertEventChair } from '@/services/api/events/chair/conversor.js'
 import { ORGANIZER_ROLE } from '@/lib/Constants.js'
 
-export function useGetWorksByTrack(track) {
+export function useGetWorksByTrack(tracksSettled, track) {
   const eventId = getEventId()
 
   return useQuery({
@@ -32,9 +32,7 @@ export function useGetWorksByTrack(track) {
       const works = await apiGetWorksByTrack(eventId, track)
       return convertWorks(works)
     },
-    onError: (e) => {
-      console.error(JSON.stringify(e))
-    },
+    enabled: !!tracksSettled,
   })
 }
 
