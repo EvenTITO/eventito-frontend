@@ -1,9 +1,9 @@
-import { Outlet } from 'react-router-dom'
-import Header from '../_components/Header'
-import FetchStatus from '@/components/FetchStatus'
-import { useGetEvent } from '@/hooks/events/useEventState'
 import EventSidebar from './_components/Sidebar'
+import FetchStatus from '@/components/FetchStatus'
+import Header from '../_components/Header'
 import { ORGANIZER_ROLE } from '@/lib/Constants'
+import { Outlet } from 'react-router-dom'
+import { useGetEvent } from '@/hooks/events/useEventState'
 
 export default function LayoutEvents() {
   const { data: eventData, isPending } = useGetEvent()
