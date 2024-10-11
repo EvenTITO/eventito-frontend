@@ -1,6 +1,4 @@
-import { EVENTS_URL } from '@/lib/Constants'
 import { getEventId } from '@/lib/utils'
-import { HTTPClient } from '@/services/api/HTTPClient'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   apiGetInscriptionPayments,
@@ -30,12 +28,7 @@ export function useSubmitInscription() {
 
   return useMutation({
     mutationFn: async ({ inscriptionData }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const res = await apiSubmitInscription(
-        httpClient,
-        eventId,
-        inscriptionData
-      )
+      const res = await apiSubmitInscription(eventId, inscriptionData)
       if (inscriptionData.file && res.data.upload_url)
         await uploadFile(res.data.upload_url, inscriptionData.file)
     },
@@ -56,9 +49,7 @@ export function useUpdateInscription() {
 
   return useMutation({
     mutationFn: async ({ inscriptionId, newInscriptionData }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const res = await apiUpdateInscription(
-        httpClient,
         eventId,
         inscriptionId,
         newInscriptionData
@@ -82,13 +73,11 @@ export function useNewPayment() {
 
   return useMutation({
     mutationFn: async ({ paymentData }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const inscription = await queryClient.ensureQueryData({
         queryKey: ['getMyInscription', { eventId }],
         queryFn: async () => await getInscriptionWithPayments(eventId),
       })
       const res = await apiPutInscriptionPayment(
-        httpClient,
         eventId,
         inscription.id,
         paymentData
@@ -107,12 +96,7 @@ export function useNewPayment() {
 }
 
 export async function getInscriptionWithPayments(eventId) {
-  const httpClient = new HTTPClient(EVENTS_URL)
-  const inscription = await apiGetMyInscriptions(httpClient, eventId)
-  const payments = await apiGetInscriptionPayments(
-    httpClient,
-    eventId,
-    inscription.id
-  )
+  const inscription = await apiGetMyInscriptions(eventId)
+  const payments = await apiGetInscriptionPayments(eventId, inscription.id)
   return convertInscription(inscription, payments)
 }

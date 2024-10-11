@@ -1,16 +1,11 @@
-import { useEffect, useState } from 'react'
-import { useGetMyTracks, useGetWorksByTrack } from '@/hooks/events/chairHooks'
-import Page from './page'
 import FetchStatus from '@/components/FetchStatus.jsx'
-import { useGetEvent } from '@/hooks/events/useEventState'
+import Page from './page'
+import { useEvent } from '@/lib/layout'
+import { useGetMyTracks, useGetWorksByTrack } from '@/hooks/events/chairHooks'
+import { useState } from 'react'
 
 export default function ChairPage() {
-  const {
-    data: eventData,
-    isLoading: isEventLoading,
-    error: eventError,
-  } = useGetEvent()
-
+  const eventData = useEvent()
   const tracks = useGetMyTracks(eventData?.roles)
 
   const tracksSettled = tracks.data ? tracks.data : eventData.tracks
@@ -22,13 +17,7 @@ export default function ChairPage() {
     data: works,
     isPending: isPendingWorks,
     error: errorWorks,
-  } = useGetWorksByTrack(selectedTrack)
-
-  useEffect(() => {
-    if (tracksSettled && tracksSettled.length > 0) {
-      setSelectedTrack(tracksSettled[0])
-    }
-  }, [tracksSettled])
+  } = useGetWorksByTrack(tracksSettled, selectedTrack)
 
   const component = (
     <Page

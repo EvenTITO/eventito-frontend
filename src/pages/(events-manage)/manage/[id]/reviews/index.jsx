@@ -1,12 +1,8 @@
-import FetchStatus from '@/components/FetchStatus'
-import { useGetEvent } from '@/hooks/events/useEventState'
 import Page from './page'
+import { useEvent } from '@/lib/layout'
 
 export default function ReviewsConfigPage() {
-  const { data: eventData, isPending, error } = useGetEvent()
+  const eventData = useEvent()
 
-  const component = <Page reviewSkeleton={eventData.review_skeleton || {}} />
-  return (
-    <FetchStatus component={component} isPending={isPending} error={error} />
-  )
+  return <Page reviewSkeleton={eventData?.review_skeleton || {}} />
 }

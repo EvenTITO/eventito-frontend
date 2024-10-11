@@ -1,16 +1,8 @@
 import Page from './page'
-import FetchStatus from '@/components/FetchStatus'
-import { useGetEvent } from '@/hooks/events/useEventState'
+import { useEvent } from '@/lib/layout'
 
 export default function GeneralConfigPage() {
-  const { data: eventInfo, isPending, error } = useGetEvent()
+  const eventData = useEvent()
 
-  const pageComponent = <Page eventInfo={eventInfo} />
-  return (
-    <FetchStatus
-      isPending={isPending}
-      error={error}
-      component={pageComponent}
-    />
-  )
+  return <Page eventInfo={eventData} />
 }

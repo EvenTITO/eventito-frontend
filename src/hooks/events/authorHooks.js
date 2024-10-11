@@ -1,7 +1,5 @@
-import { EVENTS_URL } from '@/lib/Constants'
 import { getEventId, getWorkId } from '@/lib/utils'
 import { useSelector } from 'react-redux'
-import { HTTPClient } from '@/services/api/HTTPClient'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   apiGetMyWorks,
@@ -20,8 +18,7 @@ export function useGetMyWorks() {
   return useQuery({
     queryKey: ['getMyWorks', { eventId }],
     queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const myWorks = await apiGetMyWorks(httpClient, eventId)
+      const myWorks = await apiGetMyWorks(eventId)
       return convertWorks(myWorks)
     },
   })
@@ -34,7 +31,6 @@ export function useNewWork() {
 
   return useToastMutation(
     async ({ workData }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const inscription = await queryClient.ensureQueryData({
         queryKey: ['getMyInscription', { eventId }],
         queryFn: async () => await getInscriptionWithPayments(eventId),
@@ -55,7 +51,7 @@ export function useNewWork() {
           },
         ],
       }
-      const workId = await apiPostWork(httpClient, eventId, work)
+      const workId = await apiPostWork(eventId, work)
       await uploadSubmissionFile(eventId, workId, workData.pdfFile)
     },
     {
@@ -85,8 +81,7 @@ async function uploadSubmissionFile(eventId, workId, file) {
     console.log('No submission file given')
     return
   }
-  const httpClient = new HTTPClient(EVENTS_URL)
-  const uploadUrl = await apiGetSubmissionUploadUrl(httpClient, eventId, workId)
+  const uploadUrl = await apiGetSubmissionUploadUrl(eventId, workId)
   await uploadFile(uploadUrl.upload_url, file)
 }
 
@@ -98,7 +93,6 @@ export function useEditWork() {
 
   return useToastMutation(
     async ({ workData }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const work = await queryClient.ensureQueryData({
         queryKey: ['getWorkById', { workId }],
         queryFn: async () => await getWorkById(eventId, workId),
@@ -110,7 +104,7 @@ export function useEditWork() {
           work.keywords !== undefined ? workData.keywords.split(',') : [],
         authors: work.authors,
       }
-      await apiPutWork(httpClient, eventId, workId, workUpdate)
+      await apiPutWork(eventId, workId, workUpdate)
 
       await uploadSubmissionFile(eventId, workId, workData.file)
     },
@@ -145,7 +139,6 @@ export function useAddAuthorToWork() {
 
   return useMutation({
     mutationFn: async ({ authorData }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const work = await queryClient.ensureQueryData({
         queryKey: ['getWorkById', { workId }],
         queryFn: async () => await getWorkById(eventId, workId),
@@ -165,7 +158,7 @@ export function useAddAuthorToWork() {
           },
         ],
       }
-      await apiPutWork(httpClient, eventId, workId, workUpdate)
+      await apiPutWork(eventId, workId, workUpdate)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

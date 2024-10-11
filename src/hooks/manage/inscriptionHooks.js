@@ -1,6 +1,4 @@
-import { EVENTS_URL } from '@/lib/Constants'
 import { getEventId } from '@/lib/utils'
-import { HTTPClient } from '@/services/api/HTTPClient'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   apiGetInscriptions,
@@ -16,9 +14,8 @@ export function useGetInscriptions() {
   return useQuery({
     queryKey: ['getInscriptions', { eventId }],
     queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const inscriptions = await apiGetInscriptions(httpClient, eventId)
-      const payments = await apiGetPayments(httpClient, eventId)
+      const inscriptions = await apiGetInscriptions(eventId)
+      const payments = await apiGetPayments(eventId)
       return convertInscriptions(inscriptions, payments)
     },
   })
@@ -31,11 +28,10 @@ export function createUseUpdateStatus(updateFunction, idName) {
 
     return useToastMutation(
       async ({ [idName]: id, newStatus }) => {
-        const httpClient = new HTTPClient(EVENTS_URL)
         const update = {
           status: newStatus,
         }
-        await updateFunction(httpClient, eventId, id, update)
+        await updateFunction(eventId, id, update)
       },
       {
         onSuccess: () => {

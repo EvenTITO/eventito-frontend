@@ -1,19 +1,14 @@
-import { Outlet } from 'react-router-dom'
-import Header from '../_components/Header'
-import FetchStatus from '@/components/FetchStatus'
-import { useGetEvent } from '@/hooks/events/useEventState'
 import EventSidebar from './_components/Sidebar'
+import FetchStatus from '@/components/FetchStatus'
+import Header from '../_components/Header'
 import { ORGANIZER_ROLE } from '@/lib/Constants'
+import { Outlet } from 'react-router-dom'
+import { useGetEvent } from '@/hooks/events/useEventState'
 
 export default function LayoutEvents() {
   const { data: eventData, isPending } = useGetEvent()
 
-  const layoutComponent = (
-    <Layout
-      eventTitle={eventData?.title || ''}
-      roles={eventData?.roles || []}
-    />
-  )
+  const layoutComponent = <Layout eventData={eventData} />
   return (
     <FetchStatus
       isPending={isPending}
@@ -23,7 +18,9 @@ export default function LayoutEvents() {
   )
 }
 
-function Layout({ eventTitle, roles }) {
+function Layout({ eventData }) {
+  const roles = eventData?.roles || []
+  const eventTitle = eventData?.title || ''
   const isOrganizer = roles.includes(ORGANIZER_ROLE)
 
   return (
@@ -32,7 +29,7 @@ function Layout({ eventTitle, roles }) {
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header eventTitle={eventTitle} isOrganizer={isOrganizer} />
         <main className="flex-1 overflow-auto p-6">
-          <Outlet />
+          <Outlet context={{ event: eventData }} />
         </main>
       </div>
     </div>

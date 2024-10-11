@@ -1,22 +1,17 @@
-import { Outlet } from 'react-router-dom'
-import Header from '../_components/Header'
 import FetchStatus from '@/components/FetchStatus'
-import { useGetEvent } from '@/hooks/events/useEventState'
-import { useEffect } from 'react'
-import { useNavigator } from '@/lib/navigation'
-import { getEventId } from '@/lib/utils'
-import { ORGANIZER_ROLE } from '@/lib/Constants.js'
+import Header from '../_components/Header'
 import OrganizationSidebar from './[id]/_components/Layout/Sidebar'
+import { ORGANIZER_ROLE } from '@/lib/Constants.js'
+import { Outlet } from 'react-router-dom'
+import { getEventId } from '@/lib/utils'
+import { useEffect } from 'react'
+import { useGetEvent } from '@/hooks/events/useEventState'
+import { useNavigator } from '@/lib/navigation'
 
 export default function LayoutOrganization() {
   const { data: eventData, isPending } = useGetEvent()
 
-  const layoutComponent = (
-    <Layout
-      eventTitle={eventData?.title || ''}
-      roles={eventData?.roles || []}
-    />
-  )
+  const layoutComponent = <Layout eventData={eventData || {}} />
   return (
     <FetchStatus
       isPending={isPending}
@@ -26,16 +21,19 @@ export default function LayoutOrganization() {
   )
 }
 
-function Layout({ eventTitle, roles }) {
+function Layout({ eventData }) {
+  const eventTitle = eventData?.title || ''
+  const roles = eventData?.roles || []
+  const isOrganizer = roles.includes(ORGANIZER_ROLE)
+
   const eventId = getEventId()
   const navigator = useNavigator()
-  const isOrganizer = roles.includes(ORGANIZER_ROLE)
 
   useEffect(() => {
     if (
       !roles ||
       roles.length === 0 ||
-      roles.filter((r) => r === ORGANIZER_ROLE).length === 0
+      roles.filter((role) => role === ORGANIZER_ROLE).length === 0
     ) {
       console.log(roles)
       navigator.to(`/view/events/${eventId}`)
@@ -52,7 +50,7 @@ function Layout({ eventTitle, roles }) {
           isOrganizer={isOrganizer}
         />
         <main className="flex-1 overflow-auto p-6">
-          <Outlet />
+          <Outlet context={{ event: eventData }} />
         </main>
       </div>
     </div>

@@ -1,5 +1,3 @@
-import { EVENTS_URL } from '@/lib/Constants'
-import { HTTPClient } from '@/services/api/HTTPClient'
 import { getEventId } from '@/lib/utils'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
@@ -17,12 +15,10 @@ export function useAddQuestion() {
 
   return useMutation({
     mutationFn: async ({ newQuestion, reviewSkeleton }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-
       const newQuestions = [...reviewSkeleton.questions, newQuestion]
       const newReviewSkeleton = convertReviewSkeleton(newQuestions)
 
-      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
+      await apiUpdateReviewSkeleton(eventId, newReviewSkeleton)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -39,12 +35,11 @@ export function useDeleteQuestion() {
 
   return useMutation({
     mutationFn: async ({ questionToDelete, reviewSkeleton }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const newQuestions = reviewSkeleton.questions.filter(
         (q) => q.question !== questionToDelete.question
       )
       const newReviewSkeleton = convertReviewSkeleton(newQuestions)
-      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
+      await apiUpdateReviewSkeleton(eventId, newReviewSkeleton)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -61,13 +56,12 @@ export function useUpdateQuestion() {
 
   return useMutation({
     mutationFn: async ({ updatedQuestion, reviewSkeleton }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const newQuestions = reviewSkeleton.questions.map((q, index) =>
         index === updatedQuestion.index ? updatedQuestion : q
       )
       const newReviewSkeleton = convertReviewSkeleton(newQuestions)
 
-      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
+      await apiUpdateReviewSkeleton(eventId, newReviewSkeleton)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -88,7 +82,6 @@ export function useSwapQuestions() {
       secondQuestionIndex,
       reviewSkeleton,
     }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const temp = reviewSkeleton.questions[firstQuestionIndex]
       reviewSkeleton.questions[firstQuestionIndex] =
         reviewSkeleton.questions[secondQuestionIndex]
@@ -96,7 +89,7 @@ export function useSwapQuestions() {
       console.log(JSON.stringify(reviewSkeleton))
       const newReviewSkeleton = convertReviewSkeleton(reviewSkeleton.questions)
 
-      await apiUpdateReviewSkeleton(httpClient, eventId, newReviewSkeleton)
+      await apiUpdateReviewSkeleton(eventId, newReviewSkeleton)
       return reviewSkeleton
     },
     onSuccess: () => {
@@ -130,12 +123,11 @@ export function useEditEventDate(dateName) {
 
   return useMutation({
     mutationFn: async ({ newDate }) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
       const newDates = event.dates.slice()
       const dateIndex = event.dates.findIndex((date) => date.name === dateName)
       newDates[dateIndex].date = format(newDate, 'yyyy-MM-dd')
       newDates[dateIndex].time = format(newDate, 'HH:mm:ss')
-      return await apiUpdateDatesEvent(httpClient, eventId, {
+      return await apiUpdateDatesEvent(eventId, {
         dates: newDates,
       })
     },

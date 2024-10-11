@@ -1,67 +1,57 @@
-export const apiGetMyInscriptions = async (httpClient, eventId) => {
-  return (await httpClient.get(`/${eventId}/inscriptions/my-inscription`)).data
+import { eventsClient } from '../../clients'
+
+export const apiGetMyInscriptions = async (eventId) => {
+  return (await eventsClient.get(`/${eventId}/inscriptions/my-inscription`))
+    .data
 }
 
-export const apiUpdateInscription = async (
-  httpClient,
-  eventId,
-  inscriptionId,
-  body
-) => {
-  return await httpClient.put(`/${eventId}/inscriptions/${inscriptionId}`, body)
+export const apiUpdateInscription = async (eventId, inscriptionId, body) => {
+  return await eventsClient.put(
+    `/${eventId}/inscriptions/${inscriptionId}`,
+    body
+  )
 }
 
-export const apiGetInscriptionPayments = async (
-  httpClient,
-  eventId,
-  inscriptionId
-) => {
+export const apiGetInscriptionPayments = async (eventId, inscriptionId) => {
   return (
-    await httpClient.get(`/${eventId}/inscriptions/${inscriptionId}/payments`)
+    await eventsClient.get(`/${eventId}/inscriptions/${inscriptionId}/payments`)
   ).data
 }
 
-export const apiSubmitInscription = async (httpClient, eventId, body) => {
-  return await httpClient.post(`/${eventId}/inscriptions`, body)
+export const apiSubmitInscription = async (eventId, body) => {
+  return await eventsClient.post(`/${eventId}/inscriptions`, body)
 }
 
 export const apiPutInscriptionPayment = async (
-  httpClient,
   eventId,
   inscriptionId,
   body
 ) => {
-  return await httpClient.put(
+  return await eventsClient.put(
     `/${eventId}/inscriptions/${inscriptionId}/pay`,
     body
   )
 }
 
-export const apiGetInscriptions = async (httpClient, eventId) => {
-  return (await httpClient.get(`/${eventId}/inscriptions`)).data
+export const apiGetInscriptions = async (eventId) => {
+  return (await eventsClient.get(`/${eventId}/inscriptions`)).data
 }
 
-export const apiGetPayments = async (httpClient, eventId) => {
-  return (await httpClient.get(`/${eventId}/payments`)).data
+export const apiGetPayments = async (eventId) => {
+  return (await eventsClient.get(`/${eventId}/payments`)).data
 }
 
 export const apiUpdateInscriptionStatus = async (
-  httpClient,
   eventId,
   inscriptionId,
   update
 ) => {
-  return await httpClient.patch(
+  return await eventsClient.patch(
     `/${eventId}/inscriptions/${inscriptionId}`,
     update
   )
 }
 
-export const apiUpdatePaymentStatus = async (
-  httpClient,
-  eventId,
-  paymentId,
-  update
-) => {
-  return await httpClient.patch(`/${eventId}/payments/${paymentId}`, update)
+export const apiUpdatePaymentStatus = async (eventId, paymentId, update) => {
+  return await eventsClient.patch(`/${eventId}/payments/${paymentId}`, update)
 }
