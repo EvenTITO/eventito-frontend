@@ -4,8 +4,6 @@ import { cn } from '@/lib/utils'
 
 const Input = React.forwardRef(({ className, type, ...props }, ref) => {
   const { value, maxLength } = props
-  console.log('el value es', value)
-  console.log('props es', props)
   return (
     <>
       <input
@@ -17,10 +15,6 @@ const Input = React.forwardRef(({ className, type, ...props }, ref) => {
           className
         )}
         ref={ref}
-        onChange={(e) => {
-          // Call the onChange function provided by react-hook-form
-          props.onChange(e)
-        }}
         {...props}
       />
       {maxLength && value?.length > 0.9 * maxLength && (
