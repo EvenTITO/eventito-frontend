@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useGetMyChair, useGetWorksByTrack } from '@/hooks/events/chairHooks'
+import { useGetMyTracks, useGetWorksByTrack } from '@/hooks/events/chairHooks'
 import Page from './page'
 import FetchStatus from '@/components/FetchStatus.jsx'
-import { ORGANIZER_ROLE } from '@/lib/Constants.js'
 import { useGetEvent } from '@/hooks/events/useEventState'
 
 export default function ChairPage() {
@@ -12,22 +11,13 @@ export default function ChairPage() {
     error: eventError,
   } = useGetEvent()
 
-  const isOrganizer =
-    eventData?.roles !== undefined
-      ? eventData?.roles.includes(ORGANIZER_ROLE)
-      : false
-  const chairOrEventData = isOrganizer
-    ? {
-        data: eventData,
-        isLoading: isEventLoading,
-        error: eventError,
-      }
-    : useGetMyChair()
-
-  const tracksSettled = chairOrEventData.data?.tracks
+  const tracks = useGetMyTracks(eventData?.roles)
+  
+  const tracksSettled = tracks.data ? tracks.data : eventData.tracks
   const [selectedTrack, setSelectedTrack] = useState(
     tracksSettled ? tracksSettled[0] : ''
   )
+
   const {
     data: works,
     isPending: isPendingWorks,
@@ -52,8 +42,8 @@ export default function ChairPage() {
   return (
     <FetchStatus
       component={component}
-      isPending={chairOrEventData.isPending || isPendingWorks}
-      error={chairOrEventData.error || errorWorks}
+      isPending={tracks.isPending || isPendingWorks}
+      error={tracks.error || errorWorks}
     />
   )
 }
