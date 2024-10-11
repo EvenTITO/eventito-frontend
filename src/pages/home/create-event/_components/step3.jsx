@@ -32,66 +32,32 @@ export default function CreateEventStep3({ step, setStep }) {
                 Paso 3/3: informacion adicional
               </h2>
               <div className="space-y-4">
-                <div>
-                  <Label>Fecha de inicio</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={'outline'}
-                        className={cn(
-                          'w-full justify-start text-left font-normal',
-                          !startDate && 'text-muted-foreground'
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {startDate ? (
-                          format(startDate, 'full')
-                        ) : (
-                          <span>Seleccionar fecha</span>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={startDate}
-                        onSelect={setStartDate}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
+                <DatePicker
+                  label="Fecha de inicio"
+                  date={startDate}
+                  setDate={(date) => {
+                    if (endDate && endDate < date) {
+                      // dont allow endDate to be before startDate.
+                      setEndDate(date)
+                    }
+                    setStartDate(date)
+                  }}
+                  disabledDates={(date) => date < new Date()}
+                />
 
                 {eventType === 'conference' && (
-                  <div>
-                    <Label>Fecha de finalizacion</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant={'outline'}
-                          className={cn(
-                            'w-full justify-start text-left font-normal',
-                            !endDate && 'text-muted-foreground'
-                          )}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {endDate ? (
-                            format(endDate, 'full')
-                          ) : (
-                            <span>Seleccionar fecha</span>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
-                          selected={endDate}
-                          onSelect={setEndDate}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
+                  <DatePicker
+                    label="Fecha de finalizacion"
+                    date={endDate}
+                    setDate={setEndDate}
+                    disabledDates={(date) => {
+                      if (startDate) {
+                        return date < startDate
+                      }
+                      return date < new Date()
+                    }}
+                    defaultMonth={startDate}
+                  />
                 )}
 
                 <div>
@@ -101,6 +67,7 @@ export default function CreateEventStep3({ step, setStep }) {
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="Ingresar la ubicacion del evento"
+                    maxLength={100}
                   />
                 </div>
               </div>
@@ -122,4 +89,36 @@ export default function CreateEventStep3({ step, setStep }) {
   } else {
     return null
   }
+}
+
+function DatePicker({ date, setDate, label, disabledDates, defaultMonth }) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant={'outline'}
+            className={cn(
+              'w-full justify-start text-left font-normal',
+              !date && 'text-muted-foreground'
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date ? format(date, 'full') : <span>Seleccionar fecha</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            disabled={disabledDates}
+            defaultMonth={date ? date : defaultMonth}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
 }

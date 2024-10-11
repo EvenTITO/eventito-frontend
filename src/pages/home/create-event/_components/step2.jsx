@@ -5,25 +5,15 @@ import { Container } from './container'
 import { BottomContainer } from './bottomContainer'
 import { Button } from '@/components/ui/button'
 import { addEventMandatory } from '@/state/events/createEventSlice'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 const eventStep2Schema = z.object({
-  title: z
-    .string()
-    .min(2, { message: 'Complete el título' })
-    .max(100, { message: 'Máximo 100 caracteres' }),
-  description: z
-    .string()
-    .min(1, { message: 'Complete la descripción' })
-    .max(1000, { message: 'Máximo 1000 caracteres' }),
-  organizer: z
-    .string()
-    .min(1, { message: 'Complete el organizador' })
-    .max(100, { message: 'Máximo 100 caracteres' }),
+  title: z.string().min(2, { message: 'Complete el título' }),
+  description: z.string().min(1, { message: 'Complete la descripción' }),
+  organizer: z.string().min(1, { message: 'Complete el organizador' }),
 })
 
 export default function CreateEventStep2({ step, setStep }) {
@@ -64,6 +54,7 @@ export default function CreateEventStep2({ step, setStep }) {
                     id="title"
                     {...register('title')}
                     placeholder="Ingresar titulo del evento"
+                    maxLength={100}
                   />
                   {errors.title && (
                     <p className="text-red-500">{errors.title.message}</p>
@@ -75,6 +66,7 @@ export default function CreateEventStep2({ step, setStep }) {
                     id="description"
                     {...register('description')}
                     placeholder="Ingresar una descripcion corta del evento"
+                    maxLength={1000}
                   />
                   {errors.description && (
                     <p className="text-red-500">{errors.description.message}</p>
@@ -86,6 +78,7 @@ export default function CreateEventStep2({ step, setStep }) {
                     id="organizer"
                     {...register('organizer')}
                     placeholder="Ingresar persona, grupo u organizacion a cargo del evento"
+                    maxLength={100}
                   />
                   {errors.organizer && (
                     <p className="text-red-500">{errors.organizer.message}</p>
