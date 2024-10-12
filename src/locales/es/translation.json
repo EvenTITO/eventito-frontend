@@ -71,6 +71,18 @@
       "ERROR": {
         "MESSAGE": "Error al actualizar la tarifa. Intente nuevamente."
       }
+    },
+    "CREATE_EVENT": {
+      "SUCCESS": {
+        "TITLE": "Tarifa actualizada",
+        "MESSAGE": "La tarifa seleccionada fue actualizada con éxito."
+      },
+      "ERROR": {
+        "TITLE": "Error al crear el evento",
+        "TITLE_ALREADY_EXISTS": {
+          "MESSAGE": "El titulo se encuentra repetido"
+        }
+      }
     }
   }
 }

@@ -12,7 +12,7 @@ export default function SubmitButton({ startDate, endDate, location }) {
   const { event_type, title, description, organized_by } = useSelector(
     (state) => state.createEvent
   )
-  const { mutate, isPending, isError, isSuccess, error } = createEvent()
+  const { mutate, isPending, isSuccess } = createEvent()
   const dispatch = useDispatch()
   const { toast } = useToast()
 
@@ -25,7 +25,15 @@ export default function SubmitButton({ startDate, endDate, location }) {
       })
     )
 
-    mutate({ event_type, title, description, organized_by, location })
+    mutate({
+      event_type,
+      title,
+      description,
+      organized_by,
+      location,
+      startDate,
+      endDate,
+    })
   }
 
   useEffect(() => {
@@ -33,18 +41,10 @@ export default function SubmitButton({ startDate, endDate, location }) {
       console.log('loading...')
     }
 
-    if (isError) {
-      toast({
-        variant: 'destructiveOutline',
-        title: 'Error al crear el evento',
-        description: 'El titulo se encuentra repetido',
-      })
-    }
-
     if (isSuccess) {
       navigate('/home/my-events')
     }
-  }, [isPending, isError, isSuccess, navigate, toast])
+  }, [isPending, isSuccess, navigate, toast])
 
   if (isPending) {
     return (

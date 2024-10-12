@@ -2,19 +2,17 @@
  *  Custom hooks to consume from the events API
  * */
 
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { apiGetAllEvents, apiGetMyEvents, apiPostCreateEvent } from './queries'
 import { convertEventsData, convertMyEventsData } from './conversor'
-import { EVENTS_URL } from '@/lib/Constants'
-import { HTTPClient } from '@/services/api/HTTPClient'
 import { constructCreateEventBody } from './constructors'
+import { useToastMutation } from '@/hooks/use-toast-mutation'
 
 export function getPublicEvents() {
   return useQuery({
     queryKey: ['getPublicEvents'],
     queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const eventData = await apiGetAllEvents(httpClient)
+      const eventData = await apiGetAllEvents()
       return convertEventsData(eventData)
     },
   })
@@ -24,25 +22,29 @@ export function getMyEvents() {
   return useQuery({
     queryKey: ['getMyEvents'],
     queryFn: async () => {
-      const httpClient = new HTTPClient(EVENTS_URL)
-      const eventData = await apiGetMyEvents(httpClient)
+      const eventData = await apiGetMyEvents()
       return convertMyEventsData(eventData)
     },
   })
 }
 
 export function createEvent() {
-  return useMutation({
-    mutationFn: async (eventData) => {
-      const httpClient = new HTTPClient(EVENTS_URL)
+  return useToastMutation(
+    async (eventData) => {
       const body = constructCreateEventBody(eventData)
-      return await apiPostCreateEvent(httpClient, body)
+      return await apiPostCreateEvent(body)
     },
-    onSuccess: (data) => {
-      console.log('Event created successfully:', data)
+    {
+      onSuccess: (data) => {
+        console.log('Event created successfully:', data)
+      },
+      onError: (error) => {
+        console.error('Error creating event:', error)
+      },
     },
-    onError: (error) => {
-      console.error('Error creating event:', error)
-    },
-  })
+    {
+      serviceCode: 'CREATE_EVENT',
+      successShow: false,
+    }
+  )
 }

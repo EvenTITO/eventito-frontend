@@ -1,5 +1,15 @@
+import { format } from 'date-fns'
+
 export function constructCreateEventBody(eventData) {
-  const { event_type, title, location, organized_by, description } = eventData
+  const {
+    event_type,
+    title,
+    location,
+    organized_by,
+    description,
+    startDate,
+    endDate,
+  } = eventData
 
   return {
     review_skeleton: {
@@ -13,12 +23,14 @@ export function constructCreateEventBody(eventData) {
         label: 'Fecha de Comienzo',
         description: 'Fecha de comienzo del evento.',
         is_mandatory: true,
+        date: startDate ? format(startDate, 'yyyy-MM-dd') : undefined,
       },
       {
         name: 'END_DATE',
         label: 'Fecha de Finalización',
         description: 'Fecha de comienzo del evento.',
         is_mandatory: true,
+        date: endDate ? format(endDate, 'yyyy-MM-dd') : undefined,
       },
       {
         name: 'SUBMISSION_DEADLINE_DATE',
