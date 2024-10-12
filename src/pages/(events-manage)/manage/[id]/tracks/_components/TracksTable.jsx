@@ -6,6 +6,7 @@ import ChairDialog from './ChairDialog'
 
 export default function TracksTable({
   tracks,
+  chairs,
   onAdd,
   onUpdate,
   onDelete,
@@ -43,6 +44,7 @@ export default function TracksTable({
         <TrackItem
           key={track.id}
           track={track}
+          chairs={chairs}
           isExpanded={expandedTracks.has(track.id)}
           onToggleExpand={() => toggleTrackExpansion(track.id)}
           onUpdateChair={updateChair}
@@ -57,6 +59,7 @@ export default function TracksTable({
 
 function TrackItem({
   track,
+  chairs,
   isExpanded,
   onToggleExpand,
   onUpdateChair,
@@ -116,6 +119,7 @@ function TrackItem({
           ) : (
             <ChairDialog
               track={track.track}
+              chairs={chairs}
               onAddChair={onAddChair}
               isPending={isPending}
               triggerButton={

@@ -77,6 +77,7 @@ export default function Page({ event, chairs, tracksByChair }) {
         <TracksTable
           tracks={initialTracks}
           onAdd={onAdd}
+          chairs={chairs}
           onUpdate={onUpdate}
           onDelete={onDelete}
           isPending={addChairToTrack.isPending || deleteChairOfTrack.isPending}
