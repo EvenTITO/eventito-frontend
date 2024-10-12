@@ -6,16 +6,24 @@ export default function EventDetails({ event, isEditing, handleInputChange }) {
     {
       icon: Users,
       label: 'Organizado por:',
+      placeholder: 'Ingresar organizador',
       value: event.organized_by,
       name: 'organized_by',
     },
     {
       icon: MapPin,
       label: 'Ubicación:',
+      placeholder: 'Ingresar ubicación',
       value: event.location,
       name: 'location',
     },
-    { icon: AtSign, label: 'Contacto:', value: event.contact, name: 'contact' },
+    {
+      icon: AtSign,
+      label: 'Contacto:',
+      value: event.contact,
+      name: 'contact',
+      placeholder: 'Ingresar contacto',
+    },
   ]
 
   return (
@@ -33,14 +41,14 @@ export default function EventDetails({ event, isEditing, handleInputChange }) {
             ))}
           </div>
           <div className="flex flex-col sm:flex-col justify-between w-full gap-2">
-            {details.map(({ name, value }) => (
+            {details.map(({ name, value, placeholder }) => (
               <Input
                 key={name}
                 name={name}
                 value={value}
                 onChange={handleInputChange}
                 className="w-full"
-                placeholder={`Ingresar ${name.replace('_', ' ')}`}
+                placeholder={placeholder}
               />
             ))}
           </div>
