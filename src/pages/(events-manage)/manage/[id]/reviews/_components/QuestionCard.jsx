@@ -10,14 +10,13 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { Switch } from '@/components/ui/switch'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Slider } from '@/components/ui/slider'
 import ButtonWithLoading from '@/components/ButtonWithLoading'
 
 export default function QuestionCard({
@@ -128,25 +127,12 @@ export default function QuestionCard({
           )}
         </div>
       </div>
-      {question.type_question === 'simple_question' && (
-        <Textarea
-          value={question.description || ''}
-          readOnly
-          className="mt-2 w-full"
-          placeholder="Ingresar respuesta"
-        />
-      )}
-      {question.type_question === 'rating' && (
-        <div className="flex items-center mt-2">
-          <Slider
-            defaultValue={[0]}
-            max={question.max_value || 5}
-            step={1}
-            className="flex-grow mx-2"
-          />
-          <span className="ml-2"> {question.max_value || 5}</span>
-        </div>
-      )}
+      <div className="text-sm text-gray-500 mb-2">
+        {question.is_mandatory ? 'Obligatoria' : 'Opcional'} |{' '}
+        {question.is_public
+          ? 'Pública para autores'
+          : 'No pública para autores'}
+      </div>
       {question.type_question === 'multiple_choice' && (
         <div className="mt-2 mx-4">
           {question.options?.map((option, index) => (
@@ -201,19 +187,63 @@ export default function QuestionCard({
           </DialogHeader>
           <div className="space-y-4">
             {editingOptionIndex === null ? (
-              <div>
-                <Label htmlFor="question">Título de pregunta</Label>
-                <Input
-                  id="question"
-                  value={editingQuestion.question}
-                  onChange={(e) =>
-                    setEditingQuestion({
-                      ...editingQuestion,
-                      question: e.target.value,
-                    })
-                  }
-                />
-              </div>
+              <>
+                <div>
+                  <Label htmlFor="question">Título de pregunta</Label>
+                  <Input
+                    id="question"
+                    value={editingQuestion.question}
+                    onChange={(e) =>
+                      setEditingQuestion({
+                        ...editingQuestion,
+                        question: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="mandatory"
+                    checked={editingQuestion.is_mandatory || false}
+                    onCheckedChange={(checked) =>
+                      setEditingQuestion({
+                        ...editingQuestion,
+                        is_mandatory: checked,
+                      })
+                    }
+                  />
+                  <Label htmlFor="mandatory">Obligatoria</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="public"
+                    checked={editingQuestion.is_public || false}
+                    onCheckedChange={(checked) =>
+                      setEditingQuestion({
+                        ...editingQuestion,
+                        is_public: checked,
+                      })
+                    }
+                  />
+                  <Label htmlFor="public">Pública para autores</Label>
+                </div>
+                {editingQuestion.type_question === 'rating' && (
+                  <div>
+                    <Label htmlFor="max-value">Máxima calificación</Label>
+                    <Input
+                      id="max-value"
+                      type="number"
+                      value={editingQuestion.max_value || 5}
+                      onChange={(e) =>
+                        setEditingQuestion({
+                          ...editingQuestion,
+                          max_value: parseInt(e.target.value),
+                        })
+                      }
+                    />
+                  </div>
+                )}
+              </>
             ) : (
               <div>
                 <Label htmlFor="option">Nombre de la opción</Label>
@@ -224,39 +254,6 @@ export default function QuestionCard({
                 />
               </div>
             )}
-            {editingOptionIndex === null &&
-              editingQuestion.type_question === 'simple_question' && (
-                <div>
-                  <Label htmlFor="description">Descripción</Label>
-                  <Textarea
-                    id="description"
-                    value={editingQuestion.description || ''}
-                    onChange={(e) =>
-                      setEditingQuestion({
-                        ...editingQuestion,
-                        description: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              )}
-            {editingOptionIndex === null &&
-              editingQuestion.type_question === 'rating' && (
-                <div>
-                  <Label htmlFor="max-value">Máxima calificación</Label>
-                  <Input
-                    id="max-value"
-                    type="number"
-                    value={editingQuestion.max_value || 5}
-                    onChange={(e) =>
-                      setEditingQuestion({
-                        ...editingQuestion,
-                        max_value: parseInt(e.target.value),
-                      })
-                    }
-                  />
-                </div>
-              )}
           </div>
           <ButtonWithLoading onClick={handleSaveEdit} isLoading={isPending}>
             Guardar
