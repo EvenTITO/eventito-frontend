@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
 import {
   Dialog,
   DialogContent,
@@ -50,6 +51,26 @@ export default function AddQuestionDetails({
               />
             </div>
           )}
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="mandatory"
+              checked={newQuestion?.is_mandatory || false}
+              onCheckedChange={(checked) =>
+                setNewQuestion({ ...newQuestion, is_mandatory: checked })
+              }
+            />
+            <Label htmlFor="mandatory">Obligatoria</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="public"
+              checked={newQuestion?.is_public || false}
+              onCheckedChange={(checked) =>
+                setNewQuestion({ ...newQuestion, is_public: checked })
+              }
+            />
+            <Label htmlFor="public">Pública para autores</Label>
+          </div>
         </div>
         <ButtonWithLoading
           onClick={handleSaveNewQuestion}
