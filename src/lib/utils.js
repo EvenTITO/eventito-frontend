@@ -57,3 +57,20 @@ export function canStartEvent(event) {
   const hasTracks = event.tracks.length > 0
   return hasMandatoryDates && hasPricing && hasTracks
 }
+
+export function getDateByName(dates, dateName) {
+  return dateName
+    ? dates?.filter((d) => d.name === dateName)[0] || undefined
+    : undefined
+}
+
+export function generateRelatedDate(fare, value) {
+  return {
+    name: 'PAYMENT_DEADLINE_DATE-' + fare.name,
+    label: 'Fecha límite de ' + fare.name,
+    description: 'Fecha límite de ' + fare.name,
+    is_mandatory: false,
+    date: value,
+    time: '23:59',
+  }
+}

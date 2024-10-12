@@ -16,13 +16,19 @@ import {
   INSCRIPTION_ROLES_LABELS_REVERSE,
 } from '@/lib/Constants.js'
 import PriceRoleSelector from '@/pages/(events-manage)/manage/[id]/pricing/_components/PriceRoleSelector.jsx'
+import { generateRelatedDate, getDateByName } from '@/lib/utils.js'
 
-export default function PriceDialog({ price, onSave }) {
+export default function PriceDialog({ price, dates, onSave }) {
   const [isOpen, setIsOpen] = useState(false)
   const [formData, setFormData] = useState(price || defaultFormData)
   const [selectedRole, setSelectedRole] = useState(
     formData.roles.map((r) => INSCRIPTION_ROLES_LABELS[r]).join(', ')
   )
+  const [relatedDate, setRelatedDate] = useState(
+    getDateByName(dates, price?.related_date) || ''
+  )
+
+  console.log(relatedDate)
 
   useEffect(() => {
     if (!price) {
@@ -32,7 +38,7 @@ export default function PriceDialog({ price, onSave }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    onSave(formData)
+    onSave({ ...formData, related_date: relatedDate })
     setIsOpen(false)
   }
 
@@ -51,6 +57,11 @@ export default function PriceDialog({ price, onSave }) {
     } else {
       setFormData({ ...formData, roles: [INSCRIPTION_ROLES_LABELS_REVERSE[e]] })
     }
+  }
+
+  const handleChangeRelatedDate = (e) => {
+    const relatedDate = generateRelatedDate(formData, e.target.value)
+    setRelatedDate(relatedDate)
   }
 
   return (
@@ -126,8 +137,8 @@ export default function PriceDialog({ price, onSave }) {
               id="related_date"
               name="related_date"
               type="date"
-              value={formData.related_date || ''}
-              onChange={handleChange}
+              value={relatedDate.date}
+              onChange={handleChangeRelatedDate}
             />
           </div>
           <div>

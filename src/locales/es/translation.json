@@ -62,6 +62,15 @@
         "TITLE": "Subida de trabajo fallida",
         "MESSAGE": "Ocurrió un error al subir el trabajo. Por favor intente más tarde"
       }
+    },
+    "EDIT_FARE": {
+      "SUCCESS": {
+        "TITLE": "Tarifa actualizada",
+        "MESSAGE": "La tarifa seleccionada fue actualizada con éxito."
+      },
+      "ERROR": {
+        "MESSAGE": "Error al actualizar la tarifa. Intente nuevamente."
+      }
     }
   }
 }

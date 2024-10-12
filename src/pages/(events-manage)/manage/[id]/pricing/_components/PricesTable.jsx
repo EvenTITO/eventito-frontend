@@ -2,9 +2,11 @@ import { Calendar, ChevronDown, ChevronRight, Shield, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import PriceDialog from './PriceDialog'
 import { INSCRIPTION_ROLES_LABELS } from '@/lib/Constants.js'
+import { getDateByName } from '@/lib/utils.js'
 
 export default function PricesTable({
   prices,
+  dates,
   expandedPrices,
   onToggleExpand,
   onUpdatePrice,
@@ -16,6 +18,7 @@ export default function PricesTable({
         <PriceItem
           key={price.name}
           price={price}
+          dates={dates}
           isExpanded={expandedPrices.has(price.name)}
           onToggleExpand={() => onToggleExpand(price.name)}
           onUpdatePrice={onUpdatePrice}
@@ -28,6 +31,7 @@ export default function PricesTable({
 
 function PriceItem({
   price,
+  dates,
   isExpanded,
   onToggleExpand,
   onUpdatePrice,
@@ -71,11 +75,12 @@ function PriceItem({
             </p>
             <p>
               <strong>Fecha límite:</strong>{' '}
-              {price.related_date || 'Sin fecha límite'}
+              {getDateByName(dates, price.related_date)?.date ||
+                'Sin fecha límite'}
             </p>
           </div>
           <div className="space-x-2">
-            <PriceDialog price={price} onSave={onUpdatePrice} />
+            <PriceDialog price={price} dates={dates} onSave={onUpdatePrice} />
             <Button
               variant="outline"
               size="sm"

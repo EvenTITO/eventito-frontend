@@ -47,23 +47,11 @@ export default function Page({ prices, dates }) {
   }
 
   const handleUpdatePrice = async (updatedPrice) => {
-    try {
-      await addOrModifyFare.mutateAsync({
-        newFare: updatedPrice,
-        eventPrices: prices,
-        eventDates: dates,
-      })
-      toast({
-        title: 'Tarifa actualizada',
-        description: `${updatedPrice.name} fue actualizada con éxito.`,
-      })
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Error al actualizar la tarifa. Intente nuevamente.',
-        variant: 'destructive',
-      })
-    }
+    await addOrModifyFare.mutateAsync({
+      newFare: updatedPrice,
+      eventPrices: prices,
+      eventDates: dates,
+    })
   }
 
   const handleDeletePrice = async (priceName) => {
@@ -93,6 +81,7 @@ export default function Page({ prices, dates }) {
       />
       <PricesTable
         prices={prices}
+        dates={dates}
         expandedPrices={expandedPrices}
         onToggleExpand={togglePriceExpansion}
         onUpdatePrice={handleUpdatePrice}
