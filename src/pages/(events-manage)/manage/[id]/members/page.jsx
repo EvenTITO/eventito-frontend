@@ -8,6 +8,7 @@ import {
 } from '@/hooks/manage/membersHooks'
 
 export default function Page({ members }) {
+  // TODO: use the error and isPending everywhere
   const {
     mutateAsync: updateMemberRole,
     isPending,
