@@ -62,16 +62,7 @@ export function useNewWork() {
       },
     },
     {
-      success: {
-        show: true,
-        title: 'Trabajo subido correctamente',
-        message: 'Se subió el trabajo para su revision de forma correcta',
-      },
-      error: {
-        title: 'Subida de trabajo fallida',
-        message:
-          'Ocurrió un error al subir el trabajo. Por favor intente más tarde',
-      },
+      serviceCode: 'CREATE_WORK',
     }
   )
 }
@@ -116,17 +107,7 @@ export function useEditWork() {
       },
     },
     {
-      success: {
-        show: true,
-        title: 'Trabajo actualizado correctamente',
-        message:
-          'Se actualizó la información y/o archivo de su trabajo de forma correcta',
-      },
-      error: {
-        title: 'Actualización de trabajo fallida',
-        message:
-          'Ocurrió un error al actualizar el trabajo. Por favor intente más tarde',
-      },
+      serviceCode: 'EDIT_WORK',
     }
   )
 }

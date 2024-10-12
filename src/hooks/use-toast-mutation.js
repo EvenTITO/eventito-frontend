@@ -1,47 +1,39 @@
 import { useMutation } from '@tanstack/react-query'
 import { useToast } from '@/hooks/use-toast'
-
-const defaultToastOptions = {
-  success: {
-    show: false,
-    title: 'Operación finalizada',
-    message: 'Operación finalizada con éxito',
-  },
-  error: {
-    show: true,
-    title: 'Error',
-    message: 'Ocurrió un error al realizar la operación',
-  },
-}
+import { useTranslation } from 'react-i18next'
 
 export function useToastMutation(mutationFn, options, toastOptions = {}) {
   const { toast } = useToast()
-  const mergedToastOptions = {
-    success: { ...defaultToastOptions.success, ...toastOptions.success },
-    error: { ...defaultToastOptions.error, ...toastOptions.error },
-  }
+  const { t } = useTranslation('SERVICE')
+  const { serviceCode, successShow = true, errorShow = true } = toastOptions
 
   return useMutation({
     mutationFn,
     ...options,
     onSuccess: (data, variables, context) => {
-      if (mergedToastOptions.success.show) {
+      if (successShow) {
         toast({
-          title: mergedToastOptions.success.title,
-          description: mergedToastOptions.success.message,
+          title: t([`${serviceCode}.SUCCESS.TITLE`, 'SUCCESS.TITLE']),
+          description: t([`${serviceCode}.SUCCESS.MESSAGE`, 'SUCCESS.MESSAGE']),
         })
       }
       options?.onSuccess?.(data, variables, context)
     },
     onError: (error, variables, context) => {
-      if (mergedToastOptions.error.show) {
+      const errorCode = error?.response?.data?.detail?.errorcode
+      if (errorShow) {
         toast({
           variant: 'destructive',
-          title: mergedToastOptions.error.title,
-          description:
-            error instanceof Error
-              ? error.message
-              : mergedToastOptions.error.message,
+          title: t([
+            `${serviceCode}.ERROR.${errorCode}.TITLE`,
+            `${serviceCode}.ERROR.TITLE`,
+            'ERROR.TITLE',
+          ]),
+          description: t([
+            `${serviceCode}.ERROR.${errorCode}.MESSAGE`,
+            `${serviceCode}.ERROR.MESSAGE`,
+            'ERROR.MESSAGE',
+          ]),
         })
       }
       options?.onError?.(error, variables, context)

@@ -25,16 +25,7 @@ export function useEditEvent() {
       },
     },
     {
-      success: {
-        show: true,
-        title: 'Evento editado',
-        message: 'Se editó la información del evento de forma correcta',
-      },
-      error: {
-        title: 'Edición de evento fallida',
-        message:
-          'Ocurrió un error al editar el evento. Por favor intente más tarde',
-      },
+      serviceCode: 'EDIT_EVENT',
     }
   )
 }

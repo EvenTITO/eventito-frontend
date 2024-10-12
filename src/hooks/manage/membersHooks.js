@@ -8,26 +8,29 @@ import {
   apiDeleteMember,
 } from '@/services/api/events/members/queries'
 import { convertEventMembers } from '@/services/api/events/members/conversor'
+import { useToastMutation } from '../use-toast-mutation'
 
 export function useAddMember() {
   const eventId = getEventId()
   const queryClient = useQueryClient()
 
-  return useMutation({
-    mutationFn: async ({ newMemberEmail, newMemberRole }) => {
+  return useToastMutation(
+    async ({ newMemberEmail, newMemberRole }) => {
       const body = {
         email: newMemberEmail,
         role: newMemberRole,
       }
       await apiPostMember(eventId, body)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getEventMembers'] })
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['getEventMembers'] })
+      },
     },
-    onError: (error) => {
-      console.error(JSON.stringify(error))
-    },
-  })
+    {
+      serviceCode: 'ADD_MEMBER',
+    }
+  )
 }
 
 export function useGetMembers() {
