@@ -62,7 +62,7 @@ function HomeMain({ events }) {
               />
             </div>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 ">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredEvents.map((event) => (
               <EventCard event={event} />
             ))}
