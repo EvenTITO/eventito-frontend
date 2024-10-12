@@ -29,7 +29,8 @@ export default function EventStatus({ event, publishEvent }) {
             className="bg-black/60 text-white p-2 rounded-lg text-sm shadow-lg backdrop-blur-sm max-w-[200px] break-words"
           >
             Para poder hacer el evento publico se deben completar las fechas
-            obligatorias y definir al menos un track y una tarifa.
+            obligatorias (día y horario) y definir al menos un track y una
+            tarifa.
           </Tooltip.Content>
         )}
       </Tooltip.Root>
