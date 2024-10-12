@@ -1,25 +1,30 @@
 import * as Tooltip from '@radix-ui/react-tooltip'
-import { Button } from '@/components/ui/button'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 import { CREATED_STATUS } from '@/lib/Constants.js'
 import { canStartEvent } from '@/lib/utils.js'
 
-export default function EventStatus({ event, publishEvent }) {
+export default function EventStatus({
+  event,
+  publishEvent,
+  updateStatusLoading,
+}) {
   if (event.status !== CREATED_STATUS) {
     return null
   }
+  console.log('loading', updateStatusLoading)
   const canPublishEvent = canStartEvent(event)
   return (
     <Tooltip.Provider>
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
           <span>
-            <Button
-              size="sm"
+            <ButtonWithLoading
               onClick={publishEvent}
               disabled={!canPublishEvent}
+              isLoading={updateStatusLoading}
             >
               Publicar el evento
-            </Button>
+            </ButtonWithLoading>
           </span>
         </Tooltip.Trigger>
         {!canPublishEvent && (

@@ -12,6 +12,7 @@ import EventHeader from './_components/EventHeader'
 import EventContent from './_components/EventContent'
 import UploadStates from './_components/UploadStates'
 import { MotionMain } from './_components/Animation'
+import { useNavigate } from 'react-router-dom'
 
 export default function Page({ eventInfo }) {
   const [event, setEvent] = useState({
@@ -27,8 +28,10 @@ export default function Page({ eventInfo }) {
   const [datesOpen, setDatesOpen] = useState(event.dates.map(() => false))
   const { mutateAsync: submitEditEvent, isPending } = useEditEvent()
   const { mutateAsync: uploadEventImage } = useUploadEventImage()
-  const { mutateAsync: updateEventStatus } = useUpdateEventStatus()
+  const { mutateAsync: updateEventStatus, isPending: updateStatusLoading } =
+    useUpdateEventStatus()
   const { toast } = useToast()
+  const navigate = useNavigate()
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -94,6 +97,7 @@ export default function Page({ eventInfo }) {
         description:
           'Publicación realizada satisfactoriamente. Todos los usuarios podrán inscribirse y enviar trabajos a tu evento.',
       })
+      navigate('/home')
     } catch (error) {
       toast({
         title: 'Publicación fallida',
@@ -118,6 +122,7 @@ export default function Page({ eventInfo }) {
           logoFile={logoFile}
           setLogoFile={setLogoFile}
           publishEvent={publishEvent}
+          updateStatusLoading={updateStatusLoading}
         />
         <EventContent
           event={event}

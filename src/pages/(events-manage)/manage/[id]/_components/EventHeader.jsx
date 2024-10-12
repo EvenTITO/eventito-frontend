@@ -11,6 +11,7 @@ export default function EventHeader({
   logoFile,
   setLogoFile,
   publishEvent,
+  updateStatusLoading,
 }) {
   return (
     <div className="flex justify-between items-center mb-8">
@@ -33,7 +34,11 @@ export default function EventHeader({
             <Edit2 className="h-4 w-4 mr-2" />
             Editar
           </Button>
-          <EventStatus event={event} publishEvent={publishEvent} />
+          <EventStatus
+            event={event}
+            publishEvent={publishEvent}
+            updateStatusLoading={updateStatusLoading}
+          />
         </div>
       )}
     </div>
