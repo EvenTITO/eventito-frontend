@@ -28,7 +28,7 @@ export function constructCreateEventBody(eventData) {
       {
         name: 'END_DATE',
         label: 'Fecha de Finalización',
-        description: 'Fecha de comienzo del evento.',
+        description: 'Fecha de finalización del evento.',
         is_mandatory: true,
         date: endDate ? format(endDate, 'yyyy-MM-dd') : undefined,
       },
