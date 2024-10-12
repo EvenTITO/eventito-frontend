@@ -60,7 +60,7 @@ export function useUpdateQuestion() {
         index === updatedQuestion.index ? updatedQuestion : q
       )
       const newReviewSkeleton = convertReviewSkeleton(newQuestions)
-
+      console.log(newReviewSkeleton)
       await apiUpdateReviewSkeleton(eventId, newReviewSkeleton)
     },
     onSuccess: () => {

@@ -22,9 +22,9 @@ export default function RoomDialog({ room, onSave, index = undefined }) {
     }
   }, [room, isOpen])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    onSave(formData, index)
+    await onSave(formData, index)
     setIsOpen(false)
   }
 
@@ -77,7 +77,10 @@ export default function RoomDialog({ room, onSave, index = undefined }) {
             />
           </div>
           <div className="w-full flex justify-end">
-            <ButtonWithLoading type="submit" disabled={!formData}>
+            <ButtonWithLoading
+              type="submit"
+              disabled={!formData.name || !formData.description}
+            >
               Guardar
             </ButtonWithLoading>
           </div>

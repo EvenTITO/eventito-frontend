@@ -28,8 +28,6 @@ export default function PriceDialog({ price, dates, onSave }) {
     getDateByName(dates, price?.related_date) || ''
   )
 
-  console.log(relatedDate)
-
   useEffect(() => {
     if (!price) {
       setFormData(defaultFormData)
@@ -152,7 +150,12 @@ export default function PriceDialog({ price, dates, onSave }) {
               setSelectedRole={handleChangeRole}
             />
           </div>
-          <Button type="submit">Continuar</Button>
+          <Button
+            type="submit"
+            disabled={!selectedRole || !formData.name || !formData.description}
+          >
+            Continuar
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
