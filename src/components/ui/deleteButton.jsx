@@ -1,19 +1,18 @@
 import * as React from 'react'
-import { Trash2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { X } from 'lucide-react'
+import { Button } from './button'
 
-const DeleteButton = React.forwardRef(({ className, ...props }, ref) => (
-  <button
-    ref={ref}
-    className={cn(
-      'flex items-center justify-center h-10 w-10 p-2 rounded-md border border-danger text-danger bg-transparent hover:bg-danger hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-      className
-    )}
-    {...props}
-  >
-    <Trash2 className="h-5 w-5" />
-  </button>
-))
-DeleteButton.displayName = 'DeleteButton'
-
-export { DeleteButton }
+export function DeleteButton({ className, text, onClick, type, disabled }) {
+  return (
+    <Button
+      onClick={onClick}
+      variant="ghost"
+      className={className}
+      type={type}
+      disabled={disabled}
+    >
+      <X className="h-4 w-4" />
+      {text}
+    </Button>
+  )
+}

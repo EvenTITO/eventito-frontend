@@ -7,17 +7,18 @@ import {
   useDeleteMember,
 } from '@/hooks/manage/membersHooks'
 
-export default function Page({ members }) {
+export default function Page({ members, membersPending }) {
+  // TODO: use the error and isPending everywhere
   const {
     mutateAsync: updateMemberRole,
-    isPending,
-    error,
+    isPending: updatePending,
+    error: updateError,
   } = useUpdateMemberRole()
 
   const {
     mutateAsync: deleteMember,
-    deletePending,
-    deleteError,
+    isPending: deletePending,
+    error: deleteError,
   } = useDeleteMember()
 
   async function onRoleChange(member, newRole) {
@@ -43,7 +44,7 @@ export default function Page({ members }) {
         <MembersTable
           members={members}
           onRoleChange={onRoleChange}
-          isPending={isPending}
+          isPending={membersPending || updatePending || deletePending}
           onDeleteMember={onDeleteMember}
         />
       </div>
