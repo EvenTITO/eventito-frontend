@@ -8,7 +8,6 @@ export default function TracksTable({
   tracks,
   chairs,
   onAdd,
-  onUpdate,
   onDelete,
   isPending,
 }) {
@@ -24,10 +23,6 @@ export default function TracksTable({
       }
       return newSet
     })
-  }
-
-  async function updateChair(track, newEmail, oldEmail) {
-    await onUpdate(track, newEmail, oldEmail)
   }
 
   async function deleteChair(track, email) {
@@ -47,7 +42,6 @@ export default function TracksTable({
           chairs={chairs}
           isExpanded={expandedTracks.has(track.id)}
           onToggleExpand={() => toggleTrackExpansion(track.id)}
-          onUpdateChair={updateChair}
           onDeleteChair={deleteChair}
           onAddChair={addChair}
           isPending={isPending}
@@ -62,7 +56,6 @@ function TrackItem({
   chairs,
   isExpanded,
   onToggleExpand,
-  onUpdateChair,
   onDeleteChair,
   onAddChair,
   isPending,
@@ -94,18 +87,6 @@ function TrackItem({
                 <span>{track.mail}</span>
               </div>
               <div className="space-x-2">
-                <ChairDialog
-                  track={track.track}
-                  initialEmail={track.mail}
-                  onUpdateChair={onUpdateChair}
-                  isPending={isPending}
-                  triggerButton={
-                    <Button size="sm" variant="outline">
-                      <Edit2 className="h-4 w-4 mr-2" />
-                      Editar
-                    </Button>
-                  }
-                />
                 <Button
                   size="sm"
                   variant="outline"

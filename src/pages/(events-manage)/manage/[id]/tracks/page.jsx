@@ -37,11 +37,6 @@ export default function Page({ event, chairs, tracksByChair }) {
     await addChairToTrack.mutateAsync({ track: track, userId: userId })
   }
 
-  async function onUpdate(track, newEmail, oldEmail) {
-    await onDelete(track, oldEmail, false)
-    await onAdd(track, newEmail, false)
-  }
-
   const handleAddTrack = async (newTrack) => {
     await addTrack
       .mutateAsync({
@@ -78,7 +73,6 @@ export default function Page({ event, chairs, tracksByChair }) {
           tracks={initialTracks}
           onAdd={onAdd}
           chairs={chairs}
-          onUpdate={onUpdate}
           onDelete={onDelete}
           isPending={addChairToTrack.isPending || deleteChairOfTrack.isPending}
         />
