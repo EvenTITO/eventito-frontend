@@ -13,9 +13,8 @@ export function useToastMutation(mutationFn, options, toastOptions = {}) {
     onSuccess: (data, variables, context) => {
       if (successShow) {
         toast({
-          title: t(`${serviceCode}.SUCCESS.TITLE`) || t('SUCCESS.TITLE'),
-          description:
-            t(`${serviceCode}.SUCCESS.MESSAGE`) || t('SUCCESS.MESSAGE'),
+          title: t([`${serviceCode}.SUCCESS.TITLE`, 'SUCCESS.TITLE']),
+          description: t([`${serviceCode}.SUCCESS.MESSAGE`, 'SUCCESS.MESSAGE']),
         })
       }
       options?.onSuccess?.(data, variables, context)
@@ -25,14 +24,16 @@ export function useToastMutation(mutationFn, options, toastOptions = {}) {
       if (errorShow) {
         toast({
           variant: 'destructive',
-          title:
-            t(`${serviceCode}.ERROR.${errorCode}.TITLE`) ||
-            t(`${serviceCode}.ERROR.TITLE`) ||
-            t('ERROR.TITLE'),
-          description:
-            t(`${serviceCode}.ERROR.${errorCode}.MESSAGE`) ||
-            t(`${serviceCode}.ERROR.MESSAGE`) ||
-            t('ERROR.MESSAGE'),
+          title: t([
+            `${serviceCode}.ERROR.${errorCode}.TITLE`,
+            `${serviceCode}.ERROR.TITLE`,
+            'ERROR.TITLE',
+          ]),
+          description: t([
+            `${serviceCode}.ERROR.${errorCode}.MESSAGE`,
+            `${serviceCode}.ERROR.MESSAGE`,
+            'ERROR.MESSAGE',
+          ]),
         })
       }
       options?.onError?.(error, variables, context)
