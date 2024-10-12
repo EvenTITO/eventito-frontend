@@ -73,8 +73,8 @@ export function convertUpdatePricing(actualPricing, newFare) {
           : fare.need_verification,
         roles: newFare.roles ? newFare.roles : fare.roles,
         currency: newFare.currency ? newFare.currency : fare.currency,
-        related_date: newFare.relatedDate
-          ? newFare.relatedDate
+        related_date: newFare.related_date
+          ? newFare.related_date.name
           : fare.related_date,
       }
     }
@@ -90,7 +90,7 @@ export function convertNewPricing(actualPricing, newFare) {
     value: newFare.value,
     need_verification: newFare.need_verification,
     roles: newFare.roles,
-    related_date: newFare.related_date || null,
+    related_date: newFare.related_date?.name || null,
     currency: 'ARS',
   }
   return { pricing: [...actualPricing, updateFare] }
@@ -99,13 +99,34 @@ export function convertNewPricing(actualPricing, newFare) {
 export function convertNewDates(actualDates, newDate) {
   const updateDate = {
     name: newDate.name,
-    label: newDate.name,
+    label: newDate.label,
     description: newDate.description,
     is_mandatory: false,
     date: format(newDate.date, 'yyyy-MM-dd'),
     time: format(newDate.date, 'HH:mm:ss'),
   }
   return { dates: [...actualDates, updateDate] }
+}
+
+export function convertUpdateDates(actualDates, newDate) {
+  const updatedDates = actualDates.map((actualDate) => {
+    if (actualDate.name === newDate.name) {
+      return {
+        name: newDate.name ? newDate.name : actualDate.name,
+        description: newDate.description
+          ? newDate.description
+          : actualDate.description,
+        label: newDate.label ? newDate.label : actualDate.label,
+        is_mandatory: newDate.is_mandatory
+          ? newDate.is_mandatory
+          : actualDate.is_mandatory,
+        date: newDate.date ? newDate.date : actualDate.date,
+        time: newDate.time ? newDate.time : actualDate.currency,
+      }
+    }
+    return actualDate
+  })
+  return { dates: updatedDates }
 }
 
 function convertFare(fare) {

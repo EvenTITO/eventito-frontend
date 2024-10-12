@@ -5,30 +5,28 @@ import {
   apiUpdatePricingEvent,
 } from '@/services/api/events/general/queries.js'
 import {
+  convertFares,
   convertNewDates,
   convertNewPricing,
+  convertUpdateDates,
   convertUpdatePricing,
-  convertFares,
 } from '@/services/api/events/general/conversor.js'
+import { useToastMutation } from '@/hooks/use-toast-mutation.js'
 
 export function useAddOrModifyFareInEventPricing() {
   const eventId = getEventId()
   const queryClient = useQueryClient()
 
-  return useMutation({
-    mutationFn: async ({
-      newFare,
-      eventPrices,
-      eventDates,
-      relatedDate = undefined,
-    }) => {
-      if (relatedDate) {
-        if (eventDates.some((d) => d.name === relatedDate.name)) {
-          newFare.relatedDate = relatedDate.name
+  return useToastMutation(
+    async ({ newFare, eventPrices, eventDates }) => {
+      if (newFare.related_date) {
+        let updatedDates
+        if (eventDates.some((d) => d.name === newFare.related_date.name)) {
+          updatedDates = convertUpdateDates(eventDates, newFare.related_date)
         } else {
-          const updatedDates = convertNewDates(eventDates, relatedDate)
-          await apiUpdateDatesEvent(eventId, updatedDates)
+          updatedDates = convertNewDates(eventDates, newFare.related_date)
         }
+        await apiUpdateDatesEvent(eventId, updatedDates)
       }
 
       let updatedPricing
@@ -39,12 +37,17 @@ export function useAddOrModifyFareInEventPricing() {
       }
       return await apiUpdatePricingEvent(eventId, updatedPricing)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['getEventById', { eventId }],
-      })
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getEventById', { eventId }],
+        })
+      },
     },
-  })
+    {
+      serviceCode: 'EDIT_FARE',
+    }
+  )
 }
 
 export function useDeletePayment() {
