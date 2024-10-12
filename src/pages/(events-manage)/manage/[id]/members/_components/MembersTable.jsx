@@ -35,13 +35,17 @@ export default function MembersTable({
       <CardHeader>
         <div className="flex justify-between">
           <CardTitle>{title}</CardTitle>
-          <RoleFilter currentFilter={filter} onFilterChange={setFilter} />
+          <div className="flex items-center space-x-2">
+            {isPending ? (
+              <LoaderSpinner size={32} />
+            ) : (
+              <RoleFilter currentFilter={filter} onFilterChange={setFilter} />
+            )}
+          </div>
         </div>
       </CardHeader>
       <CardContent>
-        {isPending ? (
-          <MembersPending />
-        ) : (
+        {!isPending ? (
           <div className="grid gap-6">
             {filteredMembers.map((member, index) => (
               <Member
@@ -53,7 +57,7 @@ export default function MembersTable({
               />
             ))}
           </div>
-        )}
+        ) : null}
       </CardContent>
     </Card>
   )
@@ -61,7 +65,7 @@ export default function MembersTable({
 
 function RoleFilter({ currentFilter, onFilterChange }) {
   return (
-    <div className="flex items-center space-x-2">
+    <>
       <Select
         value={currentFilter || ''}
         onValueChange={(value) => onFilterChange(value)}
@@ -88,7 +92,7 @@ function RoleFilter({ currentFilter, onFilterChange }) {
           <span className="sr-only">Limpiar filtro</span>
         </Button>
       )}
-    </div>
+    </>
   )
 }
 
