@@ -41,15 +41,7 @@ export function createUseUpdateStatus(updateFunction, idName) {
         },
       },
       {
-        success: {
-          show: true,
-          title: 'Inscripción actualizada',
-          message: 'Se actualizó la inscripción de forma correcta',
-        },
-        error: {
-          title: 'Inscripción no actualizada',
-          message: 'Ocurrió un error al actualizar la inscripción',
-        },
+        serviceCode: 'UPDATE_INSCRIPTION',
       }
     )
   }

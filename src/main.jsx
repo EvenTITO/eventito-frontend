@@ -6,6 +6,7 @@ import { persistor, store } from './state/store.js'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import './i18n'
 
 const queryClient = new QueryClient({
   defaultOptions: {

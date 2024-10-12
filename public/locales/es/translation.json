@@ -1,0 +1,67 @@
+{
+  "SERVICE": {
+    "ERROR": {
+      "TITLE": "Error",
+      "MESSAGE": "Ocurrió un error al realizar la operación"
+    },
+    "SUCCESS": {
+      "TITLE": "Operación finalizada",
+      "MESSAGE": "Operación finalizada con éxito"
+    },
+    "ADD_MEMBER": {
+      "ERROR": {
+        "MESSAGE": "No se pudo agregar al miembro. Por favor intente nuevamente más tarde.",
+        "ALREADY_MEMBER_EXIST": {
+          "MESSAGE": "El usuario ingresado ya es actualmente miembro del evento."
+        },
+        "USER_NOT_FOUND": {
+          "MESSAGE": "El mail ingresado no corresponde a un usuario de EvenTITO."
+        }
+      },
+      "SUCCESS": {
+        "TITLE": "Miembro agregado",
+        "MESSAGE": "Se ha agregado exitosamente el nuevo miembro al evento."
+      }
+    },
+    "UPDATE_INSCRIPTION": {
+      "SUCCESS": {
+        "TITLE": "Inscripción actualizada",
+        "MESSAGE": "Se actualizó la inscripción de forma correcta"
+      },
+      "ERROR": {
+        "TITLE": "Inscripción no actualizada",
+        "MESSAGE": "Ocurrió un error al actualizar la inscripción"
+      }
+    },
+    "EDIT_EVENT": {
+      "SUCCESS": {
+        "TITLE": "Evento editado",
+        "MESSAGE": "Se editó la información del evento de forma correcta"
+      },
+      "ERROR": {
+        "TITLE": "Edición de evento fallida",
+        "MESSAGE": "Ocurrió un error al editar el evento. Por favor intente más tarde"
+      }
+    },
+    "EDIT_WORK": {
+      "SUCCESS": {
+        "TITLE": "Trabajo actualizado correctamente",
+        "MESSAGE": "Se actualizó la información y/o archivo de su trabajo de forma correcta"
+      },
+      "ERROR": {
+        "TITLE": "Actualización de trabajo fallida",
+        "MESSAGE": "Ocurrió un error al actualizar el trabajo. Por favor intente más tarde"
+      }
+    },
+    "CREATE_WORK": {
+      "SUCCESS": {
+        "TITLE": "Trabajo subido correctamente",
+        "MESSAGE": "Se subió el trabajo para su revision de forma correcta"
+      },
+      "ERROR": {
+        "TITLE": "Subida de trabajo fallida",
+        "MESSAGE": "Ocurrió un error al subir el trabajo. Por favor intente más tarde"
+      }
+    }
+  }
+}
