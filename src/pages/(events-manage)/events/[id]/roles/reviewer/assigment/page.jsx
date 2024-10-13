@@ -6,31 +6,11 @@ import TitlePage from '@/pages/(events-manage)/_components/titlePage'
 import { useNavigator } from '@/lib/navigation'
 import { ReviewerForm } from './reviewForm'
 import { useGetWorkDownloadURL } from '@/hooks/events/worksHooks.js'
-import { useToast } from '@/hooks/use-toast'
 import { DetailsTab } from './details.jsx'
 
 export default function Page({ selectedWork, reviewForm }) {
   const navigator = useNavigator('/assignments')
-  const {
-    data: fileData,
-    mutate: downloadWorkFile,
-    isError,
-    isPending,
-    isSuccess,
-  } = useGetWorkDownloadURL()
-  const { toast } = useToast()
-
-  useEffect(() => {
-    if (isError) {
-      toast({
-        variant: 'destructiveOutline',
-        title: 'Error al descargar trabajo',
-        description: 'El autor no ha subido un archivo todavia',
-      })
-    } else if (isSuccess) {
-      window.open(fileData.download_url.download_url, '_blank')
-    }
-  }, [isError, isSuccess, toast])
+  const { mutate: downloadWorkFile, isPending } = useGetWorkDownloadURL()
 
   function handleBack() {
     navigator.back()

@@ -7,25 +7,31 @@ import {
 import { convertReviewSkeleton } from '@/services/api/events/general/conversor'
 import { useGetEvent } from '@/hooks/events/useEventState'
 import { format } from 'date-fns'
+import { useToastMutation } from '@/hooks/use-toast-mutation.js'
 
 export function useAddQuestion() {
   const eventId = getEventId()
 
   const queryClient = useQueryClient()
 
-  return useMutation({
-    mutationFn: async ({ newQuestion, reviewSkeleton }) => {
+  return useToastMutation(
+    async ({ newQuestion, reviewSkeleton }) => {
       const newQuestions = [...reviewSkeleton.questions, newQuestion]
       const newReviewSkeleton = convertReviewSkeleton(newQuestions)
 
       await apiUpdateReviewSkeleton(eventId, newReviewSkeleton)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['getEventById', { eventId }],
-      })
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getEventById', { eventId }],
+        })
+      },
     },
-  })
+    {
+      serviceCode: 'ADD_REVIEW_QUESTION',
+    }
+  )
 }
 
 export function useDeleteQuestion() {
@@ -33,20 +39,25 @@ export function useDeleteQuestion() {
 
   const queryClient = useQueryClient()
 
-  return useMutation({
-    mutationFn: async ({ questionToDelete, reviewSkeleton }) => {
+  return useToastMutation(
+    async ({ questionToDelete, reviewSkeleton }) => {
       const newQuestions = reviewSkeleton.questions.filter(
         (q) => q.question !== questionToDelete.question
       )
       const newReviewSkeleton = convertReviewSkeleton(newQuestions)
       await apiUpdateReviewSkeleton(eventId, newReviewSkeleton)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['getEventById', { eventId }],
-      })
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getEventById', { eventId }],
+        })
+      },
     },
-  })
+    {
+      successShow: false,
+    }
+  )
 }
 
 export function useUpdateQuestion() {
@@ -54,8 +65,8 @@ export function useUpdateQuestion() {
 
   const queryClient = useQueryClient()
 
-  return useMutation({
-    mutationFn: async ({ updatedQuestion, reviewSkeleton }) => {
+  return useToastMutation(
+    async ({ updatedQuestion, reviewSkeleton }) => {
       const newQuestions = reviewSkeleton.questions.map((q, index) =>
         index === updatedQuestion.index ? updatedQuestion : q
       )
@@ -63,12 +74,17 @@ export function useUpdateQuestion() {
       console.log(newReviewSkeleton)
       await apiUpdateReviewSkeleton(eventId, newReviewSkeleton)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['getEventById', { eventId }],
-      })
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getEventById', { eventId }],
+        })
+      },
     },
-  })
+    {
+      successShow: false,
+    }
+  )
 }
 
 export function useSwapQuestions() {
@@ -76,12 +92,8 @@ export function useSwapQuestions() {
 
   const queryClient = useQueryClient()
 
-  return useMutation({
-    mutationFn: async ({
-      firstQuestionIndex,
-      secondQuestionIndex,
-      reviewSkeleton,
-    }) => {
+  return useToastMutation(
+    async ({ firstQuestionIndex, secondQuestionIndex, reviewSkeleton }) => {
       const temp = reviewSkeleton.questions[firstQuestionIndex]
       reviewSkeleton.questions[firstQuestionIndex] =
         reviewSkeleton.questions[secondQuestionIndex]
@@ -92,12 +104,17 @@ export function useSwapQuestions() {
       await apiUpdateReviewSkeleton(eventId, newReviewSkeleton)
       return reviewSkeleton
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['getEventById', { eventId }],
-      })
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getEventById', { eventId }],
+        })
+      },
     },
-  })
+    {
+      successShow: false,
+    }
+  )
 }
 
 export function useEditEventDeadlineSubmissionDate() {

@@ -10,7 +10,6 @@ import {
   useUpdateQuestion,
   useSwapQuestions,
 } from '@/hooks/manage/reviewsHooks'
-import { useToast } from '@/hooks/use-toast'
 
 export default function Page({ reviewSkeleton }) {
   const [questions, setQuestions] = useState(reviewSkeleton.questions || [])
@@ -18,7 +17,6 @@ export default function Page({ reviewSkeleton }) {
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false)
   const [newQuestionType, setNewQuestionType] = useState(null)
   const [newQuestion, setNewQuestion] = useState(null)
-  const { toast } = useToast()
 
   const addQuestion = useAddQuestion()
   const updateQuestion = useUpdateQuestion()
@@ -44,25 +42,10 @@ export default function Page({ reviewSkeleton }) {
 
   const handleSaveNewQuestion = async () => {
     delete newQuestion.id
-    await addQuestion
-      .mutateAsync({
-        newQuestion: newQuestion,
-        reviewSkeleton: { questions: questions },
-      })
-      .then(() => {
-        toast({
-          title: 'Nueva pregunta agregada',
-          description: `La pregunta ${newQuestion.question} ha sido agregada con éxito.`,
-        })
-      })
-      .catch((e) => {
-        console.error(e)
-        toast({
-          title: 'Error',
-          description: 'Error al agregar la pregunta. Intente nuevamente.',
-          variant: 'destructive',
-        })
-      })
+    await addQuestion.mutateAsync({
+      newQuestion: newQuestion,
+      reviewSkeleton: { questions: questions },
+    })
 
     setQuestions([...questions, newQuestion])
     setIsDetailsDialogOpen(false)
@@ -71,50 +54,20 @@ export default function Page({ reviewSkeleton }) {
   }
 
   const handleUpdateQuestion = async ({ updatedQuestion, index }) => {
-    await updateQuestion
-      .mutateAsync({
-        updatedQuestion: { ...updatedQuestion, index: index },
-        reviewSkeleton: { questions: questions },
-      })
-      .then(() => {
-        toast({
-          title: 'Pregunta editada',
-          description: `La pregunta ${updatedQuestion.question} ha sido editada con éxito.`,
-        })
-      })
-      .catch((e) => {
-        console.error(e)
-        toast({
-          title: 'Error',
-          description: 'Error al editar la pregunta. Intente nuevamente.',
-          variant: 'destructive',
-        })
-      })
+    await updateQuestion.mutateAsync({
+      updatedQuestion: { ...updatedQuestion, index: index },
+      reviewSkeleton: { questions: questions },
+    })
     setQuestions(
       questions.map((q, idx) => (idx === index ? updatedQuestion : q))
     )
   }
 
   const handleDeleteQuestion = async (question) => {
-    await deleteQuestion
-      .mutateAsync({
-        questionToDelete: question,
-        reviewSkeleton: { questions: questions },
-      })
-      .then(() => {
-        toast({
-          title: 'Pregunta eliminada',
-          description: `La pregunta ${question.question} ha sido eliminada con éxito.`,
-        })
-      })
-      .catch((e) => {
-        console.error(e)
-        toast({
-          title: 'Error',
-          description: 'Error al eliminar la pregunta. Intente nuevamente.',
-          variant: 'destructive',
-        })
-      })
+    await deleteQuestion.mutateAsync({
+      questionToDelete: question,
+      reviewSkeleton: { questions: questions },
+    })
     setQuestions(questions.filter((q) => q.question !== question.question))
   }
 
@@ -122,24 +75,11 @@ export default function Page({ reviewSkeleton }) {
     firstQuestionIndex,
     secondQuestionIndex
   ) => {
-    await swapQuestions
-      .mutateAsync({
-        firstQuestionIndex,
-        secondQuestionIndex,
-        reviewSkeleton: { questions: questions },
-      })
-      .then((newReviewSkeleton) => {
-        console.log('exito')
-        setQuestions(newReviewSkeleton.questions)
-      })
-      .catch((e) => {
-        console.error(e)
-        toast({
-          title: 'Error',
-          description: 'Error al mover la pregunta. Intente nuevamente.',
-          variant: 'destructive',
-        })
-      })
+    await swapQuestions.mutateAsync({
+      firstQuestionIndex,
+      secondQuestionIndex,
+      reviewSkeleton: { questions: questions },
+    })
   }
 
   return (
