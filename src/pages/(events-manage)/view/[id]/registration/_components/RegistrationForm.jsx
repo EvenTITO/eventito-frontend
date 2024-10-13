@@ -34,14 +34,13 @@ export default function RegistrationForm() {
       if(affiliationNameLength > MIN_AFFILIATION_NAME){
         return !!file
       } else {
-        return !(affiliationNameLength > 0)
+        return !(affiliationNameLength > 0) && !file
       }
     }
     return false
   }
 
   function handleAffiliationEnable(e){
-    console.log(`handleAffiliationEnable`)
     setAffiliationNameLength(e.target.value.length)
   }
 
