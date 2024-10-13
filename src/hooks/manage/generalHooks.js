@@ -56,14 +56,19 @@ export function useUpdateEventStatus() {
   const eventId = getEventId()
   const queryClient = useQueryClient()
 
-  return useMutation({
-    mutationFn: async ({ newStatus }) => {
+  return useToastMutation(
+    async ({ newStatus }) => {
       await apiUpdateEventStatus(eventId, { status: newStatus })
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['getEventById', { eventId }],
-      })
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getEventById', { eventId }],
+        })
+      },
     },
-  })
+    {
+      serviceCode: 'UPDATE_EVENT_STATUS',
+    }
+  )
 }

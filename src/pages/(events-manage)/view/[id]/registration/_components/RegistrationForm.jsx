@@ -11,7 +11,6 @@ import { MotionDiv } from '../../_components/Animation'
 import { useSubmitInscription } from '@/hooks/events/attendeeHooks'
 import ButtonWithLoading from '@/components/ButtonWithLoading'
 import { REGISTRATION_ROLES } from '@/lib/Constants'
-import { toast, useToast } from '@/hooks/use-toast.js'
 import { useNavigate } from 'react-router-dom'
 
 const schema = z.object({
@@ -22,7 +21,6 @@ const schema = z.object({
 
 export default function RegistrationForm() {
   const [file, setFile] = useState(null)
-  const { toast } = useToast()
   const eventId = getEventId()
   const navigate = useNavigate()
 
@@ -31,7 +29,6 @@ export default function RegistrationForm() {
     handleSubmit,
     control,
     formState: { errors },
-    setError,
   } = useForm({
     resolver: zodResolver(schema),
   })
@@ -55,23 +52,7 @@ export default function RegistrationForm() {
       roles: data.role.split(','),
     }
     await submitRegistration({ inscriptionData })
-      .then(() => {
-        console.log('Inscripcion generada correctamente')
-        toast({
-          title: 'Inscripción exitosa.',
-          description: `Inscripción realizada satisfactoriamente. Ya podés interactuar con el evento.`,
-        })
-        navigate(`/events/${eventId}/view`)
-      })
-      .catch((e) => {
-        console.log('Inscripcion fallida', e)
-        toast({
-          title: 'Inscripción fallida',
-          description:
-            'Error al realizar la inscripción. Por favor intente nuevamente más tarde.',
-          variant: 'destructive',
-        })
-      })
+    navigate(`/events/${eventId}/view`)
   }
 
   return (

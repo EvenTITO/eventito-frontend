@@ -9,6 +9,7 @@ import {
 } from '@/services/api/events/inscriptions/queries.js'
 import { convertInscription } from '@/services/api/events/inscriptions/conversor.js'
 import { uploadFile } from '@/services/api/storage/queries.js'
+import { useToastMutation } from '@/hooks/use-toast-mutation.js'
 
 export function useGetMyInscription() {
   const eventId = getEventId()
@@ -26,21 +27,23 @@ export function useSubmitInscription() {
   const eventId = getEventId()
   const queryClient = useQueryClient()
 
-  return useMutation({
-    mutationFn: async ({ inscriptionData }) => {
+  return useToastMutation(
+    async ({ inscriptionData }) => {
       const res = await apiSubmitInscription(eventId, inscriptionData)
       if (inscriptionData.file && res.data.upload_url)
         await uploadFile(res.data.upload_url, inscriptionData.file)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['getMyInscription', { eventId }],
-      })
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getMyInscription', { eventId }],
+        })
+      },
     },
-    onError: (e) => {
-      console.error(JSON.stringify(e))
-    },
-  })
+    {
+      serviceCode: 'SUBMIT_INSCRIPTION',
+    }
+  )
 }
 
 export function useUpdateInscription() {

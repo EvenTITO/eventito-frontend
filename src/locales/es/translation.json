@@ -89,6 +89,31 @@
         "TITLE": "Error al descargar trabajo",
         "MESSAGE": "El autor no ha subido un archivo todavia"
       }
+    },
+    "UPDATE_EVENT_STATUS": {
+      "SUCCESS": {
+        "TITLE": "Publicación exitosa",
+        "MESSAGE": "Publicación realizada satisfactoriamente. Todos los usuarios podrán inscribirse y enviar trabajos a tu evento."
+      }
+    },
+    "ADD_REVIEW_QUESTION": {
+      "SUCCESS": {
+        "TITLE": "Nueva pregunta agregada",
+        "MESSAGE": "La pregunta ha sido agregada con éxito."
+      },
+      "ERROR": {
+        "MESSAGE": "Error al agregar la pregunta. Intente nuevamente."
+      }
+    },
+    "SUBMIT_INSCRIPTION": {
+      "SUCCESS": {
+        "TITLE": "Inscripción exitosa",
+        "MESSAGE": "Inscripción realizada satisfactoriamente. Ya podés interactuar con el evento."
+      },
+      "ERROR": {
+        "MESSAGE": "Error al realizar la inscripción. Por favor intente nuevamente más tarde."
+      }
     }
   }
 }
+

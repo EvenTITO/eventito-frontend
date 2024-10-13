@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { useToast } from '@/hooks/use-toast'
 import { createEvent } from '@/services/api/events/general/hooks'
 import { addEventOptional } from '@/state/events/createEventSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,7 +13,6 @@ export default function SubmitButton({ startDate, endDate, location }) {
   )
   const { mutate, isPending, isSuccess } = createEvent()
   const dispatch = useDispatch()
-  const { toast } = useToast()
 
   function handleSubmit() {
     dispatch(
@@ -44,7 +42,7 @@ export default function SubmitButton({ startDate, endDate, location }) {
     if (isSuccess) {
       navigate('/home/my-events')
     }
-  }, [isPending, isSuccess, navigate, toast])
+  }, [isPending, isSuccess, navigate])
 
   if (isPending) {
     return (
