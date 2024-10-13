@@ -83,6 +83,12 @@
           "MESSAGE": "El titulo se encuentra repetido"
         }
       }
+    },
+    "WORK_DOWNLOAD_URL": {
+      "ERROR": {
+        "TITLE": "Error al descargar trabajo",
+        "MESSAGE": "El autor no ha subido un archivo todavia"
+      }
     }
   }
 }

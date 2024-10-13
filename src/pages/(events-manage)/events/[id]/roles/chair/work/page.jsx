@@ -7,8 +7,6 @@ import { DetailsTab } from './details'
 import Reviews from './reviews'
 import StatusSelector from './_components/StatusSelector'
 import { useGetWorkDownloadURL } from '@/hooks/events/worksHooks'
-import { useToast } from '@/hooks/use-toast'
-import { useEffect } from 'react'
 import {
   useSubmitChairReview,
   useUpdateReviewDeadlineForReviewer,
@@ -16,28 +14,9 @@ import {
 
 export default function Page({ selectedWork, reviews, reviewers }) {
   const navigator = useNavigator('/works')
-  const { toast } = useToast()
-  const {
-    data: fileData,
-    mutate: downloadWorkFile,
-    isError,
-    isPending,
-    isSuccess,
-  } = useGetWorkDownloadURL()
+  const { mutate: downloadWorkFile, isPending } = useGetWorkDownloadURL()
   const chairReview = useSubmitChairReview(reviews)
   const updateReviewDeadlineForReviewer = useUpdateReviewDeadlineForReviewer()
-
-  useEffect(() => {
-    if (isError) {
-      toast({
-        variant: 'destructiveOutline',
-        title: 'Error al descargar trabajo',
-        description: 'El autor no ha subido un archivo todavia',
-      })
-    } else if (isSuccess) {
-      window.open(fileData.download_url.download_url, '_blank')
-    }
-  }, [isError, isSuccess, toast])
 
   function handleBack(e) {
     e.preventDefault()

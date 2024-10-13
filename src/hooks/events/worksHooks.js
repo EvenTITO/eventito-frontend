@@ -1,6 +1,6 @@
 import { SPEAKER_ROLE } from '@/lib/Constants'
 import { getEventId, getWorkId } from '@/lib/utils'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import {
   apiGetSubmissionsForWork,
   apiGetWorkById,
@@ -10,6 +10,7 @@ import {
 import { convertWork, convertWorks } from '@/services/api/works/conversor'
 import { useGetMyWorks } from './authorHooks'
 import { useGetReviewersForWork, useGetReviewsForWork } from './chairHooks'
+import { useToastMutation } from '@/hooks/use-toast-mutation.js'
 
 export function useGetWorkInfo() {
   const workInfo = useGetWorkById()
@@ -45,11 +46,20 @@ export function useGetWorkDownloadURL() {
   const workId = getWorkId()
   const eventId = getEventId()
 
-  return useMutation({
-    mutationFn: async () => {
+  return useToastMutation(
+    async () => {
       return await apiGetWorkDownloadURL(eventId, workId)
     },
-  })
+    {
+      onSuccess: (fileData) => {
+        window.open(fileData.download_url.download_url, '_blank')
+      },
+    },
+    {
+      serviceCode: 'WORK_DOWNLOAD_URL',
+      successShow: false,
+    }
+  )
 }
 
 export function useGetWorksForPayment({ roles }) {
