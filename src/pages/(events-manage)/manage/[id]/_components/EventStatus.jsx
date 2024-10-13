@@ -11,7 +11,7 @@ export default function EventStatus({
   if (event.status !== CREATED_STATUS) {
     return null
   }
-  console.log('loading', updateStatusLoading)
+
   const canPublishEvent = canStartEvent(event)
   return (
     <Tooltip.Provider>

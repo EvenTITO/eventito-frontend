@@ -6,15 +6,12 @@ import { useGetEvent } from '@/hooks/events/useEventState'
 
 export default function NewPaymentPage() {
   const { data: eventData, isLoading, error } = useGetEvent()
-  const isSpeaker = eventData?.roles?.includes(SPEAKER_ROLE)
 
   const {
     data: worksData,
     isLoading: isWorksLoading,
     error: worksError,
-  } = useGetMyWorks({
-    enabled: !!isSpeaker,
-  })
+  } = useGetMyWorks()
 
   const component = <Page eventData={eventData || {}} works={worksData || {}} />
 

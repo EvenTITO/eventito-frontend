@@ -6,6 +6,7 @@ import FormSelectPayment from './form/FormSelectPayment'
 import FormSubmitPayment from './form/FormSubmitFile'
 import SteppedForm from '@/components/SteppedForm'
 import FormSelectWorks from './form/FormSelectWorks'
+import { SPEAKER_ROLE } from '@/lib/Constants.js'
 
 export default function Page({ eventData, works }) {
   const navigator = useNavigator('/new-payment')
@@ -14,18 +15,25 @@ export default function Page({ eventData, works }) {
   const { pricing, paymentPDF, worksIds } = useSelector(
     (state) => state.newPayment
   )
+  const isSpeaker = eventData.roles.includes(SPEAKER_ROLE)
 
   let booleanForSteps = [pricing, true, paymentPDF]
   let stepsComponents = [
-    <FormSelectPayment eventPricing={eventData.pricing} />,
+    <FormSelectPayment
+      eventPricing={eventData.pricing}
+      eventDates={eventData.dates}
+    />,
     <FormSelectWorks works={works} />,
     <FormSubmitPayment />,
   ]
 
-  if (!works || works.length === 0) {
+  if (!works || works.length === 0 || !isSpeaker) {
     booleanForSteps = [pricing, paymentPDF]
     stepsComponents = [
-      <FormSelectPayment eventPricing={eventData.pricing} />,
+      <FormSelectPayment
+        eventPricing={eventData.pricing}
+        eventDates={eventData.dates}
+      />,
       <FormSubmitPayment />,
     ]
   }

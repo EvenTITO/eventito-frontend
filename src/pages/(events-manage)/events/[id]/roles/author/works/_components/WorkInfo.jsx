@@ -7,6 +7,7 @@ import { onWorkEditDay } from './utils'
 import { WORKS_STATUS_LABELS } from '@/lib/Constants.js'
 
 export default function WorkInfo({ workData }) {
+  console.log(workData)
   const isEditable = onWorkEditDay(workData)
   return (
     <div className="space-y-8">

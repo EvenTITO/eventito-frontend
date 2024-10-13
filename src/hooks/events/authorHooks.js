@@ -96,7 +96,6 @@ export function useEditWork() {
         authors: work.authors,
       }
       await apiPutWork(eventId, workId, workUpdate)
-
       await uploadSubmissionFile(eventId, workId, workData.file)
     },
     {
