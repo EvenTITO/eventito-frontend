@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useToast } from '@/hooks/use-toast'
 import {
   useEditEvent,
   useUpdateEventStatus,
@@ -30,7 +29,6 @@ export default function Page({ eventInfo }) {
   const { mutateAsync: uploadEventImage } = useUploadEventImage()
   const { mutateAsync: updateEventStatus, isPending: updateStatusLoading } =
     useUpdateEventStatus()
-  const { toast } = useToast()
   const navigate = useNavigate()
 
   const handleInputChange = (e) => {
@@ -90,20 +88,8 @@ export default function Page({ eventInfo }) {
   }
 
   const publishEvent = async () => {
-    try {
-      await updateEventStatus({ newStatus: STARTED_STATUS })
-      toast({
-        title: 'Publicación exitosa',
-        description:
-          'Publicación realizada satisfactoriamente. Todos los usuarios podrán inscribirse y enviar trabajos a tu evento.',
-      })
-      navigate('/home')
-    } catch (error) {
-      toast({
-        title: 'Publicación fallida',
-        description: error.response.data.detail,
-      })
-    }
+    await updateEventStatus({ newStatus: STARTED_STATUS })
+    navigate('/home')
   }
 
   return (
