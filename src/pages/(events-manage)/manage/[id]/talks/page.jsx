@@ -4,6 +4,8 @@ import SpeakersList from './_components/SpeakersList'
 import CalendarView from './_components/CalendarView'
 import SpeakerDialog from './_components/SpeakerDialog'
 import { useChangeTalkForWork } from '@/hooks/manage/talksHooks'
+import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
+import TitlePage from '@/pages/(events-manage)/_components/titlePage'
 
 export default function Page({ works, rooms }) {
   const [selectedSpeaker, setSelectedSpeaker] = useState(null)
@@ -34,8 +36,8 @@ export default function Page({ works, rooms }) {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Asignación de Ubicaciones</h1>
+    <ContainerPage>
+      <TitlePage title={'Asignación de Presentaciones'} />
       <Tabs defaultValue="speakers" className="w-full">
         <TabsList className="mb-4">
           <TabsTrigger value="speakers">Presentadores</TabsTrigger>
@@ -61,6 +63,6 @@ export default function Page({ works, rooms }) {
         selectedWork={selectedWork}
         rooms={rooms}
       />
-    </div>
+    </ContainerPage>
   )
 }

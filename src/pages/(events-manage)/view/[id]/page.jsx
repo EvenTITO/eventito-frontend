@@ -1,4 +1,5 @@
-import { format } from '@formkit/tempo'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { CalendarDays, MapPin, Users, AtSign } from 'lucide-react'
 import {
   MotionDiv,
@@ -58,9 +59,8 @@ export default function Page({ event }) {
                 <span>
                   {date.date &&
                     date.time &&
-                    format(new Date(`${date.date}T${date.time}`), {
-                      date: 'full',
-                      time: 'short',
+                    format(new Date(`${date.date}T${date.time}`), 'PPPP p', {
+                      locale: es,
                     })}
                 </span>
               </MotionDiv>

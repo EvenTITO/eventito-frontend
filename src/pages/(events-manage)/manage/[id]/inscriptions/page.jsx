@@ -67,6 +67,19 @@ export default function InscriptionsPage({ inscriptions }) {
   }
 
   const renderFilteredInscriptions = () => {
+    console.log(groupedInscriptions)
+    if (Object.entries(groupedInscriptions).length === 0) {
+      return (
+        <div className="text-center py-10">
+          <h2 className="text-xl font-semibold mb-2">
+            Ninguna Inscripción ha sido registrada
+          </h2>
+          <p className="text-gray-500 mb-4">
+            Comparte el evento para comenzar a recibir inscripciones
+          </p>
+        </div>
+      )
+    }
     if (filterType === 'status') {
       if (statusFilter === 'all') {
         return Object.entries(groupedInscriptions).map(

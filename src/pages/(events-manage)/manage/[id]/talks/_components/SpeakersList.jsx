@@ -14,6 +14,19 @@ export default function SpeakersList({ works, onSpeakerClick }) {
     return acc
   }, {})
 
+  if (Object.values(speakers).length === 0) {
+    return (
+      <div className="text-center py-10">
+        <h2 className="text-xl font-semibold mb-2">
+          Ninguna presentación disponible{' '}
+        </h2>
+        <p className="text-gray-500 mb-4">
+          Agregar presentaciones para agendarlas en el calendario
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-4">
       {Object.values(speakers).map((speaker) => (

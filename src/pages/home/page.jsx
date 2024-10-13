@@ -81,7 +81,7 @@ function HomeMain({ events }) {
 function EventCard({ event }) {
   return (
     <Link to={`/view/events/${event.id}/`} className="block">
-      <Card className="transition-all duration-300 hover:shadow-lg focus-within:shadow-lg group">
+      <Card className="transition-all duration-300 hover:shadow-lg focus-within:shadow-lg group flex flex-col justify-between h-full">
         <CardHeader>
           <CardTitle>{event.title}</CardTitle>
           <CardDescription>{event.description}</CardDescription>
