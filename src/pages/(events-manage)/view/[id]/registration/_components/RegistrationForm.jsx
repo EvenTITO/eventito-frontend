@@ -10,7 +10,7 @@ import { Upload } from 'lucide-react'
 import { MotionDiv } from '../../_components/Animation'
 import { useSubmitInscription } from '@/hooks/events/attendeeHooks'
 import ButtonWithLoading from '@/components/ButtonWithLoading'
-import { REGISTRATION_ROLES } from '@/lib/Constants'
+import { REGISTRATION_ROLES, MIN_AFFILIATION_NAME } from '@/lib/Constants'
 import { toast, useToast } from '@/hooks/use-toast.js'
 import { useNavigate } from 'react-router-dom'
 
@@ -22,9 +22,28 @@ const schema = z.object({
 
 export default function RegistrationForm() {
   const [file, setFile] = useState(null)
+  const [activityEnable, setActivityEnable] = useState(false)
+  const [affiliationNameLength, setAffiliationNameLength] = useState(0)
+
   const { toast } = useToast()
   const eventId = getEventId()
   const navigate = useNavigate()
+
+  function enableButton(){
+    if(activityEnable){
+      if(affiliationNameLength > MIN_AFFILIATION_NAME){
+        return !!file
+      } else {
+        return !(affiliationNameLength > 0)
+      }
+    }
+    return false
+  }
+
+  function handleAffiliationEnable(e){
+    console.log(`handleAffiliationEnable`)
+    setAffiliationNameLength(e.target.value.length)
+  }
 
   const {
     register,
@@ -117,7 +136,10 @@ export default function RegistrationForm() {
                           ? 'border-primary bg-primary/10'
                           : 'border-gray-200 hover:border-primary'
                       )}
-                      onClick={() => field.onChange(roleOption.id)}
+                      onClick={() => {
+                        field.onChange(roleOption.id)
+                        setActivityEnable(true)
+                      }}
                     >
                       <div className="flex items-center space-x-2">
                         <div
@@ -152,6 +174,7 @@ export default function RegistrationForm() {
                 id="affiliation"
                 {...register('affiliation')}
                 placeholder="Ingresá tu filiación"
+                onChange={handleAffiliationEnable}
               />
             </div>
             <div>
@@ -182,6 +205,7 @@ export default function RegistrationForm() {
       <MotionDiv>
         <ButtonWithLoading
           isLoading={isPending}
+          disabled={!enableButton()}
           type="submit"
           className="w-full"
         >

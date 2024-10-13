@@ -17,6 +17,8 @@ export const REVIEWER_ROLE = 'REVIEWER'
 export const SPEAKER_ROLE = 'SPEAKER'
 export const ATTENDEE_ROLE = 'ATTENDEE'
 
+export const MIN_AFFILIATION_NAME = 2
+
 // Roles ordered from the highest permissions to lowest.
 export const RoleImportance = {
   [ORGANIZER_ROLE]: 1,
