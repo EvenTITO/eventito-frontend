@@ -39,8 +39,8 @@ export default function Page({ event, chairs, tracksByChair }) {
   const deleteChairOfTrack = useDeleteChairOfTrack()
   const addTrack = useAddTrack()
   const updateTracks = useUpdateTracks()
-  const canAddOrRemoveTracks =
-    event.status === CREATED_STATUS || event.status === STARTED_STATUS
+  // TODO: solo queremos en este caso??
+  const canAddOrRemoveTracks = event.status === CREATED_STATUS // || event.status === STARTED_STATUS
 
   function getUserIdByEmail(email) {
     return chairs.filter((chair) => chair.email === email)[0]?.userId
