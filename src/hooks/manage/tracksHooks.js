@@ -35,6 +35,31 @@ export function useAddTrack() {
   })
 }
 
+export function useUpdateTracks() {
+  const eventId = getEventId()
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({ tracks }) => {
+      return await apiUpdateTracks(eventId, { tracks: tracks })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['getEventById', { eventId }],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['getEventChairs', { eventId }],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['getEventChairsByTracks', { eventId }],
+      })
+    },
+    onError: (e) => {
+      console.log(e)
+    },
+  })
+}
+
 export function useGetEventChair(userId) {
   const eventId = getEventId()
   return useQuery({

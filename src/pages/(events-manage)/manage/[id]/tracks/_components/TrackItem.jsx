@@ -1,4 +1,4 @@
-import { Trash2, Plus, UserMinus } from 'lucide-react'
+import { Trash2, Plus, UserMinus, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import ChairDialog from './ChairDialog'
@@ -12,6 +12,7 @@ export default function TrackItem({
   setTrackToDelete,
   setDeleteDialogOpen,
   addChairToTrack,
+  isDeleting,
 }) {
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
@@ -25,9 +26,14 @@ export default function TrackItem({
               setTrackToDelete(track)
               setDeleteDialogOpen(true)
             }}
+            disabled={isDeleting}
           >
-            <Trash2 className="h-4 w-4 mr-2" />
-            Eliminar track
+            {isDeleting ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Trash2 className="h-4 w-4 mr-2" />
+            )}
+            {isDeleting ? 'Eliminando...' : 'Eliminar track'}
           </Button>
         )}
       </div>
@@ -49,6 +55,7 @@ export default function TrackItem({
             size="sm"
             variant="outline"
             onClick={() => onDelete(track.track, track.mail)}
+            disabled={isDeleting}
           >
             <UserMinus className="h-4 w-4 mr-2" />
             Remover chair
@@ -61,7 +68,12 @@ export default function TrackItem({
           onAddChair={onAdd}
           isPending={addChairToTrack.isPending}
           triggerButton={
-            <Button size="sm" variant="outline" className="w-full">
+            <Button
+              size="sm"
+              variant="outline"
+              className="w-full"
+              disabled={isDeleting}
+            >
               <Plus className="h-4 w-4 mr-2" />
               Agregar chair
             </Button>
