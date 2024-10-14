@@ -1,17 +1,17 @@
 import { useState } from 'react'
-import { Input } from '@/components/ui/input'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import ButtonWithLoading from '@/components/ButtonWithLoading'
-import { Card, CardContent } from '@/components/ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Search } from 'lucide-react'
 
 export default function ChairDialog({
   track,
@@ -22,115 +22,100 @@ export default function ChairDialog({
 }) {
   const [selectedChair, setSelectedChair] = useState(null)
   const [isOpen, setIsOpen] = useState(false)
+  const [search, setSearch] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await onAddChair(track, selectedChair.email)
-    setIsOpen(false)
+    if (selectedChair) {
+      await onAddChair(track, selectedChair.email)
+      setIsOpen(false)
+    }
   }
+
+  const filteredChairs = chairs
+    .filter((chair) =>
+      (chair.fullname.toLowerCase() + chair.email.toLowerCase()).includes(
+        search.toLowerCase()
+      )
+    )
+    .slice(0, 5)
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{triggerButton}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Agregar chair</DialogTitle>
+          <DialogTitle>Agregar chair a {track}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {selectedChair ? (
-            <SelectedChairBox
-              chair={selectedChair}
-              onClearSelection={() => setSelectedChair(null)}
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Buscar chair por nombre o email"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-8"
             />
-          ) : (
-            <ChairSelectInput
-              chairs={chairs}
-              onChairSelect={setSelectedChair}
-            />
-          )}
-          <div className="w-full flex justify-end">
-            <ButtonWithLoading
-              type="submit"
-              disabled={!selectedChair}
-              isLoading={isPending}
-            >
-              Continuar
-            </ButtonWithLoading>
           </div>
+          <ScrollArea className="h-[200px] rounded-md border">
+            {filteredChairs.map((chair) => (
+              <div
+                key={chair.userId}
+                className={`flex items-center space-x-3 p-2 cursor-pointer hover:bg-secondary/10 rounded-md ${
+                  selectedChair?.userId === chair.userId
+                    ? 'bg-secondary/20'
+                    : ''
+                }`}
+                onClick={() => setSelectedChair(chair)}
+              >
+                <Avatar className="h-8 w-8">
+                  <AvatarImage
+                    src={`https://api.dicebear.com/6.x/initials/svg?seed=${chair.email}`}
+                  />
+                  <AvatarFallback>{chair.fullname[0]}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium">{chair.fullname}</p>
+                  <p className="text-xs text-muted-foreground">{chair.email}</p>
+                </div>
+              </div>
+            ))}
+          </ScrollArea>
+          {selectedChair && (
+            <div className="bg-secondary/10 p-3 rounded-md flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage
+                    src={`https://api.dicebear.com/6.x/initials/svg?seed=${selectedChair.email}`}
+                  />
+                  <AvatarFallback>{selectedChair.fullname[0]}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium">
+                    {selectedChair.fullname}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {selectedChair.email}
+                  </p>
+                </div>
+              </div>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedChair(null)}
+              >
+                Cambiar
+              </Button>
+            </div>
+          )}
+          <DialogFooter>
+            <Button type="submit" disabled={!selectedChair || isPending}>
+              {isPending ? 'Agregando...' : 'Agregar chair'}
+            </Button>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
   )
 }
-
-const ChairSelectInput = ({ chairs, onChairSelect }) => {
-  const [search, setSearch] = useState('')
-  const [filteredChairs, setFilteredChairs] = useState(chairs)
-
-  const handleSearchChange = (e) => {
-    const query = e.target.value.toLowerCase()
-    setSearch(query)
-
-    setFilteredChairs(
-      chairs.filter((chair) =>
-        (chair.fullname.toLowerCase() + chair.email.toLowerCase()).includes(
-          query
-        )
-      )
-    )
-  }
-
-  return (
-    <div className="relative">
-      <Input
-        placeholder="Ingrese un chair del evento"
-        value={search}
-        onChange={handleSearchChange}
-        required
-      />
-
-      {filteredChairs.length > 0 && (
-        <div className="absolute mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10">
-          {filteredChairs.map((chair) => (
-            <div
-              key={chair.userId}
-              className="cursor-pointer hover:bg-gray-100"
-              onClick={() => onChairSelect(chair)}
-            >
-              <ChairCard chair={chair} />
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
-
-const SelectedChairBox = ({ chair, onClearSelection }) => (
-  <Card className="flex items-center space-x-4 p-4 mb-4 border border-gray-300 rounded-md shadow-sm">
-    <ChairCard chair={chair} />
-    <Button
-      onClick={onClearSelection}
-      className="bg-red-500 text-white rounded-full h-8 w-8 flex justify-center items-center"
-    >
-      X
-    </Button>
-  </Card>
-)
-
-const ChairCard = ({ chair }) => (
-  <Card className="flex items-center p-2 space-x-2 hover:shadow-md transition-all duration-200 group">
-    <Avatar className="h-8 w-8">
-      <AvatarImage
-        src={`https://api.dicebear.com/6.x/identicon/svg?seed=${chair.userId}`}
-      />
-      <AvatarFallback>{chair.fullname.charAt(0) || ''}</AvatarFallback>
-    </Avatar>
-    <div className="flex-grow min-w-0">
-      <p className="text-sm font-medium truncate group-hover:text-primary transition-colors duration-200">
-        {chair.fullname}
-      </p>
-      <p className="text-xs text-muted-foreground truncate">{chair.email}</p>
-    </div>
-  </Card>
-)

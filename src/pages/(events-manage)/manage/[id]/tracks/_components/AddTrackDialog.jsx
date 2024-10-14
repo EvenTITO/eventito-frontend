@@ -1,15 +1,15 @@
 import { useState } from 'react'
+import { Plus } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import ButtonWithLoading from '@/components/ButtonWithLoading'
 
 export default function AddTrackDialog({ onSave }) {
   const [track, setTrack] = useState('')
@@ -27,7 +27,10 @@ export default function AddTrackDialog({ onSave }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Agregar track</Button>
+        <Button variant="outline">
+          <Plus className="h-4 w-4 mr-2" />
+          Agregar track
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -35,23 +38,19 @@ export default function AddTrackDialog({ onSave }) {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="track">Título del track</Label>
             <Input
               id="track"
+              placeholder="Título del track"
               value={track}
               onChange={(e) => setTrack(e.target.value)}
               required
             />
           </div>
-          <div className="w-full flex justify-end">
-            <ButtonWithLoading
-              type="submit"
-              disabled={!track}
-              //isLoading={isPending}
-            >
-              Continuar
-            </ButtonWithLoading>
-          </div>
+          <DialogFooter>
+            <Button type="submit" disabled={!track}>
+              Agregar
+            </Button>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
