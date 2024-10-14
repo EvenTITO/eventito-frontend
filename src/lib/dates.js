@@ -30,7 +30,7 @@ export function dateIsValid(minDate = null, maxDate = null) {
 
 export function timeIsUp(date = null, time = null){
   if( !date ){
-    throw Error("Invalid 'date' parameter exception")
+    return false
   }
   const _time = time ? time: "00:00:00"
   const _date = date

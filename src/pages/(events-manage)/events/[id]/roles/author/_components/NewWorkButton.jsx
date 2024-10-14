@@ -7,8 +7,9 @@ import { useNavigator } from '@/lib/navigation'
 export default function NewWorkButton() {
   const navigator = useNavigator()
   const { data: eventData } = useGetEvent()
-  const deadlineDate = getDeadlineSubmissions(eventData)?.date
-  const deadlineTime = getDeadlineSubmissions(eventData)?.time
+  const deadlineInfo = getDeadlineSubmissions(eventData)
+  const deadlineDate = deadlineInfo?.date
+  const deadlineTime = deadlineInfo?.time
 
   function handleNewSubmission() {
     navigator.foward('new-work')
