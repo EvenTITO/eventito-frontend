@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Search } from 'lucide-react'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
 export default function ChairDialog({
   track,
@@ -110,9 +111,13 @@ export default function ChairDialog({
             </div>
           )}
           <DialogFooter>
-            <Button type="submit" disabled={!selectedChair || isPending}>
-              {isPending ? 'Agregando...' : 'Agregar chair'}
-            </Button>
+            <ButtonWithLoading
+              type="submit"
+              disabled={!selectedChair}
+              isLoading={isPending}
+            >
+              Agregar chair
+            </ButtonWithLoading>
           </DialogFooter>
         </form>
       </DialogContent>
