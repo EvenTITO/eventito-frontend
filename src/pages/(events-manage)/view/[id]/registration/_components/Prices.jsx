@@ -13,7 +13,9 @@ export default function Prices({ event }) {
               <CardTitle>{price.name}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-1xl font-bold mb-2">${price.value}</p>
+              <p className="text-1xl font-bold mb-2">
+                {price.value === 0 ? 'Gratuita' : '$' + price.value}
+              </p>
               <p className="text-1xl mb-2">{price.description}</p>
               {price.related_date && (
                 <p className="text-sm text-muted-foreground flex items-center">
