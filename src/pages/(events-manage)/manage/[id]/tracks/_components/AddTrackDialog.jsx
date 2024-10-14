@@ -10,15 +10,16 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
-export default function AddTrackDialog({ onSave }) {
+export default function AddTrackDialog({ onSave, isLoading }) {
   const [track, setTrack] = useState('')
   const [open, setOpen] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (track) {
-      onSave(track)
+      await onSave(track)
       setTrack('')
       setOpen(false)
     }
@@ -47,9 +48,13 @@ export default function AddTrackDialog({ onSave }) {
             />
           </div>
           <DialogFooter>
-            <Button type="submit" disabled={!track}>
+            <ButtonWithLoading
+              type="submit"
+              disabled={!track}
+              isLoading={isLoading}
+            >
               Agregar
-            </Button>
+            </ButtonWithLoading>
           </DialogFooter>
         </form>
       </DialogContent>

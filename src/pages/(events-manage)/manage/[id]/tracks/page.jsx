@@ -96,7 +96,12 @@ export default function Page({ event, chairs, tracksByChair }) {
       <TitlePage
         title={'Administración de tracks'}
         rightComponent={
-          canAddOrRemoveTracks && <AddTrackDialog onSave={handleAddTrack} />
+          canAddOrRemoveTracks && (
+            <AddTrackDialog
+              onSave={handleAddTrack}
+              isLoading={addTrack.isPending}
+            />
+          )
         }
       />
       <div className="space-y-4 pt-6">
