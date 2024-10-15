@@ -12,6 +12,18 @@ export default function PricesTable({
   onUpdatePrice,
   onDeletePrice,
 }) {
+  if (prices.length === 0) {
+    return (
+      <div className="text-center py-10">
+        <h2 className="text-xl font-semibold mb-2">Ninguna tarifa cargada</h2>
+        <p className="text-gray-500 mb-4">
+          Agregar una nueva para visualizarla. Debe configurar al menos una
+          tarifa para publicar el evento.
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-2">
       {prices.map((price) => (

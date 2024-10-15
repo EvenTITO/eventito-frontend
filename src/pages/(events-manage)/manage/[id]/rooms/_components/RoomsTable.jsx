@@ -3,7 +3,18 @@ import { Button } from '@/components/ui/button.jsx'
 import RoomDialog from '@/pages/(events-manage)/manage/[id]/rooms/_components/RoomDialog.jsx'
 
 export default function RoomsTable({ rooms, onUpdate, onDelete }) {
-  return rooms.length > 0 ? (
+  if (rooms.length === 0) {
+    return (
+      <div className="text-center py-10">
+        <h2 className="text-xl font-semibold mb-2">Ninguna sala cargada</h2>
+        <p className="text-gray-500 mb-4">
+          Agregar una nueva para visualizarla
+        </p>
+      </div>
+    )
+  }
+
+  return (
     <div className="space-y-2">
       {rooms.map((room, index) => (
         <RoomItem
@@ -14,11 +25,6 @@ export default function RoomsTable({ rooms, onUpdate, onDelete }) {
           onDelete={onDelete}
         />
       ))}
-    </div>
-  ) : (
-    <div className="text-center py-10">
-      <h2 className="text-xl font-semibold mb-2">Ninguna sala cargada</h2>
-      <p className="text-gray-500 mb-4">Agregar una nueva para visualizarla</p>
     </div>
   )
 }
