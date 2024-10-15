@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import PriceDialog from './PriceDialog'
 import { INSCRIPTION_ROLES_LABELS } from '@/lib/Constants.js'
 import { getDateByName } from '@/lib/utils.js'
+import MakeEventFreeButton from './MakeEventFreeButton'
 
 export default function PricesTable({
   prices,
@@ -11,6 +12,7 @@ export default function PricesTable({
   onToggleExpand,
   onUpdatePrice,
   onDeletePrice,
+  onMakeEventFree,
 }) {
   if (prices.length === 0) {
     return (
@@ -20,6 +22,10 @@ export default function PricesTable({
           Agregar una nueva para visualizarla. Debe configurar al menos una
           tarifa para publicar el evento.
         </p>
+        <div className="flex flex-col space-y-4 max-w-sm mx-auto">
+          <PriceDialog onSave={onUpdatePrice} />
+          <MakeEventFreeButton onMakeEventFree={onMakeEventFree} />
+        </div>
       </div>
     )
   }

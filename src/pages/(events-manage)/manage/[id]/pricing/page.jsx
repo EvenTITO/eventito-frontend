@@ -73,6 +73,27 @@ export default function Page({ prices, dates }) {
     }
   }
 
+  const handleMakeEventFree = async (freePrice) => {
+    try {
+      await addOrModifyFare.mutateAsync({
+        newFare: freePrice,
+        eventPrices: prices,
+        eventDates: dates,
+      })
+      toast({
+        title: 'Evento gratuito',
+        description: 'El evento ha sido configurado como gratuito.',
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description:
+          'Error al configurar el evento como gratuito. Intente nuevamente.',
+        variant: 'destructive',
+      })
+    }
+  }
+
   return (
     <ContainerPage>
       <TitlePage
@@ -86,6 +107,7 @@ export default function Page({ prices, dates }) {
         onToggleExpand={togglePriceExpansion}
         onUpdatePrice={handleUpdatePrice}
         onDeletePrice={handleDeletePrice}
+        onMakeEventFree={handleMakeEventFree}
       />
       <div className="space-y-6 pt-6"></div>
     </ContainerPage>
