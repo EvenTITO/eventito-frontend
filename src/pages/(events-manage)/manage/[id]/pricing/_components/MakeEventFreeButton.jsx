@@ -1,6 +1,5 @@
-import { Button } from '@/components/ui/button'
-import { Zap } from 'lucide-react'
 import { SPEAKER_ROLE, ATTENDEE_ROLE } from '@/lib/Constants.js'
+import ConfirmFreeEventDialog from './ConfirmFreeEventDialog'
 
 export default function MakeEventFreeButton({ onMakeEventFree }) {
   const handleMakeEventFree = () => {
@@ -15,10 +14,5 @@ export default function MakeEventFreeButton({ onMakeEventFree }) {
     onMakeEventFree(freePrice)
   }
 
-  return (
-    <Button onClick={handleMakeEventFree} className="w-full">
-      <Zap className="h-4 w-4 mr-2" />
-      Hacer evento gratuito
-    </Button>
-  )
+  return <ConfirmFreeEventDialog onConfirm={handleMakeEventFree} />
 }

@@ -4,6 +4,7 @@ import PriceDialog from './PriceDialog'
 import { INSCRIPTION_ROLES_LABELS } from '@/lib/Constants.js'
 import { getDateByName } from '@/lib/utils.js'
 import MakeEventFreeButton from './MakeEventFreeButton'
+import ConfirmDeletePriceDialog from './ConfirmDeletePriceDialog'
 
 export default function PricesTable({
   prices,
@@ -99,14 +100,10 @@ function PriceItem({
           </div>
           <div className="space-x-2">
             <PriceDialog price={price} dates={dates} onSave={onUpdatePrice} />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onDeletePrice(price.name)}
-            >
-              <X className="h-4 w-4 mr-2" />
-              Borrar
-            </Button>
+            <ConfirmDeletePriceDialog
+              priceName={price.name}
+              onConfirm={() => onDeletePrice(price.name)}
+            />
           </div>
         </div>
       )}
