@@ -14,19 +14,12 @@ import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Calendar, Plus, DollarSign } from 'lucide-react'
-import PriceRoleSelector from './PriceRoleSelector'
-import {
-  INSCRIPTION_ROLES_LABELS,
-  INSCRIPTION_ROLES_LABELS_REVERSE,
-} from '@/lib/Constants.js'
+import { SPEAKER_ROLE, ATTENDEE_ROLE } from '@/lib/Constants.js'
 import { generateRelatedDate, getDateByName } from '@/lib/utils.js'
 
 export default function PriceDialog({ price, dates, onSave }) {
   const [isOpen, setIsOpen] = useState(false)
   const [formData, setFormData] = useState(price || defaultFormData)
-  const [selectedRole, setSelectedRole] = useState(
-    formData.roles.map((r) => INSCRIPTION_ROLES_LABELS[r]).join(', ')
-  )
   const [relatedDate, setRelatedDate] = useState(
     getDateByName(dates, price?.related_date) || ''
   )
@@ -45,20 +38,20 @@ export default function PriceDialog({ price, dates, onSave }) {
     }))
   }
 
-  const handleSwitchChange = (checked) => {
+  const handleSwitchChange = (name, checked) => {
     setFormData((prev) => ({
       ...prev,
-      need_verification: checked,
+      [name]: checked,
     }))
   }
 
-  const handleChangeRole = (e) => {
-    setSelectedRole(e)
-    if (e === 'Autor, Asistente') {
-      setFormData({ ...formData, roles: Object.keys(INSCRIPTION_ROLES_LABELS) })
-    } else {
-      setFormData({ ...formData, roles: [INSCRIPTION_ROLES_LABELS_REVERSE[e]] })
-    }
+  const handleRoleChange = (role, checked) => {
+    setFormData((prev) => {
+      const newRoles = checked
+        ? [...prev.roles, role]
+        : prev.roles.filter((r) => r !== role)
+      return { ...prev, roles: newRoles }
+    })
   }
 
   const handleChangeRelatedDate = (e) => {
@@ -72,6 +65,8 @@ export default function PriceDialog({ price, dates, onSave }) {
     setIsOpen(false)
   }
 
+  const isRoleSelected = formData.roles.length > 0
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -80,14 +75,14 @@ export default function PriceDialog({ price, dates, onSave }) {
           {price ? 'Editar tarifa' : 'Nueva tarifa'}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[550px] h-[90vh] flex flex-col">
+      <DialogContent className="sm:max-w-[650px] h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
             {price ? 'Editar tarifa' : 'Agregar nueva tarifa'}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex-grow overflow-y-auto">
-          <div className="space-y-6 py-4">
+          <div className="space-y-6 py-4 px-6">
             <div className="space-y-4">
               <h2 className="text-lg font-semibold">Información básica</h2>
               <div className="space-y-2">
@@ -138,52 +133,83 @@ export default function PriceDialog({ price, dates, onSave }) {
 
             <div className="space-y-4">
               <h2 className="text-lg font-semibold">Configuración adicional</h2>
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label
-                    htmlFor="need_verification"
-                    className="text-sm font-medium"
-                  >
-                    Requiere verificación
-                  </Label>
-                  <p className="text-sm text-gray-500">
-                    Activa si esta tarifa necesita ser verificada
-                  </p>
-                </div>
-                <Switch
-                  id="need_verification"
-                  checked={formData.need_verification}
-                  onCheckedChange={handleSwitchChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="related_date" className="text-sm font-medium">
-                  Fecha límite (opcional)
-                </Label>
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                  <Input
-                    id="related_date"
-                    name="related_date"
-                    type="date"
-                    value={relatedDate.date}
-                    onChange={handleChangeRelatedDate}
-                    className="pl-10"
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label
+                      htmlFor="need_verification"
+                      className="text-sm font-medium"
+                    >
+                      Requiere verificación
+                    </Label>
+                    <p className="text-sm text-gray-500">
+                      Activa si esta tarifa necesita ser verificada
+                    </p>
+                  </div>
+                  <Switch
+                    id="need_verification"
+                    checked={formData.need_verification}
+                    onCheckedChange={(checked) =>
+                      handleSwitchChange('need_verification', checked)
+                    }
                   />
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="roles" className="text-sm font-medium">
-                  Roles
-                </Label>
-                <PriceRoleSelector
-                  roles={[
-                    ...Object.values(INSCRIPTION_ROLES_LABELS),
-                    'Autor, Asistente',
-                  ]}
-                  selectedRole={selectedRole}
-                  setSelectedRole={handleChangeRole}
-                />
+                <div className="space-y-2">
+                  <Label htmlFor="related_date" className="text-sm font-medium">
+                    Fecha límite (opcional)
+                  </Label>
+                  <div className="relative">
+                    <Calendar className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                    <Input
+                      id="related_date"
+                      name="related_date"
+                      type="date"
+                      value={relatedDate.date}
+                      onChange={handleChangeRelatedDate}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">
+                    Roles aplicables
+                  </Label>
+                  <p className="text-sm text-gray-500 mb-2">
+                    Selecciona al menos un rol para esta tarifa
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label
+                        htmlFor="role-attendee"
+                        className="text-sm font-medium"
+                      >
+                        Asistentes
+                      </Label>
+                      <Switch
+                        id="role-attendee"
+                        checked={formData.roles.includes(ATTENDEE_ROLE)}
+                        onCheckedChange={(checked) =>
+                          handleRoleChange(ATTENDEE_ROLE, checked)
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <Label
+                        htmlFor="role-author"
+                        className="text-sm font-medium"
+                      >
+                        Autores
+                      </Label>
+                      <Switch
+                        id="role-author"
+                        checked={formData.roles.includes(SPEAKER_ROLE)}
+                        onCheckedChange={(checked) =>
+                          handleRoleChange(SPEAKER_ROLE, checked)
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -204,7 +230,7 @@ export default function PriceDialog({ price, dates, onSave }) {
               !formData.name ||
               !formData.description ||
               formData.value === '' ||
-              !selectedRole
+              !isRoleSelected
             }
           >
             {price ? 'Guardar cambios' : 'Crear tarifa'}
