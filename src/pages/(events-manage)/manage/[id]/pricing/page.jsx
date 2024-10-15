@@ -98,7 +98,7 @@ export default function Page({ prices, dates }) {
     <ContainerPage>
       <TitlePage
         title={'Tarifas del evento'}
-        rightComponent={<PriceDialog onSave={handleAddPrice} />}
+        rightComponent={<PriceDialog onSave={handleAddPrice} dates={dates} />}
       />
       <PricesTable
         prices={prices}
