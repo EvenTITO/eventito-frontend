@@ -9,6 +9,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import ButtonWithLoading from '@/components/ButtonWithLoading'
 import { Edit2, Plus } from 'lucide-react'
 
@@ -19,22 +20,28 @@ export default function RoomDialog({ room, onSave, index = undefined }) {
   useEffect(() => {
     if (!room) {
       setFormData(defaultEmptyRoom)
+    } else {
+      setFormData(room)
     }
   }, [room, isOpen])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await onSave(formData, index)
+    const submittedData = {
+      ...formData,
+      capacity: formData.capacity ? parseInt(formData.capacity, 10) : null,
+    }
+    await onSave(submittedData, index)
     setIsOpen(false)
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" size="sm">
           {room ? (
             <>
-              <Edit2 className="h-4 w-4 mr-2" /> Editar sala
+              <Edit2 className="h-4 w-4 mr-2" /> Editar
             </>
           ) : (
             <>
@@ -43,15 +50,17 @@ export default function RoomDialog({ room, onSave, index = undefined }) {
           )}
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
             {room ? 'Editar sala' : 'Agregar nueva sala'}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="name">Ubicación</Label>
+          <div className="space-y-2">
+            <Label htmlFor="name" className="text-right">
+              Nombre de la sala
+            </Label>
             <Input
               id="name"
               name="name"
@@ -60,27 +69,41 @@ export default function RoomDialog({ room, onSave, index = undefined }) {
                 setFormData({ ...formData, name: e.target.value })
               }
               required
-              placeholder={'Ingrese una ubicación'}
+              placeholder="Ej: Auditorio Principal"
             />
           </div>
-          <div>
-            <Label htmlFor="description">Descripción</Label>
-            <Input
+          <div className="space-y-2">
+            <Label htmlFor="description" className="text-right">
+              Descripción (opcional)
+            </Label>
+            <Textarea
               id="description"
               name="description"
               value={formData.description}
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              required
-              placeholder={'Ingrese una descripción'}
+              placeholder="Ej: Equipado con proyector y sistema de sonido"
+              rows={3}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="capacity" className="text-right">
+              Capacidad (opcional)
+            </Label>
+            <Input
+              id="capacity"
+              name="capacity"
+              type="number"
+              value={formData.capacity || ''}
+              onChange={(e) =>
+                setFormData({ ...formData, capacity: e.target.value })
+              }
+              placeholder="Ej: 200"
             />
           </div>
           <div className="w-full flex justify-end">
-            <ButtonWithLoading
-              type="submit"
-              disabled={!formData.name || !formData.description}
-            >
+            <ButtonWithLoading type="submit" disabled={!formData.name}>
               Guardar
             </ButtonWithLoading>
           </div>
@@ -93,4 +116,5 @@ export default function RoomDialog({ room, onSave, index = undefined }) {
 const defaultEmptyRoom = {
   name: '',
   description: '',
+  capacity: '',
 }
