@@ -1,4 +1,4 @@
-import { Calendar, ChevronDown, ChevronRight, Shield, X } from 'lucide-react'
+import { Calendar, ChevronDown, ChevronRight, Shield } from 'lucide-react'
 import PriceDialog from './PriceDialog'
 import { INSCRIPTION_ROLES_LABELS } from '@/lib/Constants.js'
 import { getDateByName } from '@/lib/utils.js'
@@ -42,6 +42,7 @@ export default function PricesTable({
           onToggleExpand={() => onToggleExpand(price.name)}
           onUpdatePrice={onUpdatePrice}
           onDeletePrice={onDeletePrice}
+          isLoading={isLoading}
         />
       ))}
     </div>
@@ -55,6 +56,7 @@ function PriceItem({
   onToggleExpand,
   onUpdatePrice,
   onDeletePrice,
+  isLoading,
 }) {
   return (
     <div className="border border-gray-200 rounded-lg overflow-hidden">
@@ -99,7 +101,12 @@ function PriceItem({
             </p>
           </div>
           <div className="space-x-2">
-            <PriceDialog price={price} dates={dates} onSave={onUpdatePrice} />
+            <PriceDialog
+              price={price}
+              dates={dates}
+              onSave={onUpdatePrice}
+              isLoading={isLoading}
+            />
             <ConfirmDeletePriceDialog
               priceName={price.name}
               onConfirm={() => onDeletePrice(price.name)}
