@@ -1,24 +1,25 @@
 import { useState } from 'react'
+import { Plus } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import ButtonWithLoading from '@/components/ButtonWithLoading'
 
-export default function AddTrackDialog({ onSave }) {
+export default function AddTrackDialog({ onSave, isLoading }) {
   const [track, setTrack] = useState('')
   const [open, setOpen] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (track) {
-      onSave(track)
+      await onSave(track)
       setTrack('')
       setOpen(false)
     }
@@ -27,7 +28,10 @@ export default function AddTrackDialog({ onSave }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Agregar track</Button>
+        <Button variant="outline">
+          <Plus className="h-4 w-4 mr-2" />
+          Agregar track
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -35,23 +39,23 @@ export default function AddTrackDialog({ onSave }) {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="track">Título del track</Label>
             <Input
               id="track"
+              placeholder="Título del track"
               value={track}
               onChange={(e) => setTrack(e.target.value)}
               required
             />
           </div>
-          <div className="w-full flex justify-end">
+          <DialogFooter>
             <ButtonWithLoading
               type="submit"
               disabled={!track}
-              //isLoading={isPending}
+              isLoading={isLoading}
             >
-              Continuar
+              Agregar
             </ButtonWithLoading>
-          </div>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>

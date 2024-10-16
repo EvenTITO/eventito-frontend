@@ -73,11 +73,38 @@ export default function Page({ prices, dates }) {
     }
   }
 
+  const handleMakeEventFree = async (freePrice) => {
+    try {
+      await addOrModifyFare.mutateAsync({
+        newFare: freePrice,
+        eventPrices: prices,
+        eventDates: dates,
+      })
+      toast({
+        title: 'Evento gratuito',
+        description: 'El evento ha sido configurado como gratuito.',
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description:
+          'Error al configurar el evento como gratuito. Intente nuevamente.',
+        variant: 'destructive',
+      })
+    }
+  }
+
   return (
     <ContainerPage>
       <TitlePage
         title={'Tarifas del evento'}
-        rightComponent={<PriceDialog onSave={handleAddPrice} />}
+        rightComponent={
+          <PriceDialog
+            onSave={handleAddPrice}
+            isLoading={addOrModifyFare.isPending}
+            dates={dates}
+          />
+        }
       />
       <PricesTable
         prices={prices}
@@ -86,6 +113,8 @@ export default function Page({ prices, dates }) {
         onToggleExpand={togglePriceExpansion}
         onUpdatePrice={handleUpdatePrice}
         onDeletePrice={handleDeletePrice}
+        onMakeEventFree={handleMakeEventFree}
+        isLoading={addOrModifyFare.isPending || deletePayment.isPending}
       />
       <div className="space-y-6 pt-6"></div>
     </ContainerPage>

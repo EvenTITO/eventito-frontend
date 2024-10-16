@@ -19,7 +19,8 @@ export function useAddTrack() {
   return useMutation({
     mutationFn: async ({ eventTracks, track }) => {
       const newTracks = [...eventTracks, track]
-      return await apiUpdateTracks(eventId, { tracks: newTracks })
+      const body = [...new Set(newTracks)]
+      return await apiUpdateTracks(eventId, { tracks: body })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -31,6 +32,32 @@ export function useAddTrack() {
       queryClient.invalidateQueries({
         queryKey: ['getEventChairsByTracks', { eventId }],
       })
+    },
+  })
+}
+
+export function useUpdateTracks() {
+  const eventId = getEventId()
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({ tracks }) => {
+      const body = [...new Set(tracks)]
+      return await apiUpdateTracks(eventId, { tracks: body })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['getEventById', { eventId }],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['getEventChairs', { eventId }],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['getEventChairsByTracks', { eventId }],
+      })
+    },
+    onError: (e) => {
+      console.log(e)
     },
   })
 }

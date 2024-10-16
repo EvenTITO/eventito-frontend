@@ -1,8 +1,9 @@
-import { Calendar, ChevronDown, ChevronRight, Shield, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Calendar, ChevronDown, ChevronRight, Shield } from 'lucide-react'
 import PriceDialog from './PriceDialog'
 import { INSCRIPTION_ROLES_LABELS } from '@/lib/Constants.js'
 import { getDateByName } from '@/lib/utils.js'
+import MakeEventFreeButton from './MakeEventFreeButton'
+import ConfirmDeletePriceDialog from './ConfirmDeletePriceDialog'
 
 export default function PricesTable({
   prices,
@@ -11,7 +12,28 @@ export default function PricesTable({
   onToggleExpand,
   onUpdatePrice,
   onDeletePrice,
+  onMakeEventFree,
+  isLoading,
 }) {
+  if (prices.length === 0) {
+    return (
+      <div className="text-center py-10">
+        <h2 className="text-xl font-semibold mb-2">Ninguna tarifa cargada</h2>
+        <p className="text-gray-500 mb-4">
+          Agregar una nueva para visualizarla. Debe configurar al menos una
+          tarifa para publicar el evento.
+        </p>
+        <div className="flex flex-col space-y-4 max-w-sm mx-auto">
+          <PriceDialog onSave={onUpdatePrice} isLoading={isLoading} />
+          <MakeEventFreeButton
+            onMakeEventFree={onMakeEventFree}
+            isLoading={isLoading}
+          />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-2">
       {prices.map((price) => (
@@ -23,6 +45,7 @@ export default function PricesTable({
           onToggleExpand={() => onToggleExpand(price.name)}
           onUpdatePrice={onUpdatePrice}
           onDeletePrice={onDeletePrice}
+          isLoading={isLoading}
         />
       ))}
     </div>
@@ -36,7 +59,12 @@ function PriceItem({
   onToggleExpand,
   onUpdatePrice,
   onDeletePrice,
+  isLoading,
 }) {
+  async function handleDelete(priceName) {
+    await onDeletePrice(priceName)
+  }
+
   return (
     <div className="border border-gray-200 rounded-lg overflow-hidden">
       <div
@@ -80,15 +108,17 @@ function PriceItem({
             </p>
           </div>
           <div className="space-x-2">
-            <PriceDialog price={price} dates={dates} onSave={onUpdatePrice} />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onDeletePrice(price.name)}
-            >
-              <X className="h-4 w-4 mr-2" />
-              Borrar
-            </Button>
+            <PriceDialog
+              price={price}
+              dates={dates}
+              onSave={onUpdatePrice}
+              isLoading={isLoading}
+            />
+            <ConfirmDeletePriceDialog
+              priceName={price.name}
+              onConfirm={() => handleDelete(price.name)}
+              isLoading={isLoading}
+            />
           </div>
         </div>
       )}
