@@ -24,8 +24,9 @@ import {
 } from '@/components/ui/popover'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
-export default function PriceDialog({ price, dates, onSave }) {
+export default function PriceDialog({ price, dates, onSave, isLoading }) {
   const [isOpen, setIsOpen] = useState(false)
   const [formData, setFormData] = useState(price || defaultFormData)
   const [relatedDate, setRelatedDate] = useState(
@@ -68,9 +69,9 @@ export default function PriceDialog({ price, dates, onSave }) {
     setRelatedDate(relatedDate)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    onSave({ ...formData, related_date: relatedDate })
+    await onSave({ ...formData, related_date: relatedDate })
     setIsOpen(false)
   }
 
@@ -253,9 +254,10 @@ export default function PriceDialog({ price, dates, onSave }) {
           >
             Cancelar
           </Button>
-          <Button
+          <ButtonWithLoading
             type="submit"
             onClick={handleSubmit}
+            isLoading={isLoading}
             disabled={
               !formData.name ||
               !formData.description ||
@@ -264,7 +266,7 @@ export default function PriceDialog({ price, dates, onSave }) {
             }
           >
             {price ? 'Guardar cambios' : 'Crear tarifa'}
-          </Button>
+          </ButtonWithLoading>
         </DialogFooter>
       </DialogContent>
     </Dialog>

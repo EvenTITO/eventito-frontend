@@ -98,7 +98,13 @@ export default function Page({ prices, dates }) {
     <ContainerPage>
       <TitlePage
         title={'Tarifas del evento'}
-        rightComponent={<PriceDialog onSave={handleAddPrice} dates={dates} />}
+        rightComponent={
+          <PriceDialog
+            onSave={handleAddPrice}
+            isLoading={addOrModifyFare.isPending}
+            dates={dates}
+          />
+        }
       />
       <PricesTable
         prices={prices}
@@ -108,6 +114,7 @@ export default function Page({ prices, dates }) {
         onUpdatePrice={handleUpdatePrice}
         onDeletePrice={handleDeletePrice}
         onMakeEventFree={handleMakeEventFree}
+        isLoading={addOrModifyFare.isPending || deletePayment.isPending}
       />
       <div className="space-y-6 pt-6"></div>
     </ContainerPage>

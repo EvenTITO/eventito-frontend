@@ -1,5 +1,4 @@
 import { Calendar, ChevronDown, ChevronRight, Shield, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import PriceDialog from './PriceDialog'
 import { INSCRIPTION_ROLES_LABELS } from '@/lib/Constants.js'
 import { getDateByName } from '@/lib/utils.js'
@@ -14,6 +13,7 @@ export default function PricesTable({
   onUpdatePrice,
   onDeletePrice,
   onMakeEventFree,
+  isLoading,
 }) {
   if (prices.length === 0) {
     return (
@@ -24,7 +24,7 @@ export default function PricesTable({
           tarifa para publicar el evento.
         </p>
         <div className="flex flex-col space-y-4 max-w-sm mx-auto">
-          <PriceDialog onSave={onUpdatePrice} />
+          <PriceDialog onSave={onUpdatePrice} isLoading={isLoading} />
           <MakeEventFreeButton onMakeEventFree={onMakeEventFree} />
         </div>
       </div>
