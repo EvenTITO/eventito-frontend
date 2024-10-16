@@ -9,8 +9,9 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Zap } from 'lucide-react'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
-export default function ConfirmFreeEventDialog({ onConfirm }) {
+export default function ConfirmFreeEventDialog({ onConfirm, isLoading }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -31,7 +32,9 @@ export default function ConfirmFreeEventDialog({ onConfirm }) {
           <Button variant="outline" className="mr-2">
             Cancelar
           </Button>
-          <Button onClick={onConfirm}>Continuar</Button>
+          <ButtonWithLoading onClick={onConfirm} isLoading={isLoading}>
+            Continuar
+          </ButtonWithLoading>
         </DialogFooter>
       </DialogContent>
     </Dialog>

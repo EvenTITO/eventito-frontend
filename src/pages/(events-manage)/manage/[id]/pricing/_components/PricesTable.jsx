@@ -25,7 +25,10 @@ export default function PricesTable({
         </p>
         <div className="flex flex-col space-y-4 max-w-sm mx-auto">
           <PriceDialog onSave={onUpdatePrice} isLoading={isLoading} />
-          <MakeEventFreeButton onMakeEventFree={onMakeEventFree} />
+          <MakeEventFreeButton
+            onMakeEventFree={onMakeEventFree}
+            isLoading={isLoading}
+          />
         </div>
       </div>
     )

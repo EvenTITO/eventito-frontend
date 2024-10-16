@@ -1,7 +1,7 @@
 import { SPEAKER_ROLE, ATTENDEE_ROLE } from '@/lib/Constants.js'
 import ConfirmFreeEventDialog from './ConfirmFreeEventDialog'
 
-export default function MakeEventFreeButton({ onMakeEventFree }) {
+export default function MakeEventFreeButton({ onMakeEventFree, isLoading }) {
   const handleMakeEventFree = () => {
     const freePrice = {
       name: 'Tarifa gratuita del evento',
@@ -14,5 +14,10 @@ export default function MakeEventFreeButton({ onMakeEventFree }) {
     onMakeEventFree(freePrice)
   }
 
-  return <ConfirmFreeEventDialog onConfirm={handleMakeEventFree} />
+  return (
+    <ConfirmFreeEventDialog
+      onConfirm={handleMakeEventFree}
+      isLoading={isLoading}
+    />
+  )
 }
