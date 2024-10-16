@@ -9,8 +9,13 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { X } from 'lucide-react'
+import ButtonWithLoading from '@/components/ButtonWithLoading'
 
-export default function ConfirmDeletePriceDialog({ priceName, onConfirm }) {
+export default function ConfirmDeletePriceDialog({
+  priceName,
+  onConfirm,
+  isLoading,
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -31,9 +36,13 @@ export default function ConfirmDeletePriceDialog({ priceName, onConfirm }) {
           <Button variant="outline" className="mr-2">
             Cancelar
           </Button>
-          <Button variant="destructive" onClick={onConfirm}>
+          <ButtonWithLoading
+            variant="destructive"
+            onClick={onConfirm}
+            isLoading={isLoading}
+          >
             Continuar
-          </Button>
+          </ButtonWithLoading>
         </DialogFooter>
       </DialogContent>
     </Dialog>

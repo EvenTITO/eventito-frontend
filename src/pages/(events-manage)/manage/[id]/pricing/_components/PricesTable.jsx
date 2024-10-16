@@ -58,6 +58,10 @@ function PriceItem({
   onDeletePrice,
   isLoading,
 }) {
+  async function handleDelete(priceName) {
+    await onDeletePrice(priceName)
+  }
+
   return (
     <div className="border border-gray-200 rounded-lg overflow-hidden">
       <div
@@ -109,7 +113,8 @@ function PriceItem({
             />
             <ConfirmDeletePriceDialog
               priceName={price.name}
-              onConfirm={() => onDeletePrice(price.name)}
+              onConfirm={() => handleDelete(price.name)}
+              isLoading={isLoading}
             />
           </div>
         </div>
