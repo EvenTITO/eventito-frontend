@@ -16,6 +16,7 @@ import { Edit2, Plus } from 'lucide-react'
 export default function RoomDialog({ room, onSave, index = undefined }) {
   const [formData, setFormData] = useState(room || defaultEmptyRoom)
   const [isOpen, setIsOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (!room) {
@@ -31,7 +32,9 @@ export default function RoomDialog({ room, onSave, index = undefined }) {
       ...formData,
       capacity: formData.capacity ? parseInt(formData.capacity, 10) : null,
     }
+    setIsLoading(true)
     await onSave(submittedData, index)
+    setIsLoading(false)
     setIsOpen(false)
   }
 
@@ -103,7 +106,11 @@ export default function RoomDialog({ room, onSave, index = undefined }) {
             />
           </div>
           <div className="w-full flex justify-end">
-            <ButtonWithLoading type="submit" disabled={!formData.name}>
+            <ButtonWithLoading
+              type="submit"
+              disabled={!formData.name}
+              isLoading={isLoading}
+            >
               Guardar
             </ButtonWithLoading>
           </div>
