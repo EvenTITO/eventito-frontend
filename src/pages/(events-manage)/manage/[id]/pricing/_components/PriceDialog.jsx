@@ -13,9 +13,17 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
-import { Calendar, Plus, DollarSign } from 'lucide-react'
+import { Calendar as CalendarIcon, Plus, DollarSign } from 'lucide-react'
 import { SPEAKER_ROLE, ATTENDEE_ROLE } from '@/lib/Constants.js'
 import { generateRelatedDate, getDateByName } from '@/lib/utils.js'
+import { Calendar } from '@/components/ui/calendar'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
 
 export default function PriceDialog({ price, dates, onSave }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -54,8 +62,9 @@ export default function PriceDialog({ price, dates, onSave }) {
     })
   }
 
-  const handleChangeRelatedDate = (e) => {
-    const relatedDate = generateRelatedDate(formData, e.target.value)
+  const handleChangeRelatedDate = (date) => {
+    const formattedDate = format(date, 'yyyy-MM-dd')
+    const relatedDate = generateRelatedDate(formData, formattedDate)
     setRelatedDate(relatedDate)
   }
 
@@ -158,17 +167,38 @@ export default function PriceDialog({ price, dates, onSave }) {
                   <Label htmlFor="related_date" className="text-sm font-medium">
                     Fecha límite (opcional)
                   </Label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                    <Input
-                      id="related_date"
-                      name="related_date"
-                      type="date"
-                      value={relatedDate.date}
-                      onChange={handleChangeRelatedDate}
-                      className="pl-10"
-                    />
-                  </div>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={'outline'}
+                        className={`w-full justify-start text-left font-normal ${
+                          !relatedDate.date && 'text-muted-foreground'
+                        }`}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {relatedDate.date ? (
+                          format(new Date(relatedDate.date), 'PPP', {
+                            locale: es,
+                          })
+                        ) : (
+                          <span>Seleccionar fecha</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={
+                          relatedDate.date
+                            ? new Date(relatedDate.date)
+                            : undefined
+                        }
+                        onSelect={handleChangeRelatedDate}
+                        initialFocus
+                        locale={es}
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
                 <div className="space-y-2">
                   <Label className="text-sm font-medium">
