@@ -17,6 +17,7 @@ export default function EventHeader({
     <div className="flex justify-between items-center mb-8">
       <div className="flex justify-between items-center">
         <ImageLogo
+          eventTitle={event.title}
           image={event.media.find((item) => item.name === 'main_image')}
           isEditing={isEditing}
           newLogoFile={logoFile}

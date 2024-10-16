@@ -1,43 +1,45 @@
 import { useRef } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import Logo from '@/assets/logo.svg'
+
+function getInitials(name) {
+  return name
+    .split(' ')
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+}
 
 export default function ImageLogo({
+  eventTitle,
   image,
-  isEditing,
+  isEditing = false,
   newLogoFile,
   setLogoFile,
 }) {
   const showImagePicker = useRef(null)
 
   const handleClick = () => {
-    showImagePicker.current.click()
+    showImagePicker.current?.click()
   }
 
   const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files && e.target.files[0] && setLogoFile) {
       setLogoFile(e.target.files[0])
     }
   }
+
+  const initials = getInitials(eventTitle)
 
   return (
     <div className="relative group">
       <Avatar className="h-16 w-16 group-hover:ring-offset-4 transition-all duration-200">
         <AvatarImage
-          src={
-            newLogoFile
-              ? URL.createObjectURL(newLogoFile)
-              : image
-                ? image.url
-                : Logo
-          }
+          src={newLogoFile ? URL.createObjectURL(newLogoFile) : image?.url}
+          alt={eventTitle}
         />
-        <AvatarFallback>
-          <img
-            className="size-10 transition-all group-hover:scale-110"
-            src={Logo}
-            alt="Logo"
-          />
+        <AvatarFallback className="bg-primary text-primary-foreground">
+          {initials}
         </AvatarFallback>
       </Avatar>
       {isEditing && (
@@ -46,7 +48,7 @@ export default function ImageLogo({
             onClick={handleClick}
             className="text-white text-xs font-semibold"
           >
-            Editar
+            Edit
           </button>
         </div>
       )}
