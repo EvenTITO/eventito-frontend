@@ -89,7 +89,6 @@ export default function Page({ eventInfo }) {
 
   const publishEvent = async () => {
     await updateEventStatus({ newStatus: STARTED_STATUS })
-    navigate('/home')
   }
 
   return (
@@ -107,8 +106,6 @@ export default function Page({ eventInfo }) {
           setIsEditing={setIsEditing}
           logoFile={logoFile}
           setLogoFile={setLogoFile}
-          publishEvent={publishEvent}
-          updateStatusLoading={updateStatusLoading}
         />
         <EventContent
           event={event}

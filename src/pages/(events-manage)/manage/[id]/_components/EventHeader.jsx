@@ -2,7 +2,6 @@ import { MotionH1 } from './Animation'
 import ImageLogo from './ImageLogo'
 import { Button } from '@/components/ui/button'
 import { Edit2 } from 'lucide-react'
-import EventStatus from './EventStatus'
 
 export default function EventHeader({
   event,
@@ -10,8 +9,6 @@ export default function EventHeader({
   setIsEditing,
   logoFile,
   setLogoFile,
-  publishEvent,
-  updateStatusLoading,
 }) {
   return (
     <div className="flex justify-between items-center mb-8">
@@ -35,11 +32,6 @@ export default function EventHeader({
             <Edit2 className="h-4 w-4 mr-2" />
             Editar
           </Button>
-          <EventStatus
-            event={event}
-            publishEvent={publishEvent}
-            updateStatusLoading={updateStatusLoading}
-          />
         </div>
       )}
     </div>

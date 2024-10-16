@@ -48,6 +48,7 @@ function Layout({ eventData }) {
           eventTitle={eventTitle}
           organizerPage
           isOrganizer={isOrganizer}
+          event={eventData}
         />
         <main className="flex-1 overflow-auto p-6">
           <Outlet context={{ event: eventData }} />
