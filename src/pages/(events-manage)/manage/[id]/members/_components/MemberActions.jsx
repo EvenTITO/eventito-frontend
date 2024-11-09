@@ -1,16 +1,6 @@
-import { CHAIR_ROLE, EVENT_ROLES_LABELS, ORGANIZER_ROLE } from '@/lib/Constants'
+import { EVENT_ROLES_LABELS } from '@/lib/Constants'
 import { useState } from 'react'
 import { Tooltip } from '@nextui-org/tooltip'
-import {
-  useDisclosure,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from '@nextui-org/modal'
-import { Button } from '@nextui-org/button'
-import { Select, SelectItem } from '@nextui-org/select'
 import Icon from '@/components/Icon'
 import MiniModal from '@/components/Modal/MiniModal'
 import RoleSelector from '@/components/Forms/RoleSelector'
