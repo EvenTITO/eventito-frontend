@@ -1,11 +1,12 @@
 import Icon from '@/components/Icon'
 import { Button } from '@nextui-org/button'
 import { CHAIR_ROLE, ORGANIZER_ROLE } from '@/lib/Constants'
-import { Input } from '@nextui-org/input'
 import { Select, SelectItem } from '@nextui-org/select'
 import { useAddMember } from '@/hooks/manage/membersHooks'
 import { useState } from 'react'
 import MiniModal from '@/components/Modal/MiniModal'
+import EmailInput from '@/components/Forms/EmailInput'
+import RoleSelector from '@/components/Forms/RoleSelector'
 
 export default function AddMemberButton() {
   const [email, setEmail] = useState('')
@@ -40,17 +41,8 @@ export default function AddMemberButton() {
       onSubmit={handleSubmit}
       isPending={isPending}
     >
-      <Input
-        autoFocus
-        label="Email del usuario"
-        variant="bordered"
-        value={email}
-        onValueChange={setEmail}
-      />
-      <Select label="Seleccionar rol" onChange={(e) => setRole(e.target.value)}>
-        <SelectItem key={ORGANIZER_ROLE}>Organizador</SelectItem>
-        <SelectItem key={CHAIR_ROLE}>Chair</SelectItem>
-      </Select>
+      <EmailInput email={email} setEmail={setEmail} />
+      <RoleSelector setRole={setRole} />
     </MiniModal>
   )
 }
