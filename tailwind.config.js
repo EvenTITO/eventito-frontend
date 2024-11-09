@@ -7,7 +7,7 @@ module.exports = {
     "./components/**/*.{js,jsx}",
     "./app/**/*.{js,jsx}",
     "./src/**/*.{js,jsx}",
-    "./node_modules/@nextui-org/theme/dist/components/(button|chip|input|modal|select|table|popover|user|ripple|spinner|listbox|divider|scroll-shadow|checkbox|spacer|avatar).js"
+    "./node_modules/@nextui-org/theme/dist/components/(button|chip|input|modal|pagination|select|table|popover|user|ripple|spinner|listbox|divider|scroll-shadow|checkbox|spacer|avatar).js"
   ],
   prefix: '',
   theme: {

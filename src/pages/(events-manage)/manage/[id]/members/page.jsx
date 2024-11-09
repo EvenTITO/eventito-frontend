@@ -1,5 +1,4 @@
 import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
-import TitlePage from '@/pages/(events-manage)/_components/titlePage'
 import AddMemberButton from './_components/AddMemberButton'
 import MembersTable from './_components/MembersTable'
 import {

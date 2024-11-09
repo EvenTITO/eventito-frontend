@@ -1,5 +1,5 @@
 import { CHAIR_ROLE, EVENT_ROLES_LABELS, ORGANIZER_ROLE } from '@/lib/Constants'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import {
   Table,
   TableHeader,
@@ -8,6 +8,7 @@ import {
   TableRow,
   TableCell,
 } from '@nextui-org/table'
+import { Pagination } from '@nextui-org/pagination'
 import User from '@/components/ui/User'
 import { Tooltip } from '@nextui-org/tooltip'
 import { Chip } from '@nextui-org/chip'
@@ -29,16 +30,44 @@ export default function MembersTable({
   isPending,
   onDeleteMember,
 }) {
+  const [page, setPage] = useState(1)
+  const rowsPerPage = 5
+  const pages = Math.ceil(members.length / rowsPerPage)
+
+  const items = useMemo(() => {
+    const start = (page - 1) * rowsPerPage
+    const end = start + rowsPerPage
+
+    return members.slice(start, end)
+  }, [page, members])
+
   return (
-    <Table aria-label="Example static collection table">
+    <Table
+      bottomContent={
+        <div className="flex w-full justify-center">
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="default"
+            page={page}
+            total={pages}
+            onChange={(page) => setPage(page)}
+          />
+        </div>
+      }
+      classNames={{
+        wrapper: 'min-h-[222px]',
+      }}
+    >
       <TableHeader>
         <TableColumn>USUARIO</TableColumn>
         <TableColumn>EMAIL</TableColumn>
         <TableColumn>ROL</TableColumn>
         <TableColumn>ACCIONES</TableColumn>
       </TableHeader>
-      <TableBody>
-        {members.map((member, idx) => (
+      <TableBody items={items}>
+        {items.map((member, idx) => (
           <TableRow key={idx}>
             <TableCell>
               <User username={member.username} />
