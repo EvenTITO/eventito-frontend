@@ -37,12 +37,17 @@ export default function DeleteModal({
               <ModalFooter>
                 <Button
                   className="w-full"
-                  color="primary"
+                  color="danger"
                   variant="light"
                   onPress={() => handleDelete(onClose)}
                   isLoading={isPending}
                 >
-                  {!isPending ? <Icon name="CircleCheck" s="5" /> : null}
+                  {!isPending ? (
+                    <>
+                      <Icon name="Trash" s="5" />
+                      <span className="mr-2">Eliminar</span>
+                    </>
+                  ) : null}
                 </Button>
               </ModalFooter>
             </>
