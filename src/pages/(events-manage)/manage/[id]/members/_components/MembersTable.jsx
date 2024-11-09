@@ -10,7 +10,7 @@ import {
 } from '@nextui-org/table'
 import User from '@/components/ui/User'
 import { Tooltip } from '@nextui-org/tooltip'
-import { Edit, Trash } from 'lucide-react'
+import { Trash } from 'lucide-react'
 import { Chip } from '@nextui-org/chip'
 import {
   useDisclosure,
@@ -48,7 +48,7 @@ export default function MembersTable({
             <TableCell>
               <ChipByRole role={EVENT_ROLES_LABELS[member.role]} />
             </TableCell>
-            <TableCell>
+            <TableCell className="">
               <Actions
                 member={member}
                 onDeleteMember={onDeleteMember}
@@ -84,12 +84,12 @@ function Actions({ member, onDeleteMember, onRoleChange }) {
   return (
     <div className="relative flex items-center gap-2">
       <EditAction member={member} onRoleChange={onRoleChange} />
-      <Tooltip color="danger" content="Eliminar usuario">
+      <Tooltip color="danger" content="Eliminar miembro">
         <button
           className="text-lg text-danger cursor-pointer active:opacity-50"
           onClick={() => onDeleteMember(member)}
         >
-          <Trash className={'h-4 w-4'} />
+          <Icon name="Trash" />
         </button>
       </Tooltip>
     </div>
@@ -106,7 +106,6 @@ function EditAction({ member, onRoleChange }) {
   }
   async function handleNewRole(onClose) {
     setIsLoading(true)
-    console.log(selectedRole)
     await onRoleChange(member, selectedRole)
     setIsLoading(false)
     onClose()
@@ -114,12 +113,12 @@ function EditAction({ member, onRoleChange }) {
 
   return (
     <>
-      <Tooltip content="Editar rol">
+      <Tooltip content="Cambiar rol">
         <span
           onClick={onOpen}
           className="text-lg text-default-400 cursor-pointer active:opacity-50"
         >
-          <Icon name="Edit" />
+          <Icon name="Pencil" />
         </span>
       </Tooltip>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
