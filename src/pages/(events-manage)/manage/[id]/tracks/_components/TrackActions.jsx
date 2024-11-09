@@ -3,6 +3,7 @@ import Icon from '@/components/Icon'
 import { useState } from 'react'
 import MiniModal from '@/components/Modal/MiniModal'
 import UserSelector from '@/components/Forms/UserSelector'
+import DeleteAction from '@/components/Actions/DeleteAction'
 
 export default function TrackActions({
   track,
@@ -18,14 +19,10 @@ export default function TrackActions({
       ) : (
         <AddChair track={track} chairs={chairs} addChair={addChair} />
       )}
-      <Tooltip color="danger" content="Eliminar track">
-        <button
-          className="text-lg text-danger cursor-pointer active:opacity-50"
-          onClick={() => deleteTrack(track)}
-        >
-          <Icon name="Trash" />
-        </button>
-      </Tooltip>
+      <DeleteAction
+        tooltip="Eliminar track"
+        onDelete={() => deleteTrack(track)}
+      />
     </div>
   )
 }
