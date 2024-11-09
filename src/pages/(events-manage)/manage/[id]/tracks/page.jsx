@@ -57,7 +57,7 @@ export default function Page({ event, chairs, tracksByChair }) {
     if (!trackToDelete) return
 
     if (trackToDelete.mail) {
-      await onDelete(trackToDelete.track, trackToDelete.mail)
+      await onDeleteChair(trackToDelete.track, trackToDelete.mail)
     }
     const updatedTracks = tracks.filter((t) => t.track !== trackToDelete.track)
     await updateTracks.mutateAsync({

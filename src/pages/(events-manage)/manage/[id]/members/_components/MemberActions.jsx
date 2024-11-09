@@ -1,9 +1,10 @@
 import { EVENT_ROLES_LABELS } from '@/lib/Constants'
 import { useState } from 'react'
-import { Tooltip } from '@nextui-org/tooltip'
-import Icon from '@/components/Icon'
 import MiniModal from '@/components/Modal/MiniModal'
 import RoleSelector from '@/components/Forms/RoleSelector'
+import ActionsContent from '@/components/Actions/ActionsContent'
+import DeleteAction from '@/components/Actions/DeleteAction'
+import TooltipAction from '@/components/Actions/TooltipAction'
 
 export default function MemberActions({
   member,
@@ -11,17 +12,13 @@ export default function MemberActions({
   onRoleChange,
 }) {
   return (
-    <div className="relative flex items-center gap-2">
+    <ActionsContent>
       <EditAction member={member} onRoleChange={onRoleChange} />
-      <Tooltip color="danger" content="Eliminar miembro">
-        <button
-          className="text-lg text-danger cursor-pointer active:opacity-50"
-          onClick={() => onDeleteMember(member)}
-        >
-          <Icon name="Trash" />
-        </button>
-      </Tooltip>
-    </div>
+      <DeleteAction
+        tooltip="Eliminar miembro"
+        onDelete={() => onDeleteMember(member)}
+      />
+    </ActionsContent>
   )
 }
 
@@ -37,16 +34,7 @@ function EditAction({ member, onRoleChange }) {
   }
 
   function trigger(onOpen) {
-    return (
-      <Tooltip content="Cambiar rol">
-        <span
-          onClick={onOpen}
-          className="text-lg text-default-400 cursor-pointer active:opacity-50"
-        >
-          <Icon name="Pencil" />
-        </span>
-      </Tooltip>
-    )
+    return <TooltipAction content="Cambiar rol" onOpen={onOpen} icon="Pencil" />
   }
 
   return (

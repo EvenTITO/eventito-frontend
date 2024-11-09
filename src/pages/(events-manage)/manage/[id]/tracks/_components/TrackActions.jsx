@@ -1,9 +1,9 @@
-import { Tooltip } from '@nextui-org/tooltip'
-import Icon from '@/components/Icon'
 import { useState } from 'react'
 import MiniModal from '@/components/Modal/MiniModal'
 import UserSelector from '@/components/Forms/UserSelector'
 import DeleteAction from '@/components/Actions/DeleteAction'
+import ActionsContent from '@/components/Actions/ActionsContent'
+import TooltipAction from '@/components/Actions/TooltipAction'
 
 export default function TrackActions({
   track,
@@ -13,7 +13,7 @@ export default function TrackActions({
   deleteTrack,
 }) {
   return (
-    <div className="relative flex items-center gap-2">
+    <ActionsContent>
       {track.mail ? (
         <ChangeChair track={track} chairs={chairs} changeChair={changeChair} />
       ) : (
@@ -23,7 +23,7 @@ export default function TrackActions({
         tooltip="Eliminar track"
         onDelete={() => deleteTrack(track)}
       />
-    </div>
+    </ActionsContent>
   )
 }
 
@@ -39,16 +39,7 @@ function AddChair({ track, addChair, chairs }) {
   }
 
   function trigger(onOpen) {
-    return (
-      <Tooltip content="Agregar chair">
-        <span
-          onClick={onOpen}
-          className="text-lg text-default-400 cursor-pointer active:opacity-50"
-        >
-          <Icon name="Plus" />
-        </span>
-      </Tooltip>
-    )
+    return <TooltipAction content="Agregar chair" onOpen={onOpen} icon="Plus" />
   }
 
   return (
@@ -76,14 +67,7 @@ function ChangeChair({ track, changeChair, chairs }) {
 
   function trigger(onOpen) {
     return (
-      <Tooltip content="Cambiar chair">
-        <span
-          onClick={onOpen}
-          className="text-lg text-default-400 cursor-pointer active:opacity-50"
-        >
-          <Icon name="Pencil" />
-        </span>
-      </Tooltip>
+      <TooltipAction content="Cambiar chair" onOpen={onOpen} icon="Pencil" />
     )
   }
 
