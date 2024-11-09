@@ -1,11 +1,10 @@
 import {
-  TableBody,
   TableColumn,
   TableHeader,
   Table as TableUI,
 } from '@nextui-org/table'
 
-export default function Table({ columns, tableBody, ...props }) {
+export function Table({ columns, children, ...props }) {
   return (
     <TableUI {...props}>
       <TableHeader>
@@ -13,7 +12,7 @@ export default function Table({ columns, tableBody, ...props }) {
           <TableColumn>{column}</TableColumn>
         ))}
       </TableHeader>
-      {tableBody}
+      {children}
     </TableUI>
   )
 }

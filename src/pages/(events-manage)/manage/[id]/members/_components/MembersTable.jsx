@@ -1,17 +1,10 @@
 import { CHAIR_ROLE, EVENT_ROLES_LABELS, ORGANIZER_ROLE } from '@/lib/Constants'
 import { useState, useMemo } from 'react'
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableColumn,
-  TableRow,
-  TableCell,
-} from '@nextui-org/table'
+import { TableBody, TableRow, TableCell } from '@nextui-org/table'
+import { Table } from '@/components/Table'
 import { Pagination } from '@nextui-org/pagination'
 import User from '@/components/ui/User'
 import { Tooltip } from '@nextui-org/tooltip'
-import { Chip } from '@nextui-org/chip'
 import {
   useDisclosure,
   Modal,
@@ -24,6 +17,7 @@ import { Button } from '@nextui-org/button'
 import { Select, SelectItem } from '@nextui-org/select'
 import Icon from '@/components/Icon'
 import ChipByRole from './ChipByRole'
+import TableWithPagination from '@/components/Table/TableWithPagination'
 
 export default function MembersTable({
   members,
@@ -31,63 +25,33 @@ export default function MembersTable({
   isPending,
   onDeleteMember,
 }) {
-  const [page, setPage] = useState(1)
-  const rowsPerPage = 5
-  const pages = Math.ceil(members.length / rowsPerPage)
+  const columns = ['USUARIO', 'EMAIL', 'ROL', 'ACCIONES']
 
-  const items = useMemo(() => {
-    const start = (page - 1) * rowsPerPage
-    const end = start + rowsPerPage
-
-    return members.slice(start, end)
-  }, [page, members])
+  const renderRow = (member, index) => (
+    <TableRow key={index}>
+      <TableCell>
+        <User username={member.username} />
+      </TableCell>
+      <TableCell>{member.email}</TableCell>
+      <TableCell>
+        <ChipByRole role={EVENT_ROLES_LABELS[member.role]} />
+      </TableCell>
+      <TableCell>
+        <Actions
+          member={member}
+          onDeleteMember={onDeleteMember}
+          onRoleChange={onRoleChange}
+        />
+      </TableCell>
+    </TableRow>
+  )
 
   return (
-    <Table
-      bottomContent={
-        <div className="flex w-full justify-center">
-          <Pagination
-            isCompact
-            showControls
-            showShadow
-            color="default"
-            page={page}
-            total={pages}
-            onChange={(page) => setPage(page)}
-          />
-        </div>
-      }
-      classNames={{
-        wrapper: 'min-h-[222px]',
-      }}
-    >
-      <TableHeader>
-        <TableColumn>USUARIO</TableColumn>
-        <TableColumn>EMAIL</TableColumn>
-        <TableColumn>ROL</TableColumn>
-        <TableColumn>ACCIONES</TableColumn>
-      </TableHeader>
-      <TableBody items={items}>
-        {items.map((member, idx) => (
-          <TableRow key={idx}>
-            <TableCell>
-              <User username={member.username} />
-            </TableCell>
-            <TableCell>{member.email}</TableCell>
-            <TableCell>
-              <ChipByRole role={EVENT_ROLES_LABELS[member.role]} />
-            </TableCell>
-            <TableCell>
-              <Actions
-                member={member}
-                onDeleteMember={onDeleteMember}
-                onRoleChange={onRoleChange}
-              />
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <TableWithPagination
+      columns={columns}
+      completeItems={members}
+      renderRow={renderRow}
+    />
   )
 }
 
