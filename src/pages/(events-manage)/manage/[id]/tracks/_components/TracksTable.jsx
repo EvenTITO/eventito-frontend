@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronRight, ChevronDown, Plus, X, Edit2 } from 'lucide-react'
+import { ChevronRight, ChevronDown, Plus, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import ChairDialog from './ChairDialog'

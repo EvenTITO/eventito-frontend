@@ -21,6 +21,8 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog'
 import TrackItem from './_components/TrackItem'
+import TracksTable2 from './_components/TracksTable2'
+import { isPending } from '@reduxjs/toolkit'
 
 export default function Page({ event, chairs, tracksByChair }) {
   const [tracks, setTracks] = useState(
@@ -93,63 +95,16 @@ export default function Page({ event, chairs, tracksByChair }) {
 
   return (
     <ContainerPage>
-      <TitlePage
-        title={'Administración de tracks'}
-        rightComponent={
-          canAddOrRemoveTracks && (
-            <AddTrackDialog
-              onSave={handleAddTrack}
-              isLoading={addTrack.isPending}
-            />
-          )
-        }
+      <div className='space-y-6'>
+      <TracksTable2
+        tracks={tracks}
+        chairs={chairs}
+        onAdd={handleDeleteTrack}
+        onDelete={handleAddTrack}
+        isPending={isPending}
       />
-      <div className="space-y-4 pt-6">
-        {tracks.map((track) => (
-          <TrackItem
-            key={track.id}
-            track={track}
-            chairs={chairs}
-            onDelete={onDelete}
-            onAdd={onAdd}
-            canAddOrRemoveTracks={canAddOrRemoveTracks}
-            setTrackToDelete={setTrackToDelete}
-            setDeleteDialogOpen={setDeleteDialogOpen}
-            addChairToTrack={addChairToTrack}
-            isDeleting={isDeleting && trackToDelete?.track === track.track}
-          />
-        ))}
+      <AddTrackDialog onSave={handleAddTrack} isLoading={addTrack.isPending} />
       </div>
-      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirmar eliminación de track</DialogTitle>
-          </DialogHeader>
-          <DialogDescription className="flex items-center space-x-2 text-yellow-600">
-            <AlertTriangle className="h-5 w-5" />
-            <span>
-              Si este track tiene trabajos presentados, no podrán ser
-              recuperados después de la eliminación.
-            </span>
-          </DialogDescription>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setDeleteDialogOpen(false)}
-              disabled={isDeleting}
-            >
-              Cancelar
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDeleteTrack}
-              disabled={isDeleting}
-            >
-              {isDeleting ? 'Eliminando...' : 'Eliminar'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </ContainerPage>
   )
 }

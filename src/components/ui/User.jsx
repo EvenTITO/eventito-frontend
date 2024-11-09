@@ -1,9 +1,10 @@
 import { User as UserInfo } from '@nextui-org/user'
 
 export default function User({ username, email, image = null }) {
+  const imageAlt = username ? username : email
   const imageSrc = image
     ? image
-    : `https://api.dicebear.com/6.x/initials/svg?seed=${username}`
+    : `https://api.dicebear.com/6.x/initials/svg?seed=${imageAlt}`
   return (
     <UserInfo
       name={username}
