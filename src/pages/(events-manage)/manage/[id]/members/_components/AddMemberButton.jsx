@@ -2,20 +2,12 @@ import Icon from '@/components/Icon'
 import { Button } from '@nextui-org/button'
 import { CHAIR_ROLE, ORGANIZER_ROLE } from '@/lib/Constants'
 import { Input } from '@nextui-org/input'
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from '@nextui-org/modal'
 import { Select, SelectItem } from '@nextui-org/select'
 import { useAddMember } from '@/hooks/manage/membersHooks'
 import { useState } from 'react'
+import MiniModal from '@/components/Modal/MiniModal'
 
 export default function AddMemberButton() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [email, setEmail] = useState('')
   const [role, setRole] = useState('')
 
@@ -30,55 +22,35 @@ export default function AddMemberButton() {
     }
   }
 
+  const trigger = (
+    <Button
+      color="primary"
+      variant="light"
+      className="w-full"
+      startContent={<Icon name="Plus" />}
+    >
+      Agregar miembro
+    </Button>
+  )
+
   return (
-    <>
-      <Button
-        onPress={onOpen}
-        color="primary"
-        variant="light"
-        className="w-full"
-        startContent={<Icon name="Plus" />}
-      >
-        Agregar miembro
-      </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Nuevo miembro
-              </ModalHeader>
-              <ModalBody>
-                <Input
-                  autoFocus
-                  label="Email del usuario"
-                  variant="bordered"
-                  value={email}
-                  onValueChange={setEmail}
-                />
-                <Select
-                  label="Seleccionar rol"
-                  onChange={(e) => setRole(e.target.value)}
-                >
-                  <SelectItem key={ORGANIZER_ROLE}>Organizador</SelectItem>
-                  <SelectItem key={CHAIR_ROLE}>Chair</SelectItem>
-                </Select>
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  className="w-full"
-                  color="primary"
-                  variant="light"
-                  onPress={() => handleSubmit(onClose)}
-                  isLoading={isPending}
-                >
-                  {!isPending ? <Icon name="CircleCheck" s="5" /> : null}
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    </>
+    <MiniModal
+      trigger={trigger}
+      title="Nuevo miembro"
+      onSubmit={handleSubmit}
+      isPending={isPending}
+    >
+      <Input
+        autoFocus
+        label="Email del usuario"
+        variant="bordered"
+        value={email}
+        onValueChange={setEmail}
+      />
+      <Select label="Seleccionar rol" onChange={(e) => setRole(e.target.value)}>
+        <SelectItem key={ORGANIZER_ROLE}>Organizador</SelectItem>
+        <SelectItem key={CHAIR_ROLE}>Chair</SelectItem>
+      </Select>
+    </MiniModal>
   )
 }
