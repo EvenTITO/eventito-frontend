@@ -1,18 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { DeleteButton } from '@/components/ui/deleteButton'
-import { ORGANIZER_ROLE, CHAIR_ROLE, EVENT_ROLES_LABELS } from '@/lib/Constants'
-import { LoaderSpinner } from '@/components/Loader'
-import { useState } from 'react'
-import RoleFilter from './RoleFilter'
-import MemberItem from './MemberItem'
+import { EVENT_ROLES_LABELS } from '@/lib/Constants'
+import { TableRow, TableCell } from '@nextui-org/table'
+import User from '@/components/ui/User'
+import ChipByRole from './ChipByRole'
+import TableWithPagination from '@/components/Table/TableWithPagination'
+import MemberActions from './MemberActions'
 
 export default function MembersTable({
   members,
@@ -20,45 +11,32 @@ export default function MembersTable({
   isPending,
   onDeleteMember,
 }) {
-  const [filter, setFilter] = useState(null)
+  const columns = ['USUARIO', 'EMAIL', 'ROL', 'ACCIONES']
 
-  const filteredMembers = filter
-    ? members.filter((member) => member.role === filter)
-    : members
-
-  const title = filter
-    ? `Listado de miembros por rol: ${EVENT_ROLES_LABELS[filter]}`
-    : 'Listado de miembros'
+  const renderRow = (member, index) => (
+    <TableRow key={index}>
+      <TableCell>
+        <User username={member.username} />
+      </TableCell>
+      <TableCell>{member.email}</TableCell>
+      <TableCell>
+        <ChipByRole role={EVENT_ROLES_LABELS[member.role]} />
+      </TableCell>
+      <TableCell>
+        <MemberActions
+          member={member}
+          onDeleteMember={onDeleteMember}
+          onRoleChange={onRoleChange}
+        />
+      </TableCell>
+    </TableRow>
+  )
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <div className="flex justify-between">
-          <CardTitle>{title}</CardTitle>
-          <div className="flex items-center space-x-2">
-            {isPending ? (
-              <LoaderSpinner size={32} />
-            ) : (
-              <RoleFilter currentFilter={filter} onFilterChange={setFilter} />
-            )}
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        {!isPending ? (
-          <div className="grid gap-6">
-            {filteredMembers.map((member, index) => (
-              <MemberItem
-                key={member.email}
-                member={member}
-                index={index}
-                onRoleChange={onRoleChange}
-                onDeleteMember={onDeleteMember}
-              />
-            ))}
-          </div>
-        ) : null}
-      </CardContent>
-    </Card>
+    <TableWithPagination
+      columns={columns}
+      completeItems={members}
+      renderRow={renderRow}
+    />
   )
 }
