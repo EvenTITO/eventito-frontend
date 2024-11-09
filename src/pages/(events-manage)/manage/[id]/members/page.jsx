@@ -36,19 +36,15 @@ export default function Page({ members, membersPending }) {
 
   return (
     <ContainerPage>
-      {/*<TitlePage
-        title={'Comité de miembros del evento'}
-        rightComponent={<AddMemberButton />}
-      />*/}
-      <div className="space-y-6 pb-6">
+      <div className="space-y-6">
         <MembersTable
           members={members}
           onRoleChange={onRoleChange}
           isPending={membersPending || updatePending || deletePending}
           onDeleteMember={onDeleteMember}
         />
+        <AddMemberButton />
       </div>
-      <AddMemberButton />
     </ContainerPage>
   )
 }

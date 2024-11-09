@@ -1,18 +1,18 @@
+import Icon from '@/components/Icon'
+import { Button } from '@nextui-org/button'
 import { CHAIR_ROLE, ORGANIZER_ROLE } from '@/lib/Constants'
 import { Input } from '@nextui-org/input'
 import {
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
   useDisclosure,
 } from '@nextui-org/modal'
+import { Select, SelectItem } from '@nextui-org/select'
 import { useAddMember } from '@/hooks/manage/membersHooks'
 import { useState } from 'react'
-import { Button } from '@nextui-org/button'
-import { Select, SelectItem } from '@nextui-org/select'
-import Icon from '@/components/Icon'
 
 export default function AddMemberButton() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
