@@ -1,6 +1,7 @@
 import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
 import TitlePage from '@/pages/(events-manage)/_components/titlePage'
 import AddMemberButton from './_components/AddMemberButton'
+import AddMemberButton2 from './_components/AddMemberButton2'
 import MembersTable from './_components/MembersTable'
 import {
   useUpdateMemberRole,
@@ -38,7 +39,7 @@ export default function Page({ members, membersPending }) {
     <ContainerPage>
       <TitlePage
         title={'Comité de miembros del evento'}
-        rightComponent={<AddMemberButton />}
+        rightComponent={<AddMemberButton2 />}
       />
       <div className="space-y-6 pt-6">
         <MembersTable

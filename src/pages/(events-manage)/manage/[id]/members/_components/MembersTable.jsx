@@ -10,7 +10,6 @@ import {
 } from '@nextui-org/table'
 import User from '@/components/ui/User'
 import { Tooltip } from '@nextui-org/tooltip'
-import { Trash } from 'lucide-react'
 import { Chip } from '@nextui-org/chip'
 import {
   useDisclosure,
