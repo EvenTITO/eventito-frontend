@@ -21,16 +21,19 @@ export default function AddMemberButton() {
     }
   }
 
-  const trigger = (
-    <Button
-      color="primary"
-      variant="light"
-      className="w-full"
-      startContent={<Icon name="Plus" />}
-    >
-      Agregar miembro
-    </Button>
-  )
+  function trigger(onOpen) {
+    return (
+      <Button
+        color="primary"
+        variant="light"
+        className="w-full"
+        startContent={<Icon name="Plus" />}
+        onPress={onOpen}
+      >
+        Agregar miembro
+      </Button>
+    )
+  }
 
   return (
     <MiniModal

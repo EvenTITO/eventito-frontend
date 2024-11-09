@@ -27,7 +27,7 @@ export default function MiniModal({
 
   return (
     <>
-      {React.cloneElement(trigger, { onPress: onOpen })}
+      {trigger(onOpen)}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement={placement}>
         <ModalContent>
           {(onClose) => (
