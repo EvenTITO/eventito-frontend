@@ -1,18 +1,28 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { DeleteButton } from '@/components/ui/deleteButton'
-import { ORGANIZER_ROLE, CHAIR_ROLE, EVENT_ROLES_LABELS } from '@/lib/Constants'
-import { LoaderSpinner } from '@/components/Loader'
+import { CHAIR_ROLE, EVENT_ROLES_LABELS, ORGANIZER_ROLE } from '@/lib/Constants'
 import { useState } from 'react'
-import RoleFilter from './RoleFilter'
-import MemberItem from './MemberItem'
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell,
+} from '@nextui-org/table'
+import User from '@/components/ui/User'
+import { Tooltip } from '@nextui-org/tooltip'
+import { Edit, Trash } from 'lucide-react'
+import { Chip } from '@nextui-org/chip'
+import {
+  useDisclosure,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from '@nextui-org/modal'
+import { Button } from '@nextui-org/button'
+import { Select, SelectItem } from '@nextui-org/select'
+import Icon from '@/components/Icon'
 
 export default function MembersTable({
   members,
@@ -20,45 +30,131 @@ export default function MembersTable({
   isPending,
   onDeleteMember,
 }) {
-  const [filter, setFilter] = useState(null)
+  return (
+    <Table aria-label="Example static collection table">
+      <TableHeader>
+        <TableColumn>USUARIO</TableColumn>
+        <TableColumn>EMAIL</TableColumn>
+        <TableColumn>ROL</TableColumn>
+        <TableColumn>ACCIONES</TableColumn>
+      </TableHeader>
+      <TableBody>
+        {members.map((member, idx) => (
+          <TableRow key={idx}>
+            <TableCell>
+              <User username={member.username} />
+            </TableCell>
+            <TableCell>{member.email}</TableCell>
+            <TableCell>
+              <ChipByRole role={EVENT_ROLES_LABELS[member.role]} />
+            </TableCell>
+            <TableCell>
+              <Actions
+                member={member}
+                onDeleteMember={onDeleteMember}
+                onRoleChange={onRoleChange}
+              />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  )
+}
 
-  const filteredMembers = filter
-    ? members.filter((member) => member.role === filter)
-    : members
-
-  const title = filter
-    ? `Listado de miembros por rol: ${EVENT_ROLES_LABELS[filter]}`
-    : 'Listado de miembros'
+function ChipByRole({ role }) {
+  const statusColorMap = {
+    Organizador: 'warning',
+    Chair: '',
+  }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <div className="flex justify-between">
-          <CardTitle>{title}</CardTitle>
-          <div className="flex items-center space-x-2">
-            {isPending ? (
-              <LoaderSpinner size={32} />
-            ) : (
-              <RoleFilter currentFilter={filter} onFilterChange={setFilter} />
-            )}
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        {!isPending ? (
-          <div className="grid gap-6">
-            {filteredMembers.map((member, index) => (
-              <MemberItem
-                key={member.email}
-                member={member}
-                index={index}
-                onRoleChange={onRoleChange}
-                onDeleteMember={onDeleteMember}
-              />
-            ))}
-          </div>
-        ) : null}
-      </CardContent>
-    </Card>
+    <Chip
+      className="capitalize"
+      color={statusColorMap[role]}
+      size="sm"
+      variant="flat"
+    >
+      {role}
+    </Chip>
+  )
+}
+
+function Actions({ member, onDeleteMember, onRoleChange }) {
+  return (
+    <div className="relative flex items-center gap-2">
+      <EditAction member={member} onRoleChange={onRoleChange} />
+      <Tooltip color="danger" content="Eliminar usuario">
+        <button
+          className="text-lg text-danger cursor-pointer active:opacity-50"
+          onClick={() => onDeleteMember(member)}
+        >
+          <Trash className={'h-4 w-4'} />
+        </button>
+      </Tooltip>
+    </div>
+  )
+}
+
+function EditAction({ member, onRoleChange }) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [selectedRole, setSelectedRole] = useState(member.role)
+  function handleSelectionChange(e) {
+    setSelectedRole(e.target.value)
+  }
+  async function handleNewRole(onClose) {
+    setIsLoading(true)
+    console.log(selectedRole)
+    await onRoleChange(member, selectedRole)
+    setIsLoading(false)
+    onClose()
+  }
+
+  return (
+    <>
+      <Tooltip content="Editar rol">
+        <span
+          onClick={onOpen}
+          className="text-lg text-default-400 cursor-pointer active:opacity-50"
+        >
+          <Icon name="Edit" />
+        </span>
+      </Tooltip>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Cambiar rol de miembro: {member.username}
+              </ModalHeader>
+              <ModalBody className="">
+                <Select
+                  label="Seleccionar nuevo rol"
+                  placeholder={EVENT_ROLES_LABELS[selectedRole]}
+                  labelPlacement="outside-left"
+                  onChange={handleSelectionChange}
+                >
+                  <SelectItem key={ORGANIZER_ROLE}>Organizador</SelectItem>
+                  <SelectItem key={CHAIR_ROLE}>Chair</SelectItem>
+                </Select>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  className="w-full"
+                  color="primary"
+                  variant="light"
+                  onPress={() => handleNewRole(onClose)}
+                  isLoading={isLoading}
+                >
+                  {!isLoading ? <Icon name="CircleCheck" s="5" /> : null}
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
   )
 }

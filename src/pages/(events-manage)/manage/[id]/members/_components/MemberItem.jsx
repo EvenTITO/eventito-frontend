@@ -1,14 +1,9 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { DeleteButton } from '@/components/ui/deleteButton'
+import { Select, SelectItem } from '@nextui-org/select'
 import { ORGANIZER_ROLE, CHAIR_ROLE, EVENT_ROLES_LABELS } from '@/lib/Constants'
+import { Button } from '@nextui-org/button'
+import { X } from 'lucide-react'
+import User from '@/components/ui/User'
 
 export default function MemberItem({
   member,
@@ -19,36 +14,33 @@ export default function MemberItem({
   return (
     <Card key={index} className="overflow-hidden">
       <CardContent className="p-4">
-        <div className="flex items-center space-x-4">
-          <Avatar className="h-12 w-12">
-            <AvatarImage
-              src={`https://api.dicebear.com/6.x/initials/svg?seed=${member.username}`}
-            />
-            <AvatarFallback>{member.username.charAt(0) || ''}</AvatarFallback>
-          </Avatar>
-          <div className="flex-grow min-w-0">
-            <p className="text-sm font-medium truncate">{member.username}</p>
-            <p className="text-xs text-muted-foreground truncate">
-              {member.email}
-            </p>
-          </div>
-          <Select
-            value={member.role}
-            onValueChange={(newRole) => onRoleChange(member, newRole)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Seleccionar rol" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={CHAIR_ROLE}>
+        <div className="flex justify-between">
+          <User username={member.username} email={member.email} />
+          <div className="flex items-center">
+            <Select
+              variant="bordered"
+              key={member.role}
+              onChange={(newRole) => onRoleChange(newRole)}
+              defaultSelectedKeys={[member.role]}
+              className="w-[180px]"
+            >
+              <SelectItem key={CHAIR_ROLE}>
                 {EVENT_ROLES_LABELS[CHAIR_ROLE]}
               </SelectItem>
-              <SelectItem value={ORGANIZER_ROLE}>
+              <SelectItem key={ORGANIZER_ROLE}>
                 {EVENT_ROLES_LABELS[ORGANIZER_ROLE]}
               </SelectItem>
-            </SelectContent>
-          </Select>
-          <DeleteButton onClick={() => onDeleteMember(member)} />
+            </Select>
+            <Button
+              isIconOnly
+              variant="light"
+              aria-label="Eliminar miembro"
+              onClick={() => onDeleteMember(member)}
+              className="text-slate-500 text-base"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
