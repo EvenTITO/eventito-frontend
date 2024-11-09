@@ -14,8 +14,8 @@ export default function TracksTable2({
     await onAddChair(track, newEmail)
   }
 
-  async function changeChair(track, newEmail) {
-    await onDeleteChair(track)
+  async function changeChair(track, oldEmail, newEmail) {
+    await onDeleteChair(track, oldEmail)
     await onAddChair(track, newEmail)
   }
 
