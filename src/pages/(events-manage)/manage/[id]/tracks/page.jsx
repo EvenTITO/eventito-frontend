@@ -30,13 +30,13 @@ export default function Page({ event, chairs, tracksByChair }) {
     return chairs.filter((chair) => chair.email === email)[0]?.userId
   }
 
-  async function onDelete(track, email) {
+  async function onDeleteChair(track, email) {
     const userId = getUserIdByEmail(email)
     await deleteChairOfTrack.mutateAsync({ track: track, userId: userId })
     setTracks(tracks.map((t) => (t.track === track ? { ...t, mail: null } : t)))
   }
 
-  async function onAdd(track, email) {
+  async function onAddChair(track, email) {
     const userId = getUserIdByEmail(email)
     await addChairToTrack.mutateAsync({ track: track, userId: userId })
     setTracks(
@@ -73,8 +73,9 @@ export default function Page({ event, chairs, tracksByChair }) {
         <TracksTable2
           tracks={tracks}
           chairs={chairs}
-          onAdd={onAdd}
-          onDelete={handleDeleteTrack}
+          onAddChair={onAddChair}
+          onDeleteChair={onDeleteChair}
+          onDeleteTrack={handleDeleteTrack}
           //isPending={isPending}
         />
         <AddTrackButton

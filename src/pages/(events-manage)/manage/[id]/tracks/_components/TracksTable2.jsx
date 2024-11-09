@@ -5,18 +5,23 @@ import TrackActions from './TrackActions'
 export default function TracksTable2({
   tracks,
   chairs,
-  onAdd,
-  onDelete,
+  onAddChair,
+  onDeleteChair,
+  onDeleteTrack,
   isPending,
 }) {
   async function addChair(track, newEmail) {
-    await onAdd(track, newEmail)
+    await onAddChair(track, newEmail)
+  }
+
+  async function changeChair(track, newEmail) {
+    await onDeleteChair(track)
+    await onAddChair(track, newEmail)
   }
 
   async function deleteTrack(track) {
-    await onDelete(track)
+    await onDeleteTrack(track)
   }
-
 
   if (tracks.length === 0) return <EmptyTracksPage />
 
@@ -35,7 +40,9 @@ export default function TracksTable2({
       <TableCell>
         <TrackActions
           track={track}
+          chairs={chairs}
           addChair={addChair}
+          changeChair={changeChair}
           deleteTrack={deleteTrack}
         />
       </TableCell>

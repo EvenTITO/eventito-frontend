@@ -1,6 +1,11 @@
 import { User as UserInfo } from '@nextui-org/user'
 
-export default function User({ username, email, image = null }) {
+export default function User({
+  username,
+  email,
+  image = null,
+  imageSize = "md",
+}) {
   const imageAlt = username ? username : email
   const imageSrc = image
     ? image
@@ -11,6 +16,7 @@ export default function User({ username, email, image = null }) {
       description={<p className="text-gray-500">{email}</p>}
       avatarProps={{
         src: imageSrc,
+        size: imageSize,
       }}
     />
   )
