@@ -23,6 +23,7 @@ import {
 import { Button } from '@nextui-org/button'
 import { Select, SelectItem } from '@nextui-org/select'
 import Icon from '@/components/Icon'
+import ChipByRole from './ChipByRole'
 
 export default function MembersTable({
   members,
@@ -76,7 +77,7 @@ export default function MembersTable({
             <TableCell>
               <ChipByRole role={EVENT_ROLES_LABELS[member.role]} />
             </TableCell>
-            <TableCell className="">
+            <TableCell>
               <Actions
                 member={member}
                 onDeleteMember={onDeleteMember}
@@ -87,24 +88,6 @@ export default function MembersTable({
         ))}
       </TableBody>
     </Table>
-  )
-}
-
-function ChipByRole({ role }) {
-  const statusColorMap = {
-    Organizador: 'warning',
-    Chair: '',
-  }
-
-  return (
-    <Chip
-      className="capitalize"
-      color={statusColorMap[role]}
-      size="sm"
-      variant="flat"
-    >
-      {role}
-    </Chip>
   )
 }
 
