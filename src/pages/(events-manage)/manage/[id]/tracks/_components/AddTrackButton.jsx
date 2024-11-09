@@ -4,7 +4,7 @@ import Icon from '@/components/Icon'
 import MiniModal from '@/components/Modal/MiniModal'
 import NameInput from '@/components/Forms/NameInput'
 
-export default function AddTrackDialog({ onSave, isLoading }) {
+export default function AddTrackButton({ onSave, isLoading }) {
   const [track, setTrack] = useState('')
 
   const handleSubmit = async (onClose) => {

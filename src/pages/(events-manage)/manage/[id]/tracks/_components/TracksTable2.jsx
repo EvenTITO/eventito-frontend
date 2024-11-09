@@ -9,13 +9,14 @@ export default function TracksTable2({
   onDelete,
   isPending,
 }) {
-  async function deleteChair(track, email) {
-    await onDelete(track, email)
-  }
-
   async function addChair(track, newEmail) {
     await onAdd(track, newEmail)
   }
+
+  async function deleteTrack(track) {
+    await onDelete(track)
+  }
+
 
   if (tracks.length === 0) return <EmptyTracksPage />
 
@@ -25,13 +26,17 @@ export default function TracksTable2({
     <TableRow key={index}>
       <TableCell>{track.track}</TableCell>
       <TableCell>
-        {track.mail ? <p>{track.mail}</p> : <p className='text-gray-500 italic'>Sin chair asignado</p>}
+        {track.mail ? (
+          <p>{track.mail}</p>
+        ) : (
+          <p className="text-gray-500 italic">Sin chair asignado</p>
+        )}
       </TableCell>
       <TableCell>
         <TrackActions
           track={track}
-          deleteChair={deleteChair}
           addChair={addChair}
+          deleteTrack={deleteTrack}
         />
       </TableCell>
     </TableRow>
