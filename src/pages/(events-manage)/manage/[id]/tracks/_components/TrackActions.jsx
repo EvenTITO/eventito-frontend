@@ -11,6 +11,7 @@ export default function TrackActions({
   addChair,
   changeChair,
   deleteTrack,
+  eventIsPublic,
 }) {
   return (
     <ActionsContent>
@@ -19,10 +20,12 @@ export default function TrackActions({
       ) : (
         <AddChair track={track} chairs={chairs} addChair={addChair} />
       )}
-      <DeleteAction
-        tooltip="Eliminar track"
-        onDelete={() => deleteTrack(track)}
-      />
+      {!eventIsPublic ? (
+        <DeleteAction
+          tooltip="Eliminar track"
+          onDelete={() => deleteTrack(track)}
+        />
+      ) : null}
     </ActionsContent>
   )
 }

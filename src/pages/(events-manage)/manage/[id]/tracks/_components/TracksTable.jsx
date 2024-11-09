@@ -2,13 +2,14 @@ import { TableRow, TableCell } from '@nextui-org/table'
 import TableWithPagination from '@/components/Table/TableWithPagination'
 import TrackActions from './TrackActions'
 
-export default function TracksTable2({
+export default function TracksTable({
   tracks,
   chairs,
   onAddChair,
   onDeleteChair,
   onDeleteTrack,
   isPending,
+  eventIsPublic,
 }) {
   async function addChair(track, newEmail) {
     await onAddChair(track, newEmail)
@@ -44,6 +45,7 @@ export default function TracksTable2({
           addChair={addChair}
           changeChair={changeChair}
           deleteTrack={deleteTrack}
+          eventIsPublis={eventIsPublic}
         />
       </TableCell>
     </TableRow>

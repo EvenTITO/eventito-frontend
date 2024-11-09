@@ -8,7 +8,7 @@ import {
 } from '@/hooks/manage/tracksHooks'
 import { unifyEventTracksWithChairs } from './_components/utils.js'
 import { CREATED_STATUS } from '@/lib/Constants.js'
-import TracksTable2 from './_components/TracksTable2'
+import TracksTable from './_components/TracksTable'
 import AddTrackButton from './_components/AddTrackButton'
 
 export default function Page({ event, chairs, tracksByChair }) {
@@ -70,13 +70,13 @@ export default function Page({ event, chairs, tracksByChair }) {
   return (
     <ContainerPage>
       <div className="space-y-6">
-        <TracksTable2
+        <TracksTable
           tracks={tracks}
           chairs={chairs}
           onAddChair={onAddChair}
           onDeleteChair={onDeleteChair}
           onDeleteTrack={handleDeleteTrack}
-          //isPending={isPending}
+          eventIsPublic={!canAddOrRemoveTracks}
         />
         <AddTrackButton
           onSave={handleAddTrack}
