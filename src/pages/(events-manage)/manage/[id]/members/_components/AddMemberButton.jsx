@@ -1,7 +1,5 @@
 import Icon from '@/components/Icon'
 import { Button } from '@nextui-org/button'
-import { CHAIR_ROLE, ORGANIZER_ROLE } from '@/lib/Constants'
-import { Select, SelectItem } from '@nextui-org/select'
 import { useAddMember } from '@/hooks/manage/membersHooks'
 import { useState } from 'react'
 import MiniModal from '@/components/Modal/MiniModal'
