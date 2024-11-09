@@ -78,10 +78,12 @@ export default function Page({ event, chairs, tracksByChair }) {
           onDeleteTrack={handleDeleteTrack}
           eventIsPublic={!canAddOrRemoveTracks}
         />
-        <AddTrackButton
-          onSave={handleAddTrack}
-          isLoading={addTrack.isPending}
-        />
+        {canAddOrRemoveTracks ? (
+          <AddTrackButton
+            onSave={handleAddTrack}
+            isLoading={addTrack.isPending}
+          />
+        ) : null}
       </div>
     </ContainerPage>
   )
