@@ -8,6 +8,7 @@ export default function TableWithPagination({
   completeItems,
   rowsPerPage = 5,
   renderRow,
+  hideHeader = false,
 }) {
   const [page, setPage] = useState(1)
   const pages = Math.ceil(completeItems.length / rowsPerPage)
@@ -38,6 +39,7 @@ export default function TableWithPagination({
       classNames={{
         wrapper: 'min-h-[222px]',
       }}
+      hideHeader={hideHeader}
     >
       <TableBody items={items}>
         {(item, index) => renderRow(item, index)}

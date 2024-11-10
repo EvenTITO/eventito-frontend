@@ -79,7 +79,7 @@ export default function Page({ event, rooms }) {
         title={'Administración de salas'}
         rightComponent={<RoomDialog onSave={handleAddRoom} />}
       />
-      <div className="space-y-6 pt-6">
+      <div className="space-y-6 pt-6 w-1/3">
         <RoomsTable
           rooms={rooms}
           onUpdate={handleEditRoom}
