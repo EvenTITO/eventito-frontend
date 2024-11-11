@@ -1,5 +1,5 @@
-import { format, parse } from '@formkit/tempo'
-import { CalendarDate, parseDate } from '@internationalized/date'
+import { format } from '@formkit/tempo'
+import { parseDate } from '@internationalized/date'
 
 export function getIntermediateDates(startDateStr, endDateStr) {
   const dateArray = []
