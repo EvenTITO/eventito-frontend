@@ -1,18 +1,19 @@
 import { format, parse } from '@formkit/tempo'
+import { CalendarDate, parseDate } from '@internationalized/date'
 
-export function getIntermediateDates(startDate, endDate) {
+export function getIntermediateDates(startDateStr, endDateStr) {
   const dateArray = []
 
-  let currentDate = new Date(new Date(startDate).setHours(0, 0, 0, 0))
-  const finalDate = new Date(new Date(endDate).setHours(0, 0, 0, 0))
+  let currentDate = parseDate(startDateStr)
+  const endDate = parseDate(endDateStr)
 
-  while (currentDate <= finalDate) {
-    const year = currentDate.getFullYear()
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0')
-    const day = String(currentDate.getDate()).padStart(2, '0')
+  if (endDate.compare(currentDate) < 0) {
+    return dateArray
+  }
 
-    dateArray.push(`${year}-${month}-${day}`)
-    currentDate.setDate(currentDate.getDate() + 1)
+  while (currentDate.compare(endDate) <= 0) {
+    dateArray.push(currentDate.toString())
+    currentDate = currentDate.add({ days: 1 })
   }
 
   return dateArray
