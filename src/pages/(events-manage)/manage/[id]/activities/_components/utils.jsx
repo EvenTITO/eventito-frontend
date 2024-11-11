@@ -34,9 +34,12 @@ export function getActivitiesForDay(day, activities) {
     })
 }
 
-export function ShowDay(day, numberDay) {
-  const formattedDay = format(day, 'full')
+export function formatDay(day) {
+  return format(day, 'full')
+}
 
+export function ShowDay(day, numberDay) {
+  const formattedDay = formatDay(day)
   return `Agenda día ${numberDay} - ${formattedDay}`
 }
 
