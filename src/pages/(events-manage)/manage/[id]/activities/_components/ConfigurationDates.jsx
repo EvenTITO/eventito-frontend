@@ -1,9 +1,9 @@
-import { Card } from '@/components/ui/card'
 import { formatDay } from './utils'
 import { DatePicker } from '@nextui-org/date-picker'
 import MiniModal from '@/components/Modal/MiniModal'
 import { useState } from 'react'
 import Icon from '@/components/Icon'
+import { getLocalTimeZone, parseDate, today } from '@internationalized/date'
 
 export default function ConfigurationDates({
   startDate,
@@ -28,7 +28,10 @@ export default function ConfigurationDates({
 }
 
 function DateCard({ date, label, onEdit }) {
-  const [selectedDate, setSelectedDate] = useState(null)
+  const defaultDate = today(getLocalTimeZone())
+  const [selectedDate, setSelectedDate] = useState(
+    date ? parseDate(date) : defaultDate
+  )
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (onClose) => {
