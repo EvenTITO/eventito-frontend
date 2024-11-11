@@ -1,5 +1,5 @@
 import { useEvent } from '@/lib/layout'
-import Page from './Page'
+import Page from './page'
 
 export default function OrganizerActivitiesPage() {
   const eventData = useEvent()
