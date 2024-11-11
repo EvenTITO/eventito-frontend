@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import Icon from '@/components/Icon'
 
 export default function OrganizationSidebar({ eventTitle }) {
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -60,6 +61,13 @@ const itemList = [
         label: 'Comité de miembros',
         icon: <Users className={classNameIcons} />,
         to: 'members',
+        requiredRoles: [ORGANIZER_ROLE],
+        isOrganizerRoute: true,
+      },
+      {
+        label: 'Actividades',
+        icon: <Icon name="Calendar" classNames={'mr-2'} />,
+        to: 'activities',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
