@@ -5,8 +5,8 @@ import Activities from './_components/Activities'
 import ConfigurationDates from './_components/ConfigurationDates'
 
 export default function Page({ event }) {
-  const startDate = '2024-11-24T00:00:00'
-  const endDate = '2024-11-28T00:00:00'
+  const startDate = event.dates.filter((d) => d.name === 'START_DATE')[0].date
+  const endDate = event.dates.filter((d) => d.name === 'END_DATE')[0].date
   const informativeDates = event.mdata?.informative_dates || []
 
   const { mutateAsync: submitEditEvent, isPending } = useEditEvent()
@@ -19,11 +19,33 @@ export default function Page({ event }) {
     await submitEditEvent({ eventData: eventCopy })
   }
 
+  async function onEditDate({ newDate, nameDate }) {
+    let eventCopy = { ...event }
+    delete eventCopy.title
+    eventCopy.dates = eventCopy.dates.map((d) =>
+      d.name === nameDate ? { ...d, date: newDate } : d
+    )
+
+    await submitEditEvent({ eventData: eventCopy })
+  }
+
+  async function onEditStartDate({ newDate }) {
+    await onEditDate({ newDate: newDate, nameDate: 'START_DATE' })
+  }
+  async function onEditEndDate({ newDate }) {
+    await onEditDate({ newDate: newDate, nameDate: 'END_DATE' })
+  }
+
   return (
     <ContainerPage>
       <div className="space-y-6">
         <TitlePage title={'Actividades del evento'} />
-        <ConfigurationDates startDate={startDate} endDate={endDate} />
+        <ConfigurationDates
+          startDate={startDate}
+          endDate={endDate}
+          onEditStartDate={onEditStartDate}
+          onEditEndDate={onEditEndDate}
+        />
         <Activities
           startDate={startDate}
           endDate={endDate}

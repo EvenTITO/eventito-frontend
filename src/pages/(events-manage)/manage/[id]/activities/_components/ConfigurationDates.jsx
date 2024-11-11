@@ -2,17 +2,45 @@ import { Card } from '@/components/ui/card'
 import { formatDay } from './utils'
 import { DatePicker } from '@nextui-org/date-picker'
 import MiniModal from '@/components/Modal/MiniModal'
+import { useState } from 'react'
 
-export default function ConfigurationDates({ startDate, endDate }) {
+export default function ConfigurationDates({
+  startDate,
+  endDate,
+  onEditStartDate,
+  onEditEndDate,
+}) {
   return (
     <div className="flex gap-4">
-      <DateCard date={startDate} label="Fecha de inicio de presentaciones" />
-      <DateCard date={endDate} label="Fecha de fin de presentaciones" />
+      <DateCard
+        date={startDate}
+        onEdit={onEditStartDate}
+        label="Fecha de inicio de presentaciones"
+      />
+      <DateCard
+        date={endDate}
+        onEdit={onEditEndDate}
+        label="Fecha de fin de presentaciones"
+      />
     </div>
   )
 }
 
-function DateCard({ date, label }) {
+function DateCard({ date, label, onEdit }) {
+  const [selectedDate, setSelectedDate] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSubmit = async (onClose) => {
+    if (selectedDate) {
+      setIsLoading(true)
+      await onEdit({
+        newDate: selectedDate.toLocaleString(),
+      })
+      setIsLoading(false)
+      onClose(false)
+    }
+  }
+
   function trigger(onOpen) {
     return (
       <Card
@@ -28,8 +56,18 @@ function DateCard({ date, label }) {
   }
 
   return (
-    <MiniModal trigger={trigger} title={label} onSubmit={() => alert('submit')}>
-      <DatePicker label="Birth date" className="" />
+    <MiniModal
+      trigger={trigger}
+      title={label}
+      onSubmit={handleSubmit}
+      isPending={isLoading}
+    >
+      <DatePicker
+        label={label}
+        className=""
+        value={selectedDate}
+        onChange={setSelectedDate}
+      />
     </MiniModal>
   )
 }
