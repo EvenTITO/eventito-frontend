@@ -18,6 +18,7 @@ export default function MiniModal({
   submitButtonText,
   isPending,
   placement = 'top-center',
+  size = 'default',
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -28,7 +29,12 @@ export default function MiniModal({
   return (
     <>
       {trigger(onOpen)}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement={placement}>
+      <Modal
+        isOpen={isOpen}
+        size={size}
+        onOpenChange={onOpenChange}
+        placement={placement}
+      >
         <ModalContent>
           {(onClose) => (
             <>

@@ -1,43 +1,28 @@
 import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
 import TitlePage from '@/pages/(events-manage)/_components/titlePage'
-import { getActivitiesForDay, getIntermediateDates } from './_components/utils'
+import {
+  getActivitiesForDay,
+  getIntermediateDates,
+  ShowDay,
+} from './_components/utils'
 import SubtitlePage from '@/pages/(events-manage)/_components/subtitlePage'
 import AddDateButton from './_components/AddDateButton'
+import { useEditEvent } from '@/hooks/manage/generalHooks'
 
 export default function Page({ event }) {
   const startDate = '2024-11-24T00:00:00'
   const endDate = '2024-11-28T00:00:00'
-  //const informativeDates = event.mdata?.informative_dates || []
-  const informativeDates = [
-    {
-      title: 'Desayuno',
-      date: '2024-11-24',
-      startHour: '11:00:00',
-      endHour: '11:30:00',
-      description: 'Desayuno en conjunto',
-    },
-    {
-      title: 'Almuerzo',
-      date: '2024-11-25',
-      startHour: '12:00:00',
-      endHour: '12:30:00',
-      description: 'Desayuno en conjunto',
-    },
-    {
-      title: 'Desayuno',
-      date: '2024-11-25',
-      startHour: '11:00:00',
-      endHour: '11:30:00',
-      description: 'Desayuno en conjunto',
-    },
-    {
-      title: 'Cena',
-      date: '2024-11-26',
-      startHour: '11:00:00',
-      endHour: '11:30:00',
-      description: 'Desayuno en conjunto',
-    },
-  ]
+  const informativeDates = event.mdata?.informative_dates || []
+
+  const { mutateAsync: submitEditEvent, isPending } = useEditEvent()
+
+  async function onAddNewDate({ newDate }) {
+    let eventCopy = { ...event }
+    delete eventCopy.title
+    eventCopy.mdata.informative_dates.push(newDate)
+
+    await submitEditEvent({ eventData: eventCopy })
+  }
 
   return (
     <ContainerPage>
@@ -46,23 +31,24 @@ export default function Page({ event }) {
         startDate={startDate}
         endDate={endDate}
         informativeDates={informativeDates}
+        onAddNewDate={onAddNewDate}
       />
     </ContainerPage>
   )
 }
 
-function Activities({ startDate, endDate, informativeDates }) {
+function Activities({ startDate, endDate, informativeDates, onAddNewDate }) {
   const days = getIntermediateDates(startDate, endDate)
 
   return (
     <div className="space-y-6">
       {days.map((day, index) => (
         <>
-          <SubtitlePage subtitle={`${day} - Agenda día ${index + 1}`} />
+          <SubtitlePage subtitle={ShowDay(day, index + 1)} />
           <ShowActivitiesForDay
             activities={getActivitiesForDay(day, informativeDates)}
           />
-          <AddDateButton />
+          <AddDateButton day={day} onAddNewDate={onAddNewDate} />
         </>
       ))}
     </div>

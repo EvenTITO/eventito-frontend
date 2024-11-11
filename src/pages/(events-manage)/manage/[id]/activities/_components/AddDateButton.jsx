@@ -5,15 +5,37 @@ import { Button } from '@nextui-org/button'
 import { useState } from 'react'
 import TimeInput from '@/components/Forms/TimeInput'
 import { Time } from '@internationalized/date'
+import { Textarea } from '@nextui-org/input'
+import { HourToString } from './utils'
 
-export default function AddDateButton() {
+export default function AddDateButton({ onAddNewDate, day }) {
   const [title, setTitle] = useState(null)
   const [startHour, setStartHour] = useState(null)
   const [endHour, setEndHour] = useState(null)
+  const [description, setDescription] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (onClose) => {
-    alert(startHour + ' ' + endHour)
-    onClose(false)
+    if (title && startHour && endHour && description) {
+      setIsLoading(true)
+      await onAddNewDate({
+        newDate: {
+          date: day,
+          title: title,
+          startHour: HourToString(startHour),
+          endHour: HourToString(endHour),
+          description: description,
+        },
+      })
+
+      setTitle(null)
+      setStartHour(null)
+      setEndHour(null)
+      setDescription(null)
+      setIsLoading(false)
+
+      onClose(false)
+    }
   }
 
   function trigger(onOpen) {
@@ -35,24 +57,33 @@ export default function AddDateButton() {
       trigger={trigger}
       title="Nueva actividad"
       onSubmit={handleSubmit}
-      isPending={false}
+      size={'lg'}
+      isPending={isLoading}
     >
       <NameInput
-        label="Ingresar título de la actividad"
+        label="Título de la actividad"
         value={title}
         setValue={setTitle}
       />
-      <TimeInput
-        label="Horario de comienzo"
-        defaultValue={new Time(11)}
-        value={startHour}
-        setValue={setStartHour}
-      />
-      <TimeInput
-        label="Horario de finalización"
-        defaultValue={new Time(11, 30)}
-        value={endHour}
-        setValue={setEndHour}
+      <div className="flex gap-1">
+        <TimeInput
+          label="Horario de comienzo"
+          defaultValue={new Time(11)}
+          value={startHour}
+          setValue={setStartHour}
+        />
+        <TimeInput
+          label="Horario de finalización"
+          defaultValue={new Time(11, 30)}
+          value={endHour}
+          setValue={setEndHour}
+        />
+      </div>
+      <Textarea
+        label="Descripción"
+        placeholder="Ingresar breve descripción de la actividad"
+        value={description}
+        onValueChange={setDescription}
       />
     </MiniModal>
   )

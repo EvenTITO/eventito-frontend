@@ -1,3 +1,5 @@
+import { format, parse } from '@formkit/tempo'
+
 export function getIntermediateDates(startDate, endDate) {
   const dateArray = []
 
@@ -30,4 +32,15 @@ export function getActivitiesForDay(day, activities) {
     .sort((a, b) => {
       return a.startHour.localeCompare(b.startHour)
     })
+}
+
+export function ShowDay(day, numberDay) {
+  const formattedDay = format(day, 'full')
+
+  return `Agenda día ${numberDay} - ${formattedDay}`
+}
+
+export function HourToString(hour) {
+  const minute = hour.minute >= 10 ? hour.minute : `0${hour.minute}`
+  return `${hour.hour}:${minute}:00`
 }
