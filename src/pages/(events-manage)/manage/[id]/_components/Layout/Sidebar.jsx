@@ -14,6 +14,7 @@ import {
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import Icon from '@/components/Icon'
+import SidebarIcon from '@/components/SidebarIcon'
 
 export default function OrganizationSidebar({ eventTitle }) {
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -45,56 +46,55 @@ export default function OrganizationSidebar({ eventTitle }) {
   )
 }
 
-const classNameIcons = 'mr-2 h-4 w-4'
 const itemList = [
   {
     label: 'Configuración',
     children: [
       {
         label: 'General',
-        icon: <Settings className={classNameIcons} />,
+        icon: <SidebarIcon name="Settings" />,
         to: 'general',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
         label: 'Comité de miembros',
-        icon: <Users className={classNameIcons} />,
+        icon: <SidebarIcon name="Users" />,
         to: 'members',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
         label: 'Actividades',
-        icon: <Icon name="Calendar" classNames={'mr-2'} />,
+        icon: <SidebarIcon name="Calendar" />,
         to: 'activities',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
         label: 'Revisiones',
-        icon: <FilePenLine className={classNameIcons} />,
+        icon: <SidebarIcon name="FilePenLine" />,
         to: 'reviews',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
         label: 'Tracks',
-        icon: <Table className={classNameIcons} />,
+        icon: <SidebarIcon name="Table" />,
         to: 'tracks',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
         label: 'Tarifas',
-        icon: <DollarSign className={classNameIcons} />,
+        icon: <SidebarIcon name="DollarSign" />,
         to: 'pricing',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
         label: 'Salas',
-        icon: <MapPin className={classNameIcons} />,
+        icon: <SidebarIcon name="MapPin" />,
         to: 'rooms',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
@@ -106,14 +106,14 @@ const itemList = [
     children: [
       {
         label: 'Inscripciones',
-        icon: <BookOpenCheck className={classNameIcons} />,
+        icon: <SidebarIcon name="BookOpenCheck" />,
         to: 'inscriptions',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
         label: 'Presentaciones',
-        icon: <Calendar className={classNameIcons} />,
+        icon: <SidebarIcon name="CalendarCheck" />,
         to: 'talks',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
