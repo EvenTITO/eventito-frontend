@@ -10,8 +10,8 @@ import { HourToString } from './utils'
 
 export default function AddDateButton({ onAddNewDate, day }) {
   const [title, setTitle] = useState(null)
-  const [startHour, setStartHour] = useState(null)
-  const [endHour, setEndHour] = useState(null)
+  const [startHour, setStartHour] = useState(new Time(11))
+  const [endHour, setEndHour] = useState(new Time(11, 30))
   const [description, setDescription] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -68,13 +68,11 @@ export default function AddDateButton({ onAddNewDate, day }) {
       <div className="flex gap-1">
         <TimeInput
           label="Horario de comienzo"
-          defaultValue={new Time(11)}
           value={startHour}
           setValue={setStartHour}
         />
         <TimeInput
           label="Horario de finalización"
-          defaultValue={new Time(11, 30)}
           value={endHour}
           setValue={setEndHour}
         />
