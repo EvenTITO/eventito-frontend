@@ -2,6 +2,7 @@ import SubtitlePage from '@/pages/(events-manage)/_components/subtitlePage'
 import ActivityCard from './ActivityCard'
 import { getActivitiesForDay, getIntermediateDates, ShowDay } from './utils'
 import AddDateButton from './AddDateButton'
+import Icon from '@/components/Icon'
 
 export default function Activities({
   startDate,
@@ -9,6 +10,10 @@ export default function Activities({
   informativeDates,
   onAddNewDate,
 }) {
+  if (!startDate || !endDate) {
+    return <NoDatesMessage />
+  }
+
   const days = getIntermediateDates(startDate, endDate)
 
   return (
@@ -42,5 +47,17 @@ function ShowActivitiesForDay({ activities }) {
         />
       ))}
     </>
+  )
+}
+
+function NoDatesMessage() {
+  return (
+    <div className="flex items-center gap-2 mt-2 text-muted-foreground">
+      <Icon name="CalendarClock" />
+      <p className="text-lg">
+        Configura las fechas de inicio y fin de presentaciones para agregar
+        actividades al evento.
+      </p>
+    </div>
   )
 }

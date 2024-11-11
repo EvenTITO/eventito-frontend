@@ -5,8 +5,8 @@ import Activities from './_components/Activities'
 import ConfigurationDates from './_components/ConfigurationDates'
 
 export default function Page({ event }) {
-  const startDate = event.dates.filter((d) => d.name === 'START_DATE')[0].date
-  const endDate = event.dates.filter((d) => d.name === 'END_DATE')[0].date
+  const startDate = event.dates.filter((d) => d.name === 'START_DATE')[0]?.date
+  const endDate = event.dates.filter((d) => d.name === 'END_DATE')[0]?.date
   const informativeDates = event.mdata?.informative_dates || []
 
   const { mutateAsync: submitEditEvent, isPending } = useEditEvent()
