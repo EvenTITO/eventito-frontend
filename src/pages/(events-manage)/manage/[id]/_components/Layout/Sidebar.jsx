@@ -72,15 +72,8 @@ const itemList = [
         isOrganizerRoute: true,
       },
       {
-        label: 'Revisiones',
-        icon: <SidebarIcon name="FilePenLine" />,
-        to: 'reviews',
-        requiredRoles: [ORGANIZER_ROLE],
-        isOrganizerRoute: true,
-      },
-      {
-        label: 'Tracks',
-        icon: <SidebarIcon name="Table" />,
+        label: 'Tracks y revisiones',
+        icon: <SidebarIcon name="BookOpenCheck" />,
         to: 'tracks',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
