@@ -12,6 +12,7 @@ import TracksTable from './_components/TracksTable'
 import AddTrackButton from './_components/AddTrackButton'
 import { useEditEvent } from '@/hooks/manage/generalHooks'
 import DateCard from '@/components/Card/DateCard.jsx'
+import GoToReviewFormCard from './_components/GoToReviewFormCard.jsx'
 
 export default function Page({ event, chairs, tracksByChair }) {
   const [tracks, setTracks] = useState(
@@ -92,6 +93,7 @@ export default function Page({ event, chairs, tracksByChair }) {
           onEdit={onEditSubmissionDate}
           label="Fecha límite de recepción de trabajos"
         />
+        <GoToReviewFormCard />
         <TracksTable
           tracks={tracks}
           chairs={chairs}
