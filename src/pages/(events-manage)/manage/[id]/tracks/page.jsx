@@ -10,6 +10,8 @@ import { unifyEventTracksWithChairs } from './_components/utils.js'
 import { CREATED_STATUS } from '@/lib/Constants.js'
 import TracksTable from './_components/TracksTable'
 import AddTrackButton from './_components/AddTrackButton'
+import { useEditEvent } from '@/hooks/manage/generalHooks'
+import DateCard from '@/components/Card/DateCard.jsx'
 
 export default function Page({ event, chairs, tracksByChair }) {
   const [tracks, setTracks] = useState(
@@ -25,6 +27,21 @@ export default function Page({ event, chairs, tracksByChair }) {
   const addTrack = useAddTrack()
   const updateTracks = useUpdateTracks()
   const canAddOrRemoveTracks = event.status === CREATED_STATUS // || event.status === STARTED_STATUS
+  const { mutateAsync: submitEditEvent, isPending } = useEditEvent()
+
+  const submissionDate = event.dates.filter(
+    (d) => d.name === 'SUBMISSION_DEADLINE_DATE'
+  )[0]?.date
+
+  async function onEditSubmissionDate({ newDate }) {
+    let eventCopy = { ...event }
+    delete eventCopy.title
+    eventCopy.dates = eventCopy.dates.map((d) =>
+      d.name === 'SUBMISSION_DEADLINE_DATE' ? { ...d, date: newDate } : d
+    )
+
+    await submitEditEvent({ eventData: eventCopy })
+  }
 
   function getUserIdByEmail(email) {
     return chairs.filter((chair) => chair.email === email)[0]?.userId
@@ -70,6 +87,11 @@ export default function Page({ event, chairs, tracksByChair }) {
   return (
     <ContainerPage>
       <div className="space-y-6">
+        <DateCard
+          date={submissionDate}
+          onEdit={onEditSubmissionDate}
+          label="Fecha límite de recepción de trabajos"
+        />
         <TracksTable
           tracks={tracks}
           chairs={chairs}
