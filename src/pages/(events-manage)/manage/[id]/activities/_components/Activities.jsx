@@ -9,6 +9,7 @@ export default function Activities({
   endDate,
   informativeDates,
   onAddNewDate,
+  onEditDate,
 }) {
   if (!startDate || !endDate) {
     return <NoDatesMessage />
@@ -23,6 +24,7 @@ export default function Activities({
           <SubtitlePage subtitle={ShowDay(day, index + 1)} />
           <ShowActivitiesForDay
             activities={getActivitiesForDay(day, informativeDates)}
+            onEditDate={onEditDate}
           />
           <AddDateButton day={day} onAddNewDate={onAddNewDate} />
         </>
@@ -31,7 +33,7 @@ export default function Activities({
   )
 }
 
-function ShowActivitiesForDay({ activities }) {
+function ShowActivitiesForDay({ activities, onEditDate }) {
   if (activities.length === 0) return null
 
   return (
@@ -44,6 +46,7 @@ function ShowActivitiesForDay({ activities }) {
           startHour={activity.startHour}
           endHour={activity.endHour}
           description={activity.description}
+          onEditDate={onEditDate}
         />
       ))}
     </>

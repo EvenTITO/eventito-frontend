@@ -36,6 +36,16 @@ export default function Page({ event }) {
     await onEditDate({ newDate: newDate, nameDate: 'END_DATE' })
   }
 
+  async function onEditActivity({ newDate, oldTitle }) {
+    let eventCopy = { ...event }
+    delete eventCopy.title
+    eventCopy.mdata.informative_dates = eventCopy.mdata.informative_dates.map(
+      (d) => (d.title === oldTitle ? { ...newDate } : d)
+    )
+
+    await submitEditEvent({ eventData: eventCopy })
+  }
+
   return (
     <ContainerPage>
       <div className="space-y-6">
@@ -51,6 +61,7 @@ export default function Page({ event }) {
           endDate={endDate}
           informativeDates={informativeDates}
           onAddNewDate={onAddNewDate}
+          onEditDate={onEditActivity}
         />
       </div>
     </ContainerPage>

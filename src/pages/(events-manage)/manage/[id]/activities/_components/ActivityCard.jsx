@@ -9,10 +9,15 @@ export default function ActivityCard({
   startHour,
   endHour,
   description,
+  onEditDate,
   key,
 }) {
   const startTime = format(parseISO(`${date}T${startHour}`), 'h:mm a')
   const endTime = format(parseISO(`${date}T${endHour}`), 'h:mm a')
+
+  async function handleEdit({ newDate }) {
+    await onEditDate({ newDate, oldTitle: title })
+  }
 
   function trigger(onOpen) {
     return (
@@ -48,7 +53,7 @@ export default function ActivityCard({
       defaultTitle={title}
       defaultDescription={description}
       label={'Editar actividad'}
-      onClick={() => alert('editada')}
+      onClick={handleEdit}
       trigger={trigger}
     />
   )
