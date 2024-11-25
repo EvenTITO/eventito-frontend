@@ -1,14 +1,29 @@
+import { cn } from '@/lib/utils'
 import Icon from '../Icon'
 
-export default function CardWithFocus({ nameIcon = null, onClick, children }) {
+export default function CardWithFocus({
+  nameIcon = null,
+  imageIcon = null,
+  onClick,
+  children,
+  containerClassNames = null,
+}) {
   return (
     <div
-      className="group flex items-center gap-3 p-4 rounded-lg border border-border hover:bg-accent hover:border-accent-foreground/20 transition-all duration-200 cursor-pointer w-full"
+      className={cn(
+        'group flex items-center gap-3 p-4 rounded-lg border border-border hover:bg-accent hover:border-accent-foreground/20 transition-all duration-200 cursor-pointer w-full',
+        containerClassNames
+      )}
       onClick={onClick}
     >
       {nameIcon ? (
         <div className="p-2 rounded-md bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-200">
           <Icon name={nameIcon} />
+        </div>
+      ) : null}
+      {imageIcon ? (
+        <div className="p-2 rounded-md bg-background text-primary group-hover:bg-accent group-hover:text-primary-foreground transition-colors duration-200">
+          {imageIcon}
         </div>
       ) : null}
       {children}

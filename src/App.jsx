@@ -11,6 +11,7 @@ import RoutesAdmin from './pages/admin/routes'
 import RoutesEvents from './pages/(events-manage)/events/routes'
 import RouteViewEvent from './pages/(events-manage)/view/routes'
 import RoutesOrganization from './pages/(events-manage)/manage/routes'
+import RoutesHome2 from './pages/home2/routes'
 
 function App() {
   const [isLoading, setIsLoading] = useState(true)
@@ -35,6 +36,7 @@ function App() {
       <Toaster />
       <RoutesAuth />
       <RoutesHome />
+      <RoutesHome2 />
       <RoutesAdmin />
       <RoutesEvents />
       <RouteViewEvent />
