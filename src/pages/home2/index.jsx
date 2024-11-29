@@ -1,12 +1,12 @@
-import FetchStatus from '@/components/FetchStatus'
-import { getPublicEvents } from '@/services/api/events/general/hooks'
+import {
+  getMyEvents,
+  getPublicEvents,
+} from '@/services/api/events/general/hooks'
 import Page from './page'
 
 export default function HomePage() {
-  const { isPending, error, data: events } = getPublicEvents()
+  const events = getPublicEvents()
+  const myEvents = getMyEvents()
 
-  const component = <Page events={events} />
-  return (
-    <FetchStatus isPending={isPending} error={error} component={component} />
-  )
+  return <Page events={events} myEvents={myEvents} />
 }

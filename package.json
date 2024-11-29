@@ -33,6 +33,7 @@
     "@nextui-org/modal": "^2.0.41",
     "@nextui-org/pagination": "^2.0.36",
     "@nextui-org/select": "^2.2.7",
+    "@nextui-org/skeleton": "^2.0.32",
     "@nextui-org/system": "^2.2.6",
     "@nextui-org/table": "^2.0.40",
     "@nextui-org/tabs": "^2.0.37",
