@@ -16,9 +16,10 @@ function EventCard({ event }) {
     <Card
       isPressable
       onPress={() => alert(event.id)}
-      className="overflow-hidden w-full h-[350px]"
+      className="overflow-hidden w-full h-[350px] hover:bg-gray-50 hover:text-primary"
     >
       <Image
+        isZoomed
         shadow="sm"
         radius={null}
         width="100%"
