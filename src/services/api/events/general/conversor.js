@@ -27,6 +27,10 @@ function convertEventItem(data) {
     startDate: startDate,
     endDate: endDate,
     location: data.location,
+    shortDescription: data.mdata?.short_description || 'Sin descripción',
+    logoURL: data.media?.filter((m) => m.name === 'main_image')[0].url || null,
+    //bannerURL: data.media?.filter((m) => m.name === 'banner_image')[0].url || null,
+    bannerURL: 'https://cms.fi.uba.ar/uploads/Imagenes_Paginas_Internas_Genericas_Cian_Institucional_d1a7c69a52.png'
   }
 }
 

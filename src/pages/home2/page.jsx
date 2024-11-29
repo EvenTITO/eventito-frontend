@@ -1,6 +1,7 @@
 import ContainerPage from '../(events-manage)/_components/containerPage'
 import { Tabs, Tab } from '@nextui-org/tabs'
 import MyEventsList from './_components/MyEventsList'
+import PublicEventsList from './_components/PublicEventsList'
 
 export default function Page({ events }) {
   return (
@@ -10,7 +11,7 @@ export default function Page({ events }) {
           <MyEventsList events={events} />
         </Tab>
         <Tab key="Todos los eventos" title="Todos los eventos">
-          Chau
+          <PublicEventsList events={events} />
         </Tab>
       </Tabs>
     </ContainerPage>
