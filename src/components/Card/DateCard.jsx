@@ -1,7 +1,6 @@
 import { DatePicker } from '@nextui-org/date-picker'
 import MiniModal from '@/components/Modal/MiniModal'
 import { useState } from 'react'
-import Icon from '@/components/Icon'
 import { getLocalTimeZone, parseDate, today } from '@internationalized/date'
 import { formatDayToText } from '@/lib/dates'
 import CardWithFocus from './CardWithFocus'

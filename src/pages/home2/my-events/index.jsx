@@ -1,5 +1,5 @@
-import { getMyEvents } from '@/services/api/events/general/hooks'
 import Page from './page'
+import { getMyEvents } from '@/services/api/events/general/hooks'
 
 export default function MyEventsPage() {
   const myEvents = getMyEvents()
