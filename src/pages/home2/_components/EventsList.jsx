@@ -1,6 +1,7 @@
 import { useNavigator } from '@/lib/navigation'
 import { Card, CardBody } from '@nextui-org/card'
 import { Image } from '@nextui-org/image'
+import { VIEW_EVENT_URL } from './constants'
 
 export default function EventsList({ events }) {
   return (
@@ -18,7 +19,7 @@ function EventCard({ event }) {
   return (
     <Card
       isPressable
-      onPress={() => navigator.to(`/view/events/${event.id}`)}
+      onPress={() => navigator.to(VIEW_EVENT_URL + event.id)}
       className="overflow-hidden w-full h-[350px] hover:bg-gray-50 hover:text-primary"
     >
       <Image

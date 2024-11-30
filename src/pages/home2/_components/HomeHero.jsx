@@ -1,6 +1,6 @@
-import { GraduationCap, Calendar, Users, BookOpen } from 'lucide-react'
-import { Image } from '@nextui-org/image'
 import { Button } from '@nextui-org/button'
+import { Image } from '@nextui-org/image'
+import { NEW_EVENT_URL, PUBLIC_EVENTS_URL } from './constants'
 import { useNavigator } from '@/lib/navigation'
 
 export default function HomeHero() {
@@ -26,7 +26,7 @@ export default function HomeHero() {
                 color="primary"
                 radius="sm"
                 size="lg"
-                onClick={() => navigator.to('/home/new-event')}
+                onClick={() => navigator.to(NEW_EVENT_URL)}
               >
                 Crear un evento
               </Button>
@@ -35,7 +35,7 @@ export default function HomeHero() {
                 color="primary"
                 radius="sm"
                 size="lg"
-                onClick={() => navigator.to('/home/public-events')}
+                onClick={() => navigator.to(PUBLIC_EVENTS_URL)}
               >
                 Ver todos los eventos
               </Button>
@@ -58,27 +58,6 @@ function RightLogo() {
         height={200}
         className="object-contain"
       />
-    </div>
-  )
-}
-
-function Icons() {
-  return (
-    <div className="flex items-center justify-center">
-      <div className="grid grid-cols-2 gap-4 p-4">
-        <div className="flex items-center justify-center p-4 bg-primary/5 rounded-lg">
-          <GraduationCap size={40} className="text-primary" />
-        </div>
-        <div className="flex items-center justify-center p-4 bg-primary/5 rounded-lg">
-          <Calendar size={40} className="text-primary" />
-        </div>
-        <div className="flex items-center justify-center p-4 bg-primary/5 rounded-lg">
-          <Users size={40} className="text-primary" />
-        </div>
-        <div className="flex items-center justify-center p-4 bg-primary/5 rounded-lg">
-          <BookOpen size={40} className="text-primary" />
-        </div>
-      </div>
     </div>
   )
 }
