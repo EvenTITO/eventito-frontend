@@ -52,6 +52,10 @@ export function convertMyEventsData(data) {
     roles: event.roles,
     status: event.status,
     tracks: event.tracks,
+    shortDescription: data.mdata?.short_description || 'Sin descripción',
+    logoURL: data.media?.filter((m) => m.name === 'main_image')[0].url || null,
+    //bannerURL: data.media?.filter((m) => m.name === 'banner_image')[0].url || null,
+    bannerURL: 'https://www.fi.uba.ar/images/boletin-cover-new.png'
   }))
 }
 

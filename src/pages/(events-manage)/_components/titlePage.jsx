@@ -1,12 +1,13 @@
 export default function TitlePage({ title, rightComponent }) {
+  const titleStyle = 'flex justify-between items-center mb-8'
   if (rightComponent) {
     return (
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">{title}</h1>
+      <div className={titleStyle}>
+        <h1 className="text-3xl font-bold">{title}</h1>
         {rightComponent}
       </div>
     )
   }
 
-  return <h1 className="text-2xl font-bold mb-6">{title}</h1>
+  return <h1 className={titleStyle}>{title}</h1>
 }

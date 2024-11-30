@@ -1,9 +1,11 @@
 import ContainerPage from '../(events-manage)/_components/containerPage'
 import EventsSection from './_components/EventsSection'
+import HomeHero from './_components/HomeHero'
 
 export default function Page({ events, myEvents }) {
   return (
     <ContainerPage>
+      <HomeHero />
       <div className="space-y-20">
         <EventsSection
           events={myEvents}
