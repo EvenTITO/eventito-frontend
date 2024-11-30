@@ -1,7 +1,8 @@
+import { useNavigator } from '@/lib/navigation'
 import { Card, CardBody } from '@nextui-org/card'
 import { Image } from '@nextui-org/image'
 
-export default function PublicEventsList({ events }) {
+export default function EventsList({ events }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-8">
       {events.map((event) => (
@@ -12,10 +13,12 @@ export default function PublicEventsList({ events }) {
 }
 
 function EventCard({ event }) {
+  const navigator = useNavigator()
+
   return (
     <Card
       isPressable
-      onPress={() => alert(event.id)}
+      onPress={() => navigator.to(`/view/events/${event.id}`)}
       className="overflow-hidden w-full h-[350px] hover:bg-gray-50 hover:text-primary"
     >
       <Image
