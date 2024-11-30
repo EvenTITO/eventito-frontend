@@ -1,10 +1,14 @@
 import { Image } from '@nextui-org/image'
 import CardContainer from './CardContainer'
 import { CardBody } from '@nextui-org/card'
+import { useNavigator } from '@/lib/navigation'
+import { VIEW_EVENT_URL } from '../../_components/constants'
 
 export default function EventCard({ event }) {
+  const navigator = useNavigator()
+
   return (
-    <CardContainer onPress={() => alert('viendo evento')}>
+    <CardContainer onPress={() => navigator.to(VIEW_EVENT_URL + event.id)}>
       <Image
         isZoomed
         shadow="sm"
