@@ -1,71 +1,94 @@
-import Icon from '@/components/Icon'
 import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
 import TitlePage from '@/pages/(events-manage)/_components/titlePage'
-import { Card, CardBody } from '@nextui-org/card'
-import { Image } from '@nextui-org/image'
 import CardListContainer from './_components/CardListContainer'
+import CreateEventCard from './_components/CreateEventCard'
+import EventCard from './_components/EventCard'
+import { SkeletonList } from '@/components/Skeleton'
+import {
+  ATTENDEE_ROLE,
+  ORGANIZER_ROLE,
+  REVIEWER_ROLE,
+  SPEAKER_ROLE,
+} from '@/lib/Constants'
 
 export default function Page({ events, isPending }) {
-  const eventCards = [
-    <CreateEventCard />,
-    <EventCard event={isPending ? null : events[0]} />,
-  ]
-
-  if (!isPending) {
-    events.forEach((event) => {
-      eventCards.push(<EventCard key={event.id} event={event} />)
-    })
-  }
-
   return (
     <ContainerPage>
-      <TitlePage title="Mis eventos" />
-      <CardListContainer eventCards={eventCards} isPending={isPending} />
+      <div className="space-y-20">
+        <MyEvents events={events} isPending={isPending} />
+        <MyInscriptions events={events} isPending={isPending} />
+        <MyReviews events={events} isPending={isPending} />
+      </div>
     </ContainerPage>
   )
 }
-function CardContainer({ onPress, children }) {
+
+function MyEvents({ events, isPending }) {
+  const title = 'Mis eventos'
+
+  if (isPending) {
+    return (
+      <div>
+        <TitlePage title={title} />
+        <SkeletonList />
+      </div>
+    )
+  }
+
   return (
-    <Card
-      isPressable
-      onPress={onPress}
-      className="overflow-hidden w-[350px] h-[250px] hover:bg-gray-50 hover:text-primary"
-    >
-      {children}
-    </Card>
+    <MyEventsSection
+      events={events}
+      filterFunction={(event) => event.roles.includes(ORGANIZER_ROLE)}
+      starterValue={<CreateEventCard />}
+      title={title}
+    />
   )
 }
 
-function CreateEventCard({ navigateTo }) {
+function MyInscriptions({ events, isPending }) {
+  if (isPending) return null
+
   return (
-    <CardContainer onPress={() => alert('creando evento')}>
-      <div className="flex flex-col flex-grow p-6 w-full">
-        <CardBody className="flex-grow items-center justify-center gap-2">
-          <Icon name="Plus" />
-          <p>Crear nuevo evento</p>
-        </CardBody>
-      </div>
-    </CardContainer>
+    <MyEventsSection
+      events={events}
+      filterFunction={(event) =>
+        event.roles.includes(ATTENDEE_ROLE) ||
+        event.roles.includes(SPEAKER_ROLE)
+      }
+      title="Mis inscripciones"
+    />
   )
 }
 
-function EventCard({ event }) {
+function MyReviews({ events, isPending }) {
+  if (isPending) return null
+
   return (
-    <CardContainer onPress={() => alert('viendo evento')}>
-      <Image
-        isZoomed
-        shadow="sm"
-        radius={null}
-        width="100%"
-        alt={event.title}
-        className="w-full object-cover h-[100px]"
-        src={event.bannerURL}
-      />
-      <div className="flex flex-col flex-grow p-6">
-        <CardBody className="flex-grow">
-          <h3 className="text-2xl font-bold mb-2">{event.title}</h3>
-        </CardBody>
-      </div>
-    </CardContainer>
+    <MyEventsSection
+      events={events}
+      filterFunction={(event) => event.roles.includes(REVIEWER_ROLE)}
+      title="Eventos con revisiones pendientes"
+    />
+  )
+}
+
+function MyEventsSection({
+  events,
+  filterFunction,
+  starterValue = null,
+  title,
+}) {
+  const filteredEvents = events.filter(filterFunction)
+
+  const eventCards = starterValue ? [starterValue] : []
+  filteredEvents.forEach((event) => {
+    eventCards.push(<EventCard key={event.id} event={event} />)
+  })
+
+  return (
+    <div>
+      <TitlePage title={title} />
+      <CardListContainer eventCards={eventCards} />
+    </div>
   )
 }

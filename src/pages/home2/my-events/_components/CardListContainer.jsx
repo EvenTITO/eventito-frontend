@@ -1,15 +1,10 @@
 import { useState } from 'react'
-import { SkeletonList } from '@/components/Skeleton'
 import Icon from '@/components/Icon'
 import { Card, CardBody } from '@nextui-org/card'
 
-export default function CardListContainer({ eventCards, isPending }) {
+export default function CardListContainer({ eventCards }) {
   const [idx, setIdx] = useState(0)
   const amountCardsPerPage = 3
-
-  if (isPending) {
-    return <SkeletonList />
-  }
 
   function handleLeft() {
     setIdx(idx - 1)
