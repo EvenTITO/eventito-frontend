@@ -6,6 +6,7 @@ import EventCard from './_components/EventCard'
 import { SkeletonList } from '@/components/Skeleton'
 import {
   ATTENDEE_ROLE,
+  CHAIR_ROLE,
   ORGANIZER_ROLE,
   REVIEWER_ROLE,
   SPEAKER_ROLE,
@@ -18,6 +19,7 @@ export default function Page({ events, isPending }) {
         <MyEvents events={events} isPending={isPending} />
         <MyInscriptions events={events} isPending={isPending} />
         <MyReviews events={events} isPending={isPending} />
+        <AsChairOfEvent events={events} isPending={isPending} />
       </div>
     </ContainerPage>
   )
@@ -68,6 +70,18 @@ function MyReviews({ events, isPending }) {
       events={events}
       filterFunction={(event) => event.roles.includes(REVIEWER_ROLE)}
       title="Eventos con revisiones pendientes"
+    />
+  )
+}
+
+function AsChairOfEvent({ events, isPending }) {
+  if (isPending) return null
+
+  return (
+    <MyEventsSection
+      events={events}
+      filterFunction={(event) => event.roles.includes(CHAIR_ROLE)}
+      title="Eventos asignado como chair"
     />
   )
 }
