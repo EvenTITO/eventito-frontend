@@ -1,5 +1,6 @@
 import EventTypeSelector from '@/components/Forms/EventTypeSelector'
 import FullModal from '@/components/Modal/FullModal'
+import LabelForm from '@/components/Forms/LabelForm'
 import ShortDescriptionTextArea from '@/components/Forms/ShortDescriptionTextArea'
 import TitleInput from '@/components/Forms/TitleInput'
 import { Button } from '@nextui-org/button'
@@ -73,14 +74,5 @@ export default function NewEventButton() {
         setShortDescription={setShortDescription}
       />
     </FullModal>
-  )
-}
-
-function LabelForm({ label, isRequired = false }) {
-  return (
-    <div className="flex gap-1">
-      <p className="font-semibold text-lg">{label}</p>
-      {isRequired ? <p className="text-red-400">*</p> : null}
-    </div>
   )
 }
