@@ -23,6 +23,7 @@ export default function TitleInput({
     <Input
       autoFocus
       size="lg"
+      radius="sm"
       label={label}
       placeholder="Ingresar el título del evento"
       labelPlacement="outside"
@@ -30,7 +31,7 @@ export default function TitleInput({
       value={value}
       onValueChange={handleSetValue}
       isInvalid={maxReached}
-      errorMessage="Máximo de letras alcanzado: 100/100"
+      errorMessage="Largo del título: 100 / 100"
     />
   )
 }

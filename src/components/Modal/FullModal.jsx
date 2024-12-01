@@ -37,11 +37,11 @@ export default function FullModal({
       >
         <ModalContent>
           {(onClose) => (
-            <div className='mx-auto w-2/3 px-10'>
+            <div className='mx-auto w-2/3 px-10 space-y-6'>
               <ModalHeader className="flex flex-col gap-1 font-bold text-3xl">
                 {title}
               </ModalHeader>
-              <ModalBody>{children}</ModalBody>
+              <ModalBody className="space-y-6">{children}</ModalBody>
               <ModalFooter>
                 <Button
                   className="w-full"
