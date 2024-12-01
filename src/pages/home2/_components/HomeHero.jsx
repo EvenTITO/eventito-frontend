@@ -2,6 +2,7 @@ import { Button } from '@nextui-org/button'
 import { Image } from '@nextui-org/image'
 import { NEW_EVENT_URL, PUBLIC_EVENTS_URL } from './constants'
 import { useNavigator } from '@/lib/navigation'
+import NewEventButton from '../new-event/NewEvent'
 
 export default function HomeHero() {
   const navigator = useNavigator()
@@ -21,15 +22,7 @@ export default function HomeHero() {
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
-              <Button
-                variant="solid"
-                color="primary"
-                radius="sm"
-                size="lg"
-                onClick={() => navigator.to(NEW_EVENT_URL)}
-              >
-                Crear un evento
-              </Button>
+              <NewEventButton />
               <Button
                 variant="flat"
                 color="primary"
