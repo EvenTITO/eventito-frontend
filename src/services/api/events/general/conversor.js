@@ -21,7 +21,10 @@ function getShortDescription(event) {
   if (event.mdata?.short_description) {
     shortDescription = event.mdata?.short_description
   } else if (event.description && event.description.length > 0) {
-    shortDescription = event.description
+    shortDescription = event.description.slice(0, 200)
+    if (shortDescription.length === 200) {
+      shortDescription += '...'
+    }
   }
 
   return shortDescription

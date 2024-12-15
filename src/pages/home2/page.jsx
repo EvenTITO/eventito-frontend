@@ -12,11 +12,13 @@ export default function Page({ events, myEvents }) {
           events={myEvents}
           title={'Mis eventos'}
           navigateTo={MY_EVENTS_URL}
+          maxSlice={3}
         />
         <EventsSection
           events={events}
           title={'Próximos eventos'}
           navigateTo={PUBLIC_EVENTS_URL}
+          showAllways
         />
       </div>
     </ContainerPage>

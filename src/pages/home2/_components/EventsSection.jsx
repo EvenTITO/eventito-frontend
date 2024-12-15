@@ -8,6 +8,7 @@ export default function EventsSection({
   title,
   navigateTo,
   showAllways = false,
+  maxSlice = 6,
 }) {
   if (!showAllways && !events.isPending && events.data.length === 0) {
     return null
@@ -22,7 +23,7 @@ export default function EventsSection({
       {events.isPending ? (
         <SkeletonList />
       ) : (
-        <EventsList events={(events.data || []).slice(0, 6)} />
+        <EventsList events={(events.data || []).slice(0, maxSlice)} />
       )}
     </div>
   )
