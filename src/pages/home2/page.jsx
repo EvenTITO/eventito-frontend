@@ -1,7 +1,7 @@
 import ContainerPage from '../(events-manage)/_components/containerPage'
-import { MY_EVENTS_URL, PUBLIC_EVENTS_URL } from './_components/constants'
 import EventsSection from './_components/EventsSection'
 import HomeHero from './_components/HomeHero'
+import { MY_EVENTS_URL, PUBLIC_EVENTS_URL } from './_components/constants'
 
 export default function Page({ events, myEvents }) {
   return (
