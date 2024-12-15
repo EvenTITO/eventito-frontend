@@ -6,15 +6,17 @@ import TitleInput from '@/components/Forms/TitleInput'
 import { Button } from '@nextui-org/button'
 import { createEvent } from '@/services/api/events/general/hooks'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 export default function NewEventButton() {
   const { mutateAsync: newEvent } = createEvent()
+  const { currentUser } = useSelector((state) => state.user)
 
   async function handleCreateEvent(title, eventType, shortDescription) {
     await newEvent({
       title: title,
       event_type: eventType,
-      organized_by: 'pepe@gmail.com',
+      organized_by: currentUser.email,
       short_description: shortDescription,
     })
   }
