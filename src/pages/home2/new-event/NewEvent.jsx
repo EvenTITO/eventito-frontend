@@ -9,27 +9,6 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 export default function NewEventButton() {
-  const { mutateAsync: newEvent } = createEvent()
-  const { currentUser } = useSelector((state) => state.user)
-
-  async function handleCreateEvent(title, eventType, shortDescription) {
-    await newEvent({
-      title: title,
-      event_type: eventType,
-      organized_by: currentUser.email,
-      short_description: shortDescription,
-    })
-  }
-
-  return <NewEventModal handleCreateEvent={handleCreateEvent} />
-}
-
-function NewEventModal({ handleCreateEvent }) {
-  const [title, setTitle] = useState(null)
-  const [typeOfEvent, setTypeOfEvent] = useState(null)
-  const [shortDescription, setShortDescription] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-
   function trigger(onOpen) {
     return (
       <Button
@@ -43,6 +22,33 @@ function NewEventModal({ handleCreateEvent }) {
       </Button>
     )
   }
+
+  return <NewEventWrapper trigger={trigger} />
+}
+
+export function NewEventWrapper({ trigger }) {
+  const { mutateAsync: newEvent } = createEvent()
+  const { currentUser } = useSelector((state) => state.user)
+
+  async function handleCreateEvent(title, eventType, shortDescription) {
+    await newEvent({
+      title: title,
+      event_type: eventType,
+      organized_by: currentUser.email,
+      short_description: shortDescription,
+    })
+  }
+
+  return (
+    <NewEventModal handleCreateEvent={handleCreateEvent} trigger={trigger} />
+  )
+}
+
+function NewEventModal({ handleCreateEvent, trigger }) {
+  const [title, setTitle] = useState(null)
+  const [typeOfEvent, setTypeOfEvent] = useState(null)
+  const [shortDescription, setShortDescription] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   function cleanForm() {
     setTitle(null)
