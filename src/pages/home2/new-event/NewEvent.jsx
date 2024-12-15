@@ -4,9 +4,25 @@ import LabelForm from '@/components/Forms/LabelForm'
 import ShortDescriptionTextArea from '@/components/Forms/ShortDescriptionTextArea'
 import TitleInput from '@/components/Forms/TitleInput'
 import { Button } from '@nextui-org/button'
+import { createEvent } from '@/services/api/events/general/hooks'
 import { useState } from 'react'
 
 export default function NewEventButton() {
+  const { mutateAsync: newEvent } = createEvent()
+
+  async function handleCreateEvent(title, eventType, shortDescription) {
+    await newEvent({
+      title: title,
+      event_type: eventType,
+      short_description: shortDescription,
+      organized_by: 'pepe@gmail.com',
+    })
+  }
+
+  return <NewEventModal handleCreateEvent={handleCreateEvent} />
+}
+
+function NewEventModal({ handleCreateEvent }) {
   const [title, setTitle] = useState(null)
   const [typeOfEvent, setTypeOfEvent] = useState(null)
   const [shortDescription, setShortDescription] = useState(null)
@@ -41,13 +57,13 @@ export default function NewEventButton() {
       shortDescription.length > 0
     ) {
       setIsLoading(true)
-      alert(title)
+      await handleCreateEvent(title, typeOfEvent, shortDescription)
       setIsLoading(false)
 
       cleanForm()
       onClose()
     } else {
-      alert('completar todos los campos')
+      alert('Completar todos los campos obligatorios para crear el evento.')
     }
   }
 
