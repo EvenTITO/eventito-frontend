@@ -37,7 +37,7 @@ export default function FullModal({
       >
         <ModalContent>
           {(onClose) => (
-            <div className='mx-auto w-2/3 px-10 space-y-6'>
+            <div className="mx-auto w-2/3 px-10 space-y-6">
               <ModalHeader className="flex flex-col gap-1 font-bold text-3xl">
                 {title}
               </ModalHeader>
@@ -46,7 +46,7 @@ export default function FullModal({
                 <Button
                   className="w-full"
                   color="primary"
-                  variant="light"
+                  variant="flat"
                   onPress={() => handleSubmit(onClose)}
                   isLoading={isPending}
                 >
@@ -55,7 +55,7 @@ export default function FullModal({
                       {submitButtonText && (
                         <span className="mr-2">{submitButtonText}</span>
                       )}
-                      <Icon name="CircleCheck" s="5" />
+                      <p>Crear evento</p>
                     </>
                   ) : null}
                 </Button>

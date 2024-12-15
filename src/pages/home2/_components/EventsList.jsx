@@ -4,6 +4,10 @@ import { Image } from '@nextui-org/image'
 import { VIEW_EVENT_URL } from './constants'
 
 export default function EventsList({ events }) {
+  if (events.length === 0) {
+    return <p>Sin eventos</p>
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-8">
       {events.map((event) => (
