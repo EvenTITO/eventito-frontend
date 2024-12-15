@@ -14,8 +14,8 @@ export default function NewEventButton() {
     await newEvent({
       title: title,
       event_type: eventType,
-      short_description: shortDescription,
       organized_by: 'pepe@gmail.com',
+      short_description: shortDescription,
     })
   }
 

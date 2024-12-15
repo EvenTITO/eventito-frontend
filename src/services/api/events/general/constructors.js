@@ -1,5 +1,5 @@
 export function constructCreateEventBody(eventData) {
-  const { event_type, title, organized_by, shortDescription } = eventData
+  const { event_type, title, organized_by, short_description } = eventData
 
   return {
     review_skeleton: {
@@ -31,10 +31,7 @@ export function constructCreateEventBody(eventData) {
     contact: '',
     organized_by: organized_by ? organized_by : '',
     title: title,
-    description: '',
+    description: short_description,
     event_type: event_type.toUpperCase(),
-    mdata: {
-      short_description: shortDescription,
-    },
   }
 }
