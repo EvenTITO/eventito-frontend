@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils'
 import Icon from '../Icon'
+import { Image } from '@nextui-org/image'
 
 export default function CardWithFocus({
   nameIcon = null,
@@ -23,7 +24,15 @@ export default function CardWithFocus({
       ) : null}
       {imageIcon ? (
         <div className="p-2 rounded-md bg-background text-primary group-hover:bg-accent group-hover:text-primary-foreground transition-colors duration-200">
-          {imageIcon}
+          <Image
+            isZoomed
+            shadow="sm"
+            radius={null}
+            width="100%"
+            alt={'Evento'}
+            className="w-[150px] object-cover h-[50px]"
+            src={imageIcon}
+          />
         </div>
       ) : null}
       {children}

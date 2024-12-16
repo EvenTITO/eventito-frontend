@@ -9,6 +9,7 @@ import RoomsConfigPage from './[id]/rooms'
 import InscriptionsDataPage from './[id]/inscriptions'
 import TalksDataPage from './[id]/talks'
 import OrganizerActivitiesPage from './[id]/activities'
+import InfoConfigPage from './[id]/info'
 
 export default function RoutesOrganization() {
   return (
@@ -17,6 +18,7 @@ export default function RoutesOrganization() {
         <Route path="/manage/:id/" element={<GeneralConfigPage />} />
         <Route path="/manage/:id/general" element={<GeneralConfigPage />} />
         <Route path="/manage/:id/view" element={<GeneralConfigPage />} />
+        <Route path="/manage/:id/info" element={<InfoConfigPage />} />
         <Route path="/manage/:id/members" element={<MembersConfigPage />} />
         <Route path="/manage/:id/reviews" element={<ReviewsConfigPage />} />
         <Route path="/manage/:id/tracks" element={<TracksConfigPage />} />
