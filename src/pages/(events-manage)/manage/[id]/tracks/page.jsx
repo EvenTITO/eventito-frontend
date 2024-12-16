@@ -85,6 +85,10 @@ export default function Page({ event, chairs, tracksByChair }) {
     setTracks(updatedTracks)
   }
 
+  let addTrackButton = (
+    <AddTrackButton onSave={handleAddTrack} isLoading={addTrack.isPending} />
+  )
+
   return (
     <ContainerPage>
       <div className="space-y-6">
@@ -101,13 +105,9 @@ export default function Page({ event, chairs, tracksByChair }) {
           onDeleteChair={onDeleteChair}
           onDeleteTrack={handleDeleteTrack}
           eventIsPublic={!canAddOrRemoveTracks}
+          addTrackButton={addTrackButton}
         />
-        {canAddOrRemoveTracks ? (
-          <AddTrackButton
-            onSave={handleAddTrack}
-            isLoading={addTrack.isPending}
-          />
-        ) : null}
+        {canAddOrRemoveTracks ? { addTrackButton } : null}
       </div>
     </ContainerPage>
   )

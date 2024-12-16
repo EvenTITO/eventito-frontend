@@ -10,6 +10,7 @@ export default function TracksTable({
   onDeleteTrack,
   isPending,
   eventIsPublic,
+  addTrackButton,
 }) {
   async function addChair(track, newEmail) {
     await onAddChair(track, newEmail)
@@ -24,7 +25,8 @@ export default function TracksTable({
     await onDeleteTrack(track)
   }
 
-  if (tracks.length === 0) return <EmptyTracksPage />
+  if (tracks.length === 0)
+    return <EmptyTracksPage addTrackButton={addTrackButton} />
 
   const columns = ['TRACK', 'CHAIR', 'ACCIONES']
 
@@ -60,7 +62,7 @@ export default function TracksTable({
   )
 }
 
-function EmptyTracksPage() {
+function EmptyTracksPage({ addTrackButton }) {
   return (
     <div className="text-center py-10">
       <h2 className="text-xl font-semibold mb-2">Ningún track cargado</h2>
@@ -68,6 +70,7 @@ function EmptyTracksPage() {
         Agregar uno nuevo para visualizarlo. Debe configurar al menos un track
         para publicar el evento.
       </p>
+      {addTrackButton}
     </div>
   )
 }
