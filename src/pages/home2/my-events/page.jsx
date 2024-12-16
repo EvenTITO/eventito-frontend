@@ -44,6 +44,7 @@ function MyEvents({ events, isPending }) {
       starterValue={<CreateEventCard />}
       title={title}
       showStatus
+      showAllways
     />
   )
 }
@@ -92,13 +93,17 @@ function MyEventsSection({
   filterFunction,
   starterValue = null,
   title,
-  showStatus=false
+  showStatus = false,
+  showAllways = false,
 }) {
   const filteredEvents = events.filter(filterFunction)
+  if (!showAllways && filteredEvents.length === 0) return null
 
   const eventCards = starterValue ? [starterValue] : []
   filteredEvents.forEach((event) => {
-    eventCards.push(<EventCard key={event.id} event={event} showStatus={showStatus} />)
+    eventCards.push(
+      <EventCard key={event.id} event={event} showStatus={showStatus} />
+    )
   })
 
   return (
