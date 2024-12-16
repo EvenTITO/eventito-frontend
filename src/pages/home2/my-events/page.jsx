@@ -43,6 +43,7 @@ function MyEvents({ events, isPending }) {
       filterFunction={(event) => event.roles.includes(ORGANIZER_ROLE)}
       starterValue={<CreateEventCard />}
       title={title}
+      showStatus
     />
   )
 }
@@ -91,12 +92,13 @@ function MyEventsSection({
   filterFunction,
   starterValue = null,
   title,
+  showStatus=false
 }) {
   const filteredEvents = events.filter(filterFunction)
 
   const eventCards = starterValue ? [starterValue] : []
   filteredEvents.forEach((event) => {
-    eventCards.push(<EventCard key={event.id} event={event} />)
+    eventCards.push(<EventCard key={event.id} event={event} showStatus={showStatus} />)
   })
 
   return (
