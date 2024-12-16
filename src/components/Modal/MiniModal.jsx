@@ -20,6 +20,7 @@ export default function MiniModal({
   placement = 'top-center',
   size = 'default',
   validated = true,
+  backdrop = 'opaque',
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -31,6 +32,7 @@ export default function MiniModal({
     <>
       {trigger(onOpen)}
       <Modal
+        backdrop={backdrop}
         isOpen={isOpen}
         size={size}
         onOpenChange={onOpenChange}

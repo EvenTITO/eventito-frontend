@@ -3,6 +3,7 @@ import FilePicker from '@/components/Modal/FilePickerModal'
 import TitlePage from '@/pages/(events-manage)/_components/titlePage'
 import { getBanner, getLogo } from './_components/utils'
 import { useUploadEventImage } from '@/hooks/manage/generalHooks'
+import DescriptionCard from './_components/DescriptionCard'
 
 export default function Page({ eventInfo }) {
   const { mutateAsync: uploadEventImage } = useUploadEventImage()
@@ -33,6 +34,7 @@ export default function Page({ eventInfo }) {
           imageURL={getLogo(eventInfo)}
           onSave={handleUpdateLogo}
         />
+        <DescriptionCard />
       </div>
     </ContainerPage>
   )
