@@ -1,11 +1,10 @@
+import SidebarIcon from '@/components/SidebarIcon'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { cn, getEventId } from '@/lib/utils'
-import { Home, LogOut } from 'lucide-react'
 import { useLogout } from '@/hooks/auth/authHooks.js'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { useNavigator } from '@/lib/navigation'
-import SidebarIcon from '@/components/SidebarIcon'
 
 export default function SideBar({
   itemList,
@@ -94,8 +93,8 @@ export default function SideBar({
           className="w-full justify-start py-2 text-sm font-normal text-gray-700 hover:bg-gray-200 rounded-sm"
           onClick={handleLogout}
         >
-          <LogOut className="h-4 w-4 mr-2" />
-          {isSidebarOpen && <span>Cerrar sesión</span>}
+          <SidebarIcon name="LogOut" />
+          {isSidebarOpen && <span className="ml-2">Cerrar sesión</span>}
         </Button>
       </div>
     </div>
