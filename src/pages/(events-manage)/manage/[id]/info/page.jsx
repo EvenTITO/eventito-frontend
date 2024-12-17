@@ -47,19 +47,19 @@ export default function Page({ eventInfo }) {
       <div className="space-y-6">
         <TitlePage title={eventInfo.title} />
         <FilePicker
-          title="Banner del evento"
+          title="Banner"
           modalTitle="Seleccionar un banner para el evento"
           imageURL={getBanner(eventInfo)}
           onSave={handleUpdateBanner}
         />
         <FilePicker
-          title="Logo del evento"
+          title="Logo"
           modalTitle="Seleccionar un logo para el evento"
           imageURL={getLogo(eventInfo)}
           onSave={handleUpdateLogo}
         />
         <DescriptionCard
-          title="Descripción corta del evento"
+          title="Descripción corta"
           descriptionText={
             eventInfo.mdata?.short_description || 'Sin descripción'
           }
