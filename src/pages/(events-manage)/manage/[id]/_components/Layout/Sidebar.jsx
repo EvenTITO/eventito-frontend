@@ -51,9 +51,16 @@ const itemList = [
     label: 'Configuración',
     children: [
       {
-        label: 'General',
+        label: 'Administración',
         icon: <SidebarIcon name="Settings" />,
         to: 'general',
+        requiredRoles: [ORGANIZER_ROLE],
+        isOrganizerRoute: true,
+      },
+      {
+        label: 'Información general',
+        icon: <SidebarIcon name="Info" />,
+        to: 'info',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
