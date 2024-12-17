@@ -38,7 +38,7 @@ export default function SideBar({
   return (
     <div className="flex flex-col h-[calc(100vh-5rem)]">
       <ScrollArea className="flex-grow">
-        <nav className="space-y-1 p-2">
+        <nav className="space-y-2 p-2">
           <Button
             variant="ghost"
             className={cn(
@@ -66,7 +66,7 @@ export default function SideBar({
                     key={idx}
                     variant="ghost"
                     className={cn(
-                      'w-full justify-start py-2 text-sm font-normal text-gray-700 hover:bg-gray-200 rounded-sm',
+                      'w-full justify-start py-2 text-sm font-normal text-gray-700 hover:bg-gray-200 rounded-sm mt-1',
                       isItemSelected(child) && 'bg-gray-200 font-medium'
                     )}
                     onClick={() =>
