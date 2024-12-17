@@ -5,6 +5,7 @@ import { cn, getEventId } from '@/lib/utils'
 import { Home, LogOut } from 'lucide-react'
 import { useLogout } from '@/hooks/auth/authHooks.js'
 import { useNavigator } from '@/lib/navigation'
+import SidebarIcon from '@/components/SidebarIcon'
 
 export default function SideBar({
   itemList,
@@ -47,8 +48,8 @@ export default function SideBar({
             )}
             onClick={() => navigate('/home')}
           >
-            <Home className="h-4 w-4 mr-2" />
-            {isSidebarOpen && <span>Inicio</span>}
+            <SidebarIcon name="Home" />
+            {isSidebarOpen && <span className="ml-2">Inicio</span>}
           </Button>
           {filteredItemList.map((parent, index) => (
             <div key={index} className="mb-4">
