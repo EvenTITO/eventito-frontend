@@ -1,19 +1,8 @@
 import { ORGANIZER_ROLE } from '@/lib/Constants'
 import SideBar from '@/pages/(events-manage)/_components/Sidebar'
-import {
-  MapPin,
-  BookOpenCheck,
-  DollarSign,
-  FilePenLine,
-  Settings,
-  Table,
-  Users,
-  PanelLeftClose,
-  Calendar,
-} from 'lucide-react'
+import { PanelLeftClose } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import Icon from '@/components/Icon'
 import SidebarIcon from '@/components/SidebarIcon'
 
 export default function OrganizationSidebar({ eventTitle }) {
