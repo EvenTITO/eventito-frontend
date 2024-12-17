@@ -24,7 +24,7 @@ export default function Header({
     <header className="bg-white border-b h-12 flex items-center px-4">
       <div className="flex gap-2">
         <h1 className="text-lg font-semibold">{eventTitle}</h1>
-        {organizerPage ? <Badge variant="secondary">Organizador</Badge> : null}
+        {organizerPage ? <Badge variant="secondary" className="bg-orange-100">Organizador</Badge> : null}
       </div>
       {isOrganizer ? (
         <div className="ml-auto flex items-center space-x-4">
