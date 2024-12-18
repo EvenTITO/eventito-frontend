@@ -2,7 +2,11 @@ import CardWithFocus from '@/components/Card/CardWithFocus'
 import { format } from '@formkit/tempo'
 import RegistrationForm from './RegistrationForm'
 
-export default function RegistrationCards({ startDate, submissionLimit }) {
+export default function RegistrationCards({
+  startDate,
+  submissionLimit,
+  eventTitle,
+}) {
   return (
     <div>
       <RegistrationCard
@@ -15,6 +19,8 @@ export default function RegistrationCards({ startDate, submissionLimit }) {
         }}
         isOpen={new Date() < startDate}
         limitDate={startDate}
+        eventTitle={eventTitle}
+        speakerDisabled={new Date() >= submissionLimit}
       />
       <RegistrationCard
         open={{
@@ -26,12 +32,21 @@ export default function RegistrationCards({ startDate, submissionLimit }) {
         }}
         limitDate={submissionLimit}
         isOpen={new Date() < submissionLimit}
+        eventTitle={eventTitle}
+        speakerDisabled={new Date() >= submissionLimit}
       />
     </div>
   )
 }
 
-function RegistrationCard({ open, close, isOpen, limitDate }) {
+function RegistrationCard({
+  open,
+  close,
+  isOpen,
+  limitDate,
+  eventTitle,
+  speakerDisabled,
+}) {
   function trigger(onOpen) {
     return (
       <CardWithFocus
@@ -49,7 +64,13 @@ function RegistrationCard({ open, close, isOpen, limitDate }) {
       </CardWithFocus>
     )
   }
-  return <RegistrationForm title="Evento" trigger={trigger} />
+  return (
+    <RegistrationForm
+      eventTitle={eventTitle}
+      trigger={trigger}
+      speakerDisabled={speakerDisabled}
+    />
+  )
 }
 
 function LimitDate({ limitDate, isOpen }) {
