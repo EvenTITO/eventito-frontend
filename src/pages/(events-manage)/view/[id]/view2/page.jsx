@@ -27,13 +27,15 @@ export default function Page({ eventInfo }) {
             submissionLimit={submissionLimit}
           />
 
-          <Prices prices={eventInfo.pricing} />
-          <AboutEvent
-            description={
-              eventInfo.mdata?.description ||
-              'Este evento no cuenta con una descripción por el momento.'
-            }
-          />
+          <div className="space-y-14">
+            <Prices prices={eventInfo.pricing} />
+            <AboutEvent
+              description={
+                eventInfo.mdata?.description ||
+                'Este evento no cuenta con una descripción por el momento.'
+              }
+            />
+          </div>
         </div>
       </ContainerPage>
     </div>
