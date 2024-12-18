@@ -11,7 +11,7 @@ export default function DescriptionCard({
   maxValue = null,
 }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [description, setDescription] = useState(defaultValue)
+  const [description, setDescription] = useState(defaultValue || '')
 
   function handleSetDescription(newDescription) {
     if (!maxValue || newDescription.length <= maxValue) {
