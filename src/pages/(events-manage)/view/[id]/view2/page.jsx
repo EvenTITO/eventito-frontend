@@ -5,10 +5,10 @@ import CardWithoutFocus from '@/components/Card/CardWithoutFocus'
 
 export default function Page({ eventInfo }) {
   return (
-    <>
+    <div className='space-y-6'>
       <Banner title={eventInfo.title} bannerURL={eventInfo.bannerURL} />
       <ContainerPage>
-        <div className="space-y-8">
+        <div className="space-y-10">
           <TitleEvent eventInfo={eventInfo} />
           <Metadatas
             location={eventInfo.location}
@@ -17,7 +17,7 @@ export default function Page({ eventInfo }) {
           />
         </div>
       </ContainerPage>
-    </>
+    </div>
   )
 }
 

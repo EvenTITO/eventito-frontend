@@ -1,16 +1,18 @@
 import { Image } from '@nextui-org/image'
 
 export default function Banner({ title, bannerURL }) {
+  const height = '270px'
+
   return (
-    <div className="h-[250px] w-full overflow-hidden">
+    <div className={`h-[${height}] w-full overflow-hidden`}>
       <Image
         shadow="sm"
         radius="none"
         width="100%"
-        height="250px"
+        height={height}
         alt={title}
         src={bannerURL}
-        className="w-full h-[250px] object-cover"
+        className={`w-full h-[${height}] object-cover`}
       />
     </div>
   )
