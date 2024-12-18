@@ -32,3 +32,11 @@ export function SkeletonCard() {
     </Card>
   )
 }
+
+export function SkeletonText() {
+  return (
+    <Skeleton className="w-2/5 rounded-lg">
+      <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+    </Skeleton>
+  )
+}
