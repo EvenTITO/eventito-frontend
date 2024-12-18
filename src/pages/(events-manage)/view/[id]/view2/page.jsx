@@ -25,6 +25,7 @@ export default function Page({ eventInfo }) {
           <RegistrationCards
             startDate={startDate}
             submissionLimit={submissionLimit}
+            eventTitle={eventInfo.title}
           />
 
           <div className="space-y-14">
