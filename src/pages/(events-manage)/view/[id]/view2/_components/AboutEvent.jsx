@@ -4,7 +4,7 @@ export default function AboutEvent({ description }) {
   return (
     <div>
       <TitlePage title="Acerca del evento" />
-      {description}
+      <p className='text-lg'>{description}</p>
     </div>
   )
 }
