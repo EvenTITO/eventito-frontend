@@ -4,6 +4,7 @@ import TitlePage from '@/pages/(events-manage)/_components/titlePage'
 import { getBanner, getLogo } from './_components/utils'
 import { useEditEvent, useUploadEventImage } from '@/hooks/manage/generalHooks'
 import DescriptionCard from './_components/DescriptionCard'
+import MetadataCard from './_components/MetadataCard'
 
 export default function Page({ eventInfo }) {
   const { mutateAsync: updateEvent } = useEditEvent()
@@ -19,14 +20,14 @@ export default function Page({ eventInfo }) {
     await handleUpdateImage(logoFile, 'main_image')
   }
 
-  async function updateDescription({ eventData }) {
+  async function updateEventInfo({ eventData }) {
     delete eventData.title
     await updateEvent({
       eventData,
     })
   }
   async function handleUpdateDescription(newDescription) {
-    await updateDescription({
+    await updateEventInfo({
       eventData: {
         ...eventInfo,
         mdata: { ...eventInfo.mdata, description: newDescription },
@@ -34,10 +35,34 @@ export default function Page({ eventInfo }) {
     })
   }
   async function handleUpdateShortDescription(newShortDescription) {
-    await updateDescription({
+    await updateEventInfo({
       eventData: {
         ...eventInfo,
         mdata: { ...eventInfo.mdata, short_description: newShortDescription },
+      },
+    })
+  }
+  async function handleUpdateLocation(newLocation) {
+    await updateEventInfo({
+      eventData: {
+        ...eventInfo,
+        location: newLocation,
+      },
+    })
+  }
+  async function handleUpdateContact(newContact) {
+    await updateEventInfo({
+      eventData: {
+        ...eventInfo,
+        contact: newContact,
+      },
+    })
+  }
+  async function handleUpdateOrganizedBy(newOrganizedBy) {
+    await updateEventInfo({
+      eventData: {
+        ...eventInfo,
+        organized_by: newOrganizedBy,
       },
     })
   }
@@ -46,6 +71,26 @@ export default function Page({ eventInfo }) {
     <ContainerPage>
       <div className="space-y-6">
         <TitlePage title={eventInfo.title} />
+        <div className="flex gap-4">
+          <MetadataCard
+            title="Ubicación"
+            defaultValue={eventInfo.location}
+            handleUpdate={handleUpdateLocation}
+            logo="MapPin"
+          />
+          <MetadataCard
+            title="Contacto"
+            defaultValue={eventInfo.contact}
+            handleUpdate={handleUpdateContact}
+            logo="AtSign"
+          />
+          <MetadataCard
+            title="Organizado por"
+            defaultValue={eventInfo.organized_by}
+            handleUpdate={handleUpdateOrganizedBy}
+            logo="CircleUser"
+          />
+        </div>
         <FilePicker
           title="Banner"
           modalTitle="Seleccionar un banner para el evento"
