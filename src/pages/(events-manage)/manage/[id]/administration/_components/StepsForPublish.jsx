@@ -2,6 +2,16 @@ import { STARTED_STATUS } from '@/lib/Constants'
 import SubtitleStyle from './SubtitleStyle'
 import CardWithFocus from '@/components/Card/CardWithFocus'
 import { useNavigator } from '@/lib/navigation'
+import Icon from '@/components/Icon'
+import {
+  endDateIsDefined,
+  metadataIsDefined,
+  pricesAreDefined,
+  startDateIsDefined,
+  submissionLimitIsDefined,
+  tracksAreDefined,
+} from './utils'
+import { Button } from '@nextui-org/button'
 
 export default function StepsForPublish({ eventInfo }) {
   // if (eventInfo.status === STARTED_STATUS) return null
@@ -11,24 +21,66 @@ export default function StepsForPublish({ eventInfo }) {
     navigator.replace('administration', to)
   }
 
+  const statusList = [
+    startDateIsDefined(eventInfo) && endDateIsDefined(eventInfo),
+    submissionLimitIsDefined(eventInfo),
+    metadataIsDefined(eventInfo),
+    tracksAreDefined(eventInfo),
+    pricesAreDefined(eventInfo),
+  ]
+  const amountOK = statusList.filter((s) => s).length
+
   return (
     <div className="space-y-6">
-      <SubtitleStyle>Pasos para publicar el evento</SubtitleStyle>
-      <CardWithFocus
-        nameIcon="CalendarIcon"
-        onClick={() => navigate('activities')}
-      >
-        Definir fecha de comienzo y de fin del evento
-      </CardWithFocus>
-      <CardWithFocus
-        nameIcon="CalendarIcon"
-        onClick={() => navigate('activities')}
-      >
-        Definir fecha límite de recepción de trabajos
-      </CardWithFocus>
-      <CardWithFocus nameIcon="Image" onClick={() => navigate('info')}>
-        Elegir un banner y un logo
-      </CardWithFocus>
+      <SubtitleStyle>
+        ({amountOK}/{statusList.length}) Pasos para publicar el evento{' '}
+      </SubtitleStyle>
+      <div className="space-y-4">
+        <StatusCheck
+          title="Definir fecha de comienzo y de fin del evento"
+          navigateTo={() => navigate('activities')}
+          status={statusList[0]}
+        />
+        <StatusCheck
+          title="Definir fecha límite de recepción de trabajos"
+          navigateTo={() => navigate('tracks')}
+          status={statusList[1]}
+        />
+        <StatusCheck
+          title="Completar campos: 'ubicación', 'contacto' y 'organizado por'"
+          navigateTo={() => navigate('info')}
+          status={statusList[2]}
+        />
+        <StatusCheck
+          title="Configurar al menos un track"
+          navigateTo={() => navigate('tracks')}
+          status={statusList[3]}
+        />
+        <StatusCheck
+          title="Configurar al menos una tarifa"
+          navigateTo={() => navigate('pricing')}
+          status={statusList[4]}
+        />
+      </div>
+      {amountOK === statusList.length ? (
+        <Button color="primary" className="w-full" onPress={() => alert('ok')}>
+          Publicar evento
+        </Button>
+      ) : null}
     </div>
+  )
+}
+
+function StatusCheck({ title, navigateTo, status }) {
+  const rightComponent = status ? (
+    <Icon name="CircleCheck" classNames={'text-green-500'} />
+  ) : (
+    <Icon name="CircleX" classNames={'text-red-500'} />
+  )
+
+  return (
+    <CardWithFocus onClick={navigateTo} icon={rightComponent}>
+      <div className="flex-grow">{title}</div>
+    </CardWithFocus>
   )
 }

@@ -10,7 +10,7 @@ export default function Page({ eventInfo, inscriptions }) {
     <ContainerPage>
       <div className="space-y-6">
         <TitlePage title={'Administración de ' + eventInfo.title} />
-        <div className='flex items-center justify-between gap-4'>
+        <div className="flex items-center justify-between gap-4">
           <EventDetails
             eventStatus={getEventStatus(eventInfo)}
             worksStatus={getWorksStatus(eventInfo)}
@@ -18,7 +18,7 @@ export default function Page({ eventInfo, inscriptions }) {
           />
           <DatesCheck dates={getDates(eventInfo)} />
         </div>
-      <StepsForPublish eventInfo={eventInfo} />
+        <StepsForPublish eventInfo={eventInfo} />
       </div>
     </ContainerPage>
   )

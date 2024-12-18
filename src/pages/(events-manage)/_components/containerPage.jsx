@@ -1,9 +1,9 @@
-import ScrollToTop from "@/components/ScrollToTop";
+import ScrollToTop from '@/components/ScrollToTop'
 
-export default function ContainerPage({ children }) {
+export default function ContainerPage({ children, goToTop = true }) {
   return (
     <div className="container mx-auto py-8">
-      <ScrollToTop />
+      {goToTop && <ScrollToTop />}
       {children}
     </div>
   )

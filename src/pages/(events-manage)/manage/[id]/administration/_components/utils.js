@@ -52,3 +52,34 @@ export function getDates(eventInfo) {
 
   return [startDate, endDate, submissionLimit]
 }
+
+export function startDateIsDefined(eventInfo) {
+  return getDate(eventInfo, 'START_DATE')
+}
+
+export function endDateIsDefined(eventInfo) {
+  return getDate(eventInfo, 'END_DATE')
+}
+
+export function submissionLimitIsDefined(eventInfo) {
+  return getDate(eventInfo, 'SUBMISSION_DEADLINE_DATE')
+}
+
+export function metadataIsDefined(eventInfo) {
+  return (
+    eventInfo.location &&
+    eventInfo.location.length > 0 &&
+    eventInfo.contact &&
+    eventInfo.contact.length > 0 &&
+    eventInfo.organized_by &&
+    eventInfo.organized_by.length > 0
+  )
+}
+
+export function tracksAreDefined(eventInfo) {
+  return eventInfo.tracks.length > 0
+}
+
+export function pricesAreDefined(eventInfo) {
+  return eventInfo.pricing.length > 0
+}

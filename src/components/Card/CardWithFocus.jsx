@@ -3,11 +3,13 @@ import Icon from '../Icon'
 import { Image } from '@nextui-org/image'
 
 export default function CardWithFocus({
+  icon = null,
   nameIcon = null,
   imageIcon = null,
   onClick,
   children,
   containerClassNames = null,
+  rightComponent = null,
 }) {
   return (
     <div
@@ -17,6 +19,7 @@ export default function CardWithFocus({
       )}
       onClick={onClick}
     >
+      {icon}
       {nameIcon ? (
         <div className="p-2 rounded-md bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-200">
           <Icon name={nameIcon} />
@@ -37,21 +40,24 @@ export default function CardWithFocus({
       ) : null}
       {children}
       <div className="text-muted-foreground/50 group-hover:text-accent-foreground/50 transition-colors duration-200">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M6 12L10 8L6 4"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        {rightComponent}
+        {!rightComponent && (
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6 12L10 8L6 4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        )}
       </div>
     </div>
   )
