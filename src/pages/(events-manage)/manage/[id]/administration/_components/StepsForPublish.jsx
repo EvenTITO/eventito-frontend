@@ -14,11 +14,11 @@ import {
 import PublishEventButton from './PublishEventButton'
 
 export default function StepsForPublish({ eventInfo }) {
-  if (eventInfo.status === STARTED_STATUS) return null
+  //if (eventInfo.status === STARTED_STATUS) return null
 
   const navigator = useNavigator()
   function navigate(to) {
-    navigator.replace('administration', to)
+    navigator.replaceOrAppend(['administration', 'general', 'view'], to)
   }
 
   const statusList = [

@@ -44,7 +44,7 @@ const itemList = [
       {
         label: 'Administración',
         icon: <SidebarIcon name="Settings" />,
-        to: 'general',
+        to: 'administration',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },

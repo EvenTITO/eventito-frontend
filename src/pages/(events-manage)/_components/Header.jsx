@@ -16,7 +16,7 @@ export default function Header({
     if (organizerPage) {
       navigator.to(`/events/${eventId}/view/general`)
     } else {
-      navigator.to(`/manage/${eventId}/general`)
+      navigator.to(`/manage/${eventId}/administration`)
     }
   }
 
