@@ -26,7 +26,7 @@ export default function InscriptionRoleSelector({
       active: !speakerDisabled,
     },
     {
-      id: ATTENDEE_ROLE + SPEAKER_ROLE,
+      id: ATTENDEE_ROLE + ',' + SPEAKER_ROLE,
       title:
         EVENT_ROLES_LABELS[SPEAKER_ROLE] +
         ' y ' +
