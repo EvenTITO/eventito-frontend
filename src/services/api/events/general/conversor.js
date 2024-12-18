@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import Banner from '@/assets/banner_default.png'
 
 export function convertEventsData(data) {
   return data.map(convertEventItem)

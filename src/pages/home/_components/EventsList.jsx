@@ -1,7 +1,7 @@
-import { useNavigator } from '@/lib/navigation'
 import { Card, CardBody } from '@nextui-org/card'
 import { Image } from '@nextui-org/image'
 import { VIEW_EVENT_URL } from './constants'
+import { useNavigator } from '@/lib/navigation'
 
 export default function EventsList({ events }) {
   if (events.length === 0) {
