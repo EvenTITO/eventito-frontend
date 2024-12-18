@@ -1,6 +1,7 @@
 import { TableRow, TableCell } from '@nextui-org/table'
 import TableWithPagination from '@/components/Table/TableWithPagination'
 import TrackActions from './TrackActions'
+import { SkeletonTable } from '@/components/Skeleton'
 
 export default function TracksTable({
   tracks,
@@ -10,7 +11,12 @@ export default function TracksTable({
   onDeleteTrack,
   isPending,
   eventIsPublic,
+  addTrackButton,
 }) {
+  if (isPending) {
+    return <SkeletonTable />
+  }
+
   async function addChair(track, newEmail) {
     await onAddChair(track, newEmail)
   }
@@ -24,7 +30,8 @@ export default function TracksTable({
     await onDeleteTrack(track)
   }
 
-  if (tracks.length === 0) return <EmptyTracksPage />
+  if (tracks.length === 0)
+    return <EmptyTracksPage addTrackButton={addTrackButton} />
 
   const columns = ['TRACK', 'CHAIR', 'ACCIONES']
 
@@ -45,7 +52,7 @@ export default function TracksTable({
           addChair={addChair}
           changeChair={changeChair}
           deleteTrack={deleteTrack}
-          eventIsPublis={eventIsPublic}
+          eventIsPublic={eventIsPublic}
         />
       </TableCell>
     </TableRow>
@@ -60,7 +67,7 @@ export default function TracksTable({
   )
 }
 
-function EmptyTracksPage() {
+function EmptyTracksPage({ addTrackButton }) {
   return (
     <div className="text-center py-10">
       <h2 className="text-xl font-semibold mb-2">Ningún track cargado</h2>
@@ -68,6 +75,7 @@ function EmptyTracksPage() {
         Agregar uno nuevo para visualizarlo. Debe configurar al menos un track
         para publicar el evento.
       </p>
+      {addTrackButton}
     </div>
   )
 }

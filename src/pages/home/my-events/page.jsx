@@ -1,169 +1,115 @@
-import FetchStatus from '@/components/FetchStatus'
-import { getMyEvents } from '@/services/api/events/general/hooks'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { ArrowRight, CalendarDays, MapPin, Search } from 'lucide-react'
+import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
+import TitlePage from '@/pages/(events-manage)/_components/titlePage'
+import CardListContainer from './_components/CardListContainer'
+import CreateEventCard from './_components/CreateEventCard'
+import EventCard from './_components/EventCard'
+import { SkeletonList } from '@/components/Skeleton'
 import {
   ATTENDEE_ROLE,
   CHAIR_ROLE,
-  CREATED_STATUS,
-  EVENT_ROLES_LABELS,
-  EVENT_STATUS_LABELS,
   ORGANIZER_ROLE,
   REVIEWER_ROLE,
   SPEAKER_ROLE,
-  STARTED_STATUS,
-} from '@/lib/Constants.js'
+} from '@/lib/Constants'
 
-export default function MyEventsPage() {
-  const { isPending, error, data: events } = getMyEvents()
-
-  const component = <MyEvents events={events} />
-  if (events) {
-    console.log(events)
-  }
+export default function Page({ events, isPending }) {
   return (
-    <FetchStatus isPending={isPending} error={error} component={component} />
+    <ContainerPage>
+      <div className="space-y-20">
+        <MyEvents events={events} isPending={isPending} />
+        <MyInscriptions events={events} isPending={isPending} />
+        <MyReviews events={events} isPending={isPending} />
+        <AsChairOfEvent events={events} isPending={isPending} />
+      </div>
+    </ContainerPage>
   )
 }
 
-function MyEvents({ events }) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedRole, setSelectedRole] = useState('ALL_ROLES')
+function MyEvents({ events, isPending }) {
+  const title = 'Mis eventos'
 
-  const filteredEvents = events.filter(
-    (event) =>
-      event.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedRole === 'ALL_ROLES' || event.roles.includes(selectedRole))
-  )
+  if (isPending) {
+    return (
+      <div>
+        <TitlePage title={title} />
+        <SkeletonList />
+      </div>
+    )
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Mis eventos</h1>
-      <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
-        <div className="relative w-full md:w-1/3">
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400" />
-          <Input
-            type="text"
-            placeholder="Buscar eventos..."
-            className="pl-8"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        <div className="flex items-center space-x-4">
-          <Select value={selectedRole} onValueChange={setSelectedRole}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filtrar por role" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ALL_ROLES">Todos los roles</SelectItem>
-              <SelectItem value={ORGANIZER_ROLE}>
-                {EVENT_ROLES_LABELS[ORGANIZER_ROLE]}
-              </SelectItem>
-              <SelectItem value={CHAIR_ROLE}>
-                {EVENT_ROLES_LABELS[CHAIR_ROLE]}
-              </SelectItem>
-              <SelectItem value={ATTENDEE_ROLE}>
-                {EVENT_ROLES_LABELS[ATTENDEE_ROLE]}
-              </SelectItem>
-              <SelectItem value={SPEAKER_ROLE}>
-                {EVENT_ROLES_LABELS[SPEAKER_ROLE]}
-              </SelectItem>
-              <SelectItem value={REVIEWER_ROLE}>
-                {EVENT_ROLES_LABELS[REVIEWER_ROLE]}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          <Link to={'/home/create-event'}>
-            <Button>Crear nuevo evento</Button>
-          </Link>
-        </div>
-      </div>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredEvents.map((event, idx) => (
-          <EventCard key={idx} event={event} />
-        ))}
-      </div>
-      {filteredEvents.length === 0 && (
-        <p className="text-center text-gray-500 dark:text-gray-400 mt-8">
-          {`No hay eventos en los que participes como: 
-          ${Object.entries(EVENT_ROLES_LABELS)
-            .filter(([value, label]) => {
-              return 'ALL_ROLES' === selectedRole
-                ? true
-                : selectedRole === value
-            })
-            .map(([value, label]) => label)
-            .join(', ')}`}
-        </p>
-      )}
+    <MyEventsSection
+      events={events}
+      filterFunction={(event) => event.roles.includes(ORGANIZER_ROLE)}
+      starterValue={<CreateEventCard />}
+      title={title}
+      showStatus
+      showAllways
+    />
+  )
+}
+
+function MyInscriptions({ events, isPending }) {
+  if (isPending) return null
+
+  return (
+    <MyEventsSection
+      events={events}
+      filterFunction={(event) =>
+        event.roles.includes(ATTENDEE_ROLE) ||
+        event.roles.includes(SPEAKER_ROLE)
+      }
+      title="Mis inscripciones"
+    />
+  )
+}
+
+function MyReviews({ events, isPending }) {
+  if (isPending) return null
+
+  return (
+    <MyEventsSection
+      events={events}
+      filterFunction={(event) => event.roles.includes(REVIEWER_ROLE)}
+      title="Eventos con revisiones pendientes"
+    />
+  )
+}
+
+function AsChairOfEvent({ events, isPending }) {
+  if (isPending) return null
+
+  return (
+    <MyEventsSection
+      events={events}
+      filterFunction={(event) => event.roles.includes(CHAIR_ROLE)}
+      title="Eventos asignado como chair"
+    />
+  )
+}
+
+function MyEventsSection({
+  events,
+  filterFunction,
+  starterValue = null,
+  title,
+  showStatus = false,
+  showAllways = false,
+}) {
+  const filteredEvents = events.filter(filterFunction)
+  if (!showAllways && filteredEvents.length === 0) return null
+
+  const eventCards = starterValue ? [starterValue] : []
+  filteredEvents.forEach((event) => {
+    eventCards.push(
+      <EventCard key={event.id} event={event} showStatus={showStatus} />
+    )
+  })
+
+  return (
+    <div>
+      <TitlePage title={title} />
+      <CardListContainer eventCards={eventCards} />
     </div>
-  )
-}
-
-function EventCard({ event }) {
-  const eventApproved =
-    event.status === CREATED_STATUS || event.status === STARTED_STATUS
-
-  function handleNavigation(event) {
-    if (!eventApproved) {
-      event.preventDefault()
-    }
-  }
-
-  return (
-    <Link
-      to={`/manage/${event.id}/`}
-      onClick={handleNavigation}
-      className="block"
-    >
-      <Card className="transition-all duration-300 hover:shadow-lg focus-within:shadow-lg group min-h-[250px]">
-        <CardHeader>
-          <div className="flex justify-between items-start">
-            <CardTitle className="mr-2">{event.title}</CardTitle>
-            <Badge variant="secondary">
-              {EVENT_STATUS_LABELS[event.status]}
-            </Badge>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {event.roles.map((role, index) => (
-              <Badge key={index} variant="outline">
-                {EVENT_ROLES_LABELS[role]}
-              </Badge>
-            ))}
-          </div>
-          <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
-            <CalendarDays className="h-4 w-4" />
-            <span>
-              {event.startDate} - {event.endDate}
-            </span>
-          </div>
-          <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mt-2">
-            <MapPin className="h-4 w-4" />
-            <span>{event.location}</span>
-          </div>
-          {eventApproved ? (
-            <div className="mt-4 flex items-center text-sm font-medium text-primary transition-all duration-300 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
-              Ver sitio del evento
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </div>
-          ) : null}
-        </CardContent>
-      </Card>
-    </Link>
   )
 }

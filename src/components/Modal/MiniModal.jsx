@@ -18,6 +18,9 @@ export default function MiniModal({
   submitButtonText,
   isPending,
   placement = 'top-center',
+  size = 'default',
+  validated = true,
+  backdrop = 'opaque',
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -28,29 +31,37 @@ export default function MiniModal({
   return (
     <>
       {trigger(onOpen)}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement={placement}>
+      <Modal
+        backdrop={backdrop}
+        isOpen={isOpen}
+        size={size}
+        onOpenChange={onOpenChange}
+        placement={placement}
+      >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
               <ModalBody>{children}</ModalBody>
               <ModalFooter>
-                <Button
-                  className="w-full"
-                  color="primary"
-                  variant="light"
-                  onPress={() => handleSubmit(onClose)}
-                  isLoading={isPending}
-                >
-                  {!isPending ? (
-                    <>
-                      {submitButtonText && (
-                        <span className="mr-2">{submitButtonText}</span>
-                      )}
-                      <Icon name="CircleCheck" s="5" />
-                    </>
-                  ) : null}
-                </Button>
+                {validated ? (
+                  <Button
+                    className="w-full"
+                    color="primary"
+                    variant="light"
+                    onPress={() => handleSubmit(onClose)}
+                    isLoading={isPending}
+                  >
+                    {!isPending ? (
+                      <>
+                        {submitButtonText && (
+                          <span className="mr-2">{submitButtonText}</span>
+                        )}
+                        <Icon name="CircleCheck" s="5" />
+                      </>
+                    ) : null}
+                  </Button>
+                ) : null}
               </ModalFooter>
             </>
           )}

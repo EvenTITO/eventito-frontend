@@ -16,7 +16,21 @@ export function convertEndDate(eventData) {
   return convertDate(eventData, 'END_DATE')
 }
 
-function convertEventItem(data) {
+function getShortDescription(event) {
+  let shortDescription = 'Sin descripcion'
+  if (event.mdata?.short_description) {
+    shortDescription = event.mdata?.short_description
+  } else if (event.description && event.description.length > 0) {
+    shortDescription = event.description.slice(0, 200)
+    if (shortDescription.length === 200) {
+      shortDescription += '...'
+    }
+  }
+
+  return shortDescription
+}
+
+export function convertEventItem(data) {
   const startDate = convertStartDate(data)
   const endDate = convertEndDate(data)
 
@@ -27,6 +41,20 @@ function convertEventItem(data) {
     startDate: startDate,
     endDate: endDate,
     location: data.location,
+    shortDescription: getShortDescription(data),
+    logoURL: data.media?.filter((m) => m.name === 'main_image')[0].url || null,
+    bannerURL:
+      data.media?.filter((m) => m.name === 'banner_image')[0].url || null,
+    //bannerURL:
+    //'https://cms.fi.uba.ar/uploads/Imagenes_Paginas_Internas_Genericas_Cian_Institucional_d1a7c69a52.png',
+    mdata: {
+      ...data.mdata,
+      short_description:
+        data.mdata?.short_description ||
+        data.description?.slice(0, 200) ||
+        null,
+      description: data.mdata?.description || data.description || null,
+    },
   }
 }
 
@@ -48,6 +76,12 @@ export function convertMyEventsData(data) {
     roles: event.roles,
     status: event.status,
     tracks: event.tracks,
+    shortDescription: getShortDescription(event),
+    logoURL: event.media?.filter((m) => m.name === 'main_image')[0].url || null,
+    bannerURL:
+      event.media?.filter((m) => m.name === 'banner_image')[0].url || null,
+    media: { ...event.media },
+    //bannerURL: 'https://www.fi.uba.ar/images/boletin-cover-new.png',
   }))
 }
 

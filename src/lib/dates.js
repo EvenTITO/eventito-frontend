@@ -1,3 +1,5 @@
+import { format } from "@formkit/tempo"
+
 function getDate(nameDate, eventData) {
   return eventData?.dates.filter((date) => date.name === nameDate)[0]
 }
@@ -26,4 +28,8 @@ export function dateIsValid(minDate = null, maxDate = null) {
     }
   }
   return valid
+}
+
+export function formatDayToText(day) {
+  return format(day, 'full')
 }
