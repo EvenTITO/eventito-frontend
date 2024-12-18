@@ -4,6 +4,8 @@ import MetadataList from './_components/MetadataList'
 import TitleEvent from './_components/TitleEvent'
 import { getDates } from '@/pages/(events-manage)/manage/[id]/administration/_components/utils'
 import RegistrationCards from './_components/RegistrationCards'
+import AboutEvent from './_components/AboutEvent'
+import Prices from './_components/Prices'
 
 export default function Page({ eventInfo }) {
   const [startDate, _, submissionLimit] = getDates(eventInfo)
@@ -23,6 +25,14 @@ export default function Page({ eventInfo }) {
           <RegistrationCards
             startDate={startDate}
             submissionLimit={submissionLimit}
+          />
+
+          <Prices prices={eventInfo.pricing} />
+          <AboutEvent
+            description={
+              eventInfo.mdata?.description ||
+              'Este evento no cuenta con una descripción por el momento.'
+            }
           />
         </div>
       </ContainerPage>
