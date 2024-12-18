@@ -1,29 +1,37 @@
+import { useState, useRef } from 'react'
+import { Upload } from 'lucide-react'
 import CardWithFocus from '../Card/CardWithFocus'
 import MiniModal from './MiniModal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Upload } from 'lucide-react'
-import { useState, useRef } from 'react'
 
 export default function FilePicker({
   title,
   modalTitle,
-  imageURL,
-  allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'],
+  imageURL = null,
+  logo = 'Image',
+  allowedTypes = ['.png', '.jpeg', '.jpg'],
   onSave,
 }) {
   const [file, setFile] = useState(null)
   const [isDragging, setIsDragging] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const fileInputRef = useRef(null)
+  const [text, setText] = useState('Haz click para agregar')
+
+  const isFileTypeAllowed = (fileName) => {
+    const fileExtension = '.' + fileName.split('.').pop().toLowerCase()
+    return allowedTypes.includes(fileExtension)
+  }
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0]
-    if (selectedFile && allowedTypes.includes(selectedFile.type)) {
+    if (selectedFile && isFileTypeAllowed(selectedFile.name)) {
       setFile(selectedFile)
+      setText('Haz click para modificar')
     } else {
-      alert('Please select a valid file type.')
+      alert('Ingresar un tipo de archivo válido.')
     }
   }
 
@@ -40,10 +48,11 @@ export default function FilePicker({
     event.preventDefault()
     setIsDragging(false)
     const droppedFile = event.dataTransfer.files[0]
-    if (droppedFile && allowedTypes.includes(droppedFile.type)) {
+    if (droppedFile && isFileTypeAllowed(droppedFile.name)) {
       setFile(droppedFile)
+      setText('Haz click para modificar')
     } else {
-      alert('Please drop a valid file type.')
+      alert('Arrastrar un tipo de archivo válido.')
     }
   }
 
@@ -55,16 +64,16 @@ export default function FilePicker({
     return (
       <CardWithFocus
         imageIcon={imageURL ? imageURL : null}
-        nameIcon={imageURL ? null : 'Image'}
+        nameIcon={imageURL ? null : logo}
         onClick={onOpen}
       >
         <div className="flex-grow">
           <h2 className="text-sm font-medium text-foreground">{title}</h2>
           <p className="text-sm text-muted-foreground italic">
             {imageURL ? (
-              <p>Haz click para editar</p>
+              <span>Haz click para editar</span>
             ) : (
-              <p>Haz click para agregar</p>
+              <span>{text}</span>
             )}
           </p>
         </div>
@@ -76,7 +85,6 @@ export default function FilePicker({
     setIsLoading(true)
     await onSave(file)
     setIsLoading(false)
-
     onClose()
   }
 
