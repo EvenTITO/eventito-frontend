@@ -27,7 +27,7 @@ export default function Page({ event, chairs, tracksByChair }) {
   const deleteChairOfTrack = useDeleteChairOfTrack()
   const addTrack = useAddTrack()
   const updateTracks = useUpdateTracks()
-  const canAddOrRemoveTracks = event.status === CREATED_STATUS // || event.status === STARTED_STATUS
+  const canAddOrRemoveTracks = event.status === CREATED_STATUS
   const { mutateAsync: submitEditEvent, isPending } = useEditEvent()
 
   const submissionDate = event.dates.filter(
