@@ -11,10 +11,10 @@ import {
   submissionLimitIsDefined,
   tracksAreDefined,
 } from './utils'
-import { Button } from '@nextui-org/button'
+import PublishEventButton from './PublishEventButton'
 
 export default function StepsForPublish({ eventInfo }) {
-  // if (eventInfo.status === STARTED_STATUS) return null
+  if (eventInfo.status === STARTED_STATUS) return null
 
   const navigator = useNavigator()
   function navigate(to) {
@@ -62,11 +62,7 @@ export default function StepsForPublish({ eventInfo }) {
           status={statusList[4]}
         />
       </div>
-      {amountOK === statusList.length ? (
-        <Button color="primary" className="w-full" onPress={() => alert('ok')}>
-          Publicar evento
-        </Button>
-      ) : null}
+      <PublishEventButton conditionsMet={amountOK === statusList.length} />
     </div>
   )
 }
