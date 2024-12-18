@@ -110,6 +110,7 @@ export default function Page({ eventInfo }) {
           }
           defaultValue={eventInfo.mdata?.short_description}
           handleUpdate={handleUpdateShortDescription}
+          maxValue={200}
         />
         <DescriptionCard
           title="Acerca del evento"

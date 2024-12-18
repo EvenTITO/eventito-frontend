@@ -8,9 +8,16 @@ export default function DescriptionCard({
   descriptionText,
   defaultValue = null,
   handleUpdate,
+  maxValue = null,
 }) {
   const [isLoading, setIsLoading] = useState(false)
   const [description, setDescription] = useState(defaultValue)
+
+  function handleSetDescription(newDescription) {
+    if (!maxValue || newDescription.length <= maxValue) {
+      setDescription(newDescription)
+    }
+  }
 
   async function handleSubmit(onClose) {
     if (!description || description.length === 0) {
@@ -46,10 +53,15 @@ export default function DescriptionCard({
       isPending={isLoading}
       size="full"
     >
+      {maxValue ? (
+        <p>
+          {description.length} / {maxValue}
+        </p>
+      ) : null}
       <TextArea
         label="Ingresar una descripción"
         value={description}
-        setValue={setDescription}
+        setValue={handleSetDescription}
       />
     </MiniModal>
   )
