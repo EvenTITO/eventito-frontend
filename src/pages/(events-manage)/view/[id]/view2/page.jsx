@@ -29,19 +29,17 @@ export default function Page({ eventInfo }) {
               }}
               close={{
                 title: 'Inscripciones cerradas para asistir al evento',
-                description: 'Las inscripciones cerraron ayer',
               }}
               isOpen={new Date() < startDate}
               limitDate={startDate}
             />
             <RegistrationCard
               open={{
-                title: 'Inscripciones abiertas para asistir al evento',
+                title: 'Perído de presentación de trabajos abierto',
                 description: 'Haz click para ir al formulario de inscripción',
               }}
               close={{
-                title: 'Inscripciones cerradas para asistir al evento',
-                description: 'Las inscripciones cerraron ayer',
+                title: 'Período de presentación de trabajos cerrado',
               }}
               limitDate={submissionLimit}
               isOpen={new Date() < submissionLimit}

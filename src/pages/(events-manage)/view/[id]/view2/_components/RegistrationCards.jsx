@@ -12,7 +12,7 @@ export default function RegistrationCard({ open, close, isOpen, limitDate }) {
           {isOpen ? open.title : close.title}
         </h2>
         <p className="text-lg text-muted-foreground italic">
-          {isOpen ? open.description : close.description}
+          {isOpen ? open.description : null}
         </p>
       </div>
     </CardWithFocus>
