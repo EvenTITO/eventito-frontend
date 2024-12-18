@@ -40,3 +40,31 @@ export function SkeletonText() {
     </Skeleton>
   )
 }
+
+export function SkeletonTable() {
+  return (
+    <Card className="w-full p-4" radius="lg">
+      <div className="space-y-4">
+        <div className="flex space-x-4">
+          {[...Array(1)].map((_, index) => (
+            <Skeleton
+              key={`header-${index}`}
+              className="h-8 flex-1 rounded-lg"
+            />
+          ))}
+        </div>
+
+        {[...Array(1)].map((_, rowIndex) => (
+          <div key={`row-${rowIndex}`} className="flex space-x-4">
+            {[...Array(1)].map((_, colIndex) => (
+              <Skeleton
+                key={`cell-${rowIndex}-${colIndex}`}
+                className="h-12 flex-1 rounded-lg"
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    </Card>
+  )
+}

@@ -1,6 +1,7 @@
 import { TableRow, TableCell } from '@nextui-org/table'
 import TableWithPagination from '@/components/Table/TableWithPagination'
 import TrackActions from './TrackActions'
+import { SkeletonTable, SkeletonText } from '@/components/Skeleton'
 
 export default function TracksTable({
   tracks,
@@ -12,6 +13,10 @@ export default function TracksTable({
   eventIsPublic,
   addTrackButton,
 }) {
+  if (isPending) {
+    return <SkeletonTable />
+  }
+
   async function addChair(track, newEmail) {
     await onAddChair(track, newEmail)
   }
@@ -47,7 +52,7 @@ export default function TracksTable({
           addChair={addChair}
           changeChair={changeChair}
           deleteTrack={deleteTrack}
-          eventIsPublis={eventIsPublic}
+          eventIsPublic={eventIsPublic}
         />
       </TableCell>
     </TableRow>

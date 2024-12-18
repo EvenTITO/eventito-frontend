@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
 import {
   useAddChairToTrack,
@@ -14,14 +14,17 @@ import { useEditEvent } from '@/hooks/manage/generalHooks'
 import DateCard from '@/components/Card/DateCard.jsx'
 import GoToReviewFormCard from './_components/GoToReviewFormCard.jsx'
 
-export default function Page({ event, chairs, tracksByChair }) {
-  const [tracks, setTracks] = useState(
-    unifyEventTracksWithChairs(event.tracks, tracksByChair).map(
-      (track, index) => ({
-        ...track,
-        id: index,
-      })
-    )
+export default function Page({
+  event,
+  chairs,
+  tracksByChair,
+  chairsDataPending,
+}) {
+  const tracks = unifyEventTracksWithChairs(event.tracks, tracksByChair).map(
+    (track, index) => ({
+      ...track,
+      id: index,
+    })
   )
   const addChairToTrack = useAddChairToTrack()
   const deleteChairOfTrack = useDeleteChairOfTrack()
@@ -51,15 +54,11 @@ export default function Page({ event, chairs, tracksByChair }) {
   async function onDeleteChair(track, email) {
     const userId = getUserIdByEmail(email)
     await deleteChairOfTrack.mutateAsync({ track: track, userId: userId })
-    setTracks(tracks.map((t) => (t.track === track ? { ...t, mail: null } : t)))
   }
 
   async function onAddChair(track, email) {
     const userId = getUserIdByEmail(email)
     await addChairToTrack.mutateAsync({ track: track, userId: userId })
-    setTracks(
-      tracks.map((t) => (t.track === track ? { ...t, mail: email } : t))
-    )
   }
 
   const handleAddTrack = async (newTrack) => {
@@ -67,11 +66,9 @@ export default function Page({ event, chairs, tracksByChair }) {
       eventTracks: tracks.map((track) => track.track),
       track: newTrack,
     })
-    setTracks([...tracks, { id: tracks.length, track: newTrack, mail: null }])
   }
 
   const handleDeleteTrack = async (trackToDelete) => {
-    console.log(trackToDelete)
     if (!trackToDelete) return
 
     if (trackToDelete.mail) {
@@ -81,8 +78,6 @@ export default function Page({ event, chairs, tracksByChair }) {
     await updateTracks.mutateAsync({
       tracks: updatedTracks.map((t) => t.track),
     })
-
-    setTracks(updatedTracks)
   }
 
   let addTrackButton = (
@@ -106,6 +101,7 @@ export default function Page({ event, chairs, tracksByChair }) {
           onDeleteTrack={handleDeleteTrack}
           eventIsPublic={!canAddOrRemoveTracks}
           addTrackButton={addTrackButton}
+          isPending={chairsDataPending}
         />
         {canAddOrRemoveTracks ? { addTrackButton } : null}
       </div>
