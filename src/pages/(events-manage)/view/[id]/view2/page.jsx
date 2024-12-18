@@ -3,11 +3,10 @@ import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
 import MetadataList from './_components/MetadataList'
 import TitleEvent from './_components/TitleEvent'
 import RegistrationCard from './_components/RegistrationCards'
-import { getStartDate } from '@/lib/dates'
 import { getDates } from '@/pages/(events-manage)/manage/[id]/administration/_components/utils'
 
 export default function Page({ eventInfo }) {
-  const [startDate, endDate, submissionLimit] = getDates(eventInfo)
+  const [startDate, _, submissionLimit] = getDates(eventInfo)
 
   return (
     <div className="space-y-6">
