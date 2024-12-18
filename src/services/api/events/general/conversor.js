@@ -1,5 +1,4 @@
 import { format } from 'date-fns'
-import Banner from '@/assets/banner_default.png'
 
 export function convertEventsData(data) {
   return data.map(convertEventItem)
@@ -54,7 +53,7 @@ export function convertEventItem(data) {
         data.mdata?.short_description ||
         data.description?.slice(0, 200) ||
         null,
-      short_description: data.mdata?.description || data.description || null,
+      description: data.mdata?.description || data.description || null,
     },
   }
 }

@@ -10,6 +10,7 @@ export function useGetEvent(select = null) {
     queryKey: ['getEventById', { eventId }],
     queryFn: async () => {
       const eventInfo = await apiGetEventById(eventId)
+
       return {
         ...eventInfo,
         ...convertEventItem(eventInfo),
