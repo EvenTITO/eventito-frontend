@@ -1,7 +1,8 @@
 import CardWithFocus from '@/components/Card/CardWithFocus'
 import { format } from '@formkit/tempo'
+import RegistrationForm from './RegistrationForm'
 
-export default function RegistrationCards({startDate, submissionLimit}) {
+export default function RegistrationCards({ startDate, submissionLimit }) {
   return (
     <div>
       <RegistrationCard
@@ -31,21 +32,24 @@ export default function RegistrationCards({startDate, submissionLimit}) {
 }
 
 function RegistrationCard({ open, close, isOpen, limitDate }) {
-  return (
-    <CardWithFocus
-      onClick={() => alert('ok')}
-      rightComponent={<LimitDate limitDate={limitDate} isOpen={isOpen} />}
-    >
-      <div className="flex-grow">
-        <h2 className="text-lg font-medium text-foreground">
-          {isOpen ? open.title : close.title}
-        </h2>
-        <p className="text-lg text-muted-foreground italic">
-          {isOpen ? open.description : null}
-        </p>
-      </div>
-    </CardWithFocus>
-  )
+  function trigger(onOpen) {
+    return (
+      <CardWithFocus
+        onClick={() => isOpen && onOpen()}
+        rightComponent={<LimitDate limitDate={limitDate} isOpen={isOpen} />}
+      >
+        <div className="flex-grow">
+          <h2 className="text-lg font-medium text-foreground">
+            {isOpen ? open.title : close.title}
+          </h2>
+          <p className="text-lg text-muted-foreground italic">
+            {isOpen ? open.description : null}
+          </p>
+        </div>
+      </CardWithFocus>
+    )
+  }
+  return <RegistrationForm title="Evento" trigger={trigger} />
 }
 
 function LimitDate({ limitDate, isOpen }) {
