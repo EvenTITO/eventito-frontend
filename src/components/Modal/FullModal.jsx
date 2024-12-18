@@ -8,7 +8,6 @@ import {
   useDisclosure,
 } from '@nextui-org/modal'
 import { Button } from '@nextui-org/button'
-import Icon from '@/components/Icon'
 
 export default function FullModal({
   trigger,
@@ -52,10 +51,11 @@ export default function FullModal({
                 >
                   {!isPending ? (
                     <>
-                      {submitButtonText && (
+                      {submitButtonText ? (
                         <span className="mr-2">{submitButtonText}</span>
+                      ) : (
+                        <p>Crear evento</p>
                       )}
-                      <p>Crear evento</p>
                     </>
                   ) : null}
                 </Button>
