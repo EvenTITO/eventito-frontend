@@ -1,36 +1,42 @@
 import ContainerPage from '@/pages/(events-manage)/_components/containerPage'
-import { Image } from '@nextui-org/image'
-import { User } from '@nextui-org/user'
+import Banner from './_components/Banner'
+import TitleEvent from './_components/TitleEvent'
+import CardWithoutFocus from '@/components/Card/CardWithoutFocus'
 
 export default function Page({ eventInfo }) {
   return (
     <>
-      <div className="h-[250px] w-full overflow-hidden">
-        <Image
-          shadow="sm"
-          radius="none"
-          width="100%"
-          height="250px"
-          alt={eventInfo.title}
-          src={eventInfo.bannerURL}
-          className="w-full h-[250px] object-cover"
-        />
-      </div>
+      <Banner title={eventInfo.title} bannerURL={eventInfo.bannerURL} />
       <ContainerPage>
-        <User
-          className="gap-4"
-          name={<p className="text-3xl font-bold">{eventInfo.title}</p>}
-          description={
-            <p className="text-lg text-gray-600">
-              {eventInfo.mdata?.short_description || eventInfo.shortDescrition}
-            </p>
-          }
-          avatarProps={{
-            src: eventInfo.logoURL,
-            size: 'lg',
-          }}
-        />
+        <div className="space-y-8">
+          <TitleEvent eventInfo={eventInfo} />
+          <Metadatas
+            location={eventInfo.location}
+            contact={eventInfo.contact}
+            organizedBy={eventInfo.organized_by}
+          />
+        </div>
       </ContainerPage>
     </>
+  )
+}
+
+function Metadatas({ location, contact, organizedBy }) {
+  return (
+    <div className="flex gap-4">
+      <MetadataCard title={location} logo="MapPin" />
+      <MetadataCard title={contact} logo="AtSign" />
+      <MetadataCard title={organizedBy} logo="CircleUser" />
+    </div>
+  )
+}
+
+function MetadataCard({ title, logo }) {
+  return (
+    <CardWithoutFocus nameIcon={logo}>
+      <div className="flex-grow">
+        <h2 className="text-sm font-medium text-foreground">{title}</h2>
+      </div>
+    </CardWithoutFocus>
   )
 }
