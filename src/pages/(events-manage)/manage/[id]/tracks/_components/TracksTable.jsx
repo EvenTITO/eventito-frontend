@@ -1,7 +1,7 @@
 import { TableRow, TableCell } from '@nextui-org/table'
 import TableWithPagination from '@/components/Table/TableWithPagination'
 import TrackActions from './TrackActions'
-import { SkeletonTable, SkeletonText } from '@/components/Skeleton'
+import { SkeletonTable } from '@/components/Skeleton'
 
 export default function TracksTable({
   tracks,
