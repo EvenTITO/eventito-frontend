@@ -7,7 +7,7 @@ import SubtitleStyle from './SubtitleStyle'
 
 export default function CardsStatus({ title, rows }) {
   return (
-    <Card className="w-full">
+    <Card className="w-full h-[240px]">
       <CardHeader>
         <CardTitle>
           <SubtitleStyle>{title}</SubtitleStyle>
