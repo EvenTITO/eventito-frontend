@@ -4,5 +4,5 @@ import { useEvent } from '@/lib/layout'
 export default function EventViewPage() {
   const eventData = useEvent()
 
-  return <Page event={eventData} />
+  return <Page eventInfo={eventData} />
 }
