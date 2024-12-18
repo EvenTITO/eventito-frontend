@@ -11,15 +11,18 @@ export default function EventCard({ event, showStatus = false }) {
 
   return (
     <CardContainer onPress={() => navigator.to(VIEW_EVENT_URL + event.id)}>
-      <Image
-        isZoomed
-        shadow="sm"
-        radius={null}
-        width="100%"
-        alt={event.title}
-        className="w-full object-cover h-[100px]"
-        src={event.bannerURL}
-      />
+      <div className="h-[100px] w-full overflow-hidden">
+        <Image
+          isZoomed
+          shadow="sm"
+          radius="none"
+          width="100%"
+          height="100px"
+          alt={event.title}
+          src={event.bannerURL}
+          className="w-full h-[150px] object-cover"
+        />
+      </div>
       {showStatus ? (
         <Badge className="absolute top-2 right-2 z-10 bg-gray-50 text-black">
           {EVENT_STATUS_LABELS[event.status]}

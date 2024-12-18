@@ -26,15 +26,18 @@ function EventCard({ event }) {
       onPress={() => navigator.to(VIEW_EVENT_URL + event.id)}
       className="overflow-hidden w-full h-[350px] hover:bg-gray-50 hover:text-primary"
     >
-      <Image
-        isZoomed
-        shadow="sm"
-        radius={null}
-        width="100%"
-        alt={event.title}
-        className="w-full object-cover h-[150px]"
-        src={event.bannerURL}
-      />
+      <div className="h-[150px] w-full overflow-hidden">
+        <Image
+          isZoomed
+          shadow="sm"
+          radius="none"
+          width="100%"
+          height="150px"
+          alt={event.title}
+          src={event.bannerURL}
+          className="w-full h-[150px] object-cover"
+        />
+      </div>
       <div className="flex flex-col flex-grow p-6">
         <CardBody className="flex-grow">
           <h3 className="text-2xl font-bold mb-2">{event.title}</h3>
