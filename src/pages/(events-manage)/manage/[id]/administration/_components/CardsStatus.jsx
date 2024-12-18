@@ -3,12 +3,15 @@ import { SkeletonText } from '@/components/Skeleton'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { format } from '@formkit/tempo'
+import SubtitleStyle from './SubtitleStyle'
 
 export default function CardsStatus({ title, rows }) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">{title}</CardTitle>
+        <CardTitle>
+          <SubtitleStyle>{title}</SubtitleStyle>
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {rows.map((row, idx) => (
