@@ -8,6 +8,7 @@ import AboutEvent from './_components/AboutEvent'
 import Prices from './_components/Prices'
 
 export default function Page({ eventInfo }) {
+  if (!eventInfo) return null
   const [startDate, _, submissionLimit] = getDates(eventInfo)
 
   return (
