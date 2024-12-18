@@ -2,6 +2,7 @@ import FiliationInput from '@/components/Forms/FiliationInput'
 import InscriptionRoleSelector from '@/components/Forms/InscriptionRoleSelector'
 import LabelForm from '@/components/Forms/LabelForm'
 import FullModal from '@/components/Modal/FullModal'
+import { Switch } from '@/components/ui/switch'
 import { useSubmitInscription } from '@/hooks/events/attendeeHooks'
 import { useNavigator } from '@/lib/navigation'
 import { sleep } from '@/lib/utils'
@@ -16,6 +17,8 @@ export default function RegistrationForm({
   const [role, setRole] = useState(null)
   const [filiation, setFiliation] = useState(null)
   const [filiationFile, setFiliationFile] = useState(null)
+
+  const [showFiliation, setShowFiliation] = useState(false)
 
   const navigator = useNavigator()
   const {
@@ -69,13 +72,37 @@ export default function RegistrationForm({
         setRole={setRole}
         speakerDisabled={speakerDisabled}
       />
-      <FiliationInput
-        label={<LabelForm label="En caso de tener, ingresar una filiación" />}
-        filiation={filiation}
-        setFiliation={setFiliation}
-        filiationFile={filiationFile}
-        setFiliationFile={setFiliationFile}
-      />
+      {showFiliation ? (
+        <FiliationInput
+          label={
+            <LabelFileInput
+              showFiliation={showFiliation}
+              setShowFiliation={setShowFiliation}
+            />
+          }
+          filiation={filiation}
+          setFiliation={setFiliation}
+          filiationFile={filiationFile}
+          setFiliationFile={setFiliationFile}
+        />
+      ) : (
+        <LabelFileInput
+          showFiliation={showFiliation}
+          setShowFiliation={setShowFiliation}
+        />
+      )}
     </FullModal>
+  )
+}
+
+function LabelFileInput({ showFiliation, setShowFiliation }) {
+  return (
+    <div className="flex justify-between">
+      <LabelForm label="En caso de tener, ingresar una filiación" />
+      <Switch
+        checked={showFiliation}
+        onCheckedChange={() => setShowFiliation(!showFiliation)}
+      />
+    </div>
   )
 }
