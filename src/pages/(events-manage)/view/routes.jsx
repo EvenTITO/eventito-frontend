@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import EventViewPage from './[id]/index'
 import LayoutViewEvent from './layout'
-import RegistrationPage from './[id]/registration'
 import ProtectedRoute from './protection'
 
 export default function RouteViewEvent() {
@@ -21,14 +20,6 @@ export default function RouteViewEvent() {
           element={
             <ProtectedRoute>
               <EventViewPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path=":id/register"
-          element={
-            <ProtectedRoute>
-              <RegistrationPage />
             </ProtectedRoute>
           }
         />
