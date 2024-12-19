@@ -1,7 +1,7 @@
 import { Outlet, useParams } from 'react-router-dom'
 import FetchStatus from '@/components/FetchStatus'
 import { useGetEvent } from '@/hooks/events/useEventState'
-import HeaderWithTabs from '../_components/HeaderWithTabs'
+import Header from '@/pages/_components/Headers/home-admin'
 
 export default function LayoutViewEvent() {
   const { id: eventId } = useParams()
@@ -31,7 +31,7 @@ function Layout({ eventTitle }) {
 
   return (
     <div className="flex flex-col h-screen bg-background">
-      <HeaderWithTabs toggleSidebar={false} tabs={tabs} />
+      <Header />
 
       <div className="pt-12">
         <main>
