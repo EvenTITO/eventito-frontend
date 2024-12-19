@@ -14,6 +14,9 @@ export default function Page({ event }) {
   async function onAddNewDate({ newDate }) {
     let eventCopy = { ...event }
     delete eventCopy.title
+    if (!eventCopy.mdata.informative_dates) {
+      eventCopy.mdata.informative_dates = []
+    }
     eventCopy.mdata.informative_dates.push(newDate)
 
     await submitEditEvent({ eventData: eventCopy })
