@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
 import {
   completeRegister,
@@ -103,6 +103,7 @@ export function useCompleteRegister() {
 
 export function useLogout() {
   const dispatch = useDispatch()
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async () => {
@@ -111,6 +112,7 @@ export function useLogout() {
     onSuccess: () => {
       dispatch(clearAuth())
       dispatch(logout())
+      queryClient.clear()
     },
   })
 }
