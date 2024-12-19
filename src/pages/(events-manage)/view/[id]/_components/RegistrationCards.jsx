@@ -55,7 +55,7 @@ function RegistrationCard({
   eventTitle,
   speakerDisabled,
   eventId,
-  activeRegistration
+  activeRegistration,
 }) {
   const [inscriptionSuccess, setInscriptionSuccess] = useState(false)
   const navigator = useNavigator()
@@ -77,7 +77,7 @@ function RegistrationCard({
             {isOpen ? open.title : close.title}
           </h2>
           <p className="text-lg text-muted-foreground italic">
-            {isOpen ? open.description : null}
+            {isOpen && activeRegistration ? open.description : null}
           </p>
         </div>
       </CardWithFocus>
