@@ -1,11 +1,14 @@
 import CardWithFocus from '@/components/Card/CardWithFocus'
 import { format } from '@formkit/tempo'
 import RegistrationForm from './RegistrationForm'
+import { useEffect, useState } from 'react'
+import { useNavigator } from '@/lib/navigation'
 
 export default function RegistrationCards({
   startDate,
   submissionLimit,
   eventTitle,
+  eventId,
 }) {
   return (
     <div>
@@ -21,6 +24,7 @@ export default function RegistrationCards({
         limitDate={startDate}
         eventTitle={eventTitle}
         speakerDisabled={new Date() >= submissionLimit}
+        eventId={eventId}
       />
       <RegistrationCard
         open={{
@@ -34,6 +38,7 @@ export default function RegistrationCards({
         isOpen={new Date() < submissionLimit}
         eventTitle={eventTitle}
         speakerDisabled={new Date() >= submissionLimit}
+        eventId={eventId}
       />
     </div>
   )
@@ -46,7 +51,17 @@ function RegistrationCard({
   limitDate,
   eventTitle,
   speakerDisabled,
+  eventId,
 }) {
+  const [inscriptionSuccess, setInscriptionSuccess] = useState(false)
+  const navigator = useNavigator()
+
+  useEffect(() => {
+    if (inscriptionSuccess) {
+      navigator.to(`/events/${eventId}/view`)
+    }
+  }, [inscriptionSuccess])
+
   function trigger(onOpen) {
     return (
       <CardWithFocus
@@ -69,6 +84,7 @@ function RegistrationCard({
       eventTitle={eventTitle}
       trigger={trigger}
       speakerDisabled={speakerDisabled}
+      setInscriptionSuccess={setInscriptionSuccess}
     />
   )
 }

@@ -9,6 +9,7 @@ import Prices from './_components/Prices'
 
 export default function Page({ eventInfo }) {
   if (!eventInfo) return null
+
   const [startDate, _, submissionLimit] = getDates(eventInfo)
 
   return (
@@ -27,6 +28,7 @@ export default function Page({ eventInfo }) {
             startDate={startDate}
             submissionLimit={submissionLimit}
             eventTitle={eventInfo.title}
+            eventId={eventInfo.id}
           />
 
           <div className="space-y-14">

@@ -31,7 +31,7 @@ class Navigator {
     if (matchingOldPath) {
       path = path.replace(matchingOldPath, newPath)
     } else {
-      path += newPath
+      path += '/' + newPath
     }
 
     this.to(path)
