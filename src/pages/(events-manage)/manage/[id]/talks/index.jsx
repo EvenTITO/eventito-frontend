@@ -5,7 +5,7 @@ import { useGetAllWorksForOrganizer } from '@/hooks/manage/talksHooks'
 
 export default function TalksDataPage() {
   const rooms = useGetEvent(
-    (data) => data.mdata?.rooms.map((room) => room.name) || []
+    (data) => data.mdata?.rooms?.map((room) => room.name) || []
   )
   const works = useGetAllWorksForOrganizer()
 
