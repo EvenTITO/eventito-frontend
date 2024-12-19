@@ -1,8 +1,8 @@
 import { Card, CardBody } from '@nextui-org/card'
-import { Image } from '@nextui-org/image'
 import { useNavigator } from '@/lib/navigation'
 import { CREATED_STATUS, STARTED_STATUS } from '@/lib/Constants'
 import { MANAGE_EVENT_URL, VIEW_EVENT_URL } from './constants'
+import ImageWrapper from '@/components/ImageWrapper'
 
 export default function EventsList({ events }) {
   if (events.length === 0) {
@@ -36,15 +36,11 @@ function EventCard({ event }) {
       className="overflow-hidden w-full h-[350px] hover:bg-gray-50 hover:text-primary"
     >
       <div className="h-[150px] w-full overflow-hidden">
-        <Image
-          isZoomed
-          shadow="sm"
-          radius="none"
-          width="100%"
-          height="150px"
-          alt={event.title}
+        <ImageWrapper
           src={event.bannerURL}
-          className="w-full h-[150px] object-cover"
+          title={event.title}
+          height="150px"
+          width="100%"
         />
       </div>
       <div className="flex flex-col flex-grow p-6">

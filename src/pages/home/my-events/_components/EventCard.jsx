@@ -9,6 +9,7 @@ import {
   EVENT_STATUS_LABELS,
   STARTED_STATUS,
 } from '@/lib/Constants'
+import ImageWrapper from '@/components/ImageWrapper'
 
 export default function EventCard({ event, showStatus = false }) {
   const navigator = useNavigator()
@@ -24,15 +25,11 @@ export default function EventCard({ event, showStatus = false }) {
   return (
     <CardContainer onPress={navigateToEvent}>
       <div className="h-[100px] w-full overflow-hidden">
-        <Image
-          isZoomed
-          shadow="sm"
-          radius="none"
-          width="100%"
-          height="100px"
-          alt={event.title}
+        <ImageWrapper
           src={event.bannerURL}
-          className="w-full h-[150px] object-cover"
+          title={event.title}
+          height="100px"
+          width="100%"
         />
       </div>
       {showStatus ? (

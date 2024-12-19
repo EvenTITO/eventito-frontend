@@ -1,6 +1,6 @@
 import CardWithFocus from '@/components/Card/CardWithFocus'
-import { format } from '@formkit/tempo'
 import RegistrationForm from './RegistrationForm'
+import { format } from '@formkit/tempo'
 import { useEffect, useState } from 'react'
 import { useNavigator } from '@/lib/navigation'
 
@@ -9,6 +9,7 @@ export default function RegistrationCards({
   submissionLimit,
   eventTitle,
   eventId,
+  activeRegistration,
 }) {
   return (
     <div>
@@ -25,6 +26,7 @@ export default function RegistrationCards({
         eventTitle={eventTitle}
         speakerDisabled={new Date() >= submissionLimit}
         eventId={eventId}
+        activeRegistration={activeRegistration}
       />
       <RegistrationCard
         open={{
@@ -39,6 +41,7 @@ export default function RegistrationCards({
         eventTitle={eventTitle}
         speakerDisabled={new Date() >= submissionLimit}
         eventId={eventId}
+        activeRegistration={activeRegistration}
       />
     </div>
   )
@@ -52,6 +55,7 @@ function RegistrationCard({
   eventTitle,
   speakerDisabled,
   eventId,
+  activeRegistration,
 }) {
   const [inscriptionSuccess, setInscriptionSuccess] = useState(false)
   const navigator = useNavigator()
@@ -65,7 +69,7 @@ function RegistrationCard({
   function trigger(onOpen) {
     return (
       <CardWithFocus
-        onClick={() => isOpen && onOpen()}
+        onClick={() => activeRegistration && isOpen && onOpen()}
         rightComponent={<LimitDate limitDate={limitDate} isOpen={isOpen} />}
       >
         <div className="flex-grow">
@@ -73,7 +77,7 @@ function RegistrationCard({
             {isOpen ? open.title : close.title}
           </h2>
           <p className="text-lg text-muted-foreground italic">
-            {isOpen ? open.description : null}
+            {isOpen && activeRegistration ? open.description : null}
           </p>
         </div>
       </CardWithFocus>
