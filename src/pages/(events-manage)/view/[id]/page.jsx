@@ -32,7 +32,7 @@ export default function Page({ eventInfo }) {
           />
 
           <div className="space-y-14">
-            <Prices prices={eventInfo.pricing} />
+            <Prices prices={eventInfo.pricing} dates={eventInfo.dates} />
             <AboutEvent
               description={
                 eventInfo.mdata?.description ||
