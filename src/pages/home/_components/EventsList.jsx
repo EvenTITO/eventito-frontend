@@ -1,7 +1,8 @@
 import { Card, CardBody } from '@nextui-org/card'
 import { Image } from '@nextui-org/image'
-import { VIEW_EVENT_URL } from './constants'
 import { useNavigator } from '@/lib/navigation'
+import { CREATED_STATUS, STARTED_STATUS } from '@/lib/Constants'
+import { MANAGE_EVENT_URL, VIEW_EVENT_URL } from './constants'
 
 export default function EventsList({ events }) {
   if (events.length === 0) {
@@ -20,10 +21,18 @@ export default function EventsList({ events }) {
 function EventCard({ event }) {
   const navigator = useNavigator()
 
+  function navigateToEvent() {
+    if (event.status === STARTED_STATUS) {
+      navigator.to(VIEW_EVENT_URL + event.id)
+    } else if (event.status === CREATED_STATUS) {
+      navigator.to(MANAGE_EVENT_URL + event.id)
+    }
+  }
+
   return (
     <Card
       isPressable
-      onPress={() => navigator.to(VIEW_EVENT_URL + event.id)}
+      onPress={navigateToEvent}
       className="overflow-hidden w-full h-[350px] hover:bg-gray-50 hover:text-primary"
     >
       <div className="h-[150px] w-full overflow-hidden">

@@ -1,7 +1,7 @@
 import { CREATED_STATUS, WAITING_APPROVAL_STATUS } from '@/lib/Constants'
 
 function getDate(eventInfo, dateName) {
-  const date = eventInfo.dates.filter((d) => d.name === dateName)[0]?.date
+  const date = eventInfo?.dates?.filter((d) => d.name === dateName)[0]?.date
   if (date) {
     return new Date(date)
   }

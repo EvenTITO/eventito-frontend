@@ -4,7 +4,6 @@ import LabelForm from '@/components/Forms/LabelForm'
 import FullModal from '@/components/Modal/FullModal'
 import { Switch } from '@/components/ui/switch'
 import { useSubmitInscription } from '@/hooks/events/attendeeHooks'
-import { useNavigator } from '@/lib/navigation'
 import { sleep } from '@/lib/utils'
 import { useState } from 'react'
 
@@ -12,6 +11,7 @@ export default function RegistrationForm({
   trigger,
   eventTitle,
   speakerDisabled,
+  setInscriptionSuccess,
 }) {
   const [isLoading, setIsLoading] = useState(false)
   const [role, setRole] = useState(null)
@@ -20,7 +20,6 @@ export default function RegistrationForm({
 
   const [showFiliation, setShowFiliation] = useState(false)
 
-  const navigator = useNavigator()
   const {
     mutateAsync: submitInscription,
     isPending,
@@ -50,11 +49,12 @@ export default function RegistrationForm({
 
       await submitInscription({ inscriptionData })
       await sleep(2000)
+
       setIsLoading(false)
+      setInscriptionSuccess(true)
       cleanForm()
 
       onClose()
-      navigator.to(`/events/${eventId}/view`)
     }
   }
 

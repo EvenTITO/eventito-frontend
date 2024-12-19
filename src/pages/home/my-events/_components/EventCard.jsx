@@ -2,15 +2,27 @@ import { Image } from '@nextui-org/image'
 import CardContainer from './CardContainer'
 import { CardBody } from '@nextui-org/card'
 import { useNavigator } from '@/lib/navigation'
-import { VIEW_EVENT_URL } from '../../_components/constants'
+import { MANAGE_EVENT_URL, VIEW_EVENT_URL } from '../../_components/constants'
 import { Badge } from '@/components/ui/badge'
-import { EVENT_STATUS_LABELS } from '@/lib/Constants'
+import {
+  CREATED_STATUS,
+  EVENT_STATUS_LABELS,
+  STARTED_STATUS,
+} from '@/lib/Constants'
 
 export default function EventCard({ event, showStatus = false }) {
   const navigator = useNavigator()
 
+  function navigateToEvent() {
+    if (event.status === STARTED_STATUS) {
+      navigator.to(VIEW_EVENT_URL + event.id)
+    } else if (event.status === CREATED_STATUS) {
+      navigator.to(MANAGE_EVENT_URL + event.id)
+    }
+  }
+
   return (
-    <CardContainer onPress={() => navigator.to(VIEW_EVENT_URL + event.id)}>
+    <CardContainer onPress={navigateToEvent}>
       <div className="h-[100px] w-full overflow-hidden">
         <Image
           isZoomed

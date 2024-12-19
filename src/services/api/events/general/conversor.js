@@ -38,6 +38,7 @@ export function convertEventItem(data) {
     id: data.id,
     title: data.title,
     description: data.description,
+    status: data.status,
     startDate: startDate,
     endDate: endDate,
     location: data.location,
