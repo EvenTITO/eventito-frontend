@@ -10,6 +10,7 @@ export default function Banner({ title, bannerURL }) {
         title={title}
         height={height}
         width="100%"
+        isZoomed={false}
       />
     </div>
   )
