@@ -2,7 +2,12 @@ import { Card, CardBody } from '@nextui-org/card'
 import { Image } from '@nextui-org/image'
 import { useNavigator } from '@/lib/navigation'
 import { CREATED_STATUS, STARTED_STATUS } from '@/lib/Constants'
-import { MANAGE_EVENT_URL, VIEW_EVENT_URL } from './constants'
+import {
+  DEFAULT_IMAGE_BANNER,
+  MANAGE_EVENT_URL,
+  VIEW_EVENT_URL,
+} from './constants'
+import { useState } from 'react'
 
 export default function EventsList({ events }) {
   if (events.length === 0) {
@@ -19,6 +24,7 @@ export default function EventsList({ events }) {
 }
 
 function EventCard({ event }) {
+  const [imgSrc, setImgSrc] = useState(event.bannerURL)
   const navigator = useNavigator()
 
   function navigateToEvent() {
@@ -27,6 +33,10 @@ function EventCard({ event }) {
     } else if (event.status === CREATED_STATUS) {
       navigator.to(MANAGE_EVENT_URL + event.id)
     }
+  }
+
+  function handleError() {
+    setImgSrc(DEFAULT_IMAGE_BANNER)
   }
 
   return (
@@ -43,8 +53,9 @@ function EventCard({ event }) {
           width="100%"
           height="150px"
           alt={event.title}
-          src={event.bannerURL}
+          src={imgSrc}
           className="w-full h-[150px] object-cover"
+          onError={handleError}
         />
       </div>
       <div className="flex flex-col flex-grow p-6">
