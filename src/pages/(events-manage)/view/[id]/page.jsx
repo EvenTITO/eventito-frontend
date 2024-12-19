@@ -7,7 +7,7 @@ import RegistrationCards from './_components/RegistrationCards'
 import AboutEvent from './_components/AboutEvent'
 import Prices from './_components/Prices'
 
-export default function Page({ eventInfo }) {
+export default function Page({ eventInfo, activeRegistration = false }) {
   if (!eventInfo) return null
 
   const [startDate, _, submissionLimit] = getDates(eventInfo)
@@ -29,6 +29,7 @@ export default function Page({ eventInfo }) {
             submissionLimit={submissionLimit}
             eventTitle={eventInfo.title}
             eventId={eventInfo.id}
+            activeRegistration={activeRegistration}
           />
 
           <div className="space-y-14">

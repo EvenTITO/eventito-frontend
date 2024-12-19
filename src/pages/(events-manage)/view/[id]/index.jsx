@@ -5,7 +5,7 @@ import Page from './page'
 export default function EventViewPage() {
   const { data: event, isPending, error } = useGetEvent()
 
-  const component = <Page eventInfo={event} />
+  const component = <Page eventInfo={event} activeRegistration />
 
   return (
     <FetchStatus component={component} isPending={isPending} error={error} />
