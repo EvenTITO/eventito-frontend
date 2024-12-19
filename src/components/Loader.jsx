@@ -1,6 +1,6 @@
 import { Loader2 } from 'lucide-react'
 
-export default function Component({ size = 60, className = '' }) {
+export default function Loader({ size = 60, className = '' }) {
   return (
     <div
       className="flex items-center justify-center min-h-screen"

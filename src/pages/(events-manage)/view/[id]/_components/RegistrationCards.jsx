@@ -10,6 +10,8 @@ export default function RegistrationCards({
   eventTitle,
   eventId,
   activeRegistration,
+  inscriptionSuccess,
+  setInscriptionSuccess,
 }) {
   return (
     <div>
@@ -27,6 +29,8 @@ export default function RegistrationCards({
         speakerDisabled={new Date() >= submissionLimit}
         eventId={eventId}
         activeRegistration={activeRegistration}
+        inscriptionSuccess={inscriptionSuccess}
+        setInscriptionSuccess={setInscriptionSuccess}
       />
       <RegistrationCard
         open={{
@@ -42,6 +46,8 @@ export default function RegistrationCards({
         speakerDisabled={new Date() >= submissionLimit}
         eventId={eventId}
         activeRegistration={activeRegistration}
+        inscriptionSuccess={inscriptionSuccess}
+        setInscriptionSuccess={setInscriptionSuccess}
       />
     </div>
   )
@@ -56,8 +62,9 @@ function RegistrationCard({
   speakerDisabled,
   eventId,
   activeRegistration,
+  inscriptionSuccess,
+  setInscriptionSuccess,
 }) {
-  const [inscriptionSuccess, setInscriptionSuccess] = useState(false)
   const navigator = useNavigator()
 
   useEffect(() => {
