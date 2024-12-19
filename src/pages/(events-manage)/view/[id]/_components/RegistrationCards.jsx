@@ -1,6 +1,6 @@
 import CardWithFocus from '@/components/Card/CardWithFocus'
-import { format } from '@formkit/tempo'
 import RegistrationForm from './RegistrationForm'
+import { format } from '@formkit/tempo'
 import { useEffect, useState } from 'react'
 import { useNavigator } from '@/lib/navigation'
 
