@@ -6,15 +6,27 @@ import Prices from './_components/Prices'
 import RegistrationCards from './_components/RegistrationCards'
 import TitleEvent from './_components/TitleEvent'
 import { getDates } from '@/pages/(events-manage)/manage/[id]/administration/_components/utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Loader from '@/components/Loader'
+import { useNavigator } from '@/lib/navigation'
+import { sleep } from '@/lib/utils'
 
 export default function Page({ eventInfo, activeRegistration = false }) {
   if (!eventInfo) return null
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [inscriptionSuccess, setInscriptionSuccess] = useState(false)
+  const navigator = useNavigator()
+  async function redir() {
+    await sleep(1000)
+    navigator.to(`/events/${eventInfo.id}/view`)
+  }
+  useEffect(() => {
+    if (inscriptionSuccess) {
+      redir()
+    }
+  }, [inscriptionSuccess])
 
-  if (isLoading) {
+  if (inscriptionSuccess) {
     return <Loader showMessage={true} />
   }
 
@@ -38,7 +50,8 @@ export default function Page({ eventInfo, activeRegistration = false }) {
             eventTitle={eventInfo.title}
             eventId={eventInfo.id}
             activeRegistration={activeRegistration}
-            setIsLoading={setIsLoading}
+            inscriptionSuccess={inscriptionSuccess}
+            setInscriptionSuccess={setInscriptionSuccess}
           />
 
           <div className="space-y-14">
