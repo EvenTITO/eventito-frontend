@@ -1,4 +1,3 @@
-import FetchStatus from '@/components/FetchStatus'
 import Page from './page'
 import {
   useGetEventChairs,
@@ -21,18 +20,16 @@ export default function TracksConfigPage() {
     enabled: !!tracksSettled && !!chairsSettled,
   })
 
-  const component = (
+  if (!isPending && tracksByChair) {
+    console.log('listo')
+  }
+
+  return (
     <Page
       event={eventData}
       chairs={chairsData.data}
       tracksByChair={tracksByChair || []}
-    />
-  )
-  return (
-    <FetchStatus
-      component={component}
-      isPending={isPending || chairsData.isPending}
-      error={error || chairsData.error}
+      chairsDataPending={isPending}
     />
   )
 }

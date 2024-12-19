@@ -74,3 +74,7 @@ export function generateRelatedDate(fare, value) {
     time: '23:59',
   }
 }
+
+export function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}

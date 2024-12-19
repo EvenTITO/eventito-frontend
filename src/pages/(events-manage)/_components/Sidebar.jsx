@@ -1,9 +1,9 @@
+import SidebarIcon from '@/components/SidebarIcon'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { cn, getEventId } from '@/lib/utils'
-import { Home, LogOut } from 'lucide-react'
 import { useLogout } from '@/hooks/auth/authHooks.js'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { useNavigator } from '@/lib/navigation'
 
 export default function SideBar({
@@ -38,7 +38,7 @@ export default function SideBar({
   return (
     <div className="flex flex-col h-[calc(100vh-5rem)]">
       <ScrollArea className="flex-grow">
-        <nav className="space-y-1 p-2">
+        <nav className="space-y-2 p-2">
           <Button
             variant="ghost"
             className={cn(
@@ -47,8 +47,8 @@ export default function SideBar({
             )}
             onClick={() => navigate('/home')}
           >
-            <Home className="h-4 w-4 mr-2" />
-            {isSidebarOpen && <span>Inicio</span>}
+            <SidebarIcon name="Home" />
+            {isSidebarOpen && <span className="ml-2">Inicio</span>}
           </Button>
           {filteredItemList.map((parent, index) => (
             <div key={index} className="mb-4">
@@ -66,7 +66,7 @@ export default function SideBar({
                     key={idx}
                     variant="ghost"
                     className={cn(
-                      'w-full justify-start py-2 text-sm font-normal text-gray-700 hover:bg-gray-200 rounded-sm',
+                      'w-full justify-start py-2 text-sm font-normal text-gray-700 hover:bg-gray-200 rounded-sm mt-1',
                       isItemSelected(child) && 'bg-gray-200 font-medium'
                     )}
                     onClick={() =>
@@ -93,8 +93,8 @@ export default function SideBar({
           className="w-full justify-start py-2 text-sm font-normal text-gray-700 hover:bg-gray-200 rounded-sm"
           onClick={handleLogout}
         >
-          <LogOut className="h-4 w-4 mr-2" />
-          {isSidebarOpen && <span>Cerrar sesión</span>}
+          <SidebarIcon name="LogOut" />
+          {isSidebarOpen && <span className="ml-2">Cerrar sesión</span>}
         </Button>
       </div>
     </div>

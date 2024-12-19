@@ -1,18 +1,8 @@
 import { ORGANIZER_ROLE } from '@/lib/Constants'
 import SideBar from '@/pages/(events-manage)/_components/Sidebar'
-import {
-  MapPin,
-  BookOpenCheck,
-  DollarSign,
-  FilePenLine,
-  Settings,
-  Table,
-  Users,
-  PanelLeftClose,
-  Calendar,
-} from 'lucide-react'
-import { useState } from 'react'
+import SidebarIcon from '@/components/SidebarIcon'
 import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 
 export default function OrganizationSidebar({ eventTitle }) {
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -21,7 +11,9 @@ export default function OrganizationSidebar({ eventTitle }) {
     <aside
       className={`bg-gray-100 transition-all duration-300 ease-in-out flex flex-col h-screen ${isCollapsed ? 'w-16' : 'w-64'}`}
     >
-      <div className="p-4 flex items-center justify-between">
+      <div
+        className={`p-4 flex items-center justify-between ${isCollapsed ? 'pl-3' : ''}`}
+      >
         <h1 className={`font-semibold truncate ${isCollapsed ? 'hidden' : ''}`}>
           {eventTitle}
         </h1>
@@ -30,8 +22,9 @@ export default function OrganizationSidebar({ eventTitle }) {
           size="sm"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          <PanelLeftClose
-            className={`h-4 w-4 transform ${isCollapsed ? 'rotate-180' : ''}`}
+          <SidebarIcon
+            name="PanelLeftClose"
+            className={isCollapsed ? 'rotate-180' : ''}
           />
         </Button>
       </div>
@@ -44,49 +37,55 @@ export default function OrganizationSidebar({ eventTitle }) {
   )
 }
 
-const classNameIcons = 'mr-2 h-4 w-4'
 const itemList = [
   {
     label: 'Configuración',
     children: [
       {
-        label: 'General',
-        icon: <Settings className={classNameIcons} />,
-        to: 'general',
+        label: 'Administración',
+        icon: <SidebarIcon name="Settings" />,
+        to: 'administration',
+        requiredRoles: [ORGANIZER_ROLE],
+        isOrganizerRoute: true,
+      },
+      {
+        label: 'Información general',
+        icon: <SidebarIcon name="Info" />,
+        to: 'info',
+        requiredRoles: [ORGANIZER_ROLE],
+        isOrganizerRoute: true,
+      },
+      {
+        label: 'Actividades',
+        icon: <SidebarIcon name="Calendar" />,
+        to: 'activities',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
         label: 'Comité de miembros',
-        icon: <Users className={classNameIcons} />,
+        icon: <SidebarIcon name="Users" />,
         to: 'members',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
-        label: 'Revisiones',
-        icon: <FilePenLine className={classNameIcons} />,
-        to: 'reviews',
-        requiredRoles: [ORGANIZER_ROLE],
-        isOrganizerRoute: true,
-      },
-      {
-        label: 'Tracks',
-        icon: <Table className={classNameIcons} />,
+        label: 'Tracks y revisiones',
+        icon: <SidebarIcon name="BookOpenCheck" />,
         to: 'tracks',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
         label: 'Tarifas',
-        icon: <DollarSign className={classNameIcons} />,
+        icon: <SidebarIcon name="DollarSign" />,
         to: 'pricing',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
         label: 'Salas',
-        icon: <MapPin className={classNameIcons} />,
+        icon: <SidebarIcon name="MapPin" />,
         to: 'rooms',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
@@ -98,14 +97,14 @@ const itemList = [
     children: [
       {
         label: 'Inscripciones',
-        icon: <BookOpenCheck className={classNameIcons} />,
+        icon: <SidebarIcon name="BookOpenCheck" />,
         to: 'inscriptions',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,
       },
       {
         label: 'Presentaciones',
-        icon: <Calendar className={classNameIcons} />,
+        icon: <SidebarIcon name="CalendarCheck" />,
         to: 'talks',
         requiredRoles: [ORGANIZER_ROLE],
         isOrganizerRoute: true,

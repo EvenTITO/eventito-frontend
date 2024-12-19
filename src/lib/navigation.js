@@ -19,6 +19,24 @@ class Navigator {
     this.navigate(relativePath, state)
   }
 
+  replace(oldPath, newPath) {
+    const path = this.location.pathname.replace(oldPath, newPath)
+    this.to(path)
+  }
+
+  replaceOrAppend(oldPaths, newPath) {
+    let path = this.location.pathname
+    const matchingOldPath = oldPaths.find((oldPath) => path.includes(oldPath))
+
+    if (matchingOldPath) {
+      path = path.replace(matchingOldPath, newPath)
+    } else {
+      path += '/' + newPath
+    }
+
+    this.to(path)
+  }
+
   back() {
     const path = this.location.pathname.split(this.startRoute)[0]
     this.to(path)

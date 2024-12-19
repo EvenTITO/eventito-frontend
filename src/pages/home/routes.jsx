@@ -1,17 +1,22 @@
 import { Route, Routes } from 'react-router-dom'
-import HomePage from './page'
+import HomePage from '.'
 import LayoutHome from './layout'
-import MyEventsPage from './my-events/page'
-import CreateEventPage from './create-event/page'
+import MyEventsPage from './my-events'
+import PublicEventsPage from './public-events'
+import {
+  BASE_URL,
+  MY_EVENTS_URL,
+  PUBLIC_EVENTS_URL,
+} from './_components/constants'
 
 export default function RoutesHome() {
   return (
     <Routes>
-      <Route path="/home" element={<LayoutHome />}>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/home/my-events" element={<MyEventsPage />} />
+      <Route path={BASE_URL} element={<LayoutHome />}>
+        <Route index element={<HomePage />} />
+        <Route path={MY_EVENTS_URL} element={<MyEventsPage />} />
+        <Route path={PUBLIC_EVENTS_URL} element={<PublicEventsPage />} />
       </Route>
-      <Route path="/home/create-event" element={<CreateEventPage />} />
     </Routes>
   )
 }
